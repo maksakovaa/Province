@@ -1,0 +1,5 @@
+<image>bath4.jpg</image>
+<desc>Ванная тесная и очень простенькая.</desc>
+<action><required><param>legHair</param><minv>1</minv></required>shaveLegs</action>
+<action><required><param>pubisHair</param><minv>1</minv></required>shavePubic</action>
+<action><required><param>horny</param><minv>60</minv></required>selfPlay</action>

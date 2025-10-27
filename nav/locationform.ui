@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LocationForm</class>
+ <widget class="QWidget" name="LocationForm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>716</width>
+    <height>547</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2" stretch="3,1">
+   <item>
+    <widget class="QStackedWidget" name="imageAndWideoWdgt">
+     <widget class="QWidget" name="page_image">
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QLabel" name="labelLocImage">
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="page_video">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <layout class="QVBoxLayout" name="videoLayout">
+         <item>
+          <widget class="QWidget" name="widget" native="true"/>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="labelLocDesc">
+     <property name="font">
+      <font>
+       <family>Serif</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

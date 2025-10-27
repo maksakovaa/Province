@@ -1,0 +1,8 @@
+<image>parents_home.jpg</image>
+<desc>На стене возле входной двери висит <a href='mirror'>зеркало</a>.</desc>
+<obj>mirror</obj>
+<subloc>my_bedr_parents</subloc>
+<subloc>bedr_parents</subloc>
+<subloc>kitchen_parents</subloc>
+<subloc>guestroom_parents</subloc>
+<subloc>bathroom_parents</subloc>

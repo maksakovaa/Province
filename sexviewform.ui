@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SexViewForm</class>
+ <widget class="QWidget" name="SexViewForm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>814</width>
+    <height>540</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="3,1">
+   <item>
+    <widget class="QLabel" name="labelSexImg">
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="labelSexDesc">
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

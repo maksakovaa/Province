@@ -1,0 +1,747 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1047</width>
+    <height>613</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Провинциалка: Remake</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="data.qrc">
+    <normaloff>:/img/icons/game.ico</normaloff>:/img/icons/game.ico</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="5,1">
+    <item>
+     <widget class="QStackedWidget" name="stackedWidget">
+      <property name="currentIndex">
+       <number>4</number>
+      </property>
+      <widget class="LocationForm" name="page_0_main"/>
+      <widget class="MapForm" name="page_1_map"/>
+      <widget class="TabWidgetPlayer" name="page_2_pers"/>
+      <widget class="QWidget" name="page_3_bag">
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QScrollArea" name="scrollAreaBag">
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>98</width>
+             <height>28</height>
+            </rect>
+           </property>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="ObjViewForm" name="page_5_objView"/>
+      <widget class="QWidget" name="page_6_sexView">
+       <layout class="QVBoxLayout" name="verticalLayout_6">
+        <item>
+         <widget class="QScrollArea" name="scrollAreaSexView">
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents_2">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>98</width>
+             <height>28</height>
+            </rect>
+           </property>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="widget" native="true">
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QLabel" name="labelImageWeather">
+           <property name="maximumSize">
+            <size>
+             <width>79</width>
+             <height>66</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Weather_PIC</string>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="labelImageTermometer">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>12</width>
+             <height>66</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="data.qrc">:/img/weather/therm.png</pixmap>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="labelTextTemperature">
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>66</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Noto Serif</family>
+             <pointsize>20</pointsize>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Temperature</string>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <widget class="QPushButton" name="pushButtonSave">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>48</width>
+               <height>48</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>48</width>
+               <height>48</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="data.qrc">
+               <normaloff>:/img/icons/save.png</normaloff>:/img/icons/save.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>40</width>
+               <height>40</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButtonLoad">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>48</width>
+               <height>48</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>48</width>
+               <height>48</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="icon">
+              <iconset resource="data.qrc">
+               <normaloff>:/img/icons/load.png</normaloff>:/img/icons/load.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>40</width>
+               <height>40</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QPushButton" name="pushButtonPlayer">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>48</width>
+             <height>48</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>48</width>
+             <height>48</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>40</width>
+             <height>40</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonMap">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>48</width>
+             <height>48</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>48</width>
+             <height>48</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="data.qrc">
+             <normaloff>:/img/icons/map.png</normaloff>
+             <disabledoff>:/img/icons/nomap.png</disabledoff>:/img/icons/map.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>40</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="checkable">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonBag">
+           <property name="minimumSize">
+            <size>
+             <width>48</width>
+             <height>48</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>48</width>
+             <height>48</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="data.qrc">
+             <normaloff>:/img/icons/bag.png</normaloff>:/img/icons/bag.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>40</width>
+             <height>40</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonSettings">
+           <property name="minimumSize">
+            <size>
+             <width>48</width>
+             <height>48</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>48</width>
+             <height>48</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="data.qrc">
+             <normaloff>:/img/icons/settings.png</normaloff>:/img/icons/settings.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>40</width>
+             <height>40</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonRestart">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>48</width>
+             <height>48</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>48</width>
+             <height>48</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="data.qrc">
+             <normaloff>:/img/icons/restart.png</normaloff>:/img/icons/restart.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>40</width>
+             <height>40</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <widget class="QLabel" name="labelTime">
+           <property name="font">
+            <font>
+             <family>Noto Serif</family>
+             <pointsize>20</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>TIME</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="labelDate">
+           <property name="font">
+            <font>
+             <family>Noto Serif</family>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>DATE</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="labelMoney">
+           <property name="font">
+            <font>
+             <family>Noto Serif</family>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Money</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayoutBar">
+           <property name="spacing">
+            <number>5</number>
+           </property>
+           <item>
+            <widget class="QProgressBar" name="progressBarHorny">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>100</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="baseSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Noto Serif</family>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
+             <property name="value">
+              <number>24</number>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+             </property>
+             <property name="format">
+              <string>%v</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QProgressBar" name="progressBarLust">
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Noto Serif</family>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
+             <property name="value">
+              <number>24</number>
+             </property>
+             <property name="format">
+              <string>%v</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QProgressBar" name="progressBarHealth">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Noto Serif</family>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true"/>
+             </property>
+             <property name="value">
+              <number>24</number>
+             </property>
+             <property name="format">
+              <string>%v</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QProgressBar" name="progressBarManna">
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Noto Serif</family>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
+             <property name="value">
+              <number>24</number>
+             </property>
+             <property name="format">
+              <string>%v</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QProgressBar" name="progressBarEnergy">
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Noto Serif</family>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
+             <property name="maximum">
+              <number>24</number>
+             </property>
+             <property name="value">
+              <number>24</number>
+             </property>
+             <property name="format">
+              <string> %v</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QProgressBar" name="progressBarWater">
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Noto Serif</family>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
+             <property name="maximum">
+              <number>24</number>
+             </property>
+             <property name="value">
+              <number>24</number>
+             </property>
+             <property name="format">
+              <string> %v</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QProgressBar" name="progressBarSon">
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Noto Serif</family>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
+             <property name="maximum">
+              <number>24</number>
+             </property>
+             <property name="value">
+              <number>24</number>
+             </property>
+             <property name="format">
+              <string>%v</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QProgressBar" name="progressBarVnesh">
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Noto Serif</family>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
+             <property name="value">
+              <number>24</number>
+             </property>
+             <property name="format">
+              <string>%v</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayoutDesc">
+           <item>
+            <widget class="QLabel" name="labelStatusDesc">
+             <property name="font">
+              <font>
+               <family>Noto Serif</family>
+               <pointsize>12</pointsize>
+               <kerning>true</kerning>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true"/>
+             </property>
+             <property name="lineWidth">
+              <number>1</number>
+             </property>
+             <property name="text">
+              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p style='line-height: 1.6;'&gt;1&lt;br&gt;2&lt;br&gt;3&lt;br&gt;4&lt;br&gt;5&lt;br&gt;6&lt;br&gt;7&lt;br&gt;8&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+             <property name="scaledContents">
+              <bool>false</bool>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="actionsLayout"/>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>TabWidgetPlayer</class>
+   <extends>QWidget</extends>
+   <header>tabwidgetplayer.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MapForm</class>
+   <extends>QWidget</extends>
+   <header>mapform.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ObjViewForm</class>
+   <extends>QWidget</extends>
+   <header>objviewform.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>LocationForm</class>
+   <extends>QWidget</extends>
+   <header>locationform.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="data.qrc"/>
+ </resources>
+ <connections/>
+</ui>

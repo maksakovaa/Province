@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SettingsForm</class>
+ <widget class="QWidget" name="SettingsForm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>776</width>
+    <height>581</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="1" column="0">
+      <widget class="QLabel" name="labelParam">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLabel" name="labelDefValue">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QLabel" name="labelCurValue">
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Параметр</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="label_5">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Значение по умолчанию</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="label_6">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Текущее значение</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
