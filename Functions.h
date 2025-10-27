@@ -12,6 +12,7 @@ QString letgoda2(int age);
 QString intQStr(int value);
 void makeLink(QString& txt, const QString& link);
 QString makeImg(QString path);
+QString makeImage(QString path, bool isDay, bool isSnow);
 QString styleForBar(int value, int maxv, int type);
 int getSexuality();
 int genDick(int arg = 0);

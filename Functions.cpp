@@ -168,6 +168,34 @@ QString makeImg(QString path)
     return "<img style='max-width: 500px; max-height: 1000px' src='"+path+"'></img>";
 }
 
+QString makeImage(QString path, bool isDay, bool isSnow)
+{
+    if (path.isEmpty())
+    {
+        return "";
+    }
+    QString img, ext = path.split(".")[1];
+    if (ext.isEmpty())
+    {
+        ext = "jpg";
+    }
+    else
+    {
+        img = path.split(".")[0];
+    }
+
+    if (isSnow)
+    {
+        img.append("_winter");
+    }
+    if (!isDay)
+    {
+        img.append("_night");
+    }
+   img.append(ext);
+   return img;
+}
+
 void ClearLayout(QLayout *layout)
 {
     while (layout->count() > 0)

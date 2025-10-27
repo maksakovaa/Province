@@ -7,13 +7,13 @@
 #include "Functions.h"
 #include "nav/locationform.h"
 
-MainWindow::MainWindow(SettingsForm* settingsForm, CharacterType charType, QString locStart, int year, int month, int day, QWidget *parent)
+MainWindow::MainWindow(SettingsForm* settingsForm, CharacterType charType, int year, int month, int day, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , m_time(year, month, day, 8, 0)
 {
     ui->setupUi(this);
-    setupMainWindow(settingsForm, charType, locStart);
+    setupMainWindow(settingsForm, charType);
 }
 
 MainWindow::~MainWindow()
@@ -29,12 +29,25 @@ MainWindow *MainWindow::createMenu()
     {
         return nullptr;
     }
-    auto w = new MainWindow(m.getSettingsPtr(), m.getCharType(), m.getStartLoc(), m.getStartYear(), m.getStartMonth(), m.getStartDay());
+    //m.deleteLater();
+    SettingsForm* settings = m.getSettingsPtr();
+    CharacterType type = m.getCharType();
+    QString loc = m.getStartLoc();
+    int year = m.getStartYear();
+    int month = m.getStartMonth();
+    int day = m.getStartDay();
+    auto w = new MainWindow(settings, type, year, month, day);
+    w->start(loc);
     w->setAttribute(Qt::WA_DeleteOnClose);
     return w;
 }
 
-void MainWindow::setupMainWindow(SettingsForm* settingsForm, CharacterType charType, QString locStart)
+void MainWindow::start(QString loc)
+{
+    ui->page_0_main->init(loc);
+}
+
+void MainWindow::setupMainWindow(SettingsForm* settingsForm, CharacterType charType)
 {
     page4 = settingsForm;
     page4->setParent(this);
@@ -52,17 +65,20 @@ void MainWindow::setupMainWindow(SettingsForm* settingsForm, CharacterType charT
     setPointers();
     slotUpdateDateTime();
     connections();
-    ui->page_0_main->init(locStart);
+//    ui->page_0_main->init(locStart);
     loadStrings();
     slotUpdMoney();
     m_reproductSys.slotEstrus();
     slotUpdParams();
+    std::cout << "main window construct complete!" << std::endl;
 }
 
 void MainWindow::setPointers()
 {
     m_time.setSettingsPtr(page4->settings());
+    m_weather->setTimePtr(&m_time);
 
+    ui->page_0_main->setWeatherPtr(m_weather);
     ui->page_0_main->setPagePtr(ui->stackedWidget);
     ui->page_0_main->setActionsLayout(ui->actionsLayout);
     ui->page_0_main->setPlayerPtr(m_player);
@@ -134,7 +150,7 @@ void MainWindow::slotUpdateDateTime()
 {
     ui->labelDate->setText(m_time.getDayOfWeek() + ", " + m_time.getDateStr());
     ui->labelTime->setText(m_time.getTime());
-    ui->labelImageWeather->setPixmap(m_weather->getImage(m_time.getYear(),m_time.getMonth(),m_time.getDay(),m_time.getHour(),m_time.getMin()));
+    ui->labelImageWeather->setPixmap(m_weather->getImage());
     ui->labelTextTemperature->setText(m_weather->getCurrentTemp());
 }
 

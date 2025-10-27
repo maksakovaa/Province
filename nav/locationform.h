@@ -7,6 +7,7 @@
 #include "location.h"
 #include "../timeServer.h"
 #include "../video.h"
+#include "../weather.h"
 
 namespace Ui {
 class LocationForm;
@@ -25,15 +26,15 @@ public:
     void setActionsLayout(QVBoxLayout* ptr);
     void setTimePtr(TimeServer* ptr);
     void setPagePtr(QStackedWidget* ptr);
+    void setWeatherPtr(Weather* ptr);
     void init(QString loc = "");
     Location* getCurPtr();
     void reloadLocation();
     QLabel* getImageLblPtr();
 public slots:
-    void slotOnChangeLocation(const QString& name, int min);
+    void slotOnChangeLocation(const QString name, int min);
     void slotChangeLoc(Location* locPtr, int min);
 private slots:
-    void slotActionHandler(Location* loc, QString action);
     void slotBathActionHandler(Location* loc, QString action);
 private:
     void fillSubLocs();
@@ -48,6 +49,7 @@ private:
     QStackedWidget* m_page;
     BagForm* m_bag;
     Video* videoWidg;
+    Weather* m_weather;
 };
 
 #endif // LOCATIONFORM_H

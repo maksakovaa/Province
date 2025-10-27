@@ -3,9 +3,15 @@
 #include <QTextStream>
 #include <QDebug>
 #include <iostream>
+#include "../Functions.h"
 
-Location::Location(const QString& locIn, const QString& locName, Location* parent, Player* ptr, BagForm* bagPtr): m_locIn(locIn), m_locId(locName), m_parent(parent), m_player(ptr), m_bag(bagPtr) {
+Location::Location(QString locIn, QString locName, Location* parent, BagForm* bagPtr): m_locIn(locIn), m_locId(locName), m_parent(parent), m_bag(bagPtr) 
+{
+    startInd = new QString[]{ "<image>", "<obj>", "<desc>", "<subloc>", "<action>", "<required>", "<param>", "<minv>" };
+    endInd = new QString[]{ "</image>", "</obj>", "</desc>", "</subloc>", "</action>", "</required>", "</param>", "</minv>" };
+    m_isweather = false;
     genLocation();
+    std::cout << locName.toStdString() << " constructor" << std::endl;
 }
 
 const std::vector<struct Action*> Location::availableActions()
@@ -42,11 +48,11 @@ void Location::genLocation()
     {
         folder_path = ":/locations/" + m_parent->m_locIn + "/" + m_parent->m_locId + "/";
     }
-
+    std::cout << "Gen location:" +folder_path.toStdString() + m_locId.toStdString() << std::endl;
     QFile file(folder_path + m_locId + ".loc");
     if(!file.open(QIODevice::ReadOnly))
     {
-        qDebug() << "Error opening file! ";
+        qDebug() << "Error opening file! " + file.fileName();
     }
     else
     {
@@ -60,22 +66,31 @@ void Location::genLocation()
     }
 }
 
-QPixmap& Location::getLocPic()
+QString Location::getLocPic(bool isDay, bool isSnow)
 {
-    return m_image;
+    QString txt;
+    if (m_isweather == true)
+    {
+        txt = "<img src='" + makeImage(m_image, isDay, isSnow) + "'></img>";   
+    }
+    else
+    {
+        txt = "<img src='" + m_image + "'></img>";
+    }
+    return txt;
 }
 
-QString &Location::getLocId()
+QString Location::getLocId()
 {
     return m_locId;
 }
 
-QString &Location::getLocIn()
+QString Location::getLocIn()
 {
     return m_locIn;
 }
 
-QString &Location::getLocDesc()
+QString Location::getLocDesc()
 {
     return m_desc;
 }
@@ -87,14 +102,20 @@ Location *Location::getParentPtr()
 
 void Location::parseLocConfig(QString str, QString folder)
 {
-    enum params { image, object, desc, subloc, action, required, param, minvalue };
-    QString startInd[] = { "<image>", "<obj>", "<desc>", "<subloc>", "<action>", "<required>", "<param>", "<minv>" };
-    QString endInd[] = { "</image>", "</obj>", "</desc>", "</subloc>", "</action>", "</required>", "</param>", "</minv>" };
     QString res;
     if(str.startsWith(startInd[image]))
     {
         res = str.sliced(startInd[image].size(), str.indexOf(endInd[image]) - startInd[image].size());
-        m_image = QPixmap(folder + res);
+        std::cout << res.toStdString() << std::endl;
+        if (res.startsWith(startInd[param]))
+        {
+            std::cout << res.toStdString() << std::endl;
+            parseRequiredImage(res, folder);
+        }
+        else
+        {
+            m_image = folder + res;
+        }
     }
     if(str.startsWith(startInd[object]))
     {
@@ -109,7 +130,7 @@ void Location::parseLocConfig(QString str, QString folder)
     if(str.startsWith(startInd[subloc]))
     {
         res = str.sliced(startInd[subloc].size(), str.indexOf(endInd[subloc]) - startInd[subloc].size());
-        Location* subLoc = new Location(m_locIn, res, this, m_player);
+        Location* subLoc = new Location(m_locIn, res, this, m_bag);
         m_subLocs.push_back(subLoc);
     }
     if(str.startsWith(startInd[action]))
@@ -132,5 +153,16 @@ void Location::parseLocConfig(QString str, QString folder)
             QString action = res.sliced(res.indexOf(endInd[required]) + endInd[required].size());
             m_actions.push_back(new Action{action, par, val.toInt()});
         }
+    }
+}
+
+void Location::parseRequiredImage(QString str, QString folder)
+{
+    QString req = str.sliced(str.indexOf(startInd[param]) + startInd[param].size(), str.indexOf(endInd[param]) - startInd[param].size());
+    if (req == "night_snow")
+    {
+        m_image = folder + str.sliced(str.indexOf(endInd[param]) + endInd[param].size());
+        std::cout << m_image.toStdString() << std::endl;
+        m_isweather = true;
     }
 }

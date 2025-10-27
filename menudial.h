@@ -41,7 +41,6 @@ private:
     int year;
     int month;
     int day;
-    QString loc;
+    QString m_loc;
 };
-
 #endif // MENUDIAL_H

@@ -34,7 +34,7 @@ SettingsForm *MenuDial::getSettingsPtr()
 
 QString MenuDial::getStartLoc()
 {
-    return loc;
+    return m_loc;
 }
 
 int MenuDial::getStartYear()
@@ -204,21 +204,21 @@ void MenuDial::slotStart(const QString &link)
 {
     if(link == "start1")
     {
-        loc = "parents_home";
+        m_loc = "parents_home";
         year = 2015;
         month = 6;
         day = 1;
     }
-    if(link=="start2")
+    else if(link=="start2")
     {
-        loc = "parents_home";
+        m_loc = "parents_home";
         year = 2015;
         month = 8;
         day = 29;
     }
-    if(link=="start3")
+    else if(link=="start3")
     {
-        loc = "gaddvor";
+        m_loc = "gaddvor";
         year = 2015;
         month = 6;
         day = 1;

@@ -15,6 +15,7 @@ LocationForm::LocationForm(QWidget *parent)
     ui->videoLayout->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     ui->videoLayout->addWidget(videoWidg);
     ui->labelLocDesc->setWordWrap(true);
+    m_currentLoc = nullptr;
 }
 
 LocationForm::~LocationForm()
@@ -43,17 +44,31 @@ void LocationForm::setPagePtr(QStackedWidget *ptr)
     m_bag = m_page->widget(3)->findChild<BagForm*>("BagForm");
 }
 
+void LocationForm::setWeatherPtr(Weather *ptr)
+{
+    m_weather = ptr;
+}
+
 void LocationForm::init(QString loc)
 {
-    if(m_currentLoc == nullptr && loc == "parents_home")
+    std::cout << " locationForm init started for " << loc.toStdString() << std::endl;
+    if (m_currentLoc == nullptr)
     {
-        m_currentLoc = new Location("pavlovo", loc, nullptr, m_player, (BagForm*)m_page->widget(3));
+        if (loc == "gaddvor")
+        {
+            m_currentLoc = new Location("gadukino", "gaddvor", nullptr, m_bag);
+        }
+        else
+        {
+            m_currentLoc = new Location("pavlovo", "parents_home", nullptr, m_bag);
+        }
+        
     }
-    else if (m_currentLoc == nullptr && loc == "gaddvor")
+    else
     {
-        m_currentLoc = new Location("gadukino", loc, nullptr, m_player, (BagForm*)m_page->widget(3));
+        std::cout << "m_current_loc in not null!" << std::endl;
     }
-    slotOnChangeLocation(m_currentLoc->getLocId(), 0);
+    slotChangeLoc(m_currentLoc, 0);
 }
 
 Location *LocationForm::getCurPtr()
@@ -73,9 +88,9 @@ QLabel *LocationForm::getImageLblPtr()
     return ui->labelLocImage;
 }
 
-void LocationForm::slotOnChangeLocation(const QString &name, int min)
+void LocationForm::slotOnChangeLocation(const QString name, int min)
 {
-    Location* newLocation = new Location(m_currentLoc->getLocIn(), name, nullptr, m_player, (BagForm*)m_page->widget(3));
+    Location* newLocation = new Location(m_currentLoc->getLocIn(), name, nullptr, m_bag);
     slotChangeLoc(newLocation, min);
 }
 
@@ -86,7 +101,7 @@ void LocationForm::slotChangeLoc(Location *locPtr, int min)
 
     if(m_currentLoc != nullptr)
     {
-        ui->labelLocImage->setPixmap(m_currentLoc->getLocPic());
+        ui->labelLocImage->setText(m_currentLoc->getLocPic(m_weather->isDay(), m_weather->isSnow()));
         ui->labelLocDesc->setText(m_currentLoc->getLocDesc());
     }
     fillSubLocs();
@@ -101,11 +116,6 @@ void LocationForm::slotChangeLoc(Location *locPtr, int min)
         emit sigIsMapAwaylable(status);
     }
     m_page->setCurrentIndex(0);
-}
-
-void LocationForm::slotActionHandler(Location* loc, QString action)
-{
-
 }
 
 void LocationForm::fillSubLocs()

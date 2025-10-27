@@ -23,9 +23,10 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(SettingsForm* settingsForm, CharacterType charType, QString locStart, int year, int month, int day, QWidget *parent = nullptr);
+    MainWindow(SettingsForm* settingsForm, CharacterType charType, int year, int month, int day, QWidget *parent = nullptr);
     ~MainWindow();
     static MainWindow* createMenu();
+    void start(QString loc);
 public slots:
     void slotUpdateDateTime();
     void slotUpdMoney();
@@ -55,7 +56,7 @@ private: //members
     BagForm* m_bag;
     SexViewForm* m_sex;
 private: //methods
-    void setupMainWindow(SettingsForm* settingsForm, CharacterType charType, QString locStart);
+    void setupMainWindow(SettingsForm* settingsForm, CharacterType charType);
     void connections();
     void setPointers();
     void updStatusVal(Status stat, int val);
