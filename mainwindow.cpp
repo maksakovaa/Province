@@ -29,7 +29,6 @@ MainWindow *MainWindow::createMenu()
     {
         return nullptr;
     }
-    //m.deleteLater();
     SettingsForm* settings = m.getSettingsPtr();
     CharacterType type = m.getCharType();
     QString loc = m.getStartLoc();
@@ -65,7 +64,6 @@ void MainWindow::setupMainWindow(SettingsForm* settingsForm, CharacterType charT
     setPointers();
     slotUpdateDateTime();
     connections();
-//    ui->page_0_main->init(locStart);
     loadStrings();
     slotUpdMoney();
     m_reproductSys.slotEstrus();
@@ -140,6 +138,7 @@ void MainWindow::connections()
     connect(&m_time, &TimeServer::sigElapsed60minutes, m_player, &Player::slotElapsed60min);
     connect(&m_time, &TimeServer::sigElapsedDay, m_player, &Player::slotElapsedDay);
     connect(&m_time, &TimeServer::sigElapsedDay, &m_reproductSys, &Pregnancy::slotMenstruus);
+    connect(&m_time, &TimeServer::sigElapsedDay, m_weather, &Weather::mainFunc);
     connect(&m_time, &TimeServer::sigElapsedTime, m_player, &Player::slotElapsedTime);
 
     connect(m_sex, &SexViewForm::sigSetGape, &m_ccsex, &CCSex::slotSetGape);
@@ -407,6 +406,7 @@ void MainWindow::on_labelDate_linkActivated(const QString &link)
     {
         m_time.increaseTime(12*30*24*60);
     }
+    m_weather->updOnTimeMove();
     ui->page_2_pers->reload();
     slotUpdParams();
 }

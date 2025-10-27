@@ -1,4 +1,5 @@
 <image>izba.jpg</image>
+<actName>Идти в избу</actName>
 <desc>Простая деревенская изба. <b>В маленькой комнате стоит <a href='loker'>шкаф</a> и <a href='bed'>кровать</a> на которой вы можете спать.</b> В большой комнате, посередине, стоит стол. Возле окна стоит <a href='watch_tv_on_sofa'>телевизор</a>, а рядом с ним древний <a href='mirror'>трельяж</a> и <a href='zz_books'>книжный шкаф</a>.</desc>
 <obj>wardrobe</obj>
 <obj>bed</obj>

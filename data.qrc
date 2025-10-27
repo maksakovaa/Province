@@ -1164,5 +1164,10 @@
         <file>npc/pirat/sniff1.jpg</file>
         <file>npc/pirat/sniff2.jpg</file>
         <file>npc/pirat/sniff3.jpg</file>
+        <file>locations/gadukino/gaddvor/garden.loc</file>
+        <file>locations/gadukino/gaddvor/garden.jpg</file>
+        <file>locations/gadukino/gaddvor/garden_winter.jpg</file>
+        <file>locations/gadukino/gaddvor/garden_winter_night.jpg</file>
+        <file>locations/gadukino/gaddvor/garden_night.jpg</file>
     </qresource>
 </RCC>

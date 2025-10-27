@@ -113,6 +113,20 @@ void Weather::setTimePtr(TimeServer *ptr)
     mainFunc();
 }
 
+void Weather::updOnTimeMove()
+{
+    weatherDay = -1;
+    mainFunc();
+    if (currentTemp < 0)
+    {
+        m_snow += getRandInt(2,5);
+    }
+    else if (currentTemp > 0)
+    {
+        m_snow = 0;
+    }
+}
+
 void Weather::mainFunc()
 {
     if (weatherDay == m_time->getDay())
@@ -162,7 +176,6 @@ void Weather::mainFunc()
             }
         }
     }
-//    setForecast();
 }
 
 int Weather::getSunrise(int month)

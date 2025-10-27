@@ -142,7 +142,7 @@ void LocationForm::fillSubLocs()
     for (auto& i: locs)
     {
         QActionButton* actionbtn = new QActionButton(1);
-        actionbtn->setText(i->getLocId());
+        actionbtn->setText(i->getActName());
         actionbtn->setLocPtr(i);
         m_actLayout->addWidget(actionbtn);
         connect(actionbtn, &QActionButton::sigChangeSubLoc, this, &LocationForm::slotChangeLoc);

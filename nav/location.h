@@ -14,7 +14,7 @@ struct Action
     int minValue;
 };
 
-enum params { image, object, desc, subloc, action, required, param, minvalue };
+enum params { name, actName, image, object, desc, subloc, action, required, param, minvalue };
 
 class Location: public QObject
 {
@@ -27,6 +27,8 @@ public:
     bool isParent();
     QString getLocPic(bool isDay, bool isSnow);
     QString getLocId();
+    QString getLocName();
+    QString getActName();
     QString getLocIn();
     QString getLocDesc();
     Location* getParentPtr();
@@ -39,6 +41,7 @@ private:
     bool m_isweather;
     QString m_locId;
     QString m_locName;
+    QString m_actName;
     QString m_locIn;
     QString m_desc;
     BagForm* m_bag;

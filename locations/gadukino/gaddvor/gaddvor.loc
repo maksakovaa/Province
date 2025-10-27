@@ -1,5 +1,7 @@
-<image>dvor.jpg</image>
+<image><param>night_snow</param>dvor.jpg</image>
 <subloc>izba</subloc>
 <subloc>sarai</subloc>
 <subloc>bana</subloc>
+<subloc>garden</subloc>
 <desc>Двор с садом, избой и хозпостройками огорожен изгородью.</desc>
+<actName>Идти во двор</actName>

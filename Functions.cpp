@@ -192,7 +192,7 @@ QString makeImage(QString path, bool isDay, bool isSnow)
     {
         img.append("_night");
     }
-   img.append(ext);
+   img.append("." + ext);
    return img;
 }
 

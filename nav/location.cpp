@@ -7,8 +7,8 @@
 
 Location::Location(QString locIn, QString locName, Location* parent, BagForm* bagPtr): m_locIn(locIn), m_locId(locName), m_parent(parent), m_bag(bagPtr) 
 {
-    startInd = new QString[]{ "<image>", "<obj>", "<desc>", "<subloc>", "<action>", "<required>", "<param>", "<minv>" };
-    endInd = new QString[]{ "</image>", "</obj>", "</desc>", "</subloc>", "</action>", "</required>", "</param>", "</minv>" };
+    startInd = new QString[]{ "<name>", "<actName>", "<image>", "<obj>", "<desc>", "<subloc>", "<action>", "<required>", "<param>", "<minv>" };
+    endInd = new QString[]{ "</name>", "</actName>" , "</image>", "</obj>", "</desc>", "</subloc>", "</action>", "</required>", "</param>", "</minv>" };
     m_isweather = false;
     genLocation();
     std::cout << locName.toStdString() << " constructor" << std::endl;
@@ -85,6 +85,30 @@ QString Location::getLocId()
     return m_locId;
 }
 
+QString Location::getLocName()
+{
+    if (m_locName.isEmpty())
+    {
+        return m_locId;
+    }
+    else
+    {
+        return m_locName;
+    }
+}
+
+QString Location::getActName()
+{
+    if(m_actName.isEmpty())
+    {
+        return getLocName();
+    }
+    else
+    {
+        return m_actName;
+    }
+}
+
 QString Location::getLocIn()
 {
     return m_locIn;
@@ -103,6 +127,14 @@ Location *Location::getParentPtr()
 void Location::parseLocConfig(QString str, QString folder)
 {
     QString res;
+    if(str.startsWith(startInd[name]))
+    {
+        m_locName = str.sliced(startInd[name].size(), str.indexOf(endInd[name]) - startInd[name].size());
+    }
+    if (str.startsWith(startInd[actName]))
+    {
+        m_locName = str.sliced(startInd[actName].size(), str.indexOf(endInd[actName]) - startInd[actName].size());
+    }
     if(str.startsWith(startInd[image]))
     {
         res = str.sliced(startInd[image].size(), str.indexOf(endInd[image]) - startInd[image].size());

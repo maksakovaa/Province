@@ -3,8 +3,9 @@
 #include <QString>
 #include "timeServer.h"
 
-class Weather
+class Weather: public QObject
 {
+    Q_OBJECT
 public:
     Weather();
     bool isDay();
@@ -12,9 +13,11 @@ public:
     QString getImage();
     QString getCurrentTemp();
     void setTimePtr(TimeServer* ptr);
+    void updOnTimeMove();
+public slots:
+    void mainFunc();
 private:
     TimeServer* m_time;
-    void mainFunc();
     int getSunrise(int month);
     int getSunset(int month);
     void initTemperatureArray();
