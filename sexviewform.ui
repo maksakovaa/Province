@@ -19,6 +19,9 @@
      <property name="text">
       <string>TextLabel</string>
      </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
     </widget>
    </item>
    <item>
@@ -27,9 +30,6 @@
       <font>
        <pointsize>14</pointsize>
       </font>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>

@@ -390,6 +390,11 @@ void Player::initDefaultArrays()
     {
         m_statistic[static_cast<SC>(i)] = 0;
     }
+    for (int i = 0; i <= SexVar::spanked; ++i)
+    {
+        m_sex[static_cast<SexVar>(i)] = 0;
+    }
+    
     m_const[dec_anti_rubbing] = 10;
     m_const[max_dry_v_rubbing] = 8;
     m_const[max_dry_a_rubbing] = 8;

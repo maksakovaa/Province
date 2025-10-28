@@ -1,4 +1,5 @@
 <image>bath4.jpg</image>
+<actName>В ванную</actName>
 <desc>Ванная тесная и очень простенькая.</desc>
 <action><required><param>legHair</param><minv>1</minv></required>shaveLegs</action>
 <action><required><param>pubisHair</param><minv>1</minv></required>shavePubic</action>

@@ -1,4 +1,5 @@
 <image>parents_home.jpg</image>
+<actName>Выйти из комнаты</actName>
 <desc>На стене возле входной двери висит <a href='mirror'>зеркало</a>.</desc>
 <obj>mirror</obj>
 <subloc>my_bedr_parents</subloc>

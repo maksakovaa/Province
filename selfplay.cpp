@@ -6,12 +6,20 @@
 SelfPlay::SelfPlay(QWidget* parent)
 {
     root = (SexViewForm*)parent;
+    m_dildohand = 0;
 }
 
 void SelfPlay::start(Location *current)
 {
     root->clearLayout();
-    root->m_page->setCurrentIndex(6);
+    root->m_page->setCurrentIndex(5);
+
+    if(getVSexVar(mastrOnce) == 0)
+    {
+        root->m_player->updVStatistic(SC::masturbation,1);
+        setVSexVar(mastrOnce, 1);
+    }
+
     if(current->getLocId() == "bathroom_parents")
     {
         setImg("startvann");
@@ -21,23 +29,92 @@ void SelfPlay::start(Location *current)
         setImg("start");
     }
 
-    if (getVStatus(Status::horny) > 0)
+    if(getCurLoc()->getLocId() == "my_bedr_parents")
+    {
+        // gs 'zz_family','sister_sheduler'
+        // if $sister['location'] = 'bedrPar':
+        //     *clr & cla
+        //     gs 'stat'
+        //     gs 'zz_render','','qwest/selfplay/start'
+        //     SisterKnowMastr += 1
+        //     gs 'zz_render', '', '', func('selfplay_strings'+$lang, 'txt_18')
+        // end
+    }
+
+    // gs 'gadukino_event', 'gadsarai_check'
+    // gs 'apartment_south_event','husband_check'
+    // if selfplaytime > 5 and husband_inhouse > 0 and husband_know_mastr = 0:gt 'apartment_south_event','selfplay_husband'
+    // if $loc = 'Gadsarai' and grandma_ingadsarai = 1:grandmaknowmastr = 1 & func('selfplay_strings'+$lang, 'txt_51')
+    // if $loc = 'Gadsarai' and grandpa_ingadsarai = 1:grandpaknowmastr = 1 & func('selfplay_strings'+$lang, 'txt_52')
+
+    if(getItemCount(iDildo) >= 1) appendDesc(getActDesc(descSP53));
+    if(getItemCount(iMidDildo) >= 1) appendDesc(getActDesc(descSP54));
+    if(getItemCount(iLargeDildo)>=1) appendDesc(getActDesc(descSP55));
+    if(getItemCount(iBigDildo)>=1) appendDesc(getActDesc(descSP56));
+    if(getItemCount(iExtraDildo)>=1) appendDesc(getActDesc(descSP57));
+    if(getItemCount(iSuperDildo)>=1) appendDesc(getActDesc(descSP58));
+    if(getItemCount(iMadDildo)>=1) appendDesc(getActDesc(descSP59));
+
+    if (getVStatus(Status::horny) > 0 && getVSexVar(grandmaknowmastr) == 0 && getVSexVar(grandpaknowmastr) == 0)
     {
         makeActBtn(actSP8);
     }
-    if (getVStatus(Status::horny) > 0 && getVSexVar(stat_agape) < 3)
+    if (getVStatus(Status::horny) > 0 && getVSexVar(stat_agape) < 3 && getVSexVar(grandmaknowmastr) == 0 && getVSexVar(grandpaknowmastr) == 0)
     {
         makeActBtn(actSP9);
     }
-    if (getVStatus(Status::horny) > 25)
+    if (getVStatus(Status::horny) > 25 && getVSexVar(grandmaknowmastr) == 0 && getVSexVar(grandpaknowmastr) == 0)
     {
-        // TOYS!!!
+        if(getCurLoc()->getLocId() == "bedr_parents" ||
+                 getItemCount(Items::iDildo) >= 1 ||
+                 getItemCount(Items::iBigDildo) >= 1 ||
+                 getItemCount(Items::iExtraDildo) >= 1||
+                 getItemCount(Items::iLargeDildo) >= 1||
+                 getItemCount(Items::iMadDildo) >= 1||
+                 getItemCount(Items::iMidDildo) >=1 ||
+                 getItemCount(Items::iSuperDildo) >= 1)
+        {
+            if(getCurLoc()->getLocId() == "bedr_parents")
+            {
+                m_dildohand = 10;
+            }
+            if(m_dildohand > 0)
+            {
+                setDesc(getActDesc(descSP45));
+                if(getVSexVar(stat_vgape) <= 0)
+                    makeActBtn(actSP14);
+                if(getVSexVar(stat_agape) <= 0)
+                    makeActBtn(actSP15);
+                makeActBtn(actSP17);
+            }
+            else
+            {
+                if(getItemCount(iDildo) >= 1)
+                    makeActBtn(actSP18);
+                if(getItemCount(iMidDildo) >= 1)
+                    makeActBtn(actSP19);
+                if(getItemCount(iLargeDildo) >= 1)
+                    makeActBtn(actSP20);
+                if(getItemCount(iBigDildo) >= 1)
+                    makeActBtn(actSP21);
+                if(getItemCount(iExtraDildo) >= 1)
+                    makeActBtn(actSP22);
+                if(getItemCount(iSuperDildo) >= 1)
+                    makeActBtn(actSP23);
+                if(getItemCount(iMadDildo) >= 1)
+                    makeActBtn(actSP24);
+            }
+        }
     }
-    if (getVStatus(Status::horny) > 0)
+    if (getVStatus(Status::horny) > 0 && getVSexVar(grandmaknowmastr) == 0 && getVSexVar(grandpaknowmastr) == 0)
     {
         makeActBtn(actSP1);
     }
     makeActBtn(actSP25);
+    if(getCurLoc()->getLocId() == "bathroom_parents" && getVSexVar(selfplaytime) >= 60)
+    {
+        bathInvasion();
+    }
 }
 
 void SelfPlay::slotActionHandler(SelfPlayActs act)
@@ -530,26 +607,86 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
     }
         break;
     case actSP14:
+    {
+        incTime(15);
+        updVSexVar(selfplaytime,15);
+        setVSexVar(dick, m_dildohand);
+        //protect = 1;
+        if(getCurLoc()->getLocId() == "bathroom_parents")
+            setImg("dildovann");
+        else
+            setImg("dildo");
+            root->m_sex->sexStart(1);
+        // gs 'zz_dynamic_sex','vaginal','dildo'
+        if(getVStatus(horny) == 0 || getVStatus(horny) < 35)
+            selfPlayEnding();
+        //if husband > 0 and husbandrink ! 10 and $loc = 'bedr': dynamic $husb_mastr_vtor
+        makeActBtn(actSP4);
+    }
         break;
     case actSP15:
+    {
+        incTime(15);
+        updVSexVar(selfplaytime,15);
+        setVSexVar(dick, m_dildohand);
+        if(getCurLoc()->getLocId() == "bathroom_parents")
+            setImg("dildovann");
+        else
+            setImg("dildo");
+        //gs 'zz_dynamic_sex','anal_start','dildo'
+        //gs 'zz_dynamic_sex','anal','dildo'
+        makeActBtn(actSP4);
+    }
         break;
     case actSP16:
         break;
     case actSP17:
+    {
+        m_dildohand = 0;
+        start(getCurLoc());
+    }
         break;
     case actSP18:
+    {
+        m_dildohand = 10;
+        start(getCurLoc());
+    }
         break;
     case actSP19:
+    {
+        m_dildohand = 15;
+        start(getCurLoc());
+    }
         break;
     case actSP20:
+    {
+        m_dildohand = 20;
+        start(getCurLoc());
+    }
         break;
     case actSP21:
+    {
+        m_dildohand = 25;
+        start(getCurLoc());
+    }
         break;
     case actSP22:
+    {
+        m_dildohand = 30;
+        start(getCurLoc());
+    }
         break;
     case actSP23:
+    {
+        m_dildohand = 35;
+        start(getCurLoc());
+    }
         break;
     case actSP24:
+    {
+        m_dildohand = 40;
+        start(getCurLoc());
+    }
         break;
     case actSP25:
     {
@@ -666,6 +803,16 @@ void SelfPlay::setDesc(QString text)
     root->ui->labelSexDesc->setText(text);
 }
 
+void SelfPlay::appendDesc(QString text)
+{
+    root->ui->labelSexDesc->setText(root->ui->labelSexDesc->text() + "<br>" + text);
+}
+
+int SelfPlay::getItemCount(Items i)
+{
+    return root->m_bag->getQuantityof(i);
+}
+
 QString SelfPlay::getActName(SelfPlayActs act)
 {
     std::vector<QString> strings(26);
@@ -745,7 +892,7 @@ QString SelfPlay::getActDesc(SelfPlayDesc desc)
     strings[descSP42] = "Вы засунули руку в свою попу и ваш анус туго ее обхватил.";
     strings[descSP43] = "У вас уже болит попа и засунув руку вы еще сильнее ее повредили.";
     strings[descSP44] = "Вы засунули руку в свою попу и почувствовали резкую боль в вашем анусе.";
-    strings[descSP45] = "У вас в руках <<dildohand>>ти сантиметровый дилдо";
+    strings[descSP45] = "У вас в руках " + intQStr(m_dildohand) + "ти сантиметровый дилдо";
     strings[descSP46] = "У вас нет дилдо в руках";
     strings[descSP47] = "Ваша киска нежно обхватывает ваши пальчики и вы чувствуете приятно тепло разливающееся внизу живота.";
     strings[descSP48] = "Вагина довольно просторная и вам приходится довольно сильно потрудиться, что бы хоть что-то ощущать от своих пальцев.";

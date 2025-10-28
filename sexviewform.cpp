@@ -8,6 +8,7 @@ SexViewForm::SexViewForm(QWidget *parent)
 {
     ui->setupUi(this);
     m_selfplay = new SelfPlay(this);
+    m_sex = new Sex(this);
     ui->labelSexDesc->setWordWrap(true);
 }
 

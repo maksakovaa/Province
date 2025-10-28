@@ -55,7 +55,7 @@ qt_add_executable(Game
     sexviewform.h sexviewform.cpp sexviewform.ui
     selfplay.cpp
     nav/bath.cpp
-    settingsform.h settingsform.cpp settingsform.ui
+    settingsform.h settingsform.cpp settingsform.ui sex.cpp
 
 )
 

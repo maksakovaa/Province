@@ -51,7 +51,7 @@ void LocationForm::slotBathActionHandler(Location* loc, QString action)
 {
     if(action == "selfPlay")
     {
-        m_page->widget(6)->findChild<SexViewForm*>("SexViewForm")->selfPlayStart(loc);
+        m_page->widget(5)->findChild<SexViewForm*>("SexViewForm")->selfPlayStart(loc);
     }
     if (action == "shaveLegs")
     {

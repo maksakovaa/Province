@@ -13,11 +13,13 @@ class SexViewForm;
 }
 
 class SelfPlay;
+class Sex;
 
 class SexViewForm : public QWidget
 {
     Q_OBJECT
     friend SelfPlay;
+    friend Sex;
 signals:
     void sigSetGape(Body holeType, int horny, int dick, int silavag);
     void sigUpdParams();
@@ -34,6 +36,7 @@ private:
     Ui::SexViewForm *ui;
     QStackedWidget* m_page;
     SelfPlay* m_selfplay;
+    Sex* m_sex;
     Player* m_player;
     QVBoxLayout* m_actLayout;
     TimeServer* m_time;
@@ -92,10 +95,32 @@ private:
     void setVSexVar(SexVar param, int value);
     void setImg(QString text);
     void setDesc(QString text);
+    void appendDesc(QString text);
     int m_vagTemp{0};
+    int getItemCount(Items i);
     QString getActName(SelfPlayActs act);
     QString getActDesc(SelfPlayDesc desc);
     SexViewForm* root;
+    int m_dildohand;
+};
+
+class Sex
+{
+public:
+    Sex(QWidget* parent);
+    void sexStart(int protect);
+private:
+    SexViewForm* root;
+    int m_protect;
+    int m_cc_sex_usecondom;
+//methods:
+    int getSexVar(SexVar param);
+    int getVStatus(Status param);
+    int getVBody(Body param);
+    int getItemCount(Items item);
+    void setSexVar(SexVar param, int value);
+    void updSexVar(SexVar param, int value);
+    void useItem(Items item, int count);
 };
 
 #endif // SEXVIEWFORM_H

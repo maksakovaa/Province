@@ -11,7 +11,6 @@ Location::Location(QString locIn, QString locName, Location* parent, BagForm* ba
     endInd = new QString[]{ "</name>", "</actName>" , "</image>", "</obj>", "</desc>", "</subloc>", "</action>", "</required>", "</param>", "</minv>" };
     m_isweather = false;
     genLocation();
-    std::cout << locName.toStdString() << " constructor" << std::endl;
 }
 
 const std::vector<struct Action*> Location::availableActions()
@@ -48,7 +47,6 @@ void Location::genLocation()
     {
         folder_path = ":/locations/" + m_parent->m_locIn + "/" + m_parent->m_locId + "/";
     }
-    std::cout << "Gen location:" +folder_path.toStdString() + m_locId.toStdString() << std::endl;
     QFile file(folder_path + m_locId + ".loc");
     if(!file.open(QIODevice::ReadOnly))
     {
