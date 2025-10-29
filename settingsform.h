@@ -17,6 +17,18 @@ public:
     explicit SettingsForm(QWidget *parent = nullptr);
     ~SettingsForm();
     Settings* settings();
+    
+    bool isCheats();
+    bool isHapri();
+    bool getPubicHair();
+    bool isAutoTampon();
+    bool isFullScreen();
+    int getBodyType();
+    int getBody_tits();
+    int getLanguage();
+    int getAddTxtSex();
+    int getSexLevel();
+
 private slots:
     void on_labelCurValue_linkActivated(const QString &link);
 private:

@@ -633,7 +633,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
             setImg("dildovann");
         else
             setImg("dildo");
-        //gs 'zz_dynamic_sex','anal_start','dildo'
+        root->m_sex->analStart(tDildo);
         //gs 'zz_dynamic_sex','anal','dildo'
         makeActBtn(actSP4);
     }

@@ -24,7 +24,7 @@ ObjViewForm::~ObjViewForm()
 void ObjViewForm::setPlayerPtr(Player *ptr)
 {
     m_player = ptr;
-    m_objs[Objects::bed] = new Bed(m_player);
+    m_objs[GameObjects::bed] = new Bed(m_player);
 }
 
 void ObjViewForm::setActLayoutPtr(QVBoxLayout *ptr)
@@ -37,7 +37,7 @@ void ObjViewForm::setPagePtr(QStackedWidget *ptr)
     m_page = ptr;
     m_bag = m_page->widget(3)->findChild<BagForm*>("BagForm");
     m_loc = (LocationForm*)m_page->widget(0);
-    m_objs[Objects::mirror] = new Mirror(m_player, m_bag);
+    m_objs[GameObjects::mirror] = new Mirror(m_player, m_bag);
 }
 
 void ObjViewForm::setSettingsPtr(Settings *ptr)
@@ -79,8 +79,8 @@ void ObjViewForm::slotViewObj(QString objName)
 
 void ObjViewForm::viewMirror()
 {
-    ui->labelObjImage->setText(m_objs[Objects::mirror]->getImage());
-    ui->labelObjDesc->setText(m_objs[Objects::mirror]->getDesc());
+    ui->labelObjImage->setText(m_objs[GameObjects::mirror]->getImage());
+    ui->labelObjDesc->setText(m_objs[GameObjects::mirror]->getDesc());
     if(getVBody(hairStatus) == 0 && m_settings->isHapri())
     {
         makeMirrorActBtn("Причесаться");
@@ -237,8 +237,8 @@ void ObjViewForm::slotMirrorActHandler(QString actName)
 
 void ObjViewForm::viewBed()
 {
-    ui->labelObjImage->setPixmap(QPixmap(m_objs[Objects::bed]->getImage()));
-    ui->labelObjDesc->setText(m_objs[Objects::bed]->getDesc());
+    ui->labelObjImage->setPixmap(QPixmap(m_objs[GameObjects::bed]->getImage()));
+    ui->labelObjDesc->setText(m_objs[GameObjects::bed]->getDesc());
     makeBedActBtn("Завести будильник");
     if(m_player->getVStatus(Status::son) < 10)
     {
@@ -444,7 +444,7 @@ void ObjViewForm::relaxInBed()
 
 void ObjViewForm::selfPlay()
 {
-    m_page->widget(6)->findChild<SexViewForm*>("SexViewForm")->selfPlayStart(getCurLoc());
+    m_page->widget(5)->findChild<SexViewForm*>("SexViewForm")->selfPlayStart(getCurLoc());
 }
 
 void ObjViewForm::budilnik()
@@ -647,7 +647,7 @@ void ObjViewForm::on_labelObjDesc_linkActivated(const QString &link)
     if(link == "budilnikOn")
     {
         m_player->updVBuzzer(budilnik::budilnikOn, 1);
-        ui->labelObjDesc->setText(m_objs[Objects::bed]->getDesc());
+        ui->labelObjDesc->setText(m_objs[GameObjects::bed]->getDesc());
     }
 }
 

@@ -26,6 +26,11 @@ qt_add_executable(Game
     nav/location.h nav/location.cpp
     nav/qactionbutton.h nav/qactionbutton.cpp
     nav/mapform.h nav/mapform.cpp nav/mapform.ui
+    nav/gameobj.h nav/gameobj.cpp
+    nav/locationform.h nav/locationform.cpp nav/locationform.ui
+    nav/objviewform.h nav/objviewform.cpp nav/objviewform.ui
+    nav/bathroom.cpp
+
     player/player.h player/player.cpp
     player/cloth.h player/cloth.cpp
     player/wardrobe.h player/wardrobe.cpp
@@ -34,8 +39,13 @@ qt_add_executable(Game
     player/pregnancy.h player/pregnancy.cpp
     player/enums.h
     player/item.h player/item.cpp
-
     player/tabwidgetplayer.h player/tabwidgetplayer.cpp player/tabwidgetplayer.ui
+    player/playerDesc.cpp
+    player/playerTimeSlots.cpp
+    player/bagform.h player/bagform.cpp player/bagform.ui
+    player/itemform.h player/itemform.cpp player/itemform.ui
+
+
     menudial.h menudial.cpp menudial.ui
     video.h video.cpp
     weather.h weather.cpp
@@ -43,20 +53,13 @@ qt_add_executable(Game
     Functions.h
     overlaystatus.h overlaystatus.cpp
     settings.h settings.cpp
-    data.qrc
-    player/playerDesc.cpp
-    player/playerTimeSlots.cpp
-    nav/gameobj.h nav/gameobj.cpp
 
-    player/bagform.h player/bagform.cpp player/bagform.ui
-    player/itemform.h player/itemform.cpp player/itemform.ui
-    nav/locationform.h nav/locationform.cpp nav/locationform.ui
-    nav/objviewform.h nav/objviewform.cpp nav/objviewform.ui
+    data/data.qrc data/locations.qrc data/clothes.qrc
+    data/actions.qrc data/items.qrc data/npc.qrc
+
     sexviewform.h sexviewform.cpp sexviewform.ui
     selfplay.cpp
-    nav/bath.cpp
     settingsform.h settingsform.cpp settingsform.ui sex.cpp
-
 )
 
 target_include_directories(Game BEFORE PRIVATE "." "./nav" "./player")

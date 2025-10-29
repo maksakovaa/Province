@@ -1,6 +1,12 @@
 <image>bath4.jpg</image>
 <actName>В ванную</actName>
 <desc>Ванная тесная и очень простенькая.</desc>
-<action><required><param>legHair</param><minv>1</minv></required>shaveLegs</action>
-<action><required><param>pubisHair</param><minv>1</minv></required>shavePubic</action>
-<action><required><param>horny</param><minv>60</minv></required>selfPlay</action>
+<action><actName></action>
+<action><required><param>makeup</param><noteq>1</noteq></required><actName>9</actName>clearMakeup</action>
+<action><required><param>legHair</param><minv>1</minv></required><actName>11</actName>shaveLegs</action>
+<action><required><param>pubisHair</param><minv>1</minv></required><actName>13</actName>shavePubic</action>
+<action><required><param>horny</param><minv>60</minv></required><actName>3</actName>selfPlay</action>
+<action><required><item>analplug</item><minv>1</minv><param>analplugIn</param><value>0</value></required><actName>15</actName>analplugIn</action>
+<action><required><item>analplug</item><minv>1</minv><param>analplugIn</param><value>1</value></required><actName>14</actName>analplugOut</action>
+<action><required><item>vibrator</item><minv>1</minv><param>vibratorIn</param><value>0</value></required><actName>17</actName>vibratorIn</action>
+<action><required><item>vibrator</item><minv>1</minv><param>vibratorIn</param><value>1</value></required><actName>18</actName>vibratorOut</action>

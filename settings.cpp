@@ -53,6 +53,16 @@ int Settings::getLanguage()
     return lang;
 }
 
+int Settings::getAddTxtSex()
+{
+    return add_txt_sex;
+}
+
+int Settings::getSexLevel()
+{
+    return sex_level;
+}
+
 void Settings::switchCheats()
 {
     cheatMode = !cheatMode;
@@ -104,6 +114,25 @@ void Settings::switchLang()
         lang = 0;
 }
 
+void Settings::switchAddTxtSex()
+{
+    add_txt_sex++;
+    if (add_txt_sex > 2)
+    {
+        add_txt_sex = 0;
+    }
+}
+
+void Settings::switchSexLevel()
+{
+    sex_level++;
+    if (sex_level > 5)
+    {
+        sex_level = 0;
+    }
+    
+}
+
 void Settings::loadFromFile()
 {
     if(!file.open(QIODevice::ReadOnly))
@@ -126,6 +155,7 @@ void Settings::loadFromFile()
             if(val[0] == "bodytype") bodytype = val[1].toInt();
             if(val[0] == "autotampon") autotampon = val[1].toInt();
             if(val[0] == "sex_level") sex_level = val[1].toInt();
+            if(val[0] == "add_txt_sex") add_txt_sex = val[1].toInt();
             if(val[0] == "lang") lang = val[1].toInt();
         }
     }
@@ -148,6 +178,7 @@ void Settings::saveToFile()
         out << "bodytype = " + QString::number(bodytype) + "\n";
         out << "autotampon = " + QString::number(autotampon) + "\n";
         out << "sex_level = " + QString::number(sex_level) + "\n";
+        out << "add_txt_sex = " + QString::number(add_txt_sex) + "\n";
         out << "lang = " + QString::number(lang);
     }
 
@@ -163,5 +194,6 @@ void Settings::loadDefault()
     body_tits = 1;
     autotampon = 1;
     sex_level = 0;
+    add_txt_sex = 0;
     lang = 1;
 }

@@ -21,7 +21,8 @@ void SexViewForm::setPagePtr(QStackedWidget *ptr)
 {
     m_page = ptr;
     m_loc = (LocationForm*)m_page->widget(0);
-    m_bag = m_page->widget(3)->findChild<BagForm*>("BagForm");;
+    m_bag = m_page->widget(3)->findChild<BagForm*>("BagForm");
+    m_settings = (SettingsForm*)m_page->widget(6);
 }
 
 void SexViewForm::setPlayerPtr(Player *ptr)

@@ -54,7 +54,7 @@ void MainWindow::setupMainWindow(SettingsForm* settingsForm, CharacterType charT
         this->showFullScreen();
     else
         this->showNormal();
-    ui->stackedWidget->addWidget(page4);
+    std::cout << "Settings widget index is:" << ui->stackedWidget->addWidget(page4) << std::endl;
     m_bag = new BagForm(this);
     ui->scrollAreaBag->setWidget(m_bag);
     m_sex = new SexViewForm(this);
@@ -81,6 +81,7 @@ void MainWindow::setPointers()
     ui->page_0_main->setActionsLayout(ui->actionsLayout);
     ui->page_0_main->setPlayerPtr(m_player);
     ui->page_0_main->setTimePtr(&m_time);
+    ui->page_0_main->setCCSEX(&m_ccsex);
 
     ui->page_5_objView->setSettingsPtr(page4->settings());
     ui->page_5_objView->setActLayoutPtr(ui->actionsLayout);

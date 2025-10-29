@@ -101,6 +101,11 @@ int TimeServer::getMin()
     return currTimePoint.tm_min;
 }
 
+int TimeServer::getWeekNum()
+{
+    return currTimePoint.tm_wday;
+}
+
 void TimeServer::setSettingsPtr(Settings *ptr)
 {
     m_settings = ptr;

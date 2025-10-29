@@ -12,13 +12,6 @@ namespace Ui {
 class ObjViewForm;
 }
 
-enum Objects
-{
-    wardrobe,
-    bed,
-    mirror
-};
-
 class ObjViewForm : public QWidget
 {
     Q_OBJECT
@@ -74,7 +67,7 @@ private:
     Cloth* old_cloth;
     Cloth* old_panties;
     Cloth* old_stockings;
-    std::unordered_map<Objects, GameObj*> m_objs;
+    std::unordered_map<GameObjects, GameObj*> m_objs;
 };
 
 #endif // OBJVIEWFORM_H

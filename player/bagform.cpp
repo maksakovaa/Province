@@ -95,6 +95,8 @@ void BagForm::fillItemList()
         grabItemsDesc(m_items[lipBalm]);
     if(m_storage[m_items[lubri]] > 0)
         grabItemsDesc(m_items[lubri]);
+    if(m_storage[m_items[shampoo]] > 0)
+        grabItemsDesc(m_items[shampoo]);
 
     if(m_storage[m_items[iDildo]] > 0)
         grabItemsDesc(m_items[iDildo]);
@@ -162,6 +164,7 @@ void BagForm::initBag()
     m_items[Items::wetWipes] = new WetWipes;
     m_items[Items::lipBalm] = new LipBalm;
     m_items[Items::lubri] = new Lubricant;
+    m_items[Items::shampoo] = new Shampoo;
     m_items[iDildo] = new Dildo;
     m_items[iMidDildo] = new MidDildo;
     m_items[iLargeDildo] = new LargeDildo;

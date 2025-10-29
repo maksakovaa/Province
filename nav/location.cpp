@@ -7,8 +7,8 @@
 
 Location::Location(QString locIn, QString locName, Location* parent, BagForm* bagPtr): m_locIn(locIn), m_locId(locName), m_parent(parent), m_bag(bagPtr) 
 {
-    startInd = new QString[]{ "<name>", "<actName>", "<image>", "<obj>", "<desc>", "<subloc>", "<action>", "<required>", "<param>", "<minv>" };
-    endInd = new QString[]{ "</name>", "</actName>" , "</image>", "</obj>", "</desc>", "</subloc>", "</action>", "</required>", "</param>", "</minv>" };
+    indStart = new QString[]{ "<name>", "<actName>", "<image>", "<obj>", "<desc>", "<subloc>", "<action>", "<required>", "<param>", "<minv>", "<maxv>", "<value>", "<noteq>", "<item>" };
+    indEnd = new QString[]{ "</name>", "</actName>" , "</image>", "</obj>", "</desc>", "</subloc>", "</action>", "</required>", "</param>", "</minv>", "</maxv>", "</value>", "</noteq>", "</item>" };
     m_isweather = false;
     genLocation();
 }
@@ -66,16 +66,14 @@ void Location::genLocation()
 
 QString Location::getLocPic(bool isDay, bool isSnow)
 {
-    QString txt;
     if (m_isweather == true)
     {
-        txt = "<img src='" + makeImage(m_image, isDay, isSnow) + "'></img>";   
+        return makeImage(m_image, isDay, isSnow);   
     }
     else
     {
-        txt = "<img src='" + m_image + "'></img>";
+        return m_image;
     }
-    return txt;
 }
 
 QString Location::getLocId()
@@ -125,19 +123,19 @@ Location *Location::getParentPtr()
 void Location::parseLocConfig(QString str, QString folder)
 {
     QString res;
-    if(str.startsWith(startInd[name]))
+    if(str.startsWith(indStart[name]))
     {
-        m_locName = str.sliced(startInd[name].size(), str.indexOf(endInd[name]) - startInd[name].size());
+        m_locName = str.sliced(indStart[name].size(), str.indexOf(indEnd[name]) - indStart[name].size());
     }
-    if (str.startsWith(startInd[actName]))
+    if (str.startsWith(indStart[actName]))
     {
-        m_locName = str.sliced(startInd[actName].size(), str.indexOf(endInd[actName]) - startInd[actName].size());
+        m_locName = str.sliced(indStart[actName].size(), str.indexOf(indEnd[actName]) - indStart[actName].size());
     }
-    if(str.startsWith(startInd[image]))
+    if(str.startsWith(indStart[image]))
     {
-        res = str.sliced(startInd[image].size(), str.indexOf(endInd[image]) - startInd[image].size());
+        res = str.sliced(indStart[image].size(), str.indexOf(indEnd[image]) - indStart[image].size());
         std::cout << res.toStdString() << std::endl;
-        if (res.startsWith(startInd[param]))
+        if (res.startsWith(indStart[param]))
         {
             std::cout << res.toStdString() << std::endl;
             parseRequiredImage(res, folder);
@@ -147,52 +145,103 @@ void Location::parseLocConfig(QString str, QString folder)
             m_image = folder + res;
         }
     }
-    if(str.startsWith(startInd[object]))
+    if(str.startsWith(indStart[object]))
     {
-        res = str.sliced(startInd[object].size(), str.indexOf(endInd[object]) - startInd[object].size());
+        res = str.sliced(indStart[object].size(), str.indexOf(indEnd[object]) - indStart[object].size());
         m_obj.push_back(res);
     }
-    if(str.startsWith(startInd[desc]))
+    if(str.startsWith(indStart[desc]))
     {
-        res = str.sliced(startInd[desc].size(), str.indexOf(endInd[desc]) - startInd[desc].size());
+        res = str.sliced(indStart[desc].size(), str.indexOf(indEnd[desc]) - indStart[desc].size());
         m_desc = res;
     }
-    if(str.startsWith(startInd[subloc]))
+    if(str.startsWith(indStart[subloc]))
     {
-        res = str.sliced(startInd[subloc].size(), str.indexOf(endInd[subloc]) - startInd[subloc].size());
+        res = str.sliced(indStart[subloc].size(), str.indexOf(indEnd[subloc]) - indStart[subloc].size());
         Location* subLoc = new Location(m_locIn, res, this, m_bag);
         m_subLocs.push_back(subLoc);
     }
-    if(str.startsWith(startInd[action]))
+    if(str.startsWith(indStart[action]))
     {
-        res = str.sliced(startInd[action].size(), str.indexOf(endInd[action]) - startInd[action].size());
-        if(res.startsWith(startInd[required]))
-        {
-            size_t reqOn = res.indexOf(startInd[required]) + startInd[required].size();
-            size_t reqOff = res.indexOf(endInd[required]) - startInd[required].size();
-            QString req = res.sliced(reqOn, reqOff);
- 
-            size_t parStart = req.indexOf(startInd[param]) + startInd[param].size();
-            size_t parEnd = req.indexOf(endInd[param]) - startInd[param].size();
-            QString par = req.sliced(parStart, parEnd);
-
-            size_t valStart = req.indexOf(startInd[minvalue]) + startInd[minvalue].size();
-            size_t valEnd = req.indexOf(endInd[minvalue]) - valStart;
-            QString val = req.sliced(valStart,valEnd);
-
-            QString action = res.sliced(res.indexOf(endInd[required]) + endInd[required].size());
-            m_actions.push_back(new Action{action, par, val.toInt()});
-        }
+        res = str.sliced(indStart[action].size(), str.indexOf(indEnd[action]) - indStart[action].size());
+        parseActConfig(res);
     }
 }
 
 void Location::parseRequiredImage(QString str, QString folder)
 {
-    QString req = str.sliced(str.indexOf(startInd[param]) + startInd[param].size(), str.indexOf(endInd[param]) - startInd[param].size());
+    QString req = str.sliced(str.indexOf(indStart[param]) + indStart[param].size(), str.indexOf(indEnd[param]) - indStart[param].size());
     if (req == "night_snow")
     {
-        m_image = folder + str.sliced(str.indexOf(endInd[param]) + endInd[param].size());
+        m_image = folder + str.sliced(str.indexOf(indEnd[param]) + indEnd[param].size());
         std::cout << m_image.toStdString() << std::endl;
         m_isweather = true;
     }
+}
+
+void Location::parseActConfig(QString res)
+{
+    Action *Act = new Action;
+    if (res.startsWith(indStart[required]))
+    {
+        size_t reqOn = res.indexOf(indStart[required]) + indStart[required].size();
+        size_t reqOff = res.indexOf(indEnd[required]) - reqOn;
+        QString req = res.sliced(reqOn, reqOff);
+
+        if (req.startsWith(indStart[reqitem]))
+        {
+            size_t itemStart = req.indexOf(indStart[reqitem]) + indStart[reqitem].size();
+            size_t itemEnd = req.indexOf(indEnd[reqitem]) - itemStart;
+            Act->item = req.sliced(itemStart, itemEnd);
+            req = req.sliced(req.indexOf(indEnd[reqitem]) + indEnd[reqitem].size());
+            parseValue(req, Act->itmValue, Act->itemVType);                
+        }
+        if (req.startsWith(indStart[param]))
+        {
+            size_t paramStart = indStart[param].size();
+            size_t paramEnd = req.indexOf(indEnd[param]) - paramStart;
+            Act->param = req.sliced(paramStart, paramEnd);
+            req = req.sliced(req.indexOf(indEnd[param]) + indEnd[param].size());
+            parseValue(req, Act->paramValue, Act->paramVType);
+        }
+        QString act = res.sliced(res.indexOf(indEnd[required]) + indEnd[required].size());
+        if (act.startsWith(indStart[actName]))
+        {
+            size_t actNameStart = indStart[actName].size();
+            size_t actNameEnd = act.indexOf(indEnd[actName]) - actNameStart;
+            Act->actId = act.sliced(actNameStart,actNameEnd).toInt();
+            act = act.sliced(act.indexOf(indEnd[actName]) + indEnd[actName].size());
+        }
+        Act->act = act;
+    }
+    m_actions.push_back(Act);
+}
+
+void Location::parseValue(QString &str, int &value, ValueType &type)
+{
+    if (str.startsWith(indStart[minValue]))
+    {
+        type = ValueType::min;
+        value = str.sliced(indStart[minValue].size(), str.indexOf(indEnd[minValue]) - indStart[minValue].size()).toInt();
+        str = str.sliced(str.indexOf(indEnd[minValue]) + indEnd[minValue].size());
+    }
+    else if (str.startsWith(indStart[maxValue]))
+    {
+        type = ValueType::max;
+        value = str.sliced(indStart[maxValue].size(), str.indexOf(indEnd[maxValue]) - indStart[maxValue].size()).toInt();
+        str = str.sliced(str.indexOf(indEnd[maxValue]) + indEnd[maxValue].size());
+    }
+    else if (str.startsWith(indStart[accValue]))
+    {
+        type = ValueType::accurate;
+        value = str.sliced(indStart[accValue].size(), str.indexOf(indEnd[accValue]) - indStart[accValue].size()).toInt();
+        str = str.sliced(str.indexOf(indEnd[accValue]) + indEnd[accValue].size());
+    }
+    else if (str.startsWith(indStart[notValue]))
+    {
+        type = ValueType::notequal;
+        value = str.sliced(indStart[notValue].size(), str.indexOf(indEnd[notValue]) - indStart[notValue].size()).toInt();
+        str = str.sliced(str.indexOf(indEnd[notValue]) + indEnd[notValue].size());
+    }
+    
 }

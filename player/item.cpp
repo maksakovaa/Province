@@ -186,3 +186,10 @@ Strapon::Strapon()
     m_image = ":/img/items/strapon.png";
     m_desc = "";
 }
+
+Shampoo::Shampoo()
+{
+    m_name = "Шампунь";
+    m_image = ":/img/items/shampoo.png";
+    m_desc = "";
+}

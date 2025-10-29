@@ -31,6 +31,7 @@ public:
     int getDay();
     int getHour();
     int getMin();
+    int getWeekNum();
     void setSettingsPtr(Settings* ptr);
 signals:
     void updateTimeAndDate();

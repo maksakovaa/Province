@@ -1,0 +1,55 @@
+<RCC>
+    <qresource prefix="/">
+        <file>../img/items/winter_coat.png</file>
+        <file>../img/items/wine.png</file>
+        <file>../img/items/wet_wipes.png</file>
+        <file>../img/items/web_cam.png</file>
+        <file>../img/items/water_bottle.png</file>
+        <file>../img/items/washing_powder.png</file>
+        <file>../img/items/washing_machine.png</file>
+        <file>../img/items/vodka.png</file>
+        <file>../img/items/vaggel.png</file>
+        <file>../img/items/tv_set.png</file>
+        <file>../img/items/tictac.png</file>
+        <file>../img/items/tampons.png</file>
+        <file>../img/items/sunscreen.png</file>
+        <file>../img/items/skate.png</file>
+        <file>../img/items/singer.png</file>
+        <file>../img/items/shampoo.png</file>
+        <file>../img/items/sausage.png</file>
+        <file>../img/items/sandwich.png</file>
+        <file>../img/items/razor.png</file>
+        <file>../img/items/plates.png</file>
+        <file>../img/items/lcd_tv_set.png</file>
+        <file>../img/items/laptop.png</file>
+        <file>../img/items/kosmet_small.png</file>
+        <file>../img/items/kosmet_big.png</file>
+        <file>../img/items/jump_rope.png</file>
+        <file>../img/items/hoop.png</file>
+        <file>../img/items/fried_chicken.png</file>
+        <file>../img/items/food.png</file>
+        <file>../img/items/fabric.png</file>
+        <file>../img/items/dishwasher.png</file>
+        <file>../img/items/dishwash_bottle.png</file>
+        <file>../img/items/diet_food.png</file>
+        <file>../img/items/cowards.png</file>
+        <file>../img/items/cookie.png</file>
+        <file>../img/items/cigarette_cam.png</file>
+        <file>../img/items/chocolate.png</file>
+        <file>../img/items/brush_wall.png</file>
+        <file>../img/items/bread.png</file>
+        <file>../img/items/book of secrets.png</file>
+        <file>../img/items/antihangover.png</file>
+        <file>../img/items/lubri.png</file>
+        <file>../img/items/analplug.png</file>
+        <file>../img/items/dildo_mini.png</file>
+        <file>../img/items/dildo15.png</file>
+        <file>../img/items/dildo20.png</file>
+        <file>../img/items/dildo25.png</file>
+        <file>../img/items/dildo30.png</file>
+        <file>../img/items/dildo35.png</file>
+        <file>../img/items/dildo40.png</file>
+        <file>../img/items/strapon.png</file>
+        <file>../img/items/vibrator.png</file>
+    </qresource>
+</RCC>

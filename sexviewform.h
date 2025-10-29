@@ -7,6 +7,7 @@
 #include <QWidget>
 #include <QStackedWidget>
 #include <QPushButton>
+#include <settingsform.h>
 
 namespace Ui {
 class SexViewForm;
@@ -42,6 +43,7 @@ private:
     TimeServer* m_time;
     LocationForm* m_loc;
     BagForm* m_bag;
+    SettingsForm* m_settings;
 };
 
 enum SelfPlayActs
@@ -104,11 +106,22 @@ private:
     int m_dildohand;
 };
 
+enum ToolType
+{
+    tDick,
+    tDildo,
+    tBottle,
+    tGirlDildo,
+    tGirlBottle,
+    tStrapon
+};
+
 class Sex
 {
 public:
     Sex(QWidget* parent);
     void sexStart(int protect);
+    void analStart(ToolType type = tDick, int protect = 0);
 private:
     SexViewForm* root;
     int m_protect;
@@ -121,6 +134,7 @@ private:
     void setSexVar(SexVar param, int value);
     void updSexVar(SexVar param, int value);
     void useItem(Items item, int count);
+    void checkTextOutput(int addTxtSex, QString text);
 };
 
 #endif // SEXVIEWFORM_H

@@ -5,6 +5,12 @@
 #include <QString>
 #include "../player/bagform.h"
 
+enum GameObjects {
+    mirror,
+    bed,
+    wardrobe
+};
+
 class GameObj
 {
 public:

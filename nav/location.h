@@ -2,19 +2,24 @@
 #define LOCATION_H
 #include <QString>
 #include <QObject>
-#include <any>
 #include <vector>
 #include <QPixmap>
-#include "gameobj.h"
+#include "bagform.h"
 
+enum ValueType { min, max, accurate, notequal };
 struct Action
 {
     QString act;
+    int actId;
     QString param;
-    int minValue;
+    int paramValue;
+    ValueType paramVType;
+    QString item;
+    int itmValue;
+    ValueType itemVType;
 };
 
-enum params { name, actName, image, object, desc, subloc, action, required, param, minvalue };
+enum params { name, actName, image, object, desc, subloc, action, required, param, minValue, maxValue, accValue, notValue, reqitem };
 
 class Location: public QObject
 {
@@ -45,10 +50,12 @@ private:
     QString m_locIn;
     QString m_desc;
     BagForm* m_bag;
-    QString* startInd;
-    QString* endInd;
+    QString* indStart;
+    QString* indEnd;
     void parseLocConfig(QString str, QString folder);
     void parseRequiredImage(QString str, QString folder);
+    void parseActConfig(QString str);
+    void parseValue(QString& str, int& value, ValueType& type);
     void genLocation();
 };
 

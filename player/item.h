@@ -14,6 +14,7 @@ class AntiPregPills;
 class Razor;
 class LipBalm;
 class Lubricant;
+class Shampoo;
 
 class Dildo;
 class MidDildo;
@@ -39,6 +40,7 @@ class Item
     friend Razor;
     friend LipBalm;
     friend Lubricant;
+    friend Shampoo;
     friend Dildo;
     friend MidDildo;
     friend LargeDildo;
@@ -137,6 +139,11 @@ public:
     Lubricant();
 };
 
+class Shampoo: public Item
+{
+public:
+    Shampoo();
+};
 
 /////////////////   SEX TOYS \\\\\\\\\\\\\\\\\\\
 

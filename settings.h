@@ -17,6 +17,8 @@ public:
     bool isAutoTampon();
     bool isFullScreen();
     int getLanguage();
+    int getAddTxtSex();
+    int getSexLevel();
     void switchCheats();
     void switchHapri();
     void switchTits();
@@ -25,6 +27,8 @@ public:
     void switchTampon();
     void switchScreen();
     void switchLang();
+    void switchAddTxtSex();
+    void switchSexLevel();
 private:
     QFile file{"settings.ini"};
     void loadFromFile();
@@ -39,6 +43,7 @@ private:
     bool autotampon;
     int sex_level;
     int lang;
+    int add_txt_sex;
 };
 
 #endif
