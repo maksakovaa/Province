@@ -60,6 +60,7 @@ qt_add_executable(Game
     sexviewform.h sexviewform.cpp sexviewform.ui
     selfplay.cpp
     settingsform.h settingsform.cpp settingsform.ui sex.cpp
+    data/qwest.qrc
 )
 
 target_include_directories(Game BEFORE PRIVATE "." "./nav" "./player")

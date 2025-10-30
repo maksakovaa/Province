@@ -178,6 +178,8 @@ enum SexVar
     selfplaytime,
     analplay,
     dick,
+    silavag,
+    pose,
     analplugIN,
     analStore,
     analpluginbonus,

@@ -189,7 +189,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
         {
             updVStatus(horny, getRandInt(2,5));
         }
-        setImg("finger.jpg");
+        setImg("finger");
         setDesc(getActDesc(descSP7));
         if (getVBody(vagina) <= 10)
         {
@@ -616,8 +616,8 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
             setImg("dildovann");
         else
             setImg("dildo");
-            root->m_sex->sexStart(1);
-        // gs 'zz_dynamic_sex','vaginal','dildo'
+        root->m_sex->sexStart(1);
+        root->m_sex->vaginal(tDildo);
         if(getVStatus(horny) == 0 || getVStatus(horny) < 35)
             selfPlayEnding();
         //if husband > 0 and husbandrink ! 10 and $loc = 'bedr': dynamic $husb_mastr_vtor

@@ -122,6 +122,7 @@ public:
     Sex(QWidget* parent);
     void sexStart(int protect);
     void analStart(ToolType type = tDick, int protect = 0);
+    void vaginal(ToolType type);
 private:
     SexViewForm* root;
     int m_protect;
@@ -133,6 +134,8 @@ private:
     int getItemCount(Items item);
     void setSexVar(SexVar param, int value);
     void updSexVar(SexVar param, int value);
+    void setVStatus(Status param, int value);
+    void updVStatus(Status param, int value);
     void useItem(Items item, int count);
     void checkTextOutput(int addTxtSex, QString text);
 };

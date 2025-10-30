@@ -160,7 +160,7 @@ void Player::slotElapsed60min()
     if(m_status[water] < 8) { m_status[mood] -=2; }
     if(m_status[InSleep] == 0) { m_status[son] -= 1; }
 
-    if(m_status[alko] >= m_status[maxAlko] && m_status[alkoday] != daystart)
+    if(m_status[alko] >= m_status[maxAlko] && m_status[alkoday] != m_status[daystart])
     {
         setVStatus(alko, m_status[daystart]);
         // school[intellect] -= 1;

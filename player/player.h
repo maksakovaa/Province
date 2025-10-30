@@ -26,6 +26,7 @@ public:
     void updVBuzzer(budilnik type, int value);
     void updVSexVar(SexVar param, int value);
     void updVStatistic(SC param, int value);
+    void updSkin(char c, int value);
 
     Cloth* getCloth(ClothType type);
     void slotWearAndTear(int value = 1);

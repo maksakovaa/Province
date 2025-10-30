@@ -221,6 +221,11 @@ int LocationForm::getSexVar(SexVar var)
     return m_player->getVSexVar(var);
 }
 
+int LocationForm::getVStatistic(SC param)
+{
+    return m_player->getStatisticsValue(param);
+}
+
 void LocationForm::setImage(QString path)
 {
     ui->labelLocImage->setText("<img src='" + path + "'></img>");

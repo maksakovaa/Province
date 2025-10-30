@@ -277,6 +277,12 @@ void Player::updVStatistic(SC param, int value)
     m_statistic[param] += value;
 }
 
+void Player::updSkin(char c, int value)
+{
+    if(c == '+') { skinIncrement(value); }
+    else if (c == '-') { skinDecrement(value); }
+}
+
 int Player::getVBuzzer(budilnik param)
 {
     return m_budilnik[param];
