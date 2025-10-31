@@ -14,10 +14,10 @@ class Video: public QWidget
     Q_OBJECT
 public:
     Video(QWidget *parent = nullptr);
-    void setQUrl(const QString& url);
+    void setQUrl(const QString& url, int width, int height);
 private:
-    QMediaPlayer *m_mediaPlayer = nullptr;
-    QVideoWidget* videoWidget = nullptr;
+    QMediaPlayer* m_vplayer = nullptr;
+    QVideoWidget* m_video = nullptr;
 };
 
 #endif // VIDEO_H

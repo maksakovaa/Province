@@ -48,7 +48,6 @@ private:
     void makeMirrorActBtn(QString text);
     void makeBedActBtn(QString text);
     void makeBackBtn(QString text);
-    void makeQActionButton();
     int getVStatus(Status type);
     int getVBody(Body type);
     int getVsexVar(SexVar type);

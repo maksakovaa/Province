@@ -56,6 +56,7 @@ qt_add_executable(Game
 
     data/data.qrc data/locations.qrc data/clothes.qrc
     data/actions.qrc data/items.qrc data/npc.qrc
+	data/body.qrc
 
     sexviewform.h sexviewform.cpp sexviewform.ui
     selfplay.cpp

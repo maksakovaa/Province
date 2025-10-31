@@ -363,7 +363,7 @@ void BathRoom::slotBathActionHandler(bathActs action)
         root->useItem(razor, 1);
         emit root->sigUpdParams();
         root->setDesc(bathStr(33));
-        root->videoWidg->setQUrl("qrc:/actions/shave/legs.webm");
+        root->videoWidg->setQUrl("qrc:/actions/shave/legs.webm",900,508);
         root->ui->imageAndWideoWdgt->setCurrentIndex(1);
 
         makeActBtn(actBath12);
@@ -383,7 +383,7 @@ void BathRoom::slotBathActionHandler(bathActs action)
         root->updVStatus(horny, 5);
         root->useItem(razor, 1);
         emit root->sigUpdParams();
-        root->videoWidg->setQUrl("qrc:/actions/shave/pubic.webm");
+        root->videoWidg->setQUrl("qrc:/actions/shave/pubic.webm",900,448);
         root->setDesc(bathStr(34));
         root->ui->imageAndWideoWdgt->setCurrentIndex(1);
         makeActBtn(actBath12);

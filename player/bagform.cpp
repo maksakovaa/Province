@@ -132,6 +132,7 @@ void BagForm::fillItemList()
             layoutIndex++;
         }
         ItemForm* form = makeItemWidget(imgs[i], names[i], descs[i]);
+        // std::cout << imgs[i].toStdString() << names[i].toStdString() << std::endl;
         form->addCounter(counters[i]);
         m_layouts.back()->addWidget(form);
     }
@@ -144,7 +145,7 @@ void BagForm::updQuantity(Items type, int count)
 
 void BagForm::initNewLayout()
 {
-    QHBoxLayout* layout = new QHBoxLayout(this);
+    QHBoxLayout* layout = new QHBoxLayout;
     layout->setAlignment(Qt::AlignLeft);
     m_layouts.push_back(layout);
     ui->verticalLayout_2->addLayout(m_layouts.back());

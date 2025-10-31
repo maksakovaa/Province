@@ -120,7 +120,7 @@ Lubricant::Lubricant()
 Dildo::Dildo()
 {
     m_name = "Маленький фаллоимитатор";
-    m_image = ":/img/items/dildo-mini.png";
+    m_image = ":/img/items/dildo_mini.png";
     m_desc = "Смазать дырочки";
 }
 

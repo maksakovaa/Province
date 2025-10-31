@@ -1,5 +1,8 @@
 <RCC>
     <qresource prefix="/">
+        <file>../img/items/libpalm.png</file>
+        <file>../img/items/condom.png</file>
+        <file>../img/items/pills.png</file>
         <file>../img/items/winter_coat.png</file>
         <file>../img/items/wine.png</file>
         <file>../img/items/wet_wipes.png</file>

@@ -63,5 +63,6 @@ private: //methods
     void updatePlayerStatusValue();
     void updPlayerStatusBarStyle();
     void loadStrings();
+    void setupActionButtons();
 };
 #endif // MAINWINDOW_H

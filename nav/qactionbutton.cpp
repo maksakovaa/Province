@@ -3,6 +3,7 @@
 QActionButton::QActionButton(int time): m_time(time)
 {
     connect(this, &QActionButton::clicked, this, &QActionButton::handleButtonClick);
+    this->setCursor(Qt::PointingHandCursor);
 }
 
 void QActionButton::setLocPtr(Location *ptr)
@@ -42,6 +43,7 @@ ObjActionButton::ObjActionButton(QString actName)
 {
     m_actionName = actName;
     connect(this, &ObjActionButton::clicked, this, &ObjActionButton::handleButtonClick);
+    this->setCursor(Qt::PointingHandCursor);
 }
 
 void ObjActionButton::handleButtonClick()

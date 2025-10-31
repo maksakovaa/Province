@@ -14,7 +14,7 @@
    <string>Провинциалка: Remake</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="data.qrc">
+   <iconset resource="data/data.qrc">
     <normaloff>:/img/icons/game.ico</normaloff>:/img/icons/game.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -29,6 +29,18 @@
       <widget class="TabWidgetPlayer" name="page_2_pers"/>
       <widget class="QWidget" name="page_3_bag">
        <layout class="QVBoxLayout" name="verticalLayout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
         <item>
          <widget class="QScrollArea" name="scrollAreaBag">
           <property name="widgetResizable">
@@ -111,7 +123,7 @@
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="data.qrc">:/img/weather/therm.png</pixmap>
+            <pixmap resource="data/data.qrc">:/img/weather/therm.png</pixmap>
            </property>
            <property name="scaledContents">
             <bool>true</bool>
@@ -167,7 +179,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="data.qrc">
+              <iconset resource="data/data.qrc">
                <normaloff>:/img/icons/save.png</normaloff>:/img/icons/save.png</iconset>
              </property>
              <property name="iconSize">
@@ -202,7 +214,7 @@
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="data.qrc">
+              <iconset resource="data/data.qrc">
                <normaloff>:/img/icons/load.png</normaloff>:/img/icons/load.png</iconset>
              </property>
              <property name="iconSize">
@@ -274,7 +286,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="data.qrc">
+            <iconset resource="data/locations.qrc">
              <normaloff>:/img/icons/map.png</normaloff>
              <disabledoff>:/img/icons/nomap.png</disabledoff>:/img/icons/map.png</iconset>
            </property>
@@ -307,7 +319,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="data.qrc">
+            <iconset resource="data/data.qrc">
              <normaloff>:/img/icons/bag.png</normaloff>:/img/icons/bag.png</iconset>
            </property>
            <property name="iconSize">
@@ -336,7 +348,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="data.qrc">
+            <iconset resource="data/data.qrc">
              <normaloff>:/img/icons/settings.png</normaloff>:/img/icons/settings.png</iconset>
            </property>
            <property name="iconSize">
@@ -371,7 +383,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="data.qrc">
+            <iconset resource="data/data.qrc">
              <normaloff>:/img/icons/restart.png</normaloff>:/img/icons/restart.png</iconset>
            </property>
            <property name="iconSize">
@@ -693,7 +705,28 @@
         </layout>
        </item>
        <item>
-        <layout class="QVBoxLayout" name="actionsLayout"/>
+        <widget class="QWidget" name="widget_2" native="true">
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <property name="spacing">
+           <number>5</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <layout class="QVBoxLayout" name="actionsLayout"/>
+          </item>
+         </layout>
+        </widget>
        </item>
        <item>
         <spacer name="verticalSpacer">
@@ -741,7 +774,8 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="data.qrc"/>
+  <include location="data/data.qrc"/>
+  <include location="data/locations.qrc"/>
  </resources>
  <connections/>
 </ui>

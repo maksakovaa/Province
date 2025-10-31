@@ -16,7 +16,9 @@ ItemForm::ItemForm(QString image, QString name, QString desc, QWidget *parent)
                          "border: 1px solid black; "
                          "border-radius: 10px; "
                          "background-color: #eee; "
-                         "}");
+                         "}"
+                        "QLabel#imageLabel {background-color: transparent;}"
+                        "QLabel#descLabel {background-color: transparent;}");
 }
 
 ItemForm::~ItemForm()
@@ -32,7 +34,7 @@ void ItemForm::addCounter(int value)
     text->setFixedSize(250,150);
     text->setText(intQStr(value));
     text->setAlignment(Qt::AlignBottom | Qt::AlignRight);
-    text->setStyleSheet("font-size: 14pt;");
+    text->setStyleSheet("font-size: 14pt; background-color: transparent;");
     countLayout->addWidget(text);
 }
 

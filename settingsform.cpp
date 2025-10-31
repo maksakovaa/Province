@@ -98,7 +98,7 @@ void SettingsForm::setupSettingsWidget()
         isFullScreen(), getLanguage()};
     QString resParam{"<hr>"}, resDef{"<hr>"}, resCur{"<hr>"};
 
-    for (size_t i = 0; i < 8; i++)
+    for (size_t i = 0; i < 10; i++)
     {
         resParam += param[i] + "<hr>";
         if (i == 0 || i == 4 || i == 5 || i == 8)

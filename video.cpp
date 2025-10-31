@@ -1,24 +1,25 @@
 #include "video.h"
 #include <QScreen>
-#include <QGraphicsVideoItem>
 #include <QStandardPaths>
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QVBoxLayout>
+#include <QMediaMetaData>
 
 Video::Video(QWidget *parent): QWidget(parent)
 {
-    m_mediaPlayer = new QMediaPlayer(parent);
-    videoWidget = new QVideoWidget(parent);
-    m_mediaPlayer->setVideoOutput(videoWidget);
-    m_mediaPlayer->setLoops(-1);
+    m_vplayer = new QMediaPlayer(parent);
+    m_video = new QVideoWidget(parent);
+    m_vplayer->setVideoOutput(m_video);
+    m_vplayer->setLoops(-1);
 }
 
-void Video::setQUrl(const QString &url)
+void Video::setQUrl(const QString &url, int width, int height)
 {
     QUrl link = QUrl(url);
-    m_mediaPlayer->setSource(link);
-    videoWidget->setFixedSize(900,600);
-    m_mediaPlayer->play();
+    m_vplayer->setSource(link);
+    this->setFixedSize(width,height);
+    m_video->setFixedSize(width,height);
+    m_vplayer->play();
 }
 

@@ -12,6 +12,7 @@ MainWindow::MainWindow(SettingsForm* settingsForm, CharacterType charType, int y
     , ui(new Ui::MainWindow)
     , m_time(year, month, day, 8, 0)
 {
+    this->setStyleSheet("background-color: #ffffff; color: #464646; font-size: 16px; font-family: 'Serif';");
     ui->setupUi(this);
     setupMainWindow(settingsForm, charType);
 }
@@ -54,7 +55,7 @@ void MainWindow::setupMainWindow(SettingsForm* settingsForm, CharacterType charT
         this->showFullScreen();
     else
         this->showNormal();
-    std::cout << "Settings widget index is:" << ui->stackedWidget->addWidget(page4) << std::endl;
+    ui->stackedWidget->addWidget(page4);
     m_bag = new BagForm(this);
     ui->scrollAreaBag->setWidget(m_bag);
     m_sex = new SexViewForm(this);
@@ -68,7 +69,7 @@ void MainWindow::setupMainWindow(SettingsForm* settingsForm, CharacterType charT
     slotUpdMoney();
     m_reproductSys.slotEstrus();
     slotUpdParams();
-    std::cout << "main window construct complete!" << std::endl;
+    setupActionButtons();
 }
 
 void MainWindow::setPointers()
@@ -150,8 +151,10 @@ void MainWindow::slotUpdateDateTime()
 {
     ui->labelDate->setText(m_time.getDayOfWeek() + ", " + m_time.getDateStr());
     ui->labelTime->setText(m_time.getTime());
+    ui->labelTime->setStyleSheet("font-size: 30px;");
     ui->labelImageWeather->setPixmap(m_weather->getImage());
     ui->labelTextTemperature->setText(m_weather->getCurrentTemp());
+    ui->labelTextTemperature->setStyleSheet("font-size: 50px;");
 }
 
 void MainWindow::slotIsMapAwaylable(bool status)
@@ -235,6 +238,31 @@ void MainWindow::loadStrings()
     ui->verticalLayoutBar->setAlignment(Qt::AlignTop);
     ui->verticalLayoutDesc->setAlignment(Qt::AlignTop);
     ui->labelStatusDesc->setText(result);
+}
+
+void MainWindow::setupActionButtons()
+{
+    QString style1 = "QPushButton:hover { background-color: #dddddd;}";
+    ui->widget->setStyleSheet(style1);
+    ui->pushButtonBag->setCursor(Qt::PointingHandCursor);
+    ui->pushButtonLoad->setCursor(Qt::PointingHandCursor);
+    ui->pushButtonMap->setCursor(Qt::PointingHandCursor);
+    ui->pushButtonPlayer->setCursor(Qt::PointingHandCursor);
+    ui->pushButtonRestart->setCursor(Qt::PointingHandCursor);
+    ui->pushButtonSave->setCursor(Qt::PointingHandCursor);
+    ui->pushButtonSettings->setCursor(Qt::PointingHandCursor);
+
+    QString style2 = "QPushButton { background-color: #eeeeee;"
+        "border: none;"
+        "border-radius: 5px;"
+        "color: #1874A4;"
+        "font-size: 14px;"
+        "font-family: 'Serif';"
+        "padding: 3px 3px;"
+        "text-align: left;"
+        "background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #eeeeee, stop:1 #ffffff);}"
+        "QPushButton:hover { background-color: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #efefef, stop:1 #dddddd);}";
+    ui->widget_2->setStyleSheet(style2);
 }
 
 void MainWindow::on_pushButtonMap_clicked()

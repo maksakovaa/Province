@@ -11,7 +11,6 @@ LocationForm::LocationForm(QWidget *parent)
 {
     ui->setupUi(this);
     videoWidg = new Video(ui->widget);
-    videoWidg->setFixedSize(900,600);
     ui->videoLayout->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     ui->videoLayout->addWidget(videoWidg);
     ui->labelLocDesc->setWordWrap(true);
@@ -58,7 +57,6 @@ void LocationForm::setCCSEX(CCSex *ptr)
 
 void LocationForm::init(QString loc)
 {
-    std::cout << " locationForm init started for " << loc.toStdString() << std::endl;
     if (m_currentLoc == nullptr)
     {
         if (loc == "gaddvor")
@@ -243,6 +241,7 @@ void LocationForm::addDesc(QString str)
 
 BathActBtn::BathActBtn(bathActs act, QString actName)
 {
+    this->setCursor(Qt::PointingHandCursor);
     connect(this, &BathActBtn::clicked, this, &BathActBtn::handleButtonClick);
     this->setText(actName);
     m_action = act;

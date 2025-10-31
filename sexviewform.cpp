@@ -52,6 +52,7 @@ void SexViewForm::clearLayout()
 
 SexActionButton::SexActionButton(SelfPlayActs act, QString actName)
 {
+    this->setCursor(Qt::PointingHandCursor);
     connect(this, &SexActionButton::clicked, this, &SexActionButton::handleButtonClick);
     this->setText(actName);
     m_action = act;

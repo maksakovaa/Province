@@ -12,7 +12,7 @@ MenuDial::MenuDial(QWidget *parent)
     fillLegend();
     videoWidg = new Video(ui->widget_2);
     videoWidg->setFixedSize(900,600);
-    videoWidg->setQUrl("qrc:/img/start/" + QString::number(getRandInt(4,5)) + ".webm");
+    videoWidg->setQUrl("qrc:/img/start/" + QString::number(getRandInt(4,5)) + ".webm", 900,600);
     ui->verticalLayout_5->addWidget(videoWidg);
     ui->verticalLayout_5->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 }

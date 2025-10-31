@@ -134,10 +134,8 @@ void Location::parseLocConfig(QString str, QString folder)
     if(str.startsWith(indStart[image]))
     {
         res = str.sliced(indStart[image].size(), str.indexOf(indEnd[image]) - indStart[image].size());
-        std::cout << res.toStdString() << std::endl;
         if (res.startsWith(indStart[param]))
         {
-            std::cout << res.toStdString() << std::endl;
             parseRequiredImage(res, folder);
         }
         else

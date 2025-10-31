@@ -122,7 +122,8 @@ public:
     Sex(QWidget* parent);
     void sexStart(int protect);
     void analStart(ToolType type = tDick, int protect = 0);
-    void vaginal(ToolType type);
+    void vaginal(ToolType type, QString pos = "");
+    void anal(ToolType type);
 private:
     SexViewForm* root;
     int m_protect;
