@@ -31,6 +31,7 @@ private:
     Ui::MapForm *ui;
     QString m_current;
     std::vector<loc> pavlovo_markers;
+    std::vector<loc> player_markers;
     void init();
     int calcDistance(const QString& from, const QString& to);
     int calcTimeToGo(const QString& from, const QString& to);

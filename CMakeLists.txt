@@ -56,12 +56,13 @@ qt_add_executable(Game
 
     data/data.qrc data/locations.qrc data/clothes.qrc
     data/actions.qrc data/items.qrc data/npc.qrc
-	data/body.qrc
+	data/body.qrc data/qwest.qrc
 
     sexviewform.h sexviewform.cpp sexviewform.ui
     selfplay.cpp
     settingsform.h settingsform.cpp settingsform.ui sex.cpp
-    data/qwest.qrc
+    
+    npc/npc.h npc/npc.cpp
 )
 
 target_include_directories(Game BEFORE PRIVATE "." "./nav" "./player")

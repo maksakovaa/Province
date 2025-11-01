@@ -25,7 +25,10 @@ class Location: public QObject
 {
     Q_OBJECT
 public:
-    Location(QString locIn, QString locName, Location* parent = nullptr, BagForm* bagPtr = nullptr);
+    Location(QString globalLoc);
+    Location(Location* parent, QString subloc, QString folder);
+
+//    Location(QString locIn, QString locName, Location* parent = nullptr, BagForm* bagPtr = nullptr);
     const std::vector<struct Action*> availableActions();
     const std::vector<Location*> awailableLocs();
     const std::vector<QString> availableObjs();
@@ -56,7 +59,8 @@ private:
     void parseRequiredImage(QString str, QString folder);
     void parseActConfig(QString str);
     void parseValue(QString& str, int& value, ValueType& type);
-    void genLocation();
+    void initIndexQStrArr();
+    // void genLocation();
 };
 
 #endif // LOCATION_H

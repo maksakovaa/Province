@@ -29,8 +29,13 @@ enum ClothGroup
     sexualUnderwear         //  170 - 189
 };
 
+class ClothMain;
+class ClothPanties;
+
 class Cloth
 {
+    friend ClothMain;
+    friend ClothPanties;
 public:
     Cloth(ClothType type, QString name, int price, int condition = 100);
     ClothType getClothType();
@@ -40,7 +45,6 @@ public:
 private:
     ClothType m_type;
     QString m_name;
-protected:
     int m_price;
     int m_condition;
 };
@@ -58,9 +62,8 @@ public:
 private:
     int m_id;
     ClothGroup m_group;
-protected:
-    int m_size;
     int m_bonus;
+    int m_size;
 };
 
 class ClothPanties: public Cloth

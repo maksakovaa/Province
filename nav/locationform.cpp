@@ -57,28 +57,27 @@ void LocationForm::setCCSEX(CCSex *ptr)
 
 void LocationForm::init(QString loc)
 {
+    createLocations();
+
     if (m_currentLoc == nullptr)
     {
-        if (loc == "gaddvor")
-        {
-            m_currentLoc = new Location("gadukino", "gaddvor", nullptr, m_bag);
-        }
-        else
-        {
-            m_currentLoc = new Location("pavlovo", "parents_home", nullptr, m_bag);
-        }
-        
+        m_currentLoc = m_locations[loc];
+        slotChangeLoc(m_currentLoc, 0);
     }
     else
     {
         std::cout << "m_current_loc in not null!" << std::endl;
     }
-    slotChangeLoc(m_currentLoc, 0);
 }
 
 Location *LocationForm::getCurPtr()
 {
     return m_currentLoc;
+}
+
+Location *LocationForm::getPrevPtr()
+{
+    return m_prevLoc;
 }
 
 void LocationForm::reloadLocation()
@@ -93,17 +92,17 @@ QLabel *LocationForm::getImageLblPtr()
     return ui->labelLocImage;
 }
 
-void LocationForm::slotOnChangeLocation(const QString name, int min)
+void LocationForm::slotOnChangeLocation(const QString &name, int min)
 {
-    Location* newLocation = new Location(m_currentLoc->getLocIn(), name, nullptr, m_bag);
-    slotChangeLoc(newLocation, min);
+    m_currentLoc = m_locations[name];
+    slotChangeLoc(m_currentLoc, min);
 }
 
 void LocationForm::slotChangeLoc(Location *locPtr, int min)
 {
     m_page->setCurrentIndex(0);
     ui->imageAndWideoWdgt->setCurrentIndex(0);
-
+    m_prevLoc = m_currentLoc;
     m_currentLoc = locPtr;
 
     if(m_currentLoc != nullptr)
@@ -112,16 +111,28 @@ void LocationForm::slotChangeLoc(Location *locPtr, int min)
         setDesc(m_currentLoc->getLocDesc());
     }
     m_time->increaseTime(min);
-    if(m_currentLoc->getLocIn() == "gadukino")
+    if(m_currentLoc->isParent() || m_currentLoc->getLocId() == "gadukino")
     {
         emit sigIsMapAwaylable(false);
     }
     else
     {
-        bool status = !m_currentLoc->isParent();
-        emit sigIsMapAwaylable(status);
+        emit sigIsMapAwaylable(true);
     }
     fillSubLocs();
+}
+
+void LocationForm::DFSlocations(Location* parent)
+{
+    std::vector<Location*> tmp = parent->awailableLocs();
+    for (int i = 0; i < tmp.size(); ++i)
+    {
+        m_locations[tmp[i]->getLocId()] = tmp[i];
+        if(!tmp[i]->awailableLocs().empty())
+        {
+            DFSlocations(tmp[i]);
+        }
+    }
 }
 
 void LocationForm::fillSubLocs()
@@ -156,6 +167,49 @@ void LocationForm::fillSubLocs()
         actionbtn->setLocPtr(i);
         m_actLayout->addWidget(actionbtn);
         connect(actionbtn, &QActionButton::sigChangeSubLoc, this, &LocationForm::slotChangeLoc);
+    }
+}
+
+void LocationForm::createLocations()
+{
+    QFile file(":/locations/locations.list");
+    if(!file.open(QIODevice::ReadOnly))
+    {
+        qDebug() << "Error opening file! " + file.fileName();
+    }
+    else
+    {
+        QTextStream in(&file);
+        QString line;
+        QString indStart[] {"<parent>" , "<pavlovo>" , "<gadukino>"};
+        QString indEnd[] {"</parent>" ,  "</pavlovo>", "</gadukino>"}; 
+        while (!in.atEnd())
+        {
+            line = in.readLine();
+            if (line.startsWith(indStart[0]))
+            {
+                line = line.sliced(indStart[0].size(), line.indexOf(indEnd[0]) - indStart[0].size());
+                Location* parent = new Location(line);
+                m_locations[line] = parent;
+                DFSlocations(parent);
+            }
+            else if (line.startsWith(indStart[1]))
+            {
+                Location *par = m_locations[indStart[1].sliced(1, indStart[1].size() - 2)];
+                line = line.sliced(indStart[1].size(), line.indexOf(indEnd[1]) - indStart[1].size());
+                Location *child = new Location(par, line, ":/locations/" + par->getLocId() + "/");
+                m_locations[line] = child;
+                DFSlocations(child);
+            }
+            else if (line.startsWith(indStart[2]))
+            {
+                Location *par = m_locations[indStart[2].sliced(1, indStart[2].size() - 2)];
+                line = line.sliced(indStart[2].size(), line.indexOf(indEnd[2]) - indStart[2].size());
+                Location *child = new Location(par, line, ":/locations/" + par->getLocId() + "/");
+                m_locations[line] = child;
+                DFSlocations(child);
+            }
+        }
     }
 }
 

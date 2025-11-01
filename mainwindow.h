@@ -38,7 +38,7 @@ private slots:
     void on_pushButtonPlayer_clicked();
     void on_pushButtonSettings_clicked();
     void on_pushButtonBag_clicked();
-    void on_labelStatusDesc_linkActivated(const QString &link);
+    void slotOnStatusClick(const QString &link);
     void on_labelTime_linkActivated(const QString &link);
     void on_labelDate_linkActivated(const QString& link);
     void on_labelMoney_linkActivated(const QString &link);

@@ -15,6 +15,7 @@ MenuDial::MenuDial(QWidget *parent)
     videoWidg->setQUrl("qrc:/img/start/" + QString::number(getRandInt(4,5)) + ".webm", 900,600);
     ui->verticalLayout_5->addWidget(videoWidg);
     ui->verticalLayout_5->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    this->setStyleSheet("background-color: #ffffff; color: #464646; font-size: 16px; font-family: 'Serif';");
 }
 
 MenuDial::~MenuDial()

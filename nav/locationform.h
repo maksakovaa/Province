@@ -36,15 +36,17 @@ public:
     void setCCSEX(CCSex* ptr);
     void init(QString loc = "");
     Location* getCurPtr();
+    Location* getPrevPtr();
     void reloadLocation();
     QLabel* getImageLblPtr();
 public slots:
-    void slotOnChangeLocation(const QString name, int min);
+    void slotOnChangeLocation(const QString& name, int min);
     void slotChangeLoc(Location* locPtr, int min);
 private:
 //methods:
+    void DFSlocations(Location* parent);
     void fillSubLocs();
-
+    void createLocations();
     void incTime(int min);
     void updVBody(Body param, int val);
     void updVStatus(Status param, int val);
@@ -64,6 +66,8 @@ private:
 //members:
     Ui::LocationForm *ui;
     Location* m_currentLoc;
+    Location* m_prevLoc;
+    std::unordered_map<QString,Location*> m_locations;
     Player* m_player;
     QVBoxLayout* m_actLayout;
     TimeServer* m_time;
@@ -129,6 +133,7 @@ private:
     QString voyerActStr(int value);
     QString peekStr(int value);
     QString peekActStr(int value);
+    void savePrevCloth();
     TimeServer* gTime();
     QString backLoc();
     void shower();

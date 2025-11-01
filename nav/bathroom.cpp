@@ -29,7 +29,7 @@ void BathRoom::start()
 //		gs 'zz_render',func('zz_bathroom_strings'+$lang, 'txt_1'),'city/center/tanya/bathroom0.jpg',func('zz_bathroom_strings'+$lang, 'txt_5')
     else if (backLoc() == "parents_home" || backLoc() == "shulgahome") //кв.родителей, кв.Шульги
     {
-        root->setImage(":/locations/pavlovo/parents_home/bath4.jpg");
+        root->setImage(":/locations/pavlovo/ghomeyard/podezd/2floor/parents_home/bathroom_parents/bath4.jpg");
         root->setDesc(bathStr(3));
     }
     else if (backLoc() == "banda_home") {}
@@ -522,7 +522,7 @@ void BathRoom::slotBathActionHandler(bathActs action)
             root->updVStatus(mood, 5);
             root->updVStatus(hygiene, 3);
             shower();
-            prevCloth = (ClothMain*)root->m_player->getCloth(ClothType::Main);
+            savePrevCloth();
             root->m_player->redress(new ClothMain(1, ClothType::Main, ClothGroup::towel, "Полотенце"));
             root->setImage(":/actions/bathroom/dush.jpg");
             root->setDesc(bathStr(22));
@@ -541,7 +541,7 @@ void BathRoom::slotBathActionHandler(bathActs action)
     
     case actBath23:
     {
-        prevCloth = (ClothMain*)root->m_player->getCloth(ClothType::Main);
+        savePrevCloth();
         root->m_player->redress(new ClothMain(1,ClothType::Main,ClothGroup::towel,"Полотенце"));
         root->slotChangeLoc(root->getCurPtr()->getParentPtr(),1);
     }
@@ -549,7 +549,7 @@ void BathRoom::slotBathActionHandler(bathActs action)
     
     case actBath24:
     {
-        prevCloth = (ClothMain*)root->m_player->getCloth(ClothType::Main);
+        savePrevCloth();
         root->m_player->redress(nullptr);
         root->slotChangeLoc(root->getCurPtr()->getParentPtr(),1);
     }
@@ -588,7 +588,7 @@ void BathRoom::slotBathActionHandler(bathActs action)
             root->m_player->updSkin('+', 3);
         }
         shower();
-        prevCloth = (ClothMain*)root->m_player->getCloth(ClothType::Main);
+        savePrevCloth();
         root->m_player->redress(nullptr);
         root->updVStatus(horny, -root->getVStatus(horny)/4);
         root->updVStatus(vaginal_grease, -root->getVStatus(vaginal_grease)/2);
@@ -1074,6 +1074,15 @@ QString BathRoom::peekActStr(int value)
         return actStr[actPeek5];
     else
         return actStr[value];
+}
+
+void BathRoom::savePrevCloth()
+{
+    ClothMain* playerCloth = (ClothMain*)root->m_player->getCloth(ClothType::Main);
+    if(playerCloth != nullptr && playerCloth->getClothGroup() >= sundress)
+    {
+        prevCloth = playerCloth;
+    }
 }
 
 TimeServer *BathRoom::gTime()

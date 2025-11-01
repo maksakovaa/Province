@@ -13,7 +13,10 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2" stretch="3,1">
+  <layout class="QVBoxLayout" name="verticalLayout_2" stretch="4,2">
+   <property name="sizeConstraint">
+    <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+   </property>
    <item>
     <widget class="QStackedWidget" name="imageAndWideoWdgt">
      <widget class="QWidget" name="page_image">

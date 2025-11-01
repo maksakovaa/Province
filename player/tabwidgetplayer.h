@@ -20,13 +20,14 @@ public:
     void reload();
 private slots:
     void on_label_pers_desc_linkActivated(const QString &link);
-    void on_labelSkills_linkActivated(const QString &link);
+    void slotSkillUpdate(const QString &link);
 
 private:
     Ui::TabWidgetPlayer *ui;
-    Player* ptrToMplayer;
+    Player* m_player;
     int currView{-1};
     //methods
+    void connections();
     void setBarStyle();
     void updBodyVal(Body param, int val);
     void loadStrings();

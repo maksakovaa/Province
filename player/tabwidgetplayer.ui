@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1030</width>
-    <height>908</height>
+    <width>1034</width>
+    <height>912</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -151,10 +151,10 @@
    <attribute name="title">
     <string>Характеристики</string>
    </attribute>
-   <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <layout class="QVBoxLayout" name="verticalLayoutBar">
-      <item>
+     <layout class="QFormLayout" name="formLayout">
+      <item row="0" column="0">
        <widget class="QProgressBar" name="progressBarStrength">
         <property name="font">
          <font>
@@ -173,7 +173,14 @@
         </property>
        </widget>
       </item>
-      <item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="label_str">
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
        <widget class="QProgressBar" name="progressBarSpeed">
         <property name="font">
          <font>
@@ -189,7 +196,14 @@
         </property>
        </widget>
       </item>
-      <item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="label_speed">
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
        <widget class="QProgressBar" name="progressBarAgility">
         <property name="font">
          <font>
@@ -205,7 +219,14 @@
         </property>
        </widget>
       </item>
-      <item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="label_agility">
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
        <widget class="QProgressBar" name="progressBarEndurance">
         <property name="font">
          <font>
@@ -221,7 +242,14 @@
         </property>
        </widget>
       </item>
-      <item>
+      <item row="3" column="1">
+       <widget class="QLabel" name="label_endurance">
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
        <widget class="QProgressBar" name="progressBarIntellect">
         <property name="font">
          <font>
@@ -237,7 +265,14 @@
         </property>
        </widget>
       </item>
-      <item>
+      <item row="4" column="1">
+       <widget class="QLabel" name="label_intellect">
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
        <widget class="QProgressBar" name="progressBarReact">
         <property name="font">
          <font>
@@ -253,7 +288,14 @@
         </property>
        </widget>
       </item>
-      <item>
+      <item row="5" column="1">
+       <widget class="QLabel" name="label_react">
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
        <widget class="QProgressBar" name="progressBarDomination">
         <property name="font">
          <font>
@@ -272,7 +314,14 @@
         </property>
        </widget>
       </item>
-      <item>
+      <item row="6" column="1">
+       <widget class="QLabel" name="label_domination">
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0">
        <widget class="QProgressBar" name="progressBarJab">
         <property name="font">
          <font>
@@ -291,7 +340,14 @@
         </property>
        </widget>
       </item>
-      <item>
+      <item row="7" column="1">
+       <widget class="QLabel" name="label_jab">
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
        <widget class="QProgressBar" name="progressBarPunch">
         <property name="font">
          <font>
@@ -310,7 +366,14 @@
         </property>
        </widget>
       </item>
-      <item>
+      <item row="8" column="1">
+       <widget class="QLabel" name="label_punch">
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="0">
        <widget class="QProgressBar" name="progressBarKik">
         <property name="font">
          <font>
@@ -329,7 +392,14 @@
         </property>
        </widget>
       </item>
-      <item>
+      <item row="9" column="1">
+       <widget class="QLabel" name="label_kik">
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="0">
        <widget class="QProgressBar" name="progressBarKikDef">
         <property name="font">
          <font>
@@ -348,7 +418,14 @@
         </property>
        </widget>
       </item>
-      <item>
+      <item row="10" column="1">
+       <widget class="QLabel" name="label_kikDef">
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="0">
        <widget class="QProgressBar" name="progressBarBoxing">
         <property name="font">
          <font>
@@ -367,7 +444,14 @@
         </property>
        </widget>
       </item>
-      <item>
+      <item row="11" column="1">
+       <widget class="QLabel" name="label_boxing">
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
+      <item row="12" column="0">
        <widget class="QProgressBar" name="progressBarRunner">
         <property name="font">
          <font>
@@ -386,7 +470,14 @@
         </property>
        </widget>
       </item>
-      <item>
+      <item row="12" column="1">
+       <widget class="QLabel" name="label_runner">
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
+      <item row="13" column="0">
        <widget class="QProgressBar" name="progressBarVolleyball">
         <property name="font">
          <font>
@@ -402,7 +493,14 @@
         </property>
        </widget>
       </item>
-      <item>
+      <item row="13" column="1">
+       <widget class="QLabel" name="label_volleyball">
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
+      <item row="14" column="0">
        <widget class="QProgressBar" name="progressBarOfficiant">
         <property name="font">
          <font>
@@ -418,7 +516,14 @@
         </property>
        </widget>
       </item>
-      <item>
+      <item row="14" column="1">
+       <widget class="QLabel" name="label_officiant">
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
+      <item row="15" column="0">
        <widget class="QProgressBar" name="progressBarMaid">
         <property name="font">
          <font>
@@ -434,7 +539,14 @@
         </property>
        </widget>
       </item>
-      <item>
+      <item row="15" column="1">
+       <widget class="QLabel" name="label_maid">
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
+      <item row="16" column="0">
        <widget class="QProgressBar" name="progressBarVokal">
         <property name="font">
          <font>
@@ -450,7 +562,14 @@
         </property>
        </widget>
       </item>
-      <item>
+      <item row="16" column="1">
+       <widget class="QLabel" name="label_vokal">
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
+      <item row="17" column="0">
        <widget class="QProgressBar" name="progressBarDance">
         <property name="font">
          <font>
@@ -466,7 +585,14 @@
         </property>
        </widget>
       </item>
-      <item>
+      <item row="17" column="1">
+       <widget class="QLabel" name="label_dance">
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
+      <item row="18" column="0">
        <widget class="QProgressBar" name="progressBarDancePro">
         <property name="font">
          <font>
@@ -482,7 +608,14 @@
         </property>
        </widget>
       </item>
-      <item>
+      <item row="18" column="1">
+       <widget class="QLabel" name="label_dancePro">
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
+      <item row="19" column="0">
        <widget class="QProgressBar" name="progressBarDanceStrip">
         <property name="font">
          <font>
@@ -498,7 +631,14 @@
         </property>
        </widget>
       </item>
-      <item>
+      <item row="19" column="1">
+       <widget class="QLabel" name="label_danceStrip">
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
+      <item row="20" column="0">
        <widget class="QProgressBar" name="progressBarDancePole">
         <property name="font">
          <font>
@@ -514,7 +654,14 @@
         </property>
        </widget>
       </item>
-      <item>
+      <item row="20" column="1">
+       <widget class="QLabel" name="label_dancePole">
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
+      <item row="21" column="0">
        <widget class="QProgressBar" name="progressBarPosSkill">
         <property name="font">
          <font>
@@ -533,7 +680,14 @@
         </property>
        </widget>
       </item>
-      <item>
+      <item row="21" column="1">
+       <widget class="QLabel" name="label_posSkil">
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
+      <item row="22" column="0">
        <widget class="QProgressBar" name="progressBarSchoolProgress">
         <property name="font">
          <font>
@@ -549,7 +703,14 @@
         </property>
        </widget>
       </item>
-      <item>
+      <item row="22" column="1">
+       <widget class="QLabel" name="label_schoolProg">
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
+      <item row="23" column="0">
        <widget class="QProgressBar" name="progressBarTruancy">
         <property name="font">
          <font>
@@ -568,37 +729,14 @@
         </property>
        </widget>
       </item>
-     </layout>
-    </item>
-    <item>
-     <layout class="QVBoxLayout" name="verticalLayoutDesc">
-      <item>
-       <widget class="QLabel" name="labelSkills">
-        <property name="font">
-         <font>
-          <family>Noto Serif</family>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
+      <item row="23" column="1">
+       <widget class="QLabel" name="label_truancy">
         <property name="text">
          <string>TextLabel</string>
         </property>
        </widget>
       </item>
      </layout>
-    </item>
-    <item>
-     <spacer name="horizontalSpacer">
-      <property name="orientation">
-       <enum>Qt::Orientation::Horizontal</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>40</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
     </item>
    </layout>
   </widget>

@@ -5,12 +5,52 @@
 #include <iostream>
 #include "../Functions.h"
 
-Location::Location(QString locIn, QString locName, Location* parent, BagForm* bagPtr): m_locIn(locIn), m_locId(locName), m_parent(parent), m_bag(bagPtr) 
+Location::Location(QString globalLoc)
 {
+    m_parent = nullptr;
+    m_locId = globalLoc;
+    initIndexQStrArr();
+    m_isweather = false;
+    QString folder_path = ":/locations/" + globalLoc + "/";
+    QFile file(folder_path + globalLoc + ".loc");
+    if(!file.open(QIODevice::ReadOnly))
+    {
+        qDebug() << "Error opening file! " + file.fileName();
+    }
+    else
+    {
+        QTextStream in(&file);
+        QString line;
+        while (!in.atEnd())
+        {
+            line = in.readLine();
+            parseLocConfig(line, folder_path);
+        }
+    }
+}
+
+Location::Location(Location *parent, QString subloc, QString folder): m_parent(parent), m_locId(subloc)
+{
+    initIndexQStrArr();
     indStart = new QString[]{ "<name>", "<actName>", "<image>", "<obj>", "<desc>", "<subloc>", "<action>", "<required>", "<param>", "<minv>", "<maxv>", "<value>", "<noteq>", "<item>" };
     indEnd = new QString[]{ "</name>", "</actName>" , "</image>", "</obj>", "</desc>", "</subloc>", "</action>", "</required>", "</param>", "</minv>", "</maxv>", "</value>", "</noteq>", "</item>" };
     m_isweather = false;
-    genLocation();
+    QString folder_path = folder + subloc + "/";
+    QFile file(folder_path + subloc + ".loc");
+    if(!file.open(QIODevice::ReadOnly))
+    {
+        qDebug() << "Error opening file! " + file.fileName();
+    }
+    else
+    {
+        QTextStream in(&file);
+        QString line;
+        while (!in.atEnd())
+        {
+            line = in.readLine();
+            parseLocConfig(line, folder_path);
+        }
+    }
 }
 
 const std::vector<struct Action*> Location::availableActions()
@@ -34,34 +74,6 @@ bool Location::isParent()
         return false;
     else
         return true;
-}
-
-void Location::genLocation()
-{
-    QString folder_path;
-    if (m_parent == nullptr)
-    {
-        folder_path = ":/locations/" + m_locIn + "/" + m_locId + "/";
-    }
-    else
-    {
-        folder_path = ":/locations/" + m_parent->m_locIn + "/" + m_parent->m_locId + "/";
-    }
-    QFile file(folder_path + m_locId + ".loc");
-    if(!file.open(QIODevice::ReadOnly))
-    {
-        qDebug() << "Error opening file! " + file.fileName();
-    }
-    else
-    {
-        QTextStream in(&file);
-        QString line;
-        while (!in.atEnd())
-        {
-            line = in.readLine();
-            parseLocConfig(line, folder_path);
-        }
-    }
 }
 
 QString Location::getLocPic(bool isDay, bool isSnow)
@@ -107,7 +119,17 @@ QString Location::getActName()
 
 QString Location::getLocIn()
 {
-    return m_locIn;
+    Location* parent = m_parent;
+    if (parent != nullptr)
+    {
+        while (parent->isParent())
+        {
+            parent = parent->getParentPtr();
+        }
+        return parent->getLocId();
+    }
+    else
+        return m_locId;
 }
 
 QString Location::getLocDesc()
@@ -156,7 +178,7 @@ void Location::parseLocConfig(QString str, QString folder)
     if(str.startsWith(indStart[subloc]))
     {
         res = str.sliced(indStart[subloc].size(), str.indexOf(indEnd[subloc]) - indStart[subloc].size());
-        Location* subLoc = new Location(m_locIn, res, this, m_bag);
+        Location* subLoc = new Location(this, res, folder);
         m_subLocs.push_back(subLoc);
     }
     if(str.startsWith(indStart[action]))
@@ -242,4 +264,10 @@ void Location::parseValue(QString &str, int &value, ValueType &type)
         str = str.sliced(str.indexOf(indEnd[notValue]) + indEnd[notValue].size());
     }
     
+}
+
+void Location::initIndexQStrArr()
+{
+    indStart = new QString[]{ "<name>", "<actName>", "<image>", "<obj>", "<desc>", "<subloc>", "<action>", "<required>", "<param>", "<minv>", "<maxv>", "<value>", "<noteq>", "<item>" };
+    indEnd = new QString[]{ "</name>", "</actName>" , "</image>", "</obj>", "</desc>", "</subloc>", "</action>", "</required>", "</param>", "</minv>", "</maxv>", "</value>", "</noteq>", "</item>" };
 }

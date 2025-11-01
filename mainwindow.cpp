@@ -145,6 +145,14 @@ void MainWindow::connections()
 
     connect(m_sex, &SexViewForm::sigSetGape, &m_ccsex, &CCSex::slotSetGape);
     connect(m_sex, &SexViewForm::sigUpdParams, this, &MainWindow::slotUpdParams);
+
+    connect(ui->label_energy, &QLabel::linkActivated, this, &MainWindow::slotOnStatusClick);
+    connect(ui->label_water, &QLabel::linkActivated, this, &MainWindow::slotOnStatusClick);
+    connect(ui->label_health, &QLabel::linkActivated, this, &MainWindow::slotOnStatusClick);
+    connect(ui->label_horny, &QLabel::linkActivated, this, &MainWindow::slotOnStatusClick);
+    connect(ui->label_lust, &QLabel::linkActivated, this, &MainWindow::slotOnStatusClick);
+    connect(ui->label_mood, &QLabel::linkActivated, this, &MainWindow::slotOnStatusClick);
+    connect(ui->label_son, &QLabel::linkActivated, this, &MainWindow::slotOnStatusClick);
 }
 
 void MainWindow::slotUpdateDateTime()
@@ -172,7 +180,7 @@ void MainWindow::updatePlayerStatusValue()
     ui->progressBarHorny->setValue(m_player->getVStatus(Status::horny));
     ui->progressBarLust->setValue(m_player->getVStatus(Status::lust));
     ui->progressBarHealth->setValue(m_player->getVStatus(Status::health));
-    ui->progressBarManna->setValue(m_player->getVStatus(Status::mood));
+    ui->progressBarMood->setValue(m_player->getVStatus(Status::mood));
     ui->progressBarEnergy->setValue(m_player->getVStatus(Status::energy));
     ui->progressBarWater->setValue(m_player->getVStatus(Status::water));
     ui->progressBarSon->setValue(m_player->getVStatus(Status::son));
@@ -184,7 +192,7 @@ void MainWindow::updPlayerStatusBarStyle()
     ui->progressBarHorny->setStyleSheet(styleForBar(ui->progressBarHorny->value(),ui->progressBarHorny->maximum(),1));
     ui->progressBarLust->setStyleSheet(styleForBar(ui->progressBarLust->value(),ui->progressBarLust->maximum(),1));
     ui->progressBarHealth->setStyleSheet(styleForBar(ui->progressBarHealth->value(),ui->progressBarHealth->maximum(),0));
-    ui->progressBarManna->setStyleSheet(styleForBar(ui->progressBarManna->value(),ui->progressBarManna->maximum(),0));
+    ui->progressBarMood->setStyleSheet(styleForBar(ui->progressBarMood->value(),ui->progressBarMood->maximum(),0));
     ui->progressBarEnergy->setStyleSheet(styleForBar(ui->progressBarEnergy->value(),ui->progressBarEnergy->maximum(),0));
     ui->progressBarWater->setStyleSheet(styleForBar(ui->progressBarWater->value(),ui->progressBarWater->maximum(),0));
     ui->progressBarSon->setStyleSheet(styleForBar(ui->progressBarSon->value(),ui->progressBarSon->maximum(),0));
@@ -219,25 +227,27 @@ void MainWindow::slotUpdParams()
 
 void MainWindow::loadStrings()
 {
-    QString hornyStr{"возбуждение"}, lustStr{"похоть"}, healthStr{"здоровье"}, mannaStr{"настроение"},
-        energyStr{"сытость"}, waterStr{"жажда"}, sonStr{"бодрость"}, vneshStr{"привлекательность"}, result;
+    QString hornyStr{"возбуждение"}, lustStr{"похоть"}, healthStr{"здоровье"}, moodStr{"настроение"},
+        energyStr{"сытость"}, waterStr{"жажда"}, sonStr{"бодрость"}, vneshStr{"привлекательность"};
 
     if(m_player->isCheatsOn())
     {
         makeLink(hornyStr, "horny");
         makeLink(lustStr, "lust");
         makeLink(healthStr, "health");
-        makeLink(mannaStr, "mood");
+        makeLink(moodStr, "mood");
         makeLink(energyStr, "energy");
         makeLink(waterStr, "water");
         makeLink(sonStr, "son");
     }
-    result = "<html><head/><body><p style='line-height: 1.32;'>";
-    result += hornyStr + "<br>" + lustStr + "<br>" + healthStr + "<br>" + mannaStr + "<br>" + energyStr + "<br>" + waterStr + "<br>" + sonStr + "<br>" + vneshStr;
-    result += "</p></body></html>";
-    ui->verticalLayoutBar->setAlignment(Qt::AlignTop);
-    ui->verticalLayoutDesc->setAlignment(Qt::AlignTop);
-    ui->labelStatusDesc->setText(result);
+    ui->label_horny->setText(hornyStr);
+    ui->label_lust->setText(lustStr);
+    ui->label_health->setText(healthStr);
+    ui->label_mood->setText(moodStr);
+    ui->label_son->setText(sonStr);
+    ui->label_water->setText(waterStr);
+    ui->label_energy->setText(energyStr);
+    ui->label_vnesh->setText(vneshStr);
 }
 
 void MainWindow::setupActionButtons()
@@ -269,13 +279,14 @@ void MainWindow::on_pushButtonMap_clicked()
 {
     if(ui->stackedWidget->currentIndex() != 1)
     {
-        ui->page_1_map->setMap(ui->page_1_map->genMap(ui->page_0_main->getCurPtr()->getLocIn(), ui->page_0_main->getCurPtr()->getLocId()));
+        QString mainloc = ui->page_0_main->getCurPtr()->getLocIn();
+        QString prevLoc = ui->page_0_main->getPrevPtr()->getLocId();
+        ui->page_1_map->setMap(ui->page_1_map->genMap(mainloc, prevLoc));
         ClearLayout(ui->actionsLayout);
         ui->stackedWidget->setCurrentIndex(1);
     }
     else
     {
-        ui->page_0_main->slotOnChangeLocation(ui->page_0_main->getCurPtr()->getLocId(), 0);
         ui->stackedWidget->setCurrentIndex(0);
     }
 }
@@ -335,7 +346,7 @@ void MainWindow::on_pushButtonBag_clicked()
     }
 }
 
-void MainWindow::on_labelStatusDesc_linkActivated(const QString &link)
+void MainWindow::slotOnStatusClick(const QString &link)
 {
     if(link == "horny")
     {

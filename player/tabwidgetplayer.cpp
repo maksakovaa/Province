@@ -1,12 +1,14 @@
 #include "tabwidgetplayer.h"
 #include "ui_tabwidgetplayer.h"
 #include "../Functions.h"
+#include <QLayoutItem>
 
 TabWidgetPlayer::TabWidgetPlayer(QWidget *parent)
     : QTabWidget(parent)
     , ui(new Ui::TabWidgetPlayer)
 {
     ui->setupUi(this);
+    connections();
 }
 
 TabWidgetPlayer::~TabWidgetPlayer()
@@ -16,7 +18,7 @@ TabWidgetPlayer::~TabWidgetPlayer()
 
 void TabWidgetPlayer::setPtr(Player *ptr)
 {
-    ptrToMplayer = ptr;
+    m_player = ptr;
     fillBodyDesc();
     fillCharacteristics();
     loadStrings();
@@ -32,34 +34,34 @@ void TabWidgetPlayer::reload()
 
 void TabWidgetPlayer::fillBodyDesc()
 {
-    QString desc = ptrToMplayer->getNameDesc() + "<br>";
-    desc += ptrToMplayer->getBirthDayDesc() + "<br><br>";
-    desc += ptrToMplayer->getAgesDesc() + "<br>";
-    desc += ptrToMplayer->getHeightDesc() + "<br>";
-    desc += ptrToMplayer->getBodyDesc() + "<br>";
-    desc += ptrToMplayer->getBreastsDesc() + "<br>";
-    desc += ptrToMplayer->getBodyTypeFigureDesc() + "<br>";
-    desc += ptrToMplayer->getVneshDesc() + "<br>";
-    desc += ptrToMplayer->getHairDesc() + "<br>";
-    desc += ptrToMplayer->getLipsDesc() + "<br>";
-    desc += ptrToMplayer->getThroatDesc() + "<br>";
-    desc += ptrToMplayer->getSkinDesc() + "<br>";
-    desc += ptrToMplayer->getEyeDesc() + "<br>";
-    desc += ptrToMplayer->getMakeupDesc() + "<br>";
-    desc += ptrToMplayer->getLegsDesc() + "<br>";
-    desc += ptrToMplayer->getPubisDesc() + "<br>";
-    desc += ptrToMplayer->getVaginaDesc() + "<br>";
-    desc += ptrToMplayer->getAnusDesc() + "<br>";
-    desc += ptrToMplayer->getShamelessDesc();
+    QString desc = m_player->getNameDesc() + "<br>";
+    desc += m_player->getBirthDayDesc() + "<br><br>";
+    desc += m_player->getAgesDesc() + "<br>";
+    desc += m_player->getHeightDesc() + "<br>";
+    desc += m_player->getBodyDesc() + "<br>";
+    desc += m_player->getBreastsDesc() + "<br>";
+    desc += m_player->getBodyTypeFigureDesc() + "<br>";
+    desc += m_player->getVneshDesc() + "<br>";
+    desc += m_player->getHairDesc() + "<br>";
+    desc += m_player->getLipsDesc() + "<br>";
+    desc += m_player->getThroatDesc() + "<br>";
+    desc += m_player->getSkinDesc() + "<br>";
+    desc += m_player->getEyeDesc() + "<br>";
+    desc += m_player->getMakeupDesc() + "<br>";
+    desc += m_player->getLegsDesc() + "<br>";
+    desc += m_player->getPubisDesc() + "<br>";
+    desc += m_player->getVaginaDesc() + "<br>";
+    desc += m_player->getAnusDesc() + "<br>";
+    desc += m_player->getShamelessDesc();
 
     QString arr[] { "Лицо", "Одежда","Тело","Грудь","Лобок","Вагина","Анус" };
-    QString img[] {ptrToMplayer->getPlayerFace(),
-                  ptrToMplayer->getPlayerClothes(),
-                  ptrToMplayer->getPlayerBody(),
-                  ptrToMplayer->getPlayerBreasts(),
-                  ptrToMplayer->getPlayerPubis(),
-                  ptrToMplayer->getPlayerVagina(),
-                  ptrToMplayer->getPlayerAnus()};
+    QString img[] {m_player->getPlayerFace(),
+                  m_player->getPlayerClothes(),
+                  m_player->getPlayerBody(),
+                  m_player->getPlayerBreasts(),
+                  m_player->getPlayerPubis(),
+                  m_player->getPlayerVagina(),
+                  m_player->getPlayerAnus()};
     QString tabs;
     if(currView == -1) { currView = 0; }
     for (int i = 0; i < 7; ++i)
@@ -76,30 +78,18 @@ void TabWidgetPlayer::fillBodyDesc()
 
 void TabWidgetPlayer::fillCharacteristics()
 {
-    ui->progressBarStrength->setValue(ptrToMplayer->getSkillValue(Skills::strenght));
-    ui->progressBarSpeed->setValue(ptrToMplayer->getSkillValue(Skills::speed));
-    ui->progressBarAgility->setValue(ptrToMplayer->getSkillValue(Skills::agility));
-    ui->progressBarEndurance->setValue(ptrToMplayer->getSkillValue(Skills::endurance));
-    ui->progressBarIntellect->setValue(ptrToMplayer->getSkillValue(Skills::intellect));
-    ui->progressBarReact->setValue(ptrToMplayer->getSkillValue(Skills::react));
-    ui->progressBarDomination->setValue(std::abs(ptrToMplayer->getSkillValue(Skills::domination)));
-    ui->progressBarJab->setValue(ptrToMplayer->getSkillValue(Skills::jab));
-    ui->progressBarPunch->setValue(ptrToMplayer->getSkillValue(Skills::punch));
-    ui->progressBarKik->setValue(ptrToMplayer->getSkillValue(Skills::kik));
-    ui->progressBarKikDef->setValue(ptrToMplayer->getSkillValue(Skills::kikDef));
-    ui->progressBarBoxing->setValue(ptrToMplayer->getSkillValue(Skills::boxing));
-    ui->progressBarRunner->setValue(ptrToMplayer->getSkillValue(Skills::runner));
-    ui->progressBarVolleyball->setValue(ptrToMplayer->getSkillValue(Skills::volleyball));
-    ui->progressBarOfficiant->setValue(ptrToMplayer->getSkillValue(Skills::oficiant));
-    ui->progressBarMaid->setValue(ptrToMplayer->getSkillValue(Skills::maid));
-    ui->progressBarVokal->setValue(ptrToMplayer->getSkillValue(Skills::vokal));
-    ui->progressBarDance->setValue(ptrToMplayer->getSkillValue(Skills::dance));
-    ui->progressBarDancePro->setValue(ptrToMplayer->getSkillValue(Skills::dancePro));
-    ui->progressBarDanceStrip->setValue(ptrToMplayer->getSkillValue(Skills::danceStrip));
-    ui->progressBarDancePole->setValue(ptrToMplayer->getSkillValue(Skills::dancePole));
-    ui->progressBarPosSkill->setValue(ptrToMplayer->getSkillValue(Skills::posSkill));
-    ui->progressBarSchoolProgress->setValue(ptrToMplayer->getSkillValue(Skills::schoolProgress));
-    ui->progressBarTruancy->setValue(ptrToMplayer->getSkillValue(Skills::truancy));
+    for (int i = 0; i < ui->formLayout->rowCount(); i++)
+    {
+        if (i == 6)
+        {
+            ((QProgressBar*)ui->formLayout->itemAt(i, QFormLayout::LabelRole)->widget())->setValue(std::abs(m_player->getSkillValue(static_cast<Skills>(i))));
+        }
+        else
+        {
+            ((QProgressBar*)ui->formLayout->itemAt(i, QFormLayout::LabelRole)->widget())->setValue(m_player->getSkillValue(static_cast<Skills>(i)));
+        }
+    }
+    
     setBarStyle();
     loadStrings();
 }
@@ -107,37 +97,29 @@ void TabWidgetPlayer::fillCharacteristics()
 void TabWidgetPlayer::setBarStyle()
 {
     int type;
-    if(ptrToMplayer->getSkillValue(Skills::domination) < 0) { type = 1; }
+    if(m_player->getSkillValue(Skills::domination) < 0) { type = 1; }
     else { type = 0; }
-    ui->progressBarStrength->setStyleSheet(styleForBar(ui->progressBarStrength->value(),ui->progressBarStrength->maximum(),0));
-    ui->progressBarSpeed->setStyleSheet(styleForBar(ui->progressBarSpeed->value(),ui->progressBarSpeed->maximum(),0));
-    ui->progressBarAgility->setStyleSheet(styleForBar(ui->progressBarAgility->value(),ui->progressBarAgility->maximum(),0));
-    ui->progressBarEndurance->setStyleSheet(styleForBar(ui->progressBarEndurance->value(),ui->progressBarEndurance->maximum(),0));
-    ui->progressBarIntellect->setStyleSheet(styleForBar(ui->progressBarIntellect->value(),ui->progressBarIntellect->maximum(),0));
-    ui->progressBarReact->setStyleSheet(styleForBar(ui->progressBarReact->value(),ui->progressBarReact->maximum(),0));
-    ui->progressBarDomination->setStyleSheet(styleForBar(ui->progressBarDomination->value(),ui->progressBarDomination->maximum(),type));
-    ui->progressBarJab->setStyleSheet(styleForBar(ui->progressBarJab->value(),ui->progressBarJab->maximum(),0));
-    ui->progressBarPunch->setStyleSheet(styleForBar(ui->progressBarPunch->value(),ui->progressBarPunch->maximum(),0));
-    ui->progressBarKik->setStyleSheet(styleForBar(ui->progressBarKik->value(),ui->progressBarKik->maximum(),0));
-    ui->progressBarKikDef->setStyleSheet(styleForBar(ui->progressBarKikDef->value(),ui->progressBarKikDef->maximum(),0));
-    ui->progressBarBoxing->setStyleSheet(styleForBar(ui->progressBarBoxing->value(),ui->progressBarBoxing->maximum(),0));
-    ui->progressBarRunner->setStyleSheet(styleForBar(ui->progressBarRunner->value(),ui->progressBarRunner->maximum(),0));
-    ui->progressBarVolleyball->setStyleSheet(styleForBar(ui->progressBarVolleyball->value(),ui->progressBarVolleyball->maximum(),0));
-    ui->progressBarOfficiant->setStyleSheet(styleForBar(ui->progressBarOfficiant->value(),ui->progressBarOfficiant->maximum(),0));
-    ui->progressBarMaid->setStyleSheet(styleForBar(ui->progressBarMaid->value(),ui->progressBarMaid->maximum(),0));
-    ui->progressBarVokal->setStyleSheet(styleForBar(ui->progressBarVokal->value(),ui->progressBarVokal->maximum(),0));
-    ui->progressBarDance->setStyleSheet(styleForBar(ui->progressBarDance->value(),ui->progressBarDance->maximum(),0));
-    ui->progressBarDancePro->setStyleSheet(styleForBar(ui->progressBarDancePro->value(),ui->progressBarDancePro->maximum(),0));
-    ui->progressBarDanceStrip->setStyleSheet(styleForBar(ui->progressBarDanceStrip->value(),ui->progressBarDanceStrip->maximum(),0));
-    ui->progressBarDancePole->setStyleSheet(styleForBar(ui->progressBarDancePole->value(),ui->progressBarDancePole->maximum(),0));
-    ui->progressBarPosSkill->setStyleSheet(styleForBar(ui->progressBarPosSkill->value(),ui->progressBarPosSkill->maximum(),0));
-    ui->progressBarSchoolProgress->setStyleSheet(styleForBar(ui->progressBarSchoolProgress->value(),ui->progressBarSchoolProgress->maximum(),0));
-    ui->progressBarTruancy->setStyleSheet(styleForBar(ui->progressBarTruancy->value(),ui->progressBarTruancy->maximum(),0));
+
+    for (int i = 0; i < ui->formLayout->rowCount(); i++)
+    {
+        QProgressBar* ptr = (QProgressBar*)ui->formLayout->itemAt(i, QFormLayout::LabelRole)->widget();
+        QString style;
+        if (i == 6)
+        {
+            style = styleForBar(ptr->value(),ptr->maximum(),type);
+        }
+        else
+        {
+            style = styleForBar(ptr->value(),ptr->maximum(),0);
+        }
+
+        ptr->setStyleSheet(style);
+    }
 }
 
 void TabWidgetPlayer::updBodyVal(Body param, int val)
 {
-    ptrToMplayer->updVBody(param, val);
+    m_player->updVBody(param, val);
 }
 
 void TabWidgetPlayer::loadStrings()
@@ -148,7 +130,7 @@ void TabWidgetPlayer::loadStrings()
         "Бег","Воллейбол","Навыки официантки","Навыки горничной","Вокал",
         "Танцы","Проф.танцы","Стриптиз","Танцы на шесте","Кройка и шитьё",
         "Успеваемость","Прогулы"};
-    int dom = ptrToMplayer->getSkillValue(Skills::domination);
+    int dom = m_player->getSkillValue(Skills::domination);
     if (dom < 0)
     {
         strings[Skills::domination] = "Сабмиссивность: ";
@@ -192,10 +174,12 @@ void TabWidgetPlayer::loadStrings()
 //Block Skill description
     QString result;
 
-    if(ptrToMplayer->isCheatsOn())
+    if(m_player->isCheatsOn())
     {
-        for (int i = 0; i < strings.size(); ++i) {
-            if (i != Skills::domination) {
+        for (int i = 0; i < strings.size(); ++i)
+        {
+            if (i != Skills::domination)
+            {
                 makeLink(strings[i], QString::number(i));
             }
             else
@@ -206,15 +190,11 @@ void TabWidgetPlayer::loadStrings()
         }
     }
 
-    result = "<html><head/><body><p style='line-height: 1.36;'>";
-    for (int i = 0; i < strings.size(); ++i)
+    for (int i = 0; i < ui->formLayout->rowCount(); ++i)
     {
-        result += strings[i] + "<br>";
+        QLabel* ptr = (QLabel*)ui->formLayout->itemAt(i, QFormLayout::FieldRole)->widget();
+        ptr->setText(strings[i]);
     }
-    result += "</p></body></html>";
-    ui->verticalLayoutBar->setAlignment(Qt::AlignTop);
-    ui->verticalLayoutDesc->setAlignment(Qt::AlignTop);
-    ui->labelSkills->setText(result);
 }
 
 void TabWidgetPlayer::on_label_pers_desc_linkActivated(const QString &link)
@@ -233,7 +213,7 @@ void TabWidgetPlayer::on_label_pers_desc_linkActivated(const QString &link)
     }
     if (link == "skinTan")
     {
-        int cur = ptrToMplayer->getVBody(Body::skinTan);
+        int cur = m_player->getVBody(Body::skinTan);
         if (cur == 0)
         {
             updBodyVal(Body::skinTan, 10);
@@ -261,7 +241,7 @@ void TabWidgetPlayer::on_label_pers_desc_linkActivated(const QString &link)
     }
     if (link == "anus")
     {
-        int anus = ptrToMplayer->getVBody(Body::anus);
+        int anus = m_player->getVBody(Body::anus);
         if (anus == 0)
         {
             updBodyVal(Body::anus, 1);   
@@ -293,7 +273,7 @@ void TabWidgetPlayer::on_label_pers_desc_linkActivated(const QString &link)
     }
     if (link == "vagina")
     {
-        int vag = ptrToMplayer->getVBody(Body::vagina);
+        int vag = m_player->getVBody(Body::vagina);
         if (vag == 0)
         {
             updBodyVal(Body::vagina, 1);
@@ -326,7 +306,7 @@ void TabWidgetPlayer::on_label_pers_desc_linkActivated(const QString &link)
     }
     if (link == "throat")
     {
-        int thrVal = ptrToMplayer->getVBody(Body::throat);
+        int thrVal = m_player->getVBody(Body::throat);
         if (thrVal == 0)
         {
             updBodyVal(Body::throat, 1);
@@ -347,14 +327,14 @@ void TabWidgetPlayer::on_label_pers_desc_linkActivated(const QString &link)
     if (link == "pubisHair")
     {
         updBodyVal(Body::pubisHair, 2);
-        if(ptrToMplayer->getVBody(Body::pubisHair) > 4)
+        if(m_player->getVBody(Body::pubisHair) > 4)
         {
-            ptrToMplayer->setVBody(Body::pubisHair, 0);
+            m_player->setVBody(Body::pubisHair, 0);
         }
     }
     if (link == "legHair")
     {
-        if (ptrToMplayer->getVBody(Body::legHair) == 3)
+        if (m_player->getVBody(Body::legHair) == 3)
         {
             updBodyVal(Body::legHair, 3);
         }
@@ -362,9 +342,9 @@ void TabWidgetPlayer::on_label_pers_desc_linkActivated(const QString &link)
         {
             updBodyVal(Body::legHair, 2);
         }
-        if(ptrToMplayer->getVBody(Body::legHair) > 6)
+        if(m_player->getVBody(Body::legHair) > 6)
         {
-            ptrToMplayer->setVBody(Body::legHair, 0);
+            m_player->setVBody(Body::legHair, 0);
         }
         
     }
@@ -417,17 +397,17 @@ void TabWidgetPlayer::on_label_pers_desc_linkActivated(const QString &link)
 }
 
 
-void TabWidgetPlayer::on_labelSkills_linkActivated(const QString &link)
+void TabWidgetPlayer::slotSkillUpdate(const QString &link)
 {
     Skills skill = static_cast<Skills>(link.toInt());
     int value;
     if(skill == Skills::boxing)
     {
         value = 4;
-        ptrToMplayer->updVSkill(Skills::jab, value);
-        ptrToMplayer->updVSkill(Skills::punch, value);
-        ptrToMplayer->updVSkill(Skills::kik, value);
-        ptrToMplayer->updVSkill(Skills::kikDef, value);
+        m_player->updVSkill(Skills::jab, value);
+        m_player->updVSkill(Skills::punch, value);
+        m_player->updVSkill(Skills::kik, value);
+        m_player->updVSkill(Skills::kikDef, value);
     }
     else
     {
@@ -436,8 +416,16 @@ void TabWidgetPlayer::on_labelSkills_linkActivated(const QString &link)
         else if (skill == Skills::posSkill) { value = 50; }
         else if (skill == Skills::truancy) { value = 3; }
         else { value = 5; }
-        ptrToMplayer->updVSkill(skill, value);
+        m_player->updVSkill(skill, value);
     }
     fillCharacteristics();
+}
+
+void TabWidgetPlayer::connections()
+{
+    for(int i = 0; i < ui->formLayout->rowCount(); ++i)
+    {
+        connect(((QLabel*)ui->formLayout->itemAt(i, QFormLayout::FieldRole)->widget()), &QLabel::linkActivated, this, &TabWidgetPlayer::slotSkillUpdate);
+    }
 }
 

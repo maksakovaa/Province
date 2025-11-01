@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1047</width>
-    <height>613</height>
+    <height>619</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -51,7 +51,7 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>98</width>
+             <width>89</width>
              <height>28</height>
             </rect>
            </property>
@@ -73,8 +73,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>98</width>
-             <height>28</height>
+             <width>66</width>
+             <height>16</height>
             </rect>
            </property>
           </widget>
@@ -451,11 +451,8 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_5">
          <item>
-          <layout class="QVBoxLayout" name="verticalLayoutBar">
-           <property name="spacing">
-            <number>5</number>
-           </property>
-           <item>
+          <layout class="QFormLayout" name="formLayout_2">
+           <item row="1" column="0">
             <widget class="QProgressBar" name="progressBarHorny">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -498,7 +495,14 @@
              </property>
             </widget>
            </item>
-           <item>
+           <item row="1" column="1">
+            <widget class="QLabel" name="label_horny">
+             <property name="text">
+              <string>TextLabel</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
             <widget class="QProgressBar" name="progressBarLust">
              <property name="maximumSize">
               <size>
@@ -520,7 +524,14 @@
              </property>
             </widget>
            </item>
-           <item>
+           <item row="2" column="1">
+            <widget class="QLabel" name="label_lust">
+             <property name="text">
+              <string>TextLabel</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
             <widget class="QProgressBar" name="progressBarHealth">
              <property name="minimumSize">
               <size>
@@ -551,8 +562,15 @@
              </property>
             </widget>
            </item>
-           <item>
-            <widget class="QProgressBar" name="progressBarManna">
+           <item row="3" column="1">
+            <widget class="QLabel" name="label_health">
+             <property name="text">
+              <string>TextLabel</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QProgressBar" name="progressBarMood">
              <property name="maximumSize">
               <size>
                <width>16777215</width>
@@ -573,7 +591,14 @@
              </property>
             </widget>
            </item>
-           <item>
+           <item row="4" column="1">
+            <widget class="QLabel" name="label_mood">
+             <property name="text">
+              <string>TextLabel</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0">
             <widget class="QProgressBar" name="progressBarEnergy">
              <property name="maximumSize">
               <size>
@@ -598,7 +623,14 @@
              </property>
             </widget>
            </item>
-           <item>
+           <item row="5" column="1">
+            <widget class="QLabel" name="label_energy">
+             <property name="text">
+              <string>TextLabel</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="0">
             <widget class="QProgressBar" name="progressBarWater">
              <property name="maximumSize">
               <size>
@@ -623,7 +655,14 @@
              </property>
             </widget>
            </item>
-           <item>
+           <item row="6" column="1">
+            <widget class="QLabel" name="label_water">
+             <property name="text">
+              <string>TextLabel</string>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="0">
             <widget class="QProgressBar" name="progressBarSon">
              <property name="maximumSize">
               <size>
@@ -648,7 +687,7 @@
              </property>
             </widget>
            </item>
-           <item>
+           <item row="8" column="0">
             <widget class="QProgressBar" name="progressBarVnesh">
              <property name="maximumSize">
               <size>
@@ -670,33 +709,17 @@
              </property>
             </widget>
            </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QVBoxLayout" name="verticalLayoutDesc">
-           <item>
-            <widget class="QLabel" name="labelStatusDesc">
-             <property name="font">
-              <font>
-               <family>Noto Serif</family>
-               <pointsize>12</pointsize>
-               <kerning>true</kerning>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true"/>
-             </property>
-             <property name="lineWidth">
-              <number>1</number>
-             </property>
+           <item row="7" column="1">
+            <widget class="QLabel" name="label_son">
              <property name="text">
-              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p style='line-height: 1.6;'&gt;1&lt;br&gt;2&lt;br&gt;3&lt;br&gt;4&lt;br&gt;5&lt;br&gt;6&lt;br&gt;7&lt;br&gt;8&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              <string>TextLabel</string>
              </property>
-             <property name="scaledContents">
-              <bool>false</bool>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+            </widget>
+           </item>
+           <item row="8" column="1">
+            <widget class="QLabel" name="label_vnesh">
+             <property name="text">
+              <string>TextLabel</string>
              </property>
             </widget>
            </item>
