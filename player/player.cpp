@@ -2,20 +2,20 @@
 #include "../Functions.h"
 #include <QPixmap>
 #include "cloth.h"
-#include <iostream>
+#include "mainwindow.h"
 
-Player::Player(): m_wardrobe()
+Player::Player() //m_wardrobe()
 {
     initDefaultArrays();
-    connect(this, &Player::sigUpdClothSize, &m_wardrobe, &Wardrobe::slotUpdSize);
+//    connect(this, &Player::sigUpdClothSize, &m_wardrobe, &Wardrobe::slotUpdSize);
     f_name = "Света";
     l_name = "Лебедева";
 }
 
-Player::Player(CharacterType history, Settings* ptr): m_wardrobe(), m_settings(ptr)
+Player::Player(CharacterType history, QWidget* ptr2): m_main(ptr2)
 {
     initDefaultArrays();
-    connect(this, &Player::sigUpdClothSize, &m_wardrobe, &Wardrobe::slotUpdSize);
+//    connect(this, &Player::sigUpdClothSize, &m_wardrobe, &Wardrobe::slotUpdSize);
 
     f_name = "Света";
     l_name = "Лебедева";
@@ -203,60 +203,57 @@ QString Player::getBirthDate()
 
 int Player::getAge()
 {
-    int diff;
-    emit sigCalcAge(diff, m_birthDate);
-    return diff;
+    return ((MainWindow*)m_main)->m_time.calcYears(m_birthDate);
 }
 
-bool Player::updVSkill(Skills skill_name, int value)
+void Player::updVSkill(Skills skill_name, int value)
 {
-    if (m_skills[skill_name] += value)
-    {
-        checkSkillParams();
-        return true;
-    }
-    else
-        return false;
+    m_skills[skill_name] += value;
 }
 
-bool Player::updVBody(Body param, int value)
+void Player::updVBody(Body param, int value)
 {
-    if(m_body[param] += value)
-    {
-        checkBodyParams();
-        calcVneshBonus();
-        return true;
-    }
-    else
-        return false;
+    m_body[param] += value;
 }
 
-bool Player::updVStatus(Status stat, int value)
+void Player::updVStatus(Status stat, int value)
 {
-    if(m_status[stat] += value)
-    {
-        checkStatusParams();
-        return true;
-    }
-    else
-        return false;
+    m_status[stat] += value;
 }
 
 void Player::setVStatus(Status stat, int value)
 {
     m_status[stat] = value;
-    checkStatusParams();
 }
 
 void Player::setVBody(Body param, int value)
 {
     m_body[param] = value;
-    checkBodyParams();
 }
 
 void Player::setVSexVar(SexVar param, int value)
 {
     m_sex[param] = value;
+}
+
+void Player::setVSC(SC param, int value)
+{
+    m_statistic[param] = value;
+}
+
+void Player::setVSkill(Skills param, int val)
+{
+    m_skills[param] += val;
+}
+
+void Player::setVSick(Sickness param, int val)
+{
+    m_sick[param] = val;
+}
+
+void Player::setVAddict(Addiction param, int value)
+{
+    m_addict[param] = value;
 }
 
 void Player::updVBuzzer(budilnik type, int value)
@@ -277,6 +274,16 @@ void Player::updVStatistic(SC param, int value)
     m_statistic[param] += value;
 }
 
+void Player::updVSick(Sickness param, int value)
+{
+    m_sick[param] += value;
+}
+
+void Player::updVAddict(Addiction param, int value)
+{
+    m_addict[param] += value;
+}
+
 void Player::updSkin(char c, int value)
 {
     if(c == '+') { skinIncrement(value); }
@@ -291,6 +298,16 @@ int Player::getVBuzzer(budilnik param)
 int Player::getVSexVar(SexVar param)
 {
     return m_sex[param];
+}
+
+int Player::getVSick(Sickness param)
+{
+    return m_sick[param];
+}
+
+int Player::getVAddict(Addiction param)
+{
+    return m_addict[param];
 }
 
 int Player::getCurClothGroup()
@@ -315,19 +332,19 @@ void Player::redress(Cloth *newCloth)
             ClothGroup newClothGroup = ((ClothMain*)newCloth)->getClothGroup();
             if (m_clothSLots[ClothType::Main] != nullptr)
             {
-                m_wardrobe.addCloth(m_clothSLots[ClothType::Main]);
+                //m_wardrobe.addCloth(m_clothSLots[ClothType::Main]);
             }
             m_clothSLots[ClothType::Main] = newCloth;
             if (newClothGroup <= swimsuit)
             {
                 if(m_clothSLots[ClothType::Panties] != nullptr)
                 {
-                    m_wardrobe.addCloth(m_clothSLots[ClothType::Panties]);
+                    //m_wardrobe.addCloth(m_clothSLots[ClothType::Panties]);
                 }
                 m_clothSLots[ClothType::Panties] = nullptr;
                 if(m_clothSLots[ClothType::Stockings] != nullptr)
                 {
-                    m_wardrobe.addCloth(m_clothSLots[ClothType::Stockings]);
+                    //m_wardrobe.addCloth(m_clothSLots[ClothType::Stockings]);
                 }
                 m_clothSLots[ClothType::Stockings] = nullptr;
             }
@@ -335,7 +352,7 @@ void Player::redress(Cloth *newCloth)
             {
                 if(m_clothSLots[ClothType::Stockings] != nullptr)
                 {
-                    m_wardrobe.addCloth(m_clothSLots[ClothType::Stockings]);
+                    //m_wardrobe.addCloth(m_clothSLots[ClothType::Stockings]);
                 }
                 m_clothSLots[ClothType::Stockings] = nullptr;
             }
@@ -361,7 +378,7 @@ void Player::redress(Cloth *newCloth)
         {
             if(m_clothSLots[static_cast<ClothType>(i)] != nullptr)
             {
-                m_wardrobe.addCloth(m_clothSLots[static_cast<ClothType>(i)]);
+                //m_wardrobe.addCloth(m_clothSLots[static_cast<ClothType>(i)]);
             }
             m_clothSLots[static_cast<ClothType>(i)] = nullptr;
         }
@@ -373,34 +390,40 @@ Cloth *Player::getCloth(ClothType type)
     return m_clothSLots[type];
 }
 
-void Player::setSettingsPtr(Settings *ptr)
-{
-    m_settings = ptr;
-}
-
 void Player::initDefaultArrays()
 {
-    for (int i = 0; i <= Skills::truancy; ++i)
+    for (int i = Skills::strenght; i <= Skills::truancy; ++i)
     {
         m_skills[static_cast<Skills>(i)] = 0;
     }
-    for (int i = 0; i <= Body::glass; ++i)
+    for (int i = Body::bodyGroup; i <= Body::glass; ++i)
     {
         m_body[static_cast<Body>(i)] = 0;
     }
-    for (int i = 0; i <= Status::vnesh; ++i)
+    for (int i = Status::shamelessFlag; i <= Status::vnesh; ++i)
     {
         m_status[static_cast<Status>(i)] = 0;
     }
-    for (int i = 0; i <= SC::sexWithFuta; ++i)
+    for (int i = SC::piss; i <= SC::sexWithFuta; ++i)
     {
         m_statistic[static_cast<SC>(i)] = 0;
     }
-    for (int i = 0; i <= SexVar::spanked; ++i)
+    for (int i = SexVar::selfplaytime; i <= SexVar::spanked; ++i)
     {
         m_sex[static_cast<SexVar>(i)] = 0;
     }
     
+    for (int i = Sickness::sick; i <= Sickness::Kandidoz; i++)
+    {
+        m_sick[static_cast<Sickness>(i)] = 0;
+    }
+    
+    for (int i = Addiction::alko; i <= Addiction::drugStatus; i++)
+    {
+        m_addict[static_cast<Addiction>(i)] = 0;
+    }
+    
+
     m_const[dec_anti_rubbing] = 10;
     m_const[max_dry_v_rubbing] = 8;
     m_const[max_dry_a_rubbing] = 8;
@@ -408,6 +431,7 @@ void Player::initDefaultArrays()
     m_const[max_sweat_grease] = 300;
     m_const[many_vaginal_grease] = 270;
     m_const[out_vaginal_grease] = 35;
+    m_const[max_hour_lust] = 10;
     m_const[shameStage1] = 27;
     m_const[shameStage2] = 81;
     m_const[shameStage3] = 243;
@@ -451,215 +475,9 @@ void Player::calcShamelessFlag()
     m_status[Status::shamelessFlag] = shameless_flag;
 }
 
-void Player::checkBodyParams()
-{
-    if (m_body[Body::vidage] == 24)
-    {
-        m_body[Body::vidage] = 16;
-    }
-    if (m_body[Body::weight] > 100)
-    {
-        m_body[Body::weight] = 40;
-    }
-    if (m_body[Body::height] > 180)
-    {
-        m_body[Body::height] = 160;
-    }
-    if (m_body[Body::lip] > 4)
-    {
-        m_body[Body::lip] = 0;
-    }
-    if (m_body[Body::skin] > 4)
-    {
-        m_body[Body::skin] = 0;
-    }
-    if (m_body[Body::makeup] >= 5)
-    {
-        m_body[Body::makeup] = 1;
-    }
-    if (m_body[Body::anus] == 1 && m_statistic[SC::analSex] < 1)
-    {
-        m_statistic[SC::analSex] = 1;
-    }
-    else if (m_body[Body::anus] == 6 && m_statistic[SC::analSex] < 6)
-    {
-        m_statistic[SC::analSex] = 6;
-    }
-    else if (m_body[Body::anus] == 11 && m_statistic[SC::analSex] < 6)
-    {
-        m_statistic[SC::analSex] = 6;
-    }
-    else if (m_body[Body::anus] == 16 && m_statistic[SC::analSex] < 51)
-    {
-        m_statistic[SC::analSex] = 51;
-    }
-    else if (m_body[Body::anus] == 26 && m_statistic[SC::analSex] < 201)
-    {
-        m_statistic[SC::analSex] = 201;
-    }
-    else if (m_body[Body::anus] == 36 && m_statistic[SC::analSex] < 201)
-    {
-        m_statistic[SC::analSex] = 201;
-    }
-    else if (m_body[Body::anus] == 0 && m_statistic[SC::analSex] != 0)
-    {
-        m_statistic[SC::analSex] = 0;
-    }
-
-    if (m_body[Body::vagina] == 1 && m_statistic[SC::vaginalSex] < 1)
-    {
-        m_statistic[SC::vaginalSex] = 1;
-    }
-    else if (m_body[Body::vagina] == 6 && m_statistic[SC::vaginalSex] < 6)
-    {
-        m_statistic[SC::vaginalSex] = 6;
-    }
-    else if (m_body[Body::vagina] == 11 && m_statistic[SC::vaginalSex] < 6)
-    {
-        m_statistic[SC::vaginalSex] = 6;
-    }
-    else if (m_body[Body::vagina] == 16 && m_statistic[SC::vaginalSex] < 51)
-    {
-        m_statistic[SC::vaginalSex] = 51;
-    }
-    else if (m_body[Body::vagina] == 26 && m_statistic[SC::vaginalSex] < 201)
-    {
-        m_statistic[SC::vaginalSex] = 201;
-    }
-    else if (m_body[Body::vagina] == 36 && m_statistic[SC::vaginalSex] < 201)
-    {
-        m_statistic[SC::vaginalSex] = 201;
-    }
-    else if (m_body[Body::vagina] == 0 && m_statistic[SC::vaginalSex] != 0)
-    {
-        m_statistic[SC::vaginalSex] = 0;
-    }
-    
-    if (m_body[Body::hairCurly] > 10)
-    {
-        m_body[Body::hairCurly] = 0;
-    }
-    
-    if (m_body[Body::hairColor] >= 4)
-    {
-        m_body[Body::hairColor] = 0;
-    }
-    
-    if (m_body[Body::hairLength] >= 4)
-    {
-        m_body[Body::hairLength] = 0;
-    }
-    
-    if (m_body[Body::eyeColor] > 3)
-    {
-        m_body[Body::eyeColor] = 0;
-    }
-
-    if (m_body[Body::eyeSize] > 3)
-    {
-        m_body[Body::eyeSize] = 0;
-    }
-    
-    if (m_body[Body::eyeLashes] > 2)
-    {
-        m_body[Body::eyeLashes] = 0;
-    }
-
-    if (m_body[Body::eyeBrows] >= 20)
-    {
-        m_body[Body::eyeBrows] = -1;
-    }
-    
-    if (m_body[Body::glass] > 3)
-    {
-        m_body[Body::glass] = 1;
-    }
-    updBody();
-}
-
-void Player::checkStatusParams()
-{
-    if (m_sex[dry_v_rubbing] < 0)
-    {
-        m_sex[dry_v_rubbing] = 0;
-    }
-    if (m_sex[level_v_rubbing] < 0)
-    {
-        m_sex[level_v_rubbing] = 0;
-    }
-
-    if (m_status[Status::pregnancyKnow] > 1)
-    {
-        m_status[Status::pregnancyKnow] = 1;
-    }
-    if (m_status[Status::isprok] > 1)
-    {
-        m_status[Status::isprok] = 1;
-    }
-    if (m_status[Status::sweat] > 4)
-    {
-        m_status[Status::sweat] = 4;
-    }
-    if (m_status[Status::mesec] < 0)
-    {
-        m_status[Status::mesec] = 0;
-    }
-}
-
-void Player::checkSkillParams()
-{
-    for (int i = 0; i <= Skills::truancy; ++i)
-    {
-        Skills skill = static_cast<Skills>(i);
-        if(skill == Skills::jab || skill == Skills::punch || skill == Skills::kik || skill == Skills::kikDef || skill == Skills::boxing)
-        {
-            if(m_skills[skill] > 120)
-            {
-                m_skills[skill] = 0;
-            }
-        }
-        else if (skill == Skills::domination)
-        {
-            if(m_skills[skill] > 100)
-            {
-                m_skills[skill] = -100;
-            }
-        }
-        else if (skill == Skills::posSkill)
-        {
-            if(m_skills[skill] > 1000)
-            {
-                m_skills[skill] = 0;
-            }
-        }
-        else if (skill == Skills::runner)
-        {
-            if(m_skills[skill] > 2000)
-            {
-                m_skills[skill] = 0;
-            }
-        }
-        else if (skill == truancy)
-        {
-            if (m_skills[skill] > 30)
-            {
-                m_skills[skill] = 0;
-            }
-        }
-        else {
-            if (m_skills[skill] > 100)
-            {
-                m_skills[skill] = 0;
-            }
-        }
-
-    }
-    m_skills[Skills::boxing] = m_skills[Skills::jab]/4 + m_skills[Skills::punch]/4 + m_skills[Skills::kik]/4 + m_skills[Skills::kikDef]/4;
-}
-
 bool Player::isCheatsOn()
 {
-    return m_settings->isCheats();
+    return ((MainWindow*)m_main)->page4->settings()->isCheats();
 }
 
 bool Player::isPanties()
@@ -669,7 +487,7 @@ bool Player::isPanties()
 
 bool Player::isAutoTampon()
 {
-    return m_settings->isAutoTampon();
+    return ((MainWindow*)m_main)->page4->settings()->isAutoTampon();
 }
 
 void Player::updBody()
@@ -686,18 +504,18 @@ void Player::initWardrobeClothes()
     ClothMain* third = new ClothMain(getRandInt(10,29), ClothType::Main, ClothGroup::sportsSuit, "Спортивный костюм");
     ClothMain* four = new ClothMain(getRandInt(30,49), ClothType::Main, ClothGroup::jeans, "Джинсы");
     ClothPanties* pants = new ClothPanties(ClothType::Panties);
-    m_wardrobe.addCloth(first);
-    m_wardrobe.addCloth(second);
-    m_wardrobe.addCloth(third);
-    m_wardrobe.addCloth(four);
-    m_wardrobe.addCloth((ClothMain*)pants);
+//    m_wardrobe.addCloth(first);
+//    m_wardrobe.addCloth(second);
+//    m_wardrobe.addCloth(third);
+//    m_wardrobe.addCloth(four);
+//    m_wardrobe.addCloth((ClothMain*)pants);
     wearClothes(first);
     wearClothes(pants);
 }
 
 void Player::wearClothes(Cloth* thing)
 {
-    m_clothSLots[thing->getClothType()] = m_wardrobe.wearCloth((ClothMain*)thing);
+    m_clothSLots[thing->getClothType()] = thing;
 }
 
 void Player::checkPanties()
@@ -832,11 +650,11 @@ int Player::calcEyeBrowBonus()
 int Player::calcBodyBonus()
 {
     int bodykoef;
-    if (m_settings->getBodyType() == 0)
+    if (((MainWindow*)m_main)->page4->settings()->getBodyType() == 0)
     {
         bodykoef = 15 - m_body[bodyGroup] * 5;
     }
-    else if (m_settings->getBodyType() == 2)
+    else if (((MainWindow*)m_main)->page4->settings()->getBodyType() == 2)
     {
         bodykoef = m_body[bodyGroup] * 5 - 5;
     }
@@ -877,7 +695,7 @@ int Player::calcPubisBonus()
             lobkoef = -20;
         }
 
-        if (m_settings->getPubicHair())
+        if (((MainWindow*)m_main)->page4->settings()->getPubicHair())
         {
             lobkoef = -1 * lobkoef;
         }
@@ -976,11 +794,11 @@ int Player::calcZZTits()
         quot = 3;
     }
     
-    if (m_settings->getBody_tits() == 0)
+    if (((MainWindow*)m_main)->page4->settings()->getBody_tits() == 0)
     {
         zz_tits = 20 - m_body[breastsSize] * 3;
     }
-    else if (m_settings->getBody_tits() == 1)
+    else if (((MainWindow*)m_main)->page4->settings()->getBody_tits() == 1)
     {
         if (m_body[breastsSize] < 3)
         {
@@ -1020,7 +838,7 @@ void Player::calcVneshBonus()
     m_status[vnesh] += calcLipAlmstatBonus();
     m_status[vnesh] += calcEyeBrowBonus();
     m_status[vnesh] += calcGlassBonus();
-    if (m_settings->isHapri() && m_body[hairStatus] != 0)
+    if (((MainWindow*)m_main)->page4->settings()->isHapri() && m_body[hairStatus] != 0)
     {
         m_status[vnesh] += 2;
     }
@@ -1034,7 +852,7 @@ void Player::calcVneshBonus()
     {
         m_status[vnesh] = 0;
     }
-    if (m_status[Status::sifilis] >= 21 || m_status[Status::gerpes] >= 3 || m_status[Status::tripper] > 2)
+    if (m_sick[Sifilis] >= 21 || m_sick[Gerpes] >= 3 || m_sick[Triper] > 2)
     {
         m_status[vnesh] = -10;
     }
@@ -1090,7 +908,7 @@ void Player::skinIncrement(int value)
 QString Player::getPlayerFace()
 {
     QString path;
-    if(m_settings->isHapri())
+    if(((MainWindow*)m_main)->page4->settings()->isHapri())
     {
         if(m_body[Body::makeup] == 0)
         {
@@ -1368,4 +1186,12 @@ void Player::zz_body()
     else { m_body[breastsSize] = 6; }
     if (m_body[breastsSize] < 0) { m_body[breastsSize] = 0; }
     if (m_body[breastsSize] > 6) { m_body[breastsSize] = 6; }
+}
+
+void Player::slotWearAndTear(int value)
+{
+    if (m_clothSLots[ClothType::Main] != nullptr)
+    {
+        m_clothSLots[ClothType::Main]->decreaseCondition(value);
+    }
 }

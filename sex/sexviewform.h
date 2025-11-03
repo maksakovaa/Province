@@ -1,9 +1,7 @@
 #ifndef SEXVIEWFORM_H
 #define SEXVIEWFORM_H
 
-#include "locationform.h"
 #include "nav/location.h"
-#include "timeServer.h"
 #include <QWidget>
 #include <QStackedWidget>
 #include <QPushButton>
@@ -27,23 +25,33 @@ signals:
 public:
     explicit SexViewForm(QWidget *parent = nullptr);
     ~SexViewForm();
-    void setPagePtr(QStackedWidget* ptr);
-    void setPlayerPtr(Player* ptr);
     void setLayoutPtr(QVBoxLayout* ptr);
-    void setTimeServerPtr(TimeServer* ptr);
     void selfPlayStart(Location* current);
 private:
     void clearLayout();
     Ui::SexViewForm *ui;
-    QStackedWidget* m_page;
     SelfPlay* m_selfplay;
     Sex* m_sex;
-    Player* m_player;
     QVBoxLayout* m_actLayout;
-    TimeServer* m_time;
-    LocationForm* m_loc;
-    BagForm* m_bag;
-    SettingsForm* m_settings;
+    int getSexVar(SexVar param);
+    int getVStatus(Status param);
+    int getVBody(Body param);
+    int getItemCount(Items item);
+    int getVAddict(Addiction param);
+    int getBSC(SC param);
+    void setSexVar(SexVar param, int value);
+    void updSexVar(SexVar param, int value);
+    void setVStatus(Status param, int value);
+    void updVStatus(Status param, int value);
+    void updVSC(SC param, int val);
+    void updVBody(Body param, int val);
+    void useItem(Items item, int count);
+    void setVBody(Body param, int val);
+    void incTime(int min);
+    void setMainWidgetpage(int page);
+    void changeLoc(Location* loc);
+    Location* getCurLoc();
+    QWidget* root;
 };
 
 enum SelfPlayActs
@@ -133,11 +141,15 @@ private:
     int getVStatus(Status param);
     int getVBody(Body param);
     int getItemCount(Items item);
+    int getVAddict(Addiction param);
+    int getBSC(SC param);
     void setSexVar(SexVar param, int value);
     void updSexVar(SexVar param, int value);
     void setVStatus(Status param, int value);
     void updVStatus(Status param, int value);
+    void updVSC(SC param, int val);
     void useItem(Items item, int count);
+    void setVBody(Body param, int val);
     void checkTextOutput(int addTxtSex, QString text);
 };
 

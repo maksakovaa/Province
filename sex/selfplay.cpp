@@ -1,5 +1,7 @@
+#include "mainwindow.h"
 #include "sexviewform.h"
 #include "player/enums.h"
+#include "../ui_mainwindow.h"
 #include "ui_sexviewform.h"
 #include "Functions.h"
 
@@ -12,11 +14,11 @@ SelfPlay::SelfPlay(QWidget* parent)
 void SelfPlay::start(Location *current)
 {
     root->clearLayout();
-    root->m_page->setCurrentIndex(5);
+    root->setMainWidgetpage(5);
 
     if(getVSexVar(mastrOnce) == 0)
     {
-        root->m_player->updVStatistic(SC::masturbation,1);
+        root->updVSC(SC::masturbation,1);
         setVSexVar(mastrOnce, 1);
     }
 
@@ -167,7 +169,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
     case actSP2:
     {
         updVStatus(horny, -25);
-        root->m_player->updVBody(vagina, 1);
+        root->updVBody(vagina, 1);
         updVSexVar(selfplaytime, 5);
         updVStatus(mood, -100);
         incTime(5);
@@ -205,7 +207,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
         }
         if (getVStatus(horny) >= 100)
         {
-            root->m_player->updVStatistic(SC::orgasm, 1);
+            root->updVSC(SC::orgasm, 1);
             setVStatus(mood, 100);
             setVStatus(horny,0);
             setVStatus(lust, 0);
@@ -290,7 +292,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
         }
         if (getVStatus(horny) >= 100)
         {
-            root->m_player->updVStatistic(SC::orgasm, 1);
+            root->updVSC(SC::orgasm, 1);
             setVStatus(mood, 100);
             setVStatus(horny,0);
             setVStatus(lust, 0);
@@ -310,10 +312,10 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
         setVSexVar(mastrOnce, 0);
         if(m_vagTemp > getVBody(vagina)*2)
         {
-            root->m_player->updVBody(vagina, 1);
+            root->updVBody(vagina, 1);
             m_vagTemp = 0;
         }
-        root->m_loc->slotChangeLoc(getCurLoc(),0);
+        root->changeLoc(root->getCurLoc());
     }
         break;
     case actSP8:
@@ -340,7 +342,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
         }
         if(getVStatus(horny) >= 100)
         {
-            root->m_player->updVStatistic(orgasm, 1);
+            root->updVSC(orgasm, 1);
             setVStatus(mood, 100);
             setVStatus(horny, 0);
             setVStatus(lust, 0);
@@ -368,7 +370,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
         {
             setDesc(getActDesc(descSP23));
         }
-        if(root->m_bag->getQuantityof(lubri) > 0)
+        if(root->getItemCount(lubri) > 0)
         {
             emit root->sigSetGape(anus, 10, 3, 0);
         }
@@ -413,7 +415,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
             updVStatus(horny, -50);
             setDesc(getActDesc(descSP29));
         }
-        if(root->m_bag->getQuantityof(lubri) > 0)
+        if(root->getItemCount(lubri) > 0)
         {
             emit root->sigSetGape(anus, 10, 5, 0);
         }
@@ -423,7 +425,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
         }
         if(getVStatus(horny) >= 100)
         {
-            root->m_player->updVStatistic(analOrgasm, 1);
+            root->updVSC(analOrgasm, 1);
             setVStatus(mood, 100);
             setVStatus(lust, 0);
             setVStatus(horny, 0);
@@ -469,7 +471,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
             updVStatus(horny, -50);
             setDesc(getActDesc(descSP34));
         }
-        if(root->m_bag->getQuantityof(lubri) > 0)
+        if(root->getItemCount(lubri) > 0)
         {
             emit root->sigSetGape(anus, 10, 10, 0);
         }
@@ -479,7 +481,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
         }
         if(getVStatus(horny) >= 100)
         {
-            root->m_player->updVStatistic(analOrgasm, 1);
+            root->updVSC(analOrgasm, 1);
             setVStatus(mood, 100);
             setVStatus(lust, 0);
             setVStatus(horny, 0);
@@ -525,7 +527,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
             updVStatus(horny, -50);
             setDesc(getActDesc(descSP39));
         }
-        if(root->m_bag->getQuantityof(lubri) > 0)
+        if(root->getItemCount(lubri) > 0)
         {
             emit root->sigSetGape(anus, 10, 15, 0);
         }
@@ -535,7 +537,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
         }
         if(getVStatus(horny) >= 100)
         {
-            root->m_player->updVStatistic(analOrgasm, 1);
+            root->updVSC(analOrgasm, 1);
             setVStatus(mood, 100);
             setVStatus(lust, 0);
             setVStatus(horny, 0);
@@ -581,7 +583,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
                 updVStatus(horny, -50);
                 setDesc(getActDesc(descSP44));
             }
-            if(root->m_bag->getQuantityof(lubri) > 0)
+            if(root->getItemCount(lubri) > 0)
             {
                 emit root->sigSetGape(anus, 10, 15, 0);
             }
@@ -596,7 +598,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
             }
             if(getVStatus(horny) >= 100)
             {
-                root->m_player->updVStatistic(analOrgasm, 1);
+                root->updVSC(analOrgasm, 1);
                 setVStatus(mood, 100);
                 setVStatus(lust, 0);
                 setVStatus(horny, 0);
@@ -695,14 +697,14 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
         setVSexVar(mastrOnce, 0);
         if(m_vagTemp > getVBody(vagina)*2)
         {
-            root->m_player->updVBody(vagina, 1);
+            root->updVBody(vagina, 1);
             m_vagTemp = 0;
         }
         if(getCurLoc()->getLocId() == "bedr_parents")
         {
 
         }
-        root->m_loc->slotChangeLoc(getCurLoc(),0);
+        root->changeLoc(root->getCurLoc());
     }
         break;
     case actSP26:
@@ -712,10 +714,10 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
         setVSexVar(mastrOnce, 0);
         if(m_vagTemp > getVBody(vagina)*2)
         {
-            root->m_player->updVBody(vagina, 1);
+            root->updVBody(vagina, 1);
             m_vagTemp = 0;
         }
-        root->m_loc->slotChangeLoc(getCurLoc(),0);
+        root->changeLoc(root->getCurLoc());
     }
         break;
     default:
@@ -726,7 +728,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
 
 Location *SelfPlay::getCurLoc()
 {
-    return root->m_loc->getCurPtr();
+    return root->getCurLoc();
 }
 
 void SelfPlay::makeActBtn(SelfPlayActs act)
@@ -738,17 +740,17 @@ void SelfPlay::makeActBtn(SelfPlayActs act)
 
 void SelfPlay::incTime(int min)
 {
-    root->m_time->increaseTime(min);
+    root->incTime(min);
 }
 
 void SelfPlay::updVSexVar(SexVar var, int count)
 {
-    root->m_player->updVSexVar(var, count);
+    root->updSexVar(var, count);
 }
 
 int SelfPlay::getVSexVar(SexVar var)
 {
-    return root->m_player->getVSexVar(var);
+    return root->getSexVar(var);
 }
 
 void SelfPlay::bathInvasion()
@@ -770,27 +772,27 @@ void SelfPlay::selfPlayEnding()
 
 int SelfPlay::getVStatus(Status param)
 {
-    return root->m_player->getVStatus(param);
+    return root->getVStatus(param);
 }
 
 int SelfPlay::getVBody(Body param)
 {
-    return root->m_player->getVBody(param);
+    return root->getVBody(param);
 }
 
 void SelfPlay::updVStatus(Status param, int value)
 {
-    root->m_player->updVStatus(param, value);
+    root->updVStatus(param, value);
 }
 
 void SelfPlay::setVStatus(Status param, int value)
 {
-    root->m_player->setVStatus(param, value);
+    root->setVStatus(param, value);
 }
 
 void SelfPlay::setVSexVar(SexVar param, int value)
 {
-    root->m_player->setVSexVar(param,value);
+    root->setSexVar(param,value);
 }
 
 void SelfPlay::setImg(QString text)
@@ -810,7 +812,7 @@ void SelfPlay::appendDesc(QString text)
 
 int SelfPlay::getItemCount(Items i)
 {
-    return root->m_bag->getQuantityof(i);
+    return root->getItemCount(i);
 }
 
 QString SelfPlay::getActName(SelfPlayActs act)

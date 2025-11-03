@@ -187,7 +187,7 @@ void BagForm::initBag()
     m_storage[m_items[cosmetic]] = 10;
     m_storage[m_items[cosmeticBig]] = 10;
     m_storage[m_items[tampon]] = 20;
-    m_storage[m_items[antiPregPills]] = 10;
+    m_storage[m_items[antiPregPills]] = 0;
     m_storage[m_items[wetWipes]] = 1;
     m_storage[m_items[morningCare]] = 1;
     m_storage[m_items[vagGel]] = 1;

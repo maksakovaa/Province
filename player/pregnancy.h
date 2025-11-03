@@ -32,6 +32,7 @@ private:
     void updVBody(Body param, int value);
     void updVStatus(Status param, int value);
     void updVSkill(Skills skil, int value);
+    void initPregData();
     Player* m_player;
     BagForm* m_bag;
 

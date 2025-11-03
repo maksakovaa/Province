@@ -208,3 +208,15 @@ void ClearLayout(QLayout *layout)
         delete item;
     }
 }
+
+int valChecker(int val, int min, int max)
+{
+    int result;
+    if (val <= min)
+        result = min;
+    else if (val >= max)
+        result = max;
+    else
+        result = val;  
+    return result;
+}

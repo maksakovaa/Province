@@ -1,8 +1,10 @@
 #include "locationform.h"
 #include "../Functions.h"
-#include "sexviewform.h"
+#include "../mainwindow.h"
+// #include "sex/sexviewform.h"
 #include "ui_locationform.h"
 #include "objviewform.h"
+#include "../ui_mainwindow.h"
 
 BathRoom::BathRoom(LocationForm* ptr): root(ptr)
 {
@@ -72,7 +74,7 @@ void BathRoom::start()
         // if $npc['38,qwKolka'] >= 5 and week <= 5 and hour = 6 and cloth[1] = 1 and anus >= 13 and vagina >= 13: gt 'sisterQW','incest_event5sub'
     }
 
-    if((root->m_player->getCloth(ClothType::Main) == nullptr ||  ((ClothMain*)root->m_player->getCloth(ClothType::Main))->getClothGroup() == 1) && prevCloth != nullptr)
+    if((root->getCloth(ClothType::Main) == nullptr || ((ClothMain*)root->getCloth(ClothType::Main))->getClothGroup() == 1) && prevCloth != nullptr)
     {
         makeActBtn(actBath31);
     }
@@ -137,7 +139,7 @@ void BathRoom::start()
     {
         makeActBtn(actBath4);
     }
-    if(root->getItmCount(tampon) > 0 && root->getVStatus(mesec) > 0 && root->getVStatus(isprok) == 0 && !root->m_settings->isAutoTampon())
+    if(root->getItmCount(tampon) > 0 && root->getVStatus(mesec) > 0 && root->getVStatus(isprok) == 0 && !root->isAutoTampon())
     {
         makeActBtn(actBath6);
     }
@@ -197,11 +199,11 @@ void BathRoom::start()
     {
         if(stiralka > 0 || my_house == 1)
         {
-            if(husband > 0 && husbandday > 0 && husporday != root->m_time->getDay() && poroshok >= 2)
+            if(husband > 0 && husbandday > 0 && husporday != root->getDay() && poroshok >= 2)
             {
                 husband += 5;
                 poroshok -= 2;
-                husporday = root->m_time->getDay();
+                husporday = root->getDay();
                 root->addDesc(bathStr(43));
             }
             if(poroshok < 2)
@@ -225,7 +227,7 @@ void BathRoom::start()
         {
             root->addDesc(bathStr(48));
         }
-        if(husband > 0 && husbandday > 0 && husporday != root->m_time->getDay() && poroshok >= 2)
+        if(husband > 0 && husbandday > 0 && husporday != root->getDay() && poroshok >= 2)
         {
             makeActBtn(actBath19);
         }
@@ -272,7 +274,7 @@ void BathRoom::slotBathActionHandler(bathActs action)
     
     case actBath3:
     {
-        root->m_page->widget(5)->findChild<SexViewForm*>("SexViewForm")->selfPlayStart(root->getCurPtr());
+        root->startSelfPlay(root->getCurPtr());
     }
     break;
     
@@ -347,7 +349,7 @@ void BathRoom::slotBathActionHandler(bathActs action)
     case actBath10:
     {
         root->setVStatus(cumFrot,0);
-        root->m_player->getCloth(ClothType::Main)->decreaseCondition();
+        root->getCloth(ClothType::Main)->decreaseCondition();
         root->incTime(15);
         root->setImage(":/actions/bathroom/frotsp" + intQStr(getRandInt(0,6)) + ".jpg");
         root->setDesc(bathActStr(32));
@@ -410,7 +412,8 @@ void BathRoom::slotBathActionHandler(bathActs action)
     case actBath15:
     {
         root->incTime(5);
-        if (root->m_ccsex->sextToysBlock(2).isEmpty())
+
+        if (root->sextToysBlock(2).isEmpty())
         {
             root->setSexVar(analplugIN, 1);
             if (root->getVBody(anus) < 10)
@@ -430,7 +433,7 @@ void BathRoom::slotBathActionHandler(bathActs action)
         else
         {
             root->setImage(":/actions/analplug/no_anus.jpg");
-            root->setDesc(root->m_ccsex->sextToysBlock(2));
+            root->setDesc(root->sextToysBlock(2));
         }
         makeActBtn(actBath1);
     }
@@ -455,7 +458,7 @@ void BathRoom::slotBathActionHandler(bathActs action)
     case actBath17:
     {
         root->incTime(5);
-        if (root->m_ccsex->sextToysBlock(1).isEmpty())
+        if (root->sextToysBlock(1).isEmpty())
         {
             root->setSexVar(vibratorIN, 1);
             if (root->getVBody(vagina) < 6)
@@ -468,7 +471,7 @@ void BathRoom::slotBathActionHandler(bathActs action)
         else
         {
             root->setImage(":/actions/vibrator/no_pussy.jpg");
-            root->setDesc(root->m_ccsex->sextToysBlock(1));
+            root->setDesc(root->sextToysBlock(1));
         }
         makeActBtn(actBath1);
     }
@@ -489,7 +492,7 @@ void BathRoom::slotBathActionHandler(bathActs action)
         husband += 5;
         poroshok -= 2;
         root->incTime(60);
-        husporday = root->m_time->getDay();
+        husporday = root->getDay();
         root->updVStatus(mood, -25);
         root->setImage(":/actions/bathroom/stir.jpg");
         root->setDesc(bathStr(49));
@@ -523,7 +526,7 @@ void BathRoom::slotBathActionHandler(bathActs action)
             root->updVStatus(hygiene, 3);
             shower();
             savePrevCloth();
-            root->m_player->redress(new ClothMain(1, ClothType::Main, ClothGroup::towel, "Полотенце"));
+            root->redress(new ClothMain(1, ClothType::Main, ClothGroup::towel, "Полотенце"));
             root->setImage(":/actions/bathroom/dush.jpg");
             root->setDesc(bathStr(22));
             if(bath_lock == 0 && backLoc() == "parents_home")
@@ -542,7 +545,7 @@ void BathRoom::slotBathActionHandler(bathActs action)
     case actBath23:
     {
         savePrevCloth();
-        root->m_player->redress(new ClothMain(1,ClothType::Main,ClothGroup::towel,"Полотенце"));
+        root->redress(new ClothMain(1,ClothType::Main,ClothGroup::towel,"Полотенце"));
         root->slotChangeLoc(root->getCurPtr()->getParentPtr(),1);
     }
     break;
@@ -550,15 +553,14 @@ void BathRoom::slotBathActionHandler(bathActs action)
     case actBath24:
     {
         savePrevCloth();
-        root->m_player->redress(nullptr);
+        root->redress(nullptr);
         root->slotChangeLoc(root->getCurPtr()->getParentPtr(),1);
     }
     break;
     
     case actBath25:
     {
-        ObjViewForm* ptr = (ObjViewForm*)root->m_page->widget(4);
-        ptr->slotViewObj("mirror");
+        root->viewObj("mirror");
     }
     break;
     
@@ -585,11 +587,11 @@ void BathRoom::slotBathActionHandler(bathActs action)
         if(skinday != root->getVStatus(daystart))
         {
             skinday = root->getVStatus(daystart);
-            root->m_player->updSkin('+', 3);
+            root->updSkin('+', 3);
         }
         shower();
         savePrevCloth();
-        root->m_player->redress(nullptr);
+        root->redress(nullptr);
         root->updVStatus(horny, -root->getVStatus(horny)/4);
         root->updVStatus(vaginal_grease, -root->getVStatus(vaginal_grease)/2);
         root->updVStatus(hygiene,15);
@@ -631,7 +633,7 @@ void BathRoom::slotBathActionHandler(bathActs action)
 
     case actBath31:
     {
-        root->m_player->redress(prevCloth);
+        root->redress(prevCloth);
         slotBathActionHandler(actBath32);
     }
     break;
@@ -1078,7 +1080,7 @@ QString BathRoom::peekActStr(int value)
 
 void BathRoom::savePrevCloth()
 {
-    ClothMain* playerCloth = (ClothMain*)root->m_player->getCloth(ClothType::Main);
+    ClothMain* playerCloth = (ClothMain*)root->getCloth(ClothType::Main);
     if(playerCloth != nullptr && playerCloth->getClothGroup() >= sundress)
     {
         prevCloth = playerCloth;
@@ -1087,7 +1089,7 @@ void BathRoom::savePrevCloth()
 
 TimeServer *BathRoom::gTime()
 {
-    return root->m_time;
+    return root->gTime();
 }
 
 QString BathRoom::backLoc()
@@ -1129,13 +1131,11 @@ void BathRoom::noShampoo()
 
 void BathRoom::voyer()
 {
-    std::cout << "VOYER STARTED" << std::endl;
     father_dadqw_day = day();
     brother_ev1 = day();
     if (
         (((week() == 0 || week() == 6) && hour() >= 7 && hour() <= 17) || (week() > 1 && week() < 6 && (hour() == 7 || hour() == 17))) && father_dadqw_day != day())
     {
-        std::cout << "0" << std::endl;
         father_dadqw_day = day();
         // if $npc['35,relation'] < 60 or $npc['35,qwOtchim'] < 3:
         // gs 'zz_render','','qwest/alter/father/bath_voyer_0.webm',func('zz_bathroom_voyer_strings'+$lang, 'txt_1')
@@ -1144,11 +1144,9 @@ void BathRoom::voyer()
     }
     else if (hour() >= 18 && hour() <= 21 && brother_ev1 != day() && brother_location == "guestroom")
     {
-        std::cout << "1" << std::endl;
     }
     else
     {
-        std::cout << "3" << std::endl;
         root->setImage(":/qwest/father/bath_voyer_4.jpg");
         root->setDesc(voyerStr(4));
         makeActBtn(actBath1);
@@ -1157,20 +1155,20 @@ void BathRoom::voyer()
 
 int BathRoom::week()
 {
-    return root->m_time->getWeekNum();
+    return gTime()->getWeekNum();
 }
 
 int BathRoom::hour()
 {
-    return root->m_time->getHour();
+    return gTime()->getHour();
 }
 
 int BathRoom::minut()
 {
-    return root->m_time->getMin();
+    return gTime()->getMin();
 }
 
 int BathRoom::day()
 {
-    return root->m_time->getDay();
+    return gTime()->getDay();
 }

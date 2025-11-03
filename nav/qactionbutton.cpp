@@ -38,15 +38,3 @@ void QActionButton::handleButtonClick()
         emit sigViewObj(m_obj);
     }
 }
-
-ObjActionButton::ObjActionButton(QString actName)
-{
-    m_actionName = actName;
-    connect(this, &ObjActionButton::clicked, this, &ObjActionButton::handleButtonClick);
-    this->setCursor(Qt::PointingHandCursor);
-}
-
-void ObjActionButton::handleButtonClick()
-{
-    emit sigAction(m_actionName);
-}

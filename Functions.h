@@ -17,5 +17,6 @@ QString styleForBar(int value, int maxv, int type);
 int getSexuality();
 int genDick(int arg = 0);
 void ClearLayout(QLayout* layout);
+int valChecker(int val, int min = 0, int max = 100);
 
 #endif

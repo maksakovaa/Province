@@ -3,11 +3,8 @@
 
 #include <QVBoxLayout>
 #include <QObject>
-#include "player/player.h"
-#include "player/pregnancy.h"
 #include <QLabel>
-#include "player/ccsex.h"
-#include "player/bagform.h"
+#include "player/enums.h"
 
 enum statusNotif {
     ind_makeup,
@@ -53,12 +50,8 @@ class OverlayStatus: public QObject
 {
     Q_OBJECT
 public:
-    OverlayStatus();
+    OverlayStatus(QWidget* ptr);
     void setParentWidget(QWidget* ptr);
-    void setPlayerPtr(Player* ptr);
-    void setPregPtr(Pregnancy* ptr);
-    void setCCSexPtr(CCSex* ptr);
-    void setBagPtr(BagForm* ptr);
     void genOverlay();
 private:
     void grabStatusVector();
@@ -89,17 +82,21 @@ private:
     void grabInd_Vagina_Issues();
     //ind_rose
     void grabInd_PillsAndCondoms();
+    void granInd_hangover();
+    void grabInd_Christmas();
 
+    int getVStatus(Status param);
+    int getVSick(Sickness param);
+    int getVAddict(Addiction param);
+    int getVSex(SexVar param);
+    int getVBody(Body param);
     QLabel* genStatusWidget(QString imgLink, QString desc);
     std::unordered_map<statusNotif, QString> m_statuses;
     std::unordered_map<statusNotif, QString> m_statusesImg;
     QVBoxLayout* m_layout;
     QWidget* m_parent;
-    Player* m_player;
-    Pregnancy* m_reprSys;
+    QWidget* root;
     QString m_styleSheet;
-    CCSex* m_ccsex;
-    BagForm* m_bag;
 };
 
 #endif // OVERLAYSTATUS_H

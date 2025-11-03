@@ -1,10 +1,12 @@
 #include "overlaystatus.h"
-#include "player/cloth.h"
+#include "mainwindow.h"
+#include "nav/cloth.h"
 #include <QLabel>
 #include "Functions.h"
 
-OverlayStatus::OverlayStatus()
+OverlayStatus::OverlayStatus(QWidget * ptr)
 {
+    root = ptr;
     m_styleSheet = "text-decoration: none; color: black; width: 50px; height: 50px; background: #fff; border-radius: 12px; border: 1px solid #aaa;";
 }
 
@@ -13,26 +15,7 @@ void OverlayStatus::setParentWidget(QWidget *ptr)
     m_parent = ptr;
     m_layout = new QVBoxLayout(m_parent);
     m_layout->setAlignment(Qt::AlignTop);
-}
-
-void OverlayStatus::setPlayerPtr(Player *ptr)
-{
-    m_player = ptr;
-}
-
-void OverlayStatus::setPregPtr(Pregnancy *ptr)
-{
-    m_reprSys = ptr;
-}
-
-void OverlayStatus::setCCSexPtr(CCSex *ptr)
-{
-    m_ccsex = ptr;
-}
-
-void OverlayStatus::setBagPtr(BagForm *ptr)
-{
-    m_bag = ptr;
+    m_layout->setSpacing(5);
 }
 
 QLabel *OverlayStatus::genStatusWidget(QString imgLink, QString desc)
@@ -121,13 +104,13 @@ void OverlayStatus::grabStatusVector()
 //ind_PillsAndCondoms
     grabInd_PillsAndCondoms();
 //ind_hangover
-    //...
+    granInd_hangover();
 //ind_closed_door
     //...
 //ind_tryst_house
     //...
 //ind_christmas
-    //...
+    grabInd_Christmas();
 //ind_no_alcohol
     //...
 //ind_bad_sex
@@ -140,8 +123,8 @@ void OverlayStatus::grabStatusVector()
 
 void OverlayStatus::grabInd_makeup()
 {
-    m_statusesImg[ind_makeup] = "makeup" + intQStr(m_player->getVBody(makeup));
-    m_statuses[ind_makeup] = "<p style='color: #000000'>" + m_player->getMakeupDesc() + "</p>";
+    m_statusesImg[ind_makeup] = "makeup" + intQStr(getVBody(makeup));
+    m_statuses[ind_makeup] = "<p style='color: #000000'>" + ((MainWindow*)root)->m_player->getMakeupDesc() + "</p>";
 }
 
 void OverlayStatus::grabInd_Pain()
@@ -158,8 +141,8 @@ void OverlayStatus::grabInd_Pain()
         "У вас сильно болит и кровоточит анус."
     };
     m_statuses[ind_pain] = "";
-    int vgape = m_player->getVSexVar(stat_vgape);
-    int agape = m_player->getVSexVar(stat_agape);
+    int vgape = getVSex(stat_vgape);
+    int agape = getVSex(stat_agape);
     if (vgape > 0)
     {
         m_statuses[ind_pain] += tmpV[vgape - 1] + "<br>";
@@ -188,8 +171,8 @@ void OverlayStatus::grabInd_Rub()
         "Ваше очко серьёзно натерто и невыносимо болит",
         "Ваше очко натерто в кровь, а боль такая, что хочется умереть."
     };
-    int _tmpv = m_ccsex->calc_rubb("vagina");
-    int _tmpa = m_ccsex->calc_rubb("anus");
+    int _tmpv = ((MainWindow*)root)->m_ccsex.calc_rubb("vagina");
+    int _tmpa = ((MainWindow*)root)->m_ccsex.calc_rubb("anus");
     if(_tmpv != 0 || _tmpa != 0)
     {
         m_statuses[ind_rub] = "Вы пострадали из-за любви к сексу<br>";
@@ -212,9 +195,9 @@ void OverlayStatus::grabInd_Pin()
 {
     m_statuses[ind_pin] = "";
     m_statusesImg[ind_pin] = "pin";
-    int nip = m_player->getVSexVar(nippain);
-    int pub = m_player->getVSexVar(painpub);
-    int pirc = m_player->getVSexVar(pirs_pain_ton);
+    int nip = getVSex(nippain);
+    int pub = getVSex(painpub);
+    int pirc = getVSex(pirs_pain_ton);
     if(nip > 0)
     {
         if(nip < 5) { m_statuses[ind_pin] += "У вас немного болят соски.<br>"; }
@@ -235,15 +218,14 @@ void OverlayStatus::grabInd_Pin()
 
 void OverlayStatus::grabIndAss()
 {
-    int spanked = m_player->getVSexVar(SexVar::spanked);
-    if(spanked > 0)
+    if(getVSex(spanked) > 0)
     {
         m_statusesImg[ind_ass] = "ass";
-        if(spanked/25 == 0)
+        if(getVSex(spanked)/25 == 0)
         {
             m_statuses[ind_ass] = "Ваши ягодицы немного покраснели от шлепков и грубых прикосновений и побаливают.";
         }
-        else if(spanked/25 <= 2)
+        else if(getVSex(spanked)/25 <= 2)
         {
             m_statuses[ind_ass] = "Ваши ягодицы горят огнём, на них отчётливо видны полосы.";
         }
@@ -256,16 +238,16 @@ void OverlayStatus::grabIndAss()
 
 void OverlayStatus::grabInd_depilation()
 {
-    if(m_player->getVBody(Body::legHair) > 0)
+    if(getVBody(Body::legHair) > 0)
     {
         m_statusesImg[ind_depilation] = "depilation";
-        m_statuses[ind_depilation] = m_player->getLegsDesc();
+        m_statuses[ind_depilation] = ((MainWindow*)root)->m_player->getLegsDesc();
     }
 }
 
 void OverlayStatus::grabInd_Sweat()
 {
-    int val = m_player->getVStatus(Status::sweat);
+    int val = getVStatus(Status::sweat);
     if(val > 0)
     {
         if(val == 1)
@@ -290,9 +272,9 @@ void OverlayStatus::grabInd_Sweat()
 
 void OverlayStatus::grabInd_Wday()
 {
-    if (m_reprSys->isMesec() && !m_reprSys->isPregnancy())
+    if (((MainWindow*)root)->m_reproductSys.isMesec() && !((MainWindow*)root)->m_reproductSys.isPregnancy())
     {
-        if (m_player->getVStatus(isprok) == 0)
+        if (getVStatus(isprok) == 0)
         {
             m_statuses[ind_wday] = "У вас течёт кровь между ног, срочно нужна прокладка.";
             m_statusesImg[ind_wday] = "wday0";
@@ -307,8 +289,8 @@ void OverlayStatus::grabInd_Wday()
 
 void OverlayStatus::grabInd_pregnancy()
 {
-    int preg = m_reprSys->getPregValue();
-    if (preg != 0 && m_player->getVStatus(pregnancyKnow) == 1 && preg < 280)
+    int preg = ((MainWindow*)root)->m_reproductSys.getPregValue();
+    if (preg != 0 && getVStatus(pregnancyKnow) == 1 && preg < 280)
     {
         m_statuses[ind_pregnancy] = "Вы беременны " + intQStr(preg) + " дней, до родов осталось " + intQStr(280 - preg) + " дней.";
         m_statusesImg[ind_pregnancy] = "pregnancy";
@@ -324,7 +306,7 @@ void OverlayStatus::grabInd_pregnancy()
 
 void OverlayStatus::grabInd_MouthSmell()
 {
-    if (m_player->getVStatus(cumLips) > 0)
+    if (getVStatus(cumLips) > 0)
     {
         m_statuses[ind_mouthsmell] = "Из вашего рта пахнет спермой.";
         m_statusesImg[ind_mouthsmell] = "mouthsmell";
@@ -338,27 +320,27 @@ void OverlayStatus::grabInd_Cum()
     m_statuses[ind_sperma] = "";
     m_statusesImg[ind_cum] = "cum";
     m_statusesImg[ind_sperma] = "sperma";
-    if (m_player->getVStatus(cumFace) > 0)
+    if (getVStatus(cumFace) > 0)
     {
         m_statuses[ind_cum] += "Ваше лицо и волосы измазаны в сперме.<br>";
     }
-    if (m_player->getVStatus(cumFrot) > 0)
+    if (getVStatus(cumFrot) > 0)
     {
         m_statuses[ind_cum] += "У вас на одежде пятно спермы.<br>";
     }
-    if (m_player->getVStatus(cumBelly) > 0)
+    if (getVStatus(cumBelly) > 0)
     {
         m_statuses[ind_cum] += "Ваш живот перемазан в сперме.<br>";
     }
-    if (m_player->getVStatus(cumAss) > 0)
+    if (getVStatus(cumAss) > 0)
     {
         m_statuses[ind_cum] += "Ваша попа перемазана в сперме.<br>";
     }
-    if (m_player->getVStatus(cumAnus) > 0)
+    if (getVStatus(cumAnus) > 0)
     {
         m_statuses[ind_cum] += "Из вашей попки медленно вытекает сперма.<br>";
     }
-    if (m_player->getVStatus(cumPussy) > 0)
+    if (getVStatus(cumPussy) > 0)
     {
         m_statuses[ind_sperma] = "Из вашей киски медленно вытекает сперма.<br>";
     }
@@ -368,11 +350,11 @@ void OverlayStatus::grabInd_Toy()
 {
     m_statuses[ind_toy] = "";
     m_statusesImg[ind_toy] = "toy";
-    if (m_player->getVSexVar(analplugIN) > 0)
+    if (getVSex(analplugIN) > 0)
     {
         m_statuses[ind_toy] += "У вас в попу вставлена анальная пробка.<br>";
     }
-    if (m_player->getVSexVar(vibratorIN) > 0)
+    if (getVSex(vibratorIN) > 0)
     {
         m_statuses[ind_toy] += "У вас во влагалище работает вибратор.";
     }
@@ -381,8 +363,8 @@ void OverlayStatus::grabInd_Toy()
 void OverlayStatus::grabInd_Remedy()
 {
     m_statuses[ind_remedy] = "";
-    int sickStatus = m_player->getVStatus(sick);
-    int crazyStatus = m_player->getVStatus(crazy);
+    int sickStatus = getVSick(sick);
+    int crazyStatus = getVSick(crazy);
     if (sickStatus > 0)
     {
         m_statusesImg[ind_remedy] = "remedy";
@@ -430,9 +412,9 @@ void OverlayStatus::grabInd_Remedy()
 
 void OverlayStatus::grabInd_Books()
 {
-    if (m_player->getVStatus(nerdism) > 0)
+    if (getVStatus(nerdism) > 0)
     {
-        int j = m_player->getVStatus(nerdism) / 20 + 1;
+        int j = getVStatus(nerdism) / 20 + 1;
         if (j < 2) j = 2;
         if (j > 5) j = 5;
         
@@ -459,7 +441,7 @@ void OverlayStatus::grabInd_Books()
 
 void OverlayStatus::grabInd_Drunk()
 {
-    int alkoVal = m_player->getVStatus(alko);
+    int alkoVal = getVAddict(alko);
     if (alkoVal > 0)
     {
         if (alkoVal < 3)
@@ -482,7 +464,7 @@ void OverlayStatus::grabInd_Drunk()
 
 void OverlayStatus::grabInd_Frost()
 {
-    int frostVal = m_player->getVStatus(frost);
+    int frostVal = getVStatus(frost);
     if (frostVal > 0)
     {
         if (frostVal <= 5)
@@ -504,8 +486,8 @@ void OverlayStatus::grabInd_Frost()
 
 void OverlayStatus::grabInd_Addict()
 {
-    int drug_eff = m_player->getVStatus(drugEffect);
-    int drug_st = m_player->getVStatus(drugStatus);
+    int drug_eff = getVAddict(drugEffect);
+    int drug_st = getVAddict(drugStatus);
 
     if (drug_st > 0)
     {
@@ -539,8 +521,8 @@ void OverlayStatus::grabInd_Addict()
 
 void OverlayStatus::grabInd_Basket_Full()
 {
-    int bilberryVal = m_player->getVStatus(bilberry);
-    int boletusVal = m_player->getVStatus(boletus);
+    int bilberryVal = getVStatus(bilberry);
+    int boletusVal = getVStatus(boletus);
     if (bilberryVal + boletusVal >= 10)
     {
         m_statusesImg[ind_basket_full] = "basket_full";
@@ -567,7 +549,7 @@ void OverlayStatus::grabInd_Basket_Full()
 
 void OverlayStatus::grabInd_Debt()
 {
-    int debt = m_player->getVStatus(house_debt);
+    int debt = getVStatus(house_debt);
     if (debt > 0)
     {
         m_statuses[ind_debt] = "У вас задолженность за квартиру " + intQStr(debt) + " рублей.";
@@ -578,7 +560,7 @@ void OverlayStatus::grabInd_Debt()
 
 void OverlayStatus::grabInd_Vagina_Estrus()
 {
-    if (m_reprSys->isEstrus())
+    if (((MainWindow*)root)->m_reproductSys.isEstrus())
     {
         m_statuses[ind_vagina_estrus] = "У вас <b><i>''''течка''''</i></b> - киска приятно ноет, но можно и залететь.";
         m_statusesImg[ind_vagina_estrus] = "vagina_estrus";
@@ -589,10 +571,10 @@ void OverlayStatus::grabInd_Vagina_Issues()
 {
     QString _qstr = "";
     QString _tmpstrvenera = "<font size=4><b>У вас венерическое заболевание!</b><font>";
-    int gerpesVal = m_player->getVStatus(gerpes);
-    int sifVal = m_player->getVStatus(sifilis);
-    int tripVal = m_player->getVStatus(tripper);
-    int kandidVal = m_player->getVStatus(kandidoz);
+    int gerpesVal = getVSick(Gerpes);
+    int sifVal = getVSick(Sifilis);
+    int tripVal = getVSick(Triper);
+    int kandidVal = getVSick(Kandidoz);
 
     if (gerpesVal >= 3)
     {
@@ -639,20 +621,64 @@ void OverlayStatus::grabInd_PillsAndCondoms()
     m_statuses[ind_PillsAndCondoms] = "";
     m_statusesImg[ind_PillsAndCondoms] = "pills";
 
-    if (m_bag->getQuantityof(Items::condoms) > 0)
+    if (((MainWindow*)root)->m_bag->getQuantityof(Items::condoms) > 0)
     {
         m_statusesImg[ind_PillsAndCondoms] = "condoms";
-        m_statuses[ind_PillsAndCondoms] += "<font color = red><b>Презервативы</b></font> - " + intQStr(m_bag->getQuantityof(Items::condoms)) + " штук.<br>";
+        m_statuses[ind_PillsAndCondoms] += "<font color = red><b>Презервативы</b></font> - " + intQStr(((MainWindow*)root)->m_bag->getQuantityof(Items::condoms)) + " штук.<br>";
     }
-    if (m_bag->getQuantityof(Items::antiPregPills) > 0)
+    if (((MainWindow*)root)->m_bag->getQuantityof(Items::antiPregPills) > 0)
     {
-        m_statuses[ind_PillsAndCondoms] += "<b>Вы используете пр.зачаточные средства:</b><br><font color = red><b>Пр.зачаточные таблетки</b></font> - " + intQStr(m_bag->getQuantityof(Items::antiPregPills)) + " штук.<br>";
+        m_statuses[ind_PillsAndCondoms] += "<b>Вы используете пр.зачаточные средства:</b><br><font color = red><b>Пр.зачаточные таблетки</b></font> - " + intQStr(((MainWindow*)root)->m_bag->getQuantityof(Items::antiPregPills)) + " штук.<br>";
     }
+}
+
+void OverlayStatus::granInd_hangover()
+{
+    if(getVAddict(alko) < 3 && getVAddict(hangoverDay) != 0 && getVStatus(daystart) >= getVAddict(hangoverDay))
+    {
+        m_statuses[ind_hangover] = "У вас похмелье.<br>Болит голова и паршивое настроение.<br>Хочется опохмелится, но это развите алкоголизма!(" + intQStr(getVAddict(alkoholism)) + ")";
+        m_statusesImg[ind_hangover] = "hangover";
+    }
+    else if(getVAddict(alko) < 3 && getVAddict(hangoverDay) > 0)
+    {
+        m_statuses[ind_hangover] = "У вас похмелье.<br>Болит голова и паршивое настроение.<br>Хочется опохмелится, но это развите алкоголизма!(" + intQStr(getVAddict(alkoholism)) + ")";
+        m_statusesImg[ind_hangover] = "hangover";
+    }
+}
+
+void OverlayStatus::grabInd_Christmas()
+{
+
+}
+
+int OverlayStatus::getVStatus(Status param)
+{
+    return ((MainWindow*)root)->m_player->getVStatus(param);
+}
+
+int OverlayStatus::getVSick(Sickness param)
+{
+    return ((MainWindow*)root)->m_player->getVSick(param);
+}
+
+int OverlayStatus::getVAddict(Addiction param)
+{
+    return ((MainWindow*)root)->m_player->getVAddict(param);
+}
+
+int OverlayStatus::getVSex(SexVar param)
+{
+    return ((MainWindow*)root)->m_player->getVSexVar(param);
+}
+
+int OverlayStatus::getVBody(Body param)
+{
+    return ((MainWindow*)root)->m_player->getVBody(param);
 }
 
 void OverlayStatus::grabInd_dress()
 {
-    switch (m_player->getCurClothGroup()) {
+    switch (((MainWindow*)root)->m_player->getCurClothGroup()) {
     case ClothGroup::nude:
         m_statuses[ind_dress] = "";
         break;
@@ -710,10 +736,10 @@ void OverlayStatus::grabInd_dress()
     default:
         break;
     }
-    if(m_player->getVStatus(Status::dirtyClothes) == 1)
+    if(getVStatus(Status::dirtyClothes) == 1)
     {
         m_statusesImg[ind_dress] = "dirty";
-        if(m_player->getVStatus(Status::sweat) > 3)
+        if(getVStatus(Status::sweat) > 3)
             m_statuses[ind_dress] = "Вы с ног до головы перемазаны в грязи.";
         else
             m_statuses[ind_dress] = "У вас грязная одежда.";
@@ -722,7 +748,7 @@ void OverlayStatus::grabInd_dress()
 
 void OverlayStatus::grabInd_dampness()
 {
-    int tmp_dampness = m_ccsex->getVaginaDampness();
+    int tmp_dampness = ((MainWindow*)root)->m_ccsex.getVaginaDampness();
 
     QString vagDamp[] {
         "<b>У вас между ног сухо, как в пустыне</b>",
@@ -744,10 +770,10 @@ void OverlayStatus::grabInd_dampness()
     m_statusesImg[ind_dampness] = "wet_pant" + intQStr(tmp_dampness);
     m_statuses[ind_dampness] = pantDamp[tmp_dampness];
 
-    ClothGroup current = static_cast<ClothGroup>(m_player->getCurClothGroup());
+    ClothGroup current = static_cast<ClothGroup>(((MainWindow*)root)->m_player->getCurClothGroup());
     if (current == ClothGroup::nude)
     {
-        if(!m_player->isPanties())
+        if(!((MainWindow*)root)->m_player->isPanties())
         {
             m_statusesImg[ind_nude] = "all_nude";
             m_statuses[ind_nude] = "Вы абсолютно обнажены.";
@@ -768,9 +794,9 @@ void OverlayStatus::grabInd_dampness()
     }
     else if(current > ClothGroup::swimsuit)
     {
-        if(!m_player->isPanties())
+        if(!((MainWindow*)root)->m_player->isPanties())
         {
-            if((current == ClothGroup::sundress || current == ClothGroup::schoolUniform || current >= ClothGroup::skirt) && m_player->getVStatus(Status::shamelessFlag) == 0)
+            if((current == ClothGroup::sundress || current == ClothGroup::schoolUniform || current >= ClothGroup::skirt) && getVStatus(Status::shamelessFlag) == 0)
             {
                 m_statusesImg[ind_dampness] = "wet_vagin" + intQStr(tmp_dampness);
                 m_statuses[ind_dampness] = "Вам стыдно, вы без трусиков.<br>" + vagDamp[tmp_dampness];

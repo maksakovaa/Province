@@ -1,7 +1,7 @@
 #include "sexviewform.h"
 #include "ui_sexviewform.h"
 #include "Functions.h"
-
+#include "../mainwindow.h"
 Sex::Sex(QWidget* parent)
 {
     root = (SexViewForm*)parent;
@@ -28,7 +28,7 @@ QString boy;
         m_cc_sex_usecondom = 1;
         checkTextOutput(1, boy + " взял у вас презерватив и одел его на свой член.");
     }
-    if (getVStatus(horny)/10 + getVBody(vagina) + getVStatus(alko) < getSexVar(dick) && getItemCount(Items::lubri) > 0)
+    if (getVStatus(horny)/10 + getVBody(vagina) + getVAddict(alko) < getSexVar(dick) && getItemCount(Items::lubri) > 0)
     {
         useItem(Items::lubri,1);
         updSexVar(lubonus,5);
@@ -156,7 +156,7 @@ void Sex::vaginal(ToolType type, QString pos)
     {
         emit root->sigSetGape(vagina,getVStatus(horny),getSexVar(dick),getSexVar(silavag));
         int hornyVal = getVStatus(horny);
-        int prinat = hornyVal/10 + getVBody(vagina) + getVStatus(alko) + getSexVar(lubonus);
+        int prinat = hornyVal/10 + getVBody(vagina) + getVAddict(alko) + getSexVar(lubonus);
         int dickVal = getSexVar(dick);
         int silaVag = getSexVar(silavag);
         int orgasm = 0;
@@ -236,7 +236,7 @@ void Sex::vaginal(ToolType type, QString pos)
             updVStatus(mood, -15);
             if(getVBody(makeup) > 1)
             {
-                root->m_player->setVBody(makeup,0);
+                setVBody(makeup,0);
                 updVStatus(vidageday, -1);
             }
             QString str0{"Вы застонали от боли когда "},
@@ -352,9 +352,9 @@ void Sex::vaginal(ToolType type, QString pos)
             setVStatus(lust,0);
             setVStatus(horny,0);
             setVStatus(mood,100);
-            root->m_player->updVStatistic(SC::orgasm,1);
-            root->m_player->updVStatistic(SC::vaginalOrgasm,1);
-            root->m_player->setVBody(hairStatus,0);
+            updVSC(SC::orgasm,1);
+            updVSC(SC::vaginalOrgasm,1);
+            setVBody(hairStatus,0);
             QString str0{"Вы вздрогнули от приятного ощущения, когда ваша киска начала растягиваться принимая в себя "},
                 str1{". Между ног становится очень тепло и приятно, когда "},
                 str2{" двигается в вашей киске. Постепенно приятное тепло и пульсация нарастают в низу живота, потом ощущения обрушиваются на вас и всё ваше тело охватывают горячие волны оргазма, вы невольно кричите от удовольствия извиваясь на "};
@@ -382,7 +382,7 @@ void Sex::vaginal(ToolType type, QString pos)
     }
     setSexVar(lubonus,0);
     if(pos.isEmpty())
-        root->m_player->updVStatistic(SC::vaginalSex, 1);
+        updVSC(SC::vaginalSex, 1);
     if(type != tDick)
         m_protect = 0;
     checkTextOutput(0,result);
@@ -460,7 +460,7 @@ void Sex::anal(ToolType type)
         else if (type == tGirlDildo) result += "дилдо";
         result += " к вашей дырочке.";   
     }
-    int anusCapab = getVBody(anus) + getSexVar(lubonus) + getSexVar(analpluginbonus) + getVStatus(alko);
+    int anusCapab = getVBody(anus) + getSexVar(lubonus) + getSexVar(analpluginbonus) + getVAddict(alko);
     if (anusCapab < getSexVar(dick))
     {
         tmp0 = "Вы взвизгнули и закусили губы от резкой боли когда ";
@@ -506,7 +506,7 @@ void Sex::anal(ToolType type)
     }
     if (anusCapab < getSexVar(dick))
     {
-        if (getVBody(makeup) > 1) root->m_player->setVBody(makeup,0);
+        if (getVBody(makeup) > 1) setVBody(makeup,0);
         updVStatus(vidageday, -1);
         updVStatus(horny, -20);
         updVStatus(mood, -20);
@@ -535,14 +535,14 @@ void Sex::anal(ToolType type)
         else if(type == tDildo || type == tGirlDildo) result += tmp0 + intQStr(getSexVar(dick)) + " сантиметрового дилдо внутри вас." + tmp1 + "дилдо двигается внутри попки.";
         else if (type == tStrapon) result += tmp0 + intQStr(getSexVar(dick)) + " сантиметрового страпона внутри вас." + tmp1 + "страпон двигается внутри попки.";
         else if(type == tBottle || type == tGirlBottle) result += tmp0 + "бутылки внутри вас." + tmp1 + "бутылка двигается внутри попки.";
-        if (getVStatus(horny) >= 100 && getVBody(anus) >= 10 && root->m_player->getStatisticsValue(orgasm) > 0)
+        if (getVStatus(horny) >= 100 && getVBody(anus) >= 10 && getBSC(orgasm) > 0)
         {
             setVStatus(mood, 100);
-            root->m_player->updVStatistic(orgasm, 1);
-            root->m_player->updVStatistic(analOrgasm, 1);
+            updVSC(orgasm, 1);
+            updVSC(analOrgasm, 1);
             setVStatus(horny, 0);
             setVStatus(lust, 0);
-            root->m_player->setVBody(hairStatus, 0);
+            setVBody(hairStatus, 0);
             tmp0 = "Вам становится очень приятно, когда ";
             tmp1 = " движется внутри вашей попки. В анусе полыхает пожар и волны удовольствия охватывают ваше тело. Вы стонете и сами насаживаетесь попкой на член, сотрясаясь от охватившего вас оргазма.";
             if (type == tDick)
@@ -562,50 +562,70 @@ void Sex::anal(ToolType type)
 
 int Sex::getSexVar(SexVar param)
 {
-    return root->m_player->getVSexVar(param);
+    return root->getSexVar(param);
 }
 
 int Sex::getVStatus(Status param)
 {
-    return root->m_player->getVStatus(param);
+    return root->getVStatus(param);
 }
 
 int Sex::getVBody(Body param)
 {
-    return root->m_player->getVBody(param);
+    return root->getVBody(param);
 }
 
 int Sex::getItemCount(Items item)
 {
-    return root->m_bag->getQuantityof(item);
+    return root->getItemCount(item);
+}
+
+int Sex::getVAddict(Addiction param)
+{
+    return root->getVAddict(param);
+}
+
+int Sex::getBSC(SC param)
+{
+    return root->getBSC(param);
 }
 
 void Sex::setSexVar(SexVar param, int value)
 {
-    root->m_player->setVSexVar(param, value);
+    root->setSexVar(param, value);
 }
 
 void Sex::updSexVar(SexVar param, int value)
 {
-    root->m_player->updVSexVar(param,value);
+    root->updSexVar(param,value);
 }
 
 void Sex::setVStatus(Status param, int value)
 {
-    root->m_player->setVStatus(param, value);
+    root->setVStatus(param, value);
 }
 
 void Sex::updVStatus(Status param, int value)
 {
-    root->m_player->updVStatus(param,value);
+    root->updVStatus(param,value);
+}
+
+void Sex::updVSC(SC param, int val)
+{
+    root->updVSC(param,val);
 }
 
 void Sex::useItem(Items item, int count)
 {
-    root->m_bag->removeFromBag(item, count);
+    root->useItem(item, count);
+}
+
+void Sex::setVBody(Body param, int val)
+{
+    root->setVBody(param,val);
 }
 
 void Sex::checkTextOutput(int addTxtSex, QString text)
 {
-    root->ui->labelSexDesc->setText(root->ui->labelSexDesc->text() + "<br>" + text);    
+    root->ui->labelSexDesc->setText(root->ui->labelSexDesc->text() + "<br>" + text);
 }

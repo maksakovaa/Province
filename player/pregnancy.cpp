@@ -2,7 +2,7 @@
 #include "../Functions.h"
 #include "cloth.h"
 
-Pregnancy::Pregnancy() : m_Arr_Estrus{0, 20, 24, 28, 32, 36, 38, 42, 44, 48, 52, 54, 56, 80, 95}{}
+Pregnancy::Pregnancy() {}
 
 bool Pregnancy::isEstrus()
 {
@@ -393,7 +393,6 @@ void Pregnancy::slotMenstruus()
         }
     }
     m_player->getCloth(ClothType::Main)->decreaseCondition();
-    slotEstrus();
 }
 
 void Pregnancy::slotEstrus()
@@ -429,6 +428,7 @@ void Pregnancy::slotEstrus()
     }
     else if (getVStatus(mesec) == 0)
     {
+        initPregData();
         int tmp_rand = getRandInt(1, 5);
         int _tmp = m_Arr_Estrus[m_estrus] + getRandInt(-tmp_rand, tmp_rand);
         if (_tmp > 100)
@@ -437,7 +437,7 @@ void Pregnancy::slotEstrus()
         }
         m_withoutPregOdds = _tmp;
         m_againstPregOdds = getRandInt(1, 2);
-        m_player->setVStatus(inc_vag_grease, _tmp / 10 - level_v_rubbing);
+        m_player->setVStatus(inc_vag_grease, _tmp / 10 - m_player->getVSexVar(level_v_rubbing));
         if (getVStatus(inc_vag_grease) < 0)
         {
             m_player->setVStatus(inc_vag_grease, 0);
@@ -467,8 +467,8 @@ void Pregnancy::slotIncreaseRiscs(int value)
 void Pregnancy::slotRiscsUpdate()
 {
     int alkoVal, max_alko;
-    alkoVal = getVStatus(alko);
-    max_alko = getVStatus(maxAlko);
+    alkoVal = m_player->getVAddict(alko);
+    max_alko = m_player->getVAddict(maxAlko);
 
     if (alkoVal == 0)
     {
@@ -514,4 +514,23 @@ void Pregnancy::updVStatus(Status param, int value)
 void Pregnancy::updVSkill(Skills skil, int value)
 {
     m_player->updVSkill(skil,value);
+}
+
+void Pregnancy::initPregData()
+{
+    m_Arr_Estrus[0] = 16;
+    m_Arr_Estrus[1]  = 20;
+    m_Arr_Estrus[2]  = 24;
+    m_Arr_Estrus[3]  = 28;
+    m_Arr_Estrus[4]  = 32;
+    m_Arr_Estrus[5]  = 36;
+    m_Arr_Estrus[6]  = 38;
+    m_Arr_Estrus[7]  = 42;
+    m_Arr_Estrus[8]  = 44;
+    m_Arr_Estrus[9]  = 48;
+    m_Arr_Estrus[10]  = 52;
+    m_Arr_Estrus[11]  = 54;
+    m_Arr_Estrus[12]  =	56;
+    m_Arr_Estrus[13]  =	80;
+    m_Arr_Estrus[14]  = 95;
 }

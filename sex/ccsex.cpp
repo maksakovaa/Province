@@ -186,11 +186,21 @@ void CCSex::slotCalcRubbing()
     {
         updVStatus(Status::vaginal_grease, getRandInt(0,getVStatus(Status::inc_vag_grease)/2));
     }
-    int a = getVStatus(horny) / (10 + getVSexVar(level_v_rubbing) + getVSexVar(level_a_rubbing) / 2);
-    a -= (getVSexVar(dry_a_rubbing)/2 + getVSexVar(dry_v_rubbing))*2/3;
-    updVStatus(Status::vaginal_grease, a);
+    int hornyVal = getVStatus(horny);
+    int v_level = getVSexVar(level_v_rubbing);
+    int a_level = 0;
+    if(getVSexVar(level_a_rubbing) != 0)
+    {
+        a_level = getVSexVar(level_a_rubbing) / 2;
+    }
+    int a_dry = getVSexVar(dry_a_rubbing);
+    int v_dry = getVSexVar(dry_v_rubbing);
+
+    updVStatus(vaginal_grease, hornyVal/(10+v_level + a_level) - (v_dry + a_dry/2)*2/3);
+
     int d = getVSexVar(vgape)/3 + getVSexVar(agape)/5;
     updVStatus(Status::vaginal_grease, -d);
+
     if (getVStatus(Status::vaginal_grease) < 0)
     {
        m_player->setVStatus(Status::vaginal_grease, 0);
@@ -229,7 +239,7 @@ void CCSex::slotDecRubbing(Body holeType)
         updVStatus(mood, -moodDec);
         if(getVStatus(mood) < 0) { setVStatus(mood, 0); }
         int healthDec = getRandInt(0, 1 + _tmp);
-        updVStatus(health, healthDec);
+        updVStatus(health, -healthDec);
         if(getVStatus(health) < 0) { setVStatus(health, 0); }
         updVStatus(horny, -getVStatus(horny) / 10);
 
@@ -259,7 +269,7 @@ void CCSex::slotDecRubbing(Body holeType)
         updVStatus(mood, -moodDec);
         if(getVStatus(mood) < 0) { setVStatus(mood, 0); }
         int healthDec = getRandInt(0, 1+_tmp);
-        updVStatus(health, healthDec);
+        updVStatus(health, -healthDec);
         if(getVStatus(health) < 0) { setVStatus(health, 0); }
         updVStatus(horny, -getVStatus(horny) / 10);
 
@@ -403,9 +413,9 @@ void CCSex::slotSexCorrector()
     m_anal_corrector = (getRandInt(4+m_global_level_sex, 10+m_global_level_sex) + m_anal_corrector) / 2;
 }
 
-void CCSex::slotGetVagDamp(int &value)
+int CCSex::getVagDamp()
 {
-    value = getVaginaDampness();
+    return getVaginaDampness();
 }
 
 int CCSex::getVStatus(Status param)

@@ -25,17 +25,4 @@ private:
     QString m_act;
 };
 
-class ObjActionButton: public QPushButton
-{
-    Q_OBJECT
-public:
-    ObjActionButton(QString actName);
-signals:
-    void sigAction(QString name);
-private:
-    QString m_actionName;
-private slots:
-    void handleButtonClick();
-};
-
 #endif // QACTIONBUTTON_H

@@ -6,26 +6,27 @@
 #include <QString>
 #include <QObject>
 #include "enums.h"
-#include "wardrobe.h"
-#include "../settings.h"
+#include "../nav/cloth.h"
 
 class Player: public QObject
 {
     Q_OBJECT
 public:
     Player();
-    Player(CharacterType history, Settings* ptr);
+    Player(CharacterType history, QWidget* ptr2);
     ~Player() = default;
 
     bool isCheatsOn();
     bool isPanties();
     bool isAutoTampon();
-    bool updVSkill(Skills skill_name, int value);
-    bool updVBody(Body param, int value);
-    bool updVStatus(Status stat, int value);
+    void updVSkill(Skills skill_name, int value);
+    void updVBody(Body param, int value);
+    void updVStatus(Status stat, int value);
     void updVBuzzer(budilnik type, int value);
     void updVSexVar(SexVar param, int value);
     void updVStatistic(SC param, int value);
+    void updVSick(Sickness param, int value);
+    void updVAddict(Addiction param, int value);
     void updSkin(char c, int value);
 
     Cloth* getCloth(ClothType type);
@@ -33,11 +34,13 @@ public:
     int getCurClothGroup();
     void redress(Cloth* newCloth);
 
-    void setSettingsPtr(Settings* ptr);
     void setVStatus(Status stat, int value);
     void setVBody(Body param, int value);
     void setVSexVar(SexVar param, int value);
-
+    void setVSC(SC param, int value);
+    void setVSkill(Skills param, int val);
+    void setVSick(Sickness param, int val);
+    void setVAddict(Addiction param, int value);
     int getAge();
     int getSkillValue(Skills skill_name);
     int getVBody(Body param);
@@ -46,6 +49,8 @@ public:
     int getVConst(Const param);
     int getVBuzzer(budilnik param);
     int getVSexVar(SexVar param);
+    int getVSick(Sickness param);
+    int getVAddict(Addiction param);
 
     QString getName();
     QString getBirthDate();
@@ -79,42 +84,21 @@ public:
     QString getPlayerPubis();
     QString getPlayerClothes();
     QString getPlayerBreasts();
+
+    void calcShamelessFlag();
+    void checkPanties();
+    void updBody();
 signals:
-    void sigCalcAge(int& years, struct tm from);
     void sigUpdClothSize(int size);
-    void sigCalcRubbing();
-    void sigVagGelTouch();
-    void sigPregRecalc();
-    void sigDecRubbing(Body holeType);
-    void sigDataInitAlko();
-    void sigHangOver();
-    void sigRiscsUpdate();
-    void sigAlcoholism();
-    void sigSexCorrector();
-    void sigGetVagDamp(int& value);
-public slots:
-    void slotElapsed10min();
-    void slotElapsed15min();
-    void slotElapsed20min();
-    void slotElapsed30min();
-    void slotElapsed60min();
-    void slotElapsedDay();
-    void slotElapsedTime();
 private:
     //methods
     void zz_body();
 
-    void calcShamelessFlag();
-
     void initDefaultArrays();
-    void checkBodyParams();
-    void checkStatusParams();
-    void checkSkillParams();
-    void updBody();
 
     void initWardrobeClothes();
     void wearClothes(Cloth* thing);
-    void checkPanties();
+
 
     int calcHairCurlyBonus();
     int calcLipBonus();
@@ -136,10 +120,11 @@ private:
     void skinDecrement(int value = 0);
     void skinIncrement(int value = 0);
     //members
+    QWidget* m_main;
     QString f_name;
     QString l_name;
     struct tm m_birthDate{};
-    Wardrobe m_wardrobe;
+    //Wardrobe m_wardrobe;
     std::unordered_map<ClothType, Cloth*> m_clothSLots;
     std::unordered_map<Skills, int> m_skills;
     std::unordered_map<Body, int> m_body;
@@ -148,8 +133,8 @@ private:
     std::unordered_map<SC, int> m_statistic;
     std::unordered_map<Const, int> m_const;
     std::unordered_map<budilnik, int> m_budilnik;
-    Settings* m_settings;
-    // int m_tampon;
+    std::unordered_map<Sickness, int> m_sick;
+    std::unordered_map<Addiction, int> m_addict;
 };
 
 #endif

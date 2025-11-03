@@ -8,15 +8,15 @@ void CC_Alko::setPlayerPtr(Player *ptr)
 
 void CC_Alko::slotCheckAlkoBlock(int& value)
 {
-    if (getVStatus(alko) >= getVStatus(maxAlko))
+    if (getVAlco(alko) >= getVAlco(maxAlko))
     {
         value = 1;
     }
-    else if (m_hangoverDay != 0)
+    else if (getVAlco(hangoverDay) != 0)
     {
         value = 2;
     }
-    else if (m_alkoholism > 15)
+    else if (getVAlco(alkoholism) > 15)
     {
         value = 3;
     }
@@ -28,45 +28,42 @@ void CC_Alko::slotCheckAlkoBlock(int& value)
 
 void CC_Alko::anti_hangover()
 {
-    int dayStart = 0;
-    m_hangoverDay = 0;
-    m_alkoAbstainDay = dayStart;
-    m_alkoAbstainCount = 1;
-    //Возврат в сумку 
+    setVAlco(hangoverDay,0);
+    setVAlco(alkoAbstainDay, getVStatus(daystart));
+    setVAlco(alkoAbstainCount,1);
 }
 
 void CC_Alko::slotHangOver()
 {
     slotDataInitAlko();
-    if (getVStatus(alko) > getVStatus(maxAlko) && m_hangoverDay == 0)
+    if (getVAlco(alko) > getVAlco(maxAlko) && getVAlco(hangoverDay) == 0)
     {
         emit sigIncreaseRiscs(getRandInt(1,3));
-        int daystart = getVStatus(Status::daystart);
-        m_hangoverDay = daystart + 1;
+        setVAlco(hangoverDay, getVStatus(daystart) + 1);
     }
-    if (getVStatus(alko) == getVStatus(maxAlko))
+    if (getVAlco(alko) == getVAlco(maxAlko))
     {
-        m_hangoverDay = m_hangoverDay + m_max_hangoverDay;
+        updVAlco(hangoverDay, getVAlco(max_hangoverDay));
     }
-    if (getVStatus(alko) > getVStatus(maxAlko))
+    if (getVAlco(alko) > getVAlco(maxAlko))
     {
-        m_hangoverDay = m_hangoverDay + m_max_hangoverDay + 1;
+        updVAlco(hangoverDay, getVAlco(max_hangoverDay) + 1);
     }
     //Опохмелка - увеличиваем алкоголизм
-    if (getVStatus(alko) > 0 && m_hangoverDay != 0 && daystart > m_lenghangoverday)
+    if (getVAlco(alko) > 0 && getVAlco(hangoverDay) != 0 && getVStatus(daystart) > getVAlco(lenghangoverday))
     {
-        m_alkoholism += 1;
-        m_hangoverDay = 0;
-        m_lenghangoverday = 0;
+        updVAlco(alkoholism, 1);
+        setVAlco(hangoverDay,0);
+        setVAlco(lenghangoverday,0);
         setVStatus(mood, 100);
         setVStatus(health, 100);
     }
-    if (daystart > m_lenghangoverday)
+    if (getVStatus(daystart) > getVAlco(lenghangoverday))
     {
-        m_hangoverDay = 0;
-        m_lenghangoverday = 0;
+        setVAlco(hangoverDay, 0);
+        setVAlco(lenghangoverday,0);
     }
-    if(m_hangoverDay != 0 && daystart >= m_lenghangoverday)
+    if(getVAlco(hangoverDay) != 0 && getVStatus(daystart) >= getVAlco(lenghangoverday))
     {
         updVStatus(Status::water, -3);
         if (getVStatus(Status::water) < 8)
@@ -78,7 +75,7 @@ void CC_Alko::slotHangOver()
             updVStatus(Status::health, -3);
         }
     }
-    if (m_hangoverDay != 0 && daystart >= m_hangoverDay)
+    if (getVAlco(hangoverDay) != 0 && getVStatus(daystart) >= getVAlco(hangoverDay))
     {
         updVStatus(Status::mood, getRandInt(1,3));
     }
@@ -87,62 +84,77 @@ void CC_Alko::slotHangOver()
 
 void CC_Alko::slotAlkoholism()
 {
-    if (m_hangoverDay != 0)
+    if (getVAlco(hangoverDay) != 0)
     {
-        m_hangVneshAlko = 3;
+        setVAlco(hangVneshAlko, 3);
     }
     else
     {
-        m_hangVneshAlko = 0;
+        setVAlco(hangVneshAlko,0);
     }
-    if (m_alkoholism > 45)
+    if (getVAlco(alkoholism) > 45)
     {
-        setVStatus(vneshAlko, 10 + m_hangVneshAlko);
+        setVStatus(vneshAlko, 10 + getVAlco(hangVneshAlko));
     }
-    else if (m_alkoholism > 35)
+    else if (getVAlco(alkoholism) > 35)
     {
-        setVStatus(vneshAlko, 7 + m_hangVneshAlko);
+        setVStatus(vneshAlko, 7 + getVAlco(hangVneshAlko));
     }
-    else if (m_alkoholism > 25)
+    else if (getVAlco(alkoholism) > 25)
     {
-        setVStatus(vneshAlko, 5 + m_hangVneshAlko);
+        setVStatus(vneshAlko, 5 + getVAlco(hangVneshAlko));
     }
-    else if (m_alkoholism > 15)
+    else if (getVAlco(alkoholism) > 15)
     {
-        setVStatus(vneshAlko, 3 + m_hangVneshAlko);
+        setVStatus(vneshAlko, 3 + getVAlco(hangVneshAlko));
     }
     else
     {
-        setVStatus(vneshAlko, m_hangVneshAlko);
+        setVStatus(vneshAlko, getVAlco(hangVneshAlko));
     }
+}
+
+int CC_Alko::getVAlco(Addiction param)
+{
+    return m_player->getVAddict(param);
+}
+
+void CC_Alko::setVAlco(Addiction param, int value)
+{
+    m_player->setVAddict(param, value);
+}
+
+void CC_Alko::updVAlco(Addiction param, int value)
+{
+    m_player->updVAddict(param,value);
 }
 
 void CC_Alko::slotDataInitAlko()
 {
-    if (m_alkoholism > 45)
+    if (getVAlco(alkoholism) > 45)
     {
-        setVStatus(maxAlko, 4);
-        m_max_hangoverDay = 3;
+        setVAlco(maxAlko, 4);
+        setVAlco(max_hangoverDay, 3);
     }
-    else if (m_alkoholism > 35)
+    else if (getVAlco(alkoholism) > 35)
     {
-        setVStatus(maxAlko, 6);
-        m_max_hangoverDay = 2;
+        setVAlco(maxAlko, 6);
+        setVAlco(max_hangoverDay,2);
     }
-    else if (m_alkoholism > 25)
+    else if (getVAlco(alkoholism) > 25)
     {
-        setVStatus(maxAlko, getRandInt(6,8));
-        m_max_hangoverDay = getRandInt(1,2);
+        setVAlco(maxAlko, getRandInt(6,8));
+        setVAlco(max_hangoverDay, getRandInt(1,2));
     }
-    else if (m_alkoholism > 15)
+    else if (getVAlco(alkoholism) > 15)
     {
-        setVStatus(maxAlko, 8);
-        m_max_hangoverDay = 1;
+        setVAlco(maxAlko, 8);
+        setVAlco(max_hangoverDay,1);
     }
     else
     {
-        setVStatus(maxAlko, 12);
-        m_max_hangoverDay = 0;
+        setVAlco(maxAlko, 12);
+        setVAlco(max_hangoverDay, 0);
     }    
 }
 
@@ -163,32 +175,31 @@ void CC_Alko::setVStatus(Status param, int value)
 
 void CC_Alko::alkoAbstain()
 {
-    int daystart = getVStatus(Status::daystart);
-    if (m_alkoholism <= 0)
+    if (getVAlco(alkoholism) <= 0)
     {
-        m_alkoholism = 0;
-        m_alkoAbstainDay = 0;
+        setVAlco(alkoholism,0);
+        setVAlco(alkoAbstainDay,0);
         return;
     }
-    if (getVStatus(alko) == 0 && m_hangoverDay == 0 && m_alkoAbstainDay == 0)
+    if (getVAlco(alko) == 0 && getVAlco(hangoverDay) == 0 && getVAlco(alkoAbstainDay) == 0)
     {
-        m_alkoAbstainDay = daystart;
-        m_alkoAbstainCount = 1;
+        setVAlco(alkoAbstainDay, getVStatus(daystart));
+        setVAlco(alkoAbstainCount, 1);
         return;
     }
-    if (getVStatus(alko) != 0 || m_hangoverDay != 0)
+    if (getVAlco(alko) != 0 || getVAlco(hangoverDay) != 0)
     {
-        m_alkoAbstainDay = 0;
-        m_alkoAbstainCount = 0;
+        setVAlco(alkoAbstainDay, 0);
+        setVAlco(alkoAbstainCount, 0);
     }
-    if (m_alkoAbstainCount != 0 && daystart >= m_alkoAbstainDay + 3)
+    if (getVAlco(alkoAbstainCount) != 0 && getVStatus(daystart) >= getVAlco(alkoAbstainDay) + 3)
     {
-        if (getVStatus(alko) != 0 && m_hangoverDay != 0)
+        if (getVAlco(alko) != 0 && getVAlco(hangoverDay) != 0)
         {
-            m_alkoAbstainDay = 0;
+            setVAlco(alkoAbstainDay, 0);
             return;
         }
-        m_alkoholism -= getRandInt(0,1);
-        m_alkoAbstainDay = daystart;
+        updVAlco(alkoholism, -getRandInt(0,1));
+        setVAlco(alkoAbstainDay, daystart);
     }    
 }

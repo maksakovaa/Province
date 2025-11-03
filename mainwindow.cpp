@@ -10,7 +10,8 @@
 MainWindow::MainWindow(SettingsForm* settingsForm, CharacterType charType, int year, int month, int day, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , m_time(year, month, day, 8, 0)
+    , m_time(this, year, month, day, 8, 0),
+    m_overlayStatus(this)
 {
     this->setStyleSheet("background-color: #ffffff; color: #464646; font-size: 16px; font-family: 'Serif';");
     ui->setupUi(this);
@@ -60,7 +61,7 @@ void MainWindow::setupMainWindow(SettingsForm* settingsForm, CharacterType charT
     ui->scrollAreaBag->setWidget(m_bag);
     m_sex = new SexViewForm(this);
     ui->scrollAreaSexView->setWidget(m_sex);
-    m_player = new Player(charType, page4->settings());
+    m_player = new Player(charType, this);
     m_weather = new Weather;
     setPointers();
     slotUpdateDateTime();
@@ -68,27 +69,28 @@ void MainWindow::setupMainWindow(SettingsForm* settingsForm, CharacterType charT
     loadStrings();
     slotUpdMoney();
     m_reproductSys.slotEstrus();
+    m_time.firstStart();
     slotUpdParams();
     setupActionButtons();
 }
 
 void MainWindow::setPointers()
 {
-    m_time.setSettingsPtr(page4->settings());
     m_weather->setTimePtr(&m_time);
-
-    ui->page_0_main->setWeatherPtr(m_weather);
-    ui->page_0_main->setPagePtr(ui->stackedWidget);
+    this->ui->page_0_main->setRoot(this);
+    this->ui->page_5_objView->setRoot(this);
+    // ui->page_0_main->setWeatherPtr(m_weather);
+    // ui->page_0_main->setPagePtr(ui->stackedWidget);
     ui->page_0_main->setActionsLayout(ui->actionsLayout);
-    ui->page_0_main->setPlayerPtr(m_player);
-    ui->page_0_main->setTimePtr(&m_time);
-    ui->page_0_main->setCCSEX(&m_ccsex);
+    // ui->page_0_main->setPlayerPtr(m_player);
+    // ui->page_0_main->setTimePtr(&m_time);
+    // ui->page_0_main->setCCSEX(&m_ccsex);
 
-    ui->page_5_objView->setSettingsPtr(page4->settings());
+    // ui->page_5_objView->setSettingsPtr(page4->settings());
     ui->page_5_objView->setActLayoutPtr(ui->actionsLayout);
-    ui->page_5_objView->setPlayerPtr(m_player);
-    ui->page_5_objView->setPagePtr(ui->stackedWidget);
-    ui->page_5_objView->setTimeServerPtr(&m_time);
+    // ui->page_5_objView->setPlayerPtr(m_player);
+    // ui->page_5_objView->setPagePtr(ui->stackedWidget);
+    // ui->page_5_objView->setTimeServerPtr(&m_time);
 
     m_reproductSys.setPlayerPtr(m_player);
     m_reproductSys.setBagPtr(m_bag);
@@ -96,32 +98,17 @@ void MainWindow::setPointers()
     m_ccsex.setPregPtr(&m_reproductSys);
     m_ccalko.setPlayerPtr(m_player);
     ui->page_2_pers->setPtr(m_player);
-    m_overlayStatus.setPlayerPtr(m_player);
-    m_overlayStatus.setCCSexPtr(&m_ccsex);
-    m_overlayStatus.setPregPtr(&m_reproductSys);
-    m_overlayStatus.setBagPtr(m_bag);
     m_overlayStatus.setParentWidget(ui->page_0_main->getImageLblPtr());
 
-    m_sex->setPagePtr(ui->stackedWidget);
-    m_sex->setPlayerPtr(m_player);
+    // m_sex->setPagePtr(ui->stackedWidget);
+    // m_sex->setPlayerPtr(m_player);
     m_sex->setLayoutPtr(ui->actionsLayout);
-    m_sex->setTimeServerPtr(&m_time);
+    // m_sex->setTimeServerPtr(&m_time);
 }
 
 void MainWindow::connections()
 {
     connect(page4, &SettingsForm::sigChangeSettings, this, &MainWindow::slotUpdParams);
-
-    connect(m_player, &Player::sigCalcAge, &m_time, &TimeServer::calcDateDiffInYears);
-    connect(m_player, &Player::sigCalcRubbing, &m_ccsex, &CCSex::slotCalcRubbing);
-    connect(m_player, &Player::sigVagGelTouch, &m_ccsex, &CCSex::slotVagGelTouch);
-    connect(m_player, &Player::sigPregRecalc, &m_reproductSys, &Pregnancy::slotPregRecalc);
-    connect(m_player, &Player::sigDataInitAlko, &m_ccalko, &CC_Alko::slotDataInitAlko);
-    connect(m_player, &Player::sigHangOver, &m_ccalko, &CC_Alko::slotHangOver);
-    connect(m_player, &Player::sigAlcoholism, &m_ccalko, &CC_Alko::slotAlkoholism);
-    connect(m_player, &Player::sigSexCorrector, &m_ccsex, &CCSex::slotSexCorrector);
-    connect(m_player, &Player::sigGetVagDamp, &m_ccsex, &CCSex::slotGetVagDamp);
-    connect(m_player, &Player::sigDecRubbing, &m_ccsex, &CCSex::slotDecRubbing);
 
     connect(ui->page_1_map, &MapForm::ChangeLocation, ui->page_0_main, &LocationForm::slotOnChangeLocation);
     connect(ui->page_2_pers, &TabWidgetPlayer::sigUpdateStatus, this, &MainWindow::slotUpdParams);
@@ -131,17 +118,6 @@ void MainWindow::connections()
     connect(ui->page_5_objView, &ObjViewForm::sigSpendTime, &m_time, &TimeServer::increaseTime);
 
     connect(&m_ccalko, &CC_Alko::sigIncreaseRiscs, &m_reproductSys, &Pregnancy::slotIncreaseRiscs);
-
-    connect(&m_time, &TimeServer::updateTimeAndDate, this, &MainWindow::slotUpdateDateTime);
-    connect(&m_time, &TimeServer::sigElapsed10minutes, m_player, &Player::slotElapsed10min);
-    connect(&m_time, &TimeServer::sigElapsed15minutes, m_player, &Player::slotElapsed15min);
-    connect(&m_time, &TimeServer::sigElapsed20minutes, m_player, &Player::slotElapsed20min);
-    connect(&m_time, &TimeServer::sigElapsed30minutes, m_player, &Player::slotElapsed30min);
-    connect(&m_time, &TimeServer::sigElapsed60minutes, m_player, &Player::slotElapsed60min);
-    connect(&m_time, &TimeServer::sigElapsedDay, m_player, &Player::slotElapsedDay);
-    connect(&m_time, &TimeServer::sigElapsedDay, &m_reproductSys, &Pregnancy::slotMenstruus);
-    connect(&m_time, &TimeServer::sigElapsedDay, m_weather, &Weather::mainFunc);
-    connect(&m_time, &TimeServer::sigElapsedTime, m_player, &Player::slotElapsedTime);
 
     connect(m_sex, &SexViewForm::sigSetGape, &m_ccsex, &CCSex::slotSetGape);
     connect(m_sex, &SexViewForm::sigUpdParams, this, &MainWindow::slotUpdParams);
@@ -215,7 +191,7 @@ void MainWindow::slotUpdParams()
 {
     if(page4->settings()->isFullScreen())
         this->showFullScreen();
-    else
+    else if(this->isFullScreen())
         this->showNormal();
     updatePlayerStatusValue();
     updPlayerStatusBarStyle();

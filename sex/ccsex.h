@@ -2,7 +2,7 @@
 #define CCSEX_H
 
 #include <QObject>
-#include "player.h"
+#include "../player/player.h"
 #include "pregnancy.h"
 
 class CCSex: public QObject
@@ -17,12 +17,12 @@ public:
     int getVaginaDampness();
     int calc_rubb(QString holeType);
     void antiRubbing();
+    int getVagDamp();
 public slots:
     void slotCalcRubbing();
     void slotVagGelTouch();
     void slotDecRubbing(Body holeType);
     void slotSexCorrector();
-    void slotGetVagDamp(int& value);
     void slotSetGape(Body holeType, int horny, int dick, int silavag);
 private:
     int getVStatus(Status param);

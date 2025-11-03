@@ -1,9 +1,10 @@
 #include "locationform.h"
+#include "../mainwindow.h"
 #include "ui_locationform.h"
 #include "../Functions.h"
 #include "qactionbutton.h"
-#include <sexviewform.h>
 #include "objviewform.h"
+#include "../ui_mainwindow.h"
 
 LocationForm::LocationForm(QWidget *parent)
     : QWidget(parent)
@@ -23,37 +24,42 @@ LocationForm::~LocationForm()
     delete ui;
 }
 
-void LocationForm::setPlayerPtr(Player* ptr)
+void LocationForm::setRoot(QWidget *ptr)
 {
-    m_player = ptr;
+    root = ptr;
 }
+
+// void LocationForm::setPlayerPtr(Player* ptr)
+// {
+//     m_player = ptr;
+// }
 
 void LocationForm::setActionsLayout(QVBoxLayout *ptr)
 {
     m_actLayout = ptr;
 }
 
-void LocationForm::setTimePtr(TimeServer *ptr)
-{
-    m_time = ptr;
-}
+// void LocationForm::setTimePtr(TimeServer *ptr)
+// {
+//     m_time = ptr;
+// }
 
-void LocationForm::setPagePtr(QStackedWidget *ptr)
-{
-    m_page = ptr;
-    m_bag = m_page->widget(3)->findChild<BagForm*>("BagForm");
-    m_settings = (SettingsForm*)m_page->widget(6);
-}
+// void LocationForm::setPagePtr(QStackedWidget *ptr)
+// {
+//     m_page = ptr;
+//     m_bag = m_page->widget(3)->findChild<BagForm*>("BagForm");
+//     m_settings = (SettingsForm*)m_page->widget(6);
+// }
 
-void LocationForm::setWeatherPtr(Weather *ptr)
-{
-    m_weather = ptr;
-}
+// void LocationForm::setWeatherPtr(Weather *ptr)
+// {
+//     m_weather = ptr;
+// }
 
-void LocationForm::setCCSEX(CCSex *ptr)
-{
-    m_ccsex = ptr;
-}
+// void LocationForm::setCCSEX(CCSex *ptr)
+// {
+//     m_ccsex = ptr;
+// }
 
 void LocationForm::init(QString loc)
 {
@@ -63,6 +69,8 @@ void LocationForm::init(QString loc)
     {
         m_currentLoc = m_locations[loc];
         slotChangeLoc(m_currentLoc, 0);
+        incTime(1);
+//        m_time->firstStart();
     }
     else
     {
@@ -100,17 +108,17 @@ void LocationForm::slotOnChangeLocation(const QString &name, int min)
 
 void LocationForm::slotChangeLoc(Location *locPtr, int min)
 {
-    m_page->setCurrentIndex(0);
+    ((MainWindow*)root)->ui->stackedWidget->setCurrentIndex(0);
     ui->imageAndWideoWdgt->setCurrentIndex(0);
     m_prevLoc = m_currentLoc;
     m_currentLoc = locPtr;
 
     if(m_currentLoc != nullptr)
     {
-        setImage(m_currentLoc->getLocPic(m_weather->isDay(), m_weather->isSnow()));
+        setImage(m_currentLoc->getLocPic(((MainWindow*)root)->m_weather->isDay(), ((MainWindow*)root)->m_weather->isSnow()));
         setDesc(m_currentLoc->getLocDesc());
     }
-    m_time->increaseTime(min);
+    incTime(min);
     if(m_currentLoc->isParent() || m_currentLoc->getLocId() == "gadukino")
     {
         emit sigIsMapAwaylable(false);
@@ -157,7 +165,7 @@ void LocationForm::fillSubLocs()
         actionbtn->setText(i);
         actionbtn->setObjName(i);
         m_actLayout->addWidget(actionbtn);
-        ObjViewForm* m_objView = (ObjViewForm*)m_page->widget(4);
+        ObjViewForm* m_objView = ((MainWindow*)root)->ui->page_5_objView;
         connect(actionbtn, &QActionButton::sigViewObj, m_objView, &ObjViewForm::slotViewObj);
     }
     for (auto& i: locs)
@@ -215,67 +223,77 @@ void LocationForm::createLocations()
 
 void LocationForm::incTime(int min)
 {
-    m_time->increaseTime(min);
+    ((MainWindow*)root)->m_time.increaseTime(min);
 }
 
 void LocationForm::updVBody(Body param, int val)
 {
-    m_player->updVBody(param, val);
+    ((MainWindow*)root)->m_player->updVBody(param, val);
 }
 
 void LocationForm::updVStatus(Status param, int val)
 {
-    m_player->updVStatus(param,val);
+    ((MainWindow*)root)->m_player->updVStatus(param,val);
 }
 
 void LocationForm::updVStatistic(SC param, int val)
 {
-    m_player->updVStatistic(param,val);
+    ((MainWindow*)root)->m_player->updVStatistic(param,val);
 }
 
 void LocationForm::useItem(Items item, int count)
 {
-    m_bag->removeFromBag(item, count);
+    ((MainWindow*)root)->m_bag->removeFromBag(item, count);
 }
 
 void LocationForm::setSexVar(SexVar var, int value)
 {
-    m_player->setVSexVar(var, value);
+    ((MainWindow*)root)->m_player->setVSexVar(var, value);
 }
 
 void LocationForm::setVStatus(Status param, int value)
 {
-    m_player->setVStatus(param, value);
+    ((MainWindow*)root)->m_player->setVStatus(param, value);
 }
 
 void LocationForm::setVBody(Body param, int value)
 {
-    m_player->setVBody(param, value);
+    ((MainWindow*)root)->m_player->setVBody(param, value);
+}
+
+void LocationForm::startSelfPlay(Location *current)
+{
+    ((MainWindow*)root)->ui->page_6_sexView->findChild<SexViewForm*>("SexViewForm")->selfPlayStart(current);
 }
 
 int LocationForm::getVBody(Body param)
 {
-    return m_player->getVBody(param);
+    return ((MainWindow*)root)->m_player->getVBody(param);
 }
 
 int LocationForm::getVStatus(Status param)
 {
-    return m_player->getVStatus(param);
+    return ((MainWindow*)root)->m_player->getVStatus(param);
 }
 
 int LocationForm::getItmCount(Items item)
 {
-    return m_bag->getQuantityof(item);
+    return ((MainWindow*)root)->m_bag->getQuantityof(item);
 }
 
 int LocationForm::getSexVar(SexVar var)
 {
-    return m_player->getVSexVar(var);
+    return ((MainWindow*)root)->m_player->getVSexVar(var);
 }
 
 int LocationForm::getVStatistic(SC param)
 {
-    return m_player->getStatisticsValue(param);
+    return ((MainWindow*)root)->m_player->getStatisticsValue(param);
+}
+
+int LocationForm::getDay()
+{
+    return ((MainWindow*)root)->m_time.getDay();
 }
 
 void LocationForm::setImage(QString path)
@@ -291,6 +309,41 @@ void LocationForm::setDesc(QString text)
 void LocationForm::addDesc(QString str)
 {
     ui->labelLocDesc->setText(ui->labelLocDesc->text() + str);
+}
+
+bool LocationForm::isAutoTampon()
+{
+    return ((MainWindow*)root)->page4->isAutoTampon();
+}
+
+void LocationForm::redress(Cloth *newCloth)
+{
+    ((MainWindow*)root)->m_player->redress(newCloth);
+}
+
+Cloth *LocationForm::getCloth(ClothType type)
+{
+    return ((MainWindow*)root)->m_player->getCloth(type);
+}
+
+void LocationForm::viewObj(QString obj)
+{
+    ((MainWindow*)root)->ui->page_5_objView->slotViewObj(obj);
+}
+
+void LocationForm::updSkin(char c, int val)
+{
+    ((MainWindow*)root)->m_player->updSkin(c,val);
+}
+
+TimeServer *LocationForm::gTime()
+{
+    return &((MainWindow*)root)->m_time;
+}
+
+QString LocationForm::sextToysBlock(int val)
+{
+    return ((MainWindow*)root)->m_ccsex.sextToysBlock(val);
 }
 
 BathActBtn::BathActBtn(bathActs act, QString actName)

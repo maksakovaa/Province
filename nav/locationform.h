@@ -8,9 +8,10 @@
 #include "location.h"
 #include "../timeServer.h"
 #include "../video.h"
-#include "../weather.h"
-#include "../player/ccsex.h"
-#include "settingsform.h"
+#include "cloth.h"
+// #include "../weather.h"
+// #include "../sex/ccsex.h"
+// #include "settingsform.h"
 
 namespace Ui {
 class LocationForm;
@@ -28,12 +29,13 @@ signals:
 public:
     explicit LocationForm(QWidget *parent = nullptr);
     ~LocationForm();
-    void setPlayerPtr(Player* ptr);
+    void setRoot(QWidget* ptr);
+    // void setPlayerPtr(Player* ptr);
     void setActionsLayout(QVBoxLayout* ptr);
-    void setTimePtr(TimeServer* ptr);
-    void setPagePtr(QStackedWidget* ptr);
-    void setWeatherPtr(Weather* ptr);
-    void setCCSEX(CCSex* ptr);
+    // void setTimePtr(TimeServer* ptr);
+    // void setPagePtr(QStackedWidget* ptr);
+    // void setWeatherPtr(Weather* ptr);
+    // void setCCSEX(CCSex* ptr);
     void init(QString loc = "");
     Location* getCurPtr();
     Location* getPrevPtr();
@@ -44,6 +46,7 @@ public slots:
     void slotChangeLoc(Location* locPtr, int min);
 private:
 //methods:
+    QString sextToysBlock(int val);
     void DFSlocations(Location* parent);
     void fillSubLocs();
     void createLocations();
@@ -55,29 +58,38 @@ private:
     void setSexVar(SexVar var, int value);
     void setVStatus(Status param, int value);
     void setVBody(Body param, int value);
+    void startSelfPlay(Location* current);
     int getVBody(Body param);
     int getVStatus(Status param);
     int getItmCount(Items item);
     int getSexVar(SexVar var);
     int getVStatistic(SC param);
+    int getDay();
     void setImage(QString path);
     void setDesc(QString text);
     void addDesc(QString str);
+    bool isAutoTampon();
+    void redress(Cloth* newCloth);
+    Cloth* getCloth(ClothType type);
+    void viewObj(QString obj);
+    void updSkin(char c, int val);
+    TimeServer* gTime();
 //members:
     Ui::LocationForm *ui;
+    QWidget* root;
     Location* m_currentLoc;
     Location* m_prevLoc;
     std::unordered_map<QString,Location*> m_locations;
-    Player* m_player;
+    // Player* m_player;
     QVBoxLayout* m_actLayout;
-    TimeServer* m_time;
-    QStackedWidget* m_page;
-    BagForm* m_bag;
+    // TimeServer* m_time;
+    // QStackedWidget* m_page;
+    // BagForm* m_bag;
     Video* videoWidg;
-    Weather* m_weather;
-    CCSex* m_ccsex;
+    // Weather* m_weather;
+    // CCSex* m_ccsex;
     BathRoom* m_bath;
-    SettingsForm* m_settings;
+    // SettingsForm* m_settings;
 };
 
 enum bathActs 

@@ -20,17 +20,20 @@ public slots:
     void slotCheckAlkoBlock(int& value);
     void slotAlkoholism();
 private:
+    int getVAlco(Addiction param);
+    void setVAlco(Addiction param, int value);
+    void updVAlco(Addiction param, int value);
     int getVStatus(Status param);
     void updVStatus(Status param, int value);
     void setVStatus(Status param, int value);
     Player* m_player;
-    int m_max_hangoverDay{0};
-    int m_alkoholism{0};
-    int m_hangoverDay{0};
-    int m_alkoAbstainDay{0};
-    int m_alkoAbstainCount{0};
-    int m_hangVneshAlko{0};
-    int m_lenghangoverday{0};
+    // int m_max_hangoverDay{0};
+    // int m_alkoholism{0};
+    // int m_hangoverDay{0};
+    // int m_alkoAbstainDay{0};
+    // int m_alkoAbstainCount{0};
+    // int m_hangVneshAlko{0};
+    // int m_lenghangoverday{0};
 };
 
 #endif

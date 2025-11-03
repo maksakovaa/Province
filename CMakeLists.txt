@@ -16,35 +16,33 @@ qt_standard_project_setup()
 qt_add_executable(Game
     WIN32 MACOSX_BUNDLE
     main.cpp
-    mainwindow.cpp
-    mainwindow.h
-    mainwindow.ui
-    timeServer.h
-    timeServer.cpp
+    mainwindow.cpp mainwindow.h mainwindow.ui
+    timeServer.h timeServer.cpp
+
     nav/scenemarker.h nav/scenemarker.cpp
     nav/sceneviewer.h nav/sceneviewer.cpp
     nav/location.h nav/location.cpp
     nav/qactionbutton.h nav/qactionbutton.cpp
     nav/mapform.h nav/mapform.cpp nav/mapform.ui
-    nav/gameobj.h nav/gameobj.cpp
     nav/locationform.h nav/locationform.cpp nav/locationform.ui
     nav/objviewform.h nav/objviewform.cpp nav/objviewform.ui
-    nav/bathroom.cpp
+    nav/cloth.h nav/cloth.cpp nav/wardrobe.cpp
+    nav/bathroom.cpp nav/bed.cpp nav/mirror.cpp
+
 
     player/player.h player/player.cpp
-    player/cloth.h player/cloth.cpp
-    player/wardrobe.h player/wardrobe.cpp
-    player/ccsex.h player/ccsex.cpp
     player/ccalko.h player/ccalko.cpp
     player/pregnancy.h player/pregnancy.cpp
     player/enums.h
     player/item.h player/item.cpp
     player/tabwidgetplayer.h player/tabwidgetplayer.cpp player/tabwidgetplayer.ui
     player/playerDesc.cpp
-    player/playerTimeSlots.cpp
     player/bagform.h player/bagform.cpp player/bagform.ui
     player/itemform.h player/itemform.cpp player/itemform.ui
 
+    sex/ccsex.h sex/ccsex.cpp
+    sex/sexviewform.h sex/sexviewform.cpp sex/sexviewform.ui
+    sex/selfplay.cpp sex/sex.cpp
 
     menudial.h menudial.cpp menudial.ui
     video.h video.cpp
@@ -58,9 +56,7 @@ qt_add_executable(Game
     data/actions.qrc data/items.qrc data/npc.qrc
 	data/body.qrc data/qwest.qrc
 
-    sexviewform.h sexviewform.cpp sexviewform.ui
-    selfplay.cpp
-    settingsform.h settingsform.cpp settingsform.ui sex.cpp
+    settingsform.h settingsform.cpp settingsform.ui
     
     npc/npc.h npc/npc.cpp
 )

@@ -194,7 +194,6 @@ void Location::parseRequiredImage(QString str, QString folder)
     if (req == "night_snow")
     {
         m_image = folder + str.sliced(str.indexOf(indEnd[param]) + indEnd[param].size());
-        std::cout << m_image.toStdString() << std::endl;
         m_isweather = true;
     }
 }

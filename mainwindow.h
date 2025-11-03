@@ -4,13 +4,14 @@
 #include <QMainWindow>
 #include "player/player.h"
 #include "player/pregnancy.h"
-#include "player/ccsex.h"
+#include "sex/ccsex.h"
 #include "player/ccalko.h"
 #include "settingsform.h"
-#include "sexviewform.h"
+#include "sex/sexviewform.h"
 #include "timeServer.h"
 #include "weather.h"
 #include "overlaystatus.h"
+#include "nav/objviewform.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -21,7 +22,9 @@ QT_END_NAMESPACE
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
+    friend Player; friend TimeServer; friend OverlayStatus;
+    friend LocationForm; friend ObjViewForm; friend Mirror;
+    friend SexViewForm;
 public:
     MainWindow(SettingsForm* settingsForm, CharacterType charType, int year, int month, int day, QWidget *parent = nullptr);
     ~MainWindow();

@@ -1,7 +1,10 @@
-#include "wardrobe.h"
+#include "objviewform.h"
 #include "cloth.h"
 
-Wardrobe::Wardrobe(): m_size(0) {}
+Wardrobe::Wardrobe(QWidget* ptr): m_size(0)
+{
+    root = (ObjViewForm*)ptr;
+}
 
 void Wardrobe::addCloth(Cloth* thing)
 {

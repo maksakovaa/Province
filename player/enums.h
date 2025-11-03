@@ -113,32 +113,20 @@ enum Status
 
     isprok,
     mesec,
+    barrenness,
     pregnancy,
     pregnancyKnow,
     sexyAppeal,
     lipkoef,
 
-    sick,
-    sickStage,
-    sickTimer,
-    crazy,
-    nerdism,
-
     daystart,
     frost,
-    drugEffect,
-    drugStatus,
-
+    nerdism,
     boletus,
     bilberry,
 
     house_debt,
     obkvsdam,
-
-    gerpes,
-    sifilis,
-    tripper,
-    kandidoz,
 
     inc_day_weight,
     inc_preg_weight,
@@ -149,13 +137,11 @@ enum Status
     fatdel_day,
     downmuscl,
     vidageday,
-    alko,
-    maxAlko,
-    alkoday,
     money,
     horny,
     hornyStat,
     addHorny,
+    last_horny,
     lust,
     hour_lust,
     soft_lust,
@@ -164,7 +150,6 @@ enum Status
     mood,
     energy,
     water,
-
     son,
     InSleep,
     no_sleep_time,
@@ -212,6 +197,41 @@ enum SexVar
     spanked
 };
 
+enum Sickness
+{
+    sick,
+    sickStage,
+    sickTimer,
+    crazy,
+    Venera,
+    VeneraOnce,
+    SifacOnce,
+    GerpesOnce,
+    TriperOnce,
+    KandidozOnce,
+    Sifilis,
+    Gerpes,
+    Triper,
+    Kandidoz,
+};
+
+enum Addiction
+{
+    alko,
+    maxAlko,
+    alkoday,
+    max_hangoverDay,
+    alkoholism,
+    hangoverDay,
+    alkoAbstainDay,
+    alkoAbstainCount,
+    hangVneshAlko,
+    lenghangoverday,
+
+    drugEffect,
+    drugStatus
+};
+
 enum SC     //Статистика
 {
     piss,
@@ -254,6 +274,7 @@ enum Const
     max_sweat_grease,
     many_vaginal_grease,
     out_vaginal_grease,
+    max_hour_lust,
     shameStage1,
     shameStage2,
     shameStage3,
@@ -293,6 +314,12 @@ enum Items
     iVibrator,
     iStrapon,
     lipBalm
+};
+
+enum GameObjects {
+    mirror,
+    bed,
+    wardrobe
 };
 
 #endif // ENUMS_H

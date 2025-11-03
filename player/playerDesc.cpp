@@ -1,5 +1,6 @@
 #include "player.h"
 #include "../Functions.h"
+#include "../mainwindow.h"
 
 QString Player::getNameDesc()
 {
@@ -344,7 +345,7 @@ QString Player::getHairDesc()
         m_body[Body::hairStatus] = 1;
         m_body[Body::hairCurly] = 0;
     }
-    if(!m_settings->isHapri())
+    if(!((MainWindow*)m_main)->page4->settings()->isHapri())
     {
         m_body[Body::hairStatus] = 1;
     }
