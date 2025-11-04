@@ -9,9 +9,6 @@
 #include "../timeServer.h"
 #include "../video.h"
 #include "cloth.h"
-// #include "../weather.h"
-// #include "../sex/ccsex.h"
-// #include "settingsform.h"
 
 namespace Ui {
 class LocationForm;
@@ -30,12 +27,7 @@ public:
     explicit LocationForm(QWidget *parent = nullptr);
     ~LocationForm();
     void setRoot(QWidget* ptr);
-    // void setPlayerPtr(Player* ptr);
     void setActionsLayout(QVBoxLayout* ptr);
-    // void setTimePtr(TimeServer* ptr);
-    // void setPagePtr(QStackedWidget* ptr);
-    // void setWeatherPtr(Weather* ptr);
-    // void setCCSEX(CCSex* ptr);
     void init(QString loc = "");
     Location* getCurPtr();
     Location* getPrevPtr();
@@ -80,16 +72,9 @@ private:
     Location* m_currentLoc;
     Location* m_prevLoc;
     std::unordered_map<QString,Location*> m_locations;
-    // Player* m_player;
     QVBoxLayout* m_actLayout;
-    // TimeServer* m_time;
-    // QStackedWidget* m_page;
-    // BagForm* m_bag;
     Video* videoWidg;
-    // Weather* m_weather;
-    // CCSex* m_ccsex;
     BathRoom* m_bath;
-    // SettingsForm* m_settings;
 };
 
 enum bathActs 

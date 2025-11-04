@@ -2,11 +2,14 @@
 #define OBJVIEWFORM_H
 
 #include "location.h"
-#include "locationform.h"
 #include <QPushButton>
 #include <QWidget>
 #include <qstackedwidget.h>
 #include "cloth.h"
+#include "player.h"
+#include "../video.h"
+#include "clothform.h"
+#include "clothformTrash.h"
 
 namespace Ui {
 class ObjViewForm;
@@ -41,14 +44,12 @@ signals:
 public:
     explicit ObjViewForm(QWidget *parent = nullptr);
     ~ObjViewForm();
-    void setRoot(QWidget* ptr);
-    // void setPlayerPtr(Player* ptr);
     void setActLayoutPtr(QVBoxLayout* ptr);
-    // void setPagePtr(QStackedWidget* ptr);
-    // void setSettingsPtr(Settings* ptr);
-    // void setTimeServerPtr(TimeServer* ptr);
+    void storeCloth(Cloth* thing, int count = 1);
+    Cloth* wearCloth(Cloth* thing);
 public slots:
     void slotViewObj(QString objName);
+    void slotInitWardrobe();
 private:
     int getVStatus(Status type);
     int getVBody(Body type);
@@ -76,18 +77,16 @@ private:
     Location* getCurLoc();
     void changeLoc(Location* newLoc, int min);
     void startSelfPlay(Location* loc);
+    Player* player();
+    bool isHapri();
 //members
     Ui::ObjViewForm *ui;
     QWidget* root;
-    // Player* m_player;
     QVBoxLayout* m_actLayout;
-    //QStackedWidget* m_page;
-    // Settings* m_settings;
-    // BagForm* m_bag;
-    // TimeServer* m_time;
-    //LocationForm* m_loc;
     Mirror* m_mirror;
     Bed* m_bed;
+    Wardrobe* m_wardrobe;
+    Video* videoWidg;
 };
 
 class GameObj: public QObject
@@ -156,16 +155,37 @@ private:
 class Wardrobe: public GameObj
 {
     Q_OBJECT
+    friend void ObjViewForm::slotInitWardrobe();
 public:
     Wardrobe(QWidget* ptr);
     ~Wardrobe() = default;
-    void addCloth(Cloth* thing);
+    QString getName() override;
+    QString getImage() override;
+    QString getDesc() override;
+    void viewWardrobe();
+    void trashBox();
+    void addCloth(Cloth* thing, int count);
     Cloth* wearCloth(Cloth* thing);
 public slots:
     void slotUpdSize(int size);
+private slots:
+    void wardrobeHandler(QString act);
+    void clothFormHandler(Cloth* cloth, QString action);
+    void clotTrashHandler(Cloth* cloth, QString action);
 private:
+    ClothForm* genForm(ClothMain* cloth);
+    ClothFormTrash* genTrashForm(ClothMain* cloth);
+    void initNewLayout();
+    void initWarDrobe();
+    void finalize();
+    int countPanties();
+    void makeActBtn(QString txt);
+    QString warStr(int index);
     ObjViewForm* root;
+    ClothPanties* m_panties;
     std::unordered_map<Cloth*, int> m_storage;
+    std::vector<Cloth*> m_trash;
+    std::vector<QHBoxLayout*> m_layouts;
     int m_size;
 };
 

@@ -42,19 +42,14 @@ ClothMain::ClothMain(int id, ClothType type, ClothGroup group, QString name, int
     else if (m_group == ClothGroup::officeSuit) { m_bonus = 15; }
     else if (m_group == ClothGroup::revealingOutfit) { m_bonus = 15; }
     else if (m_group == ClothGroup::blouseWithShorts) { m_bonus = 15; }
+    m_size = -1;
+    if(m_group < ClothGroup::sportsSuit)
+        m_condition = -99;
 }
 
 QString ClothMain::getClothImage()
 {
-    if(m_group >= ClothGroup::nude && m_group <= ClothGroup::waitressUniform)
-    {
-        return ":/img/clothing/" + intQStr(0) + "/" + intQStr(m_id) + ".jpg";
-    }
-    else
-    {
-        return ":/img/clothing/" + intQStr(m_group) + "/" + intQStr(m_id) + ".jpg";
-    }
-
+    return ":/img/clothing/" + intQStr(m_group) + "/" + intQStr(m_id) + ".jpg";
 }
 
 ClothType ClothMain::getType()

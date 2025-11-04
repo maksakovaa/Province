@@ -1,10 +1,6 @@
 #include "locationform.h"
 #include "../Functions.h"
-#include "../mainwindow.h"
-// #include "sex/sexviewform.h"
 #include "ui_locationform.h"
-#include "objviewform.h"
-#include "../ui_mainwindow.h"
 
 BathRoom::BathRoom(LocationForm* ptr): root(ptr)
 {

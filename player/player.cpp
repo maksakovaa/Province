@@ -2,20 +2,11 @@
 #include "../Functions.h"
 #include <QPixmap>
 #include "cloth.h"
-#include "mainwindow.h"
-
-Player::Player() //m_wardrobe()
-{
-    initDefaultArrays();
-//    connect(this, &Player::sigUpdClothSize, &m_wardrobe, &Wardrobe::slotUpdSize);
-    f_name = "Света";
-    l_name = "Лебедева";
-}
+#include "../mainwindow.h"
 
 Player::Player(CharacterType history, QWidget* ptr2): m_main(ptr2)
 {
     initDefaultArrays();
-//    connect(this, &Player::sigUpdClothSize, &m_wardrobe, &Wardrobe::slotUpdSize);
 
     f_name = "Света";
     l_name = "Лебедева";
@@ -147,8 +138,6 @@ Player::Player(CharacterType history, QWidget* ptr2): m_main(ptr2)
         m_skills[Skills::domination] = getRandInt(-5,5);
     }
     zz_body();
-    emit sigUpdClothSize(m_body[hips]);
-    initWardrobeClothes();
     calcVneshBonus();
     calcShamelessFlag();
 }
@@ -322,74 +311,6 @@ int Player::getCurClothGroup()
         return 0;
     }
 }
-
-void Player::redress(Cloth *newCloth)
-{
-    if (newCloth != nullptr)
-    {
-        if(newCloth->getClothType() == ClothType::Main)
-        {
-            ClothGroup newClothGroup = ((ClothMain*)newCloth)->getClothGroup();
-            if (m_clothSLots[ClothType::Main] != nullptr)
-            {
-                //m_wardrobe.addCloth(m_clothSLots[ClothType::Main]);
-            }
-            m_clothSLots[ClothType::Main] = newCloth;
-            if (newClothGroup <= swimsuit)
-            {
-                if(m_clothSLots[ClothType::Panties] != nullptr)
-                {
-                    //m_wardrobe.addCloth(m_clothSLots[ClothType::Panties]);
-                }
-                m_clothSLots[ClothType::Panties] = nullptr;
-                if(m_clothSLots[ClothType::Stockings] != nullptr)
-                {
-                    //m_wardrobe.addCloth(m_clothSLots[ClothType::Stockings]);
-                }
-                m_clothSLots[ClothType::Stockings] = nullptr;
-            }
-            if (newClothGroup == ClothGroup::jeans || newClothGroup == ClothGroup::sportsSuit)
-            {
-                if(m_clothSLots[ClothType::Stockings] != nullptr)
-                {
-                    //m_wardrobe.addCloth(m_clothSLots[ClothType::Stockings]);
-                }
-                m_clothSLots[ClothType::Stockings] = nullptr;
-            }
-        }
-        if(newCloth->getClothType() == ClothType::Panties)
-        {
-            if(m_clothSLots[ClothType::Panties] == nullptr)
-            {
-                m_clothSLots[ClothType::Panties] = newCloth;
-            }
-        }
-        if(newCloth->getClothType() == ClothType::Stockings)
-        {
-            if(m_clothSLots[ClothType::Stockings] == nullptr)
-            {
-                m_clothSLots[ClothType::Stockings] = newCloth;
-            }
-        }
-    }
-    else
-    {
-        for (int i = 0; i < ClothType::Stockings; ++i)
-        {
-            if(m_clothSLots[static_cast<ClothType>(i)] != nullptr)
-            {
-                //m_wardrobe.addCloth(m_clothSLots[static_cast<ClothType>(i)]);
-            }
-            m_clothSLots[static_cast<ClothType>(i)] = nullptr;
-        }
-    }
-}
-
-Cloth *Player::getCloth(ClothType type)
-{
-    return m_clothSLots[type];
-}
-
 void Player::initDefaultArrays()
 {
     for (int i = Skills::strenght; i <= Skills::truancy; ++i)
@@ -494,29 +415,96 @@ void Player::updBody()
 {
     zz_body();
     calcVneshBonus();
-    emit sigUpdClothSize(m_body[hips]);
-}
-
-void Player::initWardrobeClothes()
-{
-    ClothMain* first = new ClothMain(3, ClothType::Main, ClothGroup::sundress, "Сарафан");
-    ClothMain* second = new ClothMain(4, ClothType::Main, ClothGroup::schoolUniform, "Школьная форма");
-    ClothMain* third = new ClothMain(getRandInt(10,29), ClothType::Main, ClothGroup::sportsSuit, "Спортивный костюм");
-    ClothMain* four = new ClothMain(getRandInt(30,49), ClothType::Main, ClothGroup::jeans, "Джинсы");
-    ClothPanties* pants = new ClothPanties(ClothType::Panties);
-//    m_wardrobe.addCloth(first);
-//    m_wardrobe.addCloth(second);
-//    m_wardrobe.addCloth(third);
-//    m_wardrobe.addCloth(four);
-//    m_wardrobe.addCloth((ClothMain*)pants);
-    wearClothes(first);
-    wearClothes(pants);
+    // emit sigUpdClothSize(m_body[hips]);
 }
 
 void Player::wearClothes(Cloth* thing)
 {
-    m_clothSLots[thing->getClothType()] = thing;
+    m_clothSLots[thing->getClothType()] = ((MainWindow*)m_main)->m_obj->wearCloth(thing);
 }
+
+QString Player::getCurClothName()
+{
+    return m_clothSLots[ClothType::Main]->getName();
+}
+
+
+void Player::redressMain(Cloth *newCloth)
+{
+    if (newCloth != nullptr)
+    {
+        if(newCloth->getClothType() == ClothType::Main)
+        {
+            ClothGroup newClothGroup = ((ClothMain*)newCloth)->getClothGroup();
+            if (m_clothSLots[ClothType::Main] != nullptr)
+            {
+                ((MainWindow*)m_main)->m_obj->storeCloth(m_clothSLots[ClothType::Main]);
+            }
+            m_clothSLots[ClothType::Main] = newCloth;
+            if (newClothGroup <= swimsuit)
+            {
+                if(m_clothSLots[ClothType::Panties] != nullptr)
+                {
+                    ((MainWindow*)m_main)->m_obj->storeCloth(m_clothSLots[ClothType::Panties]);
+                }
+                m_clothSLots[ClothType::Panties] = nullptr;
+                if(m_clothSLots[ClothType::Stockings] != nullptr)
+                {
+                    ((MainWindow*)m_main)->m_obj->storeCloth(m_clothSLots[ClothType::Stockings]);
+                }
+                m_clothSLots[ClothType::Stockings] = nullptr;
+            }
+            if (newClothGroup == ClothGroup::jeans || newClothGroup == ClothGroup::sportsSuit)
+            {
+                if(m_clothSLots[ClothType::Stockings] != nullptr)
+                {
+                    ((MainWindow*)m_main)->m_obj->storeCloth(m_clothSLots[ClothType::Stockings]);
+                }
+                m_clothSLots[ClothType::Stockings] = nullptr;
+            }
+        }
+        if(newCloth->getClothType() == ClothType::Panties)
+        {
+            if(m_clothSLots[ClothType::Panties] == nullptr)
+            {
+                m_clothSLots[ClothType::Panties] = newCloth;
+            }
+        }
+        if(newCloth->getClothType() == ClothType::Stockings)
+        {
+            if(m_clothSLots[ClothType::Stockings] == nullptr)
+            {
+                m_clothSLots[ClothType::Stockings] = newCloth;
+            }
+        }
+    }
+    else
+    {
+        for (int i = 0; i < ClothType::Stockings; ++i)
+        {
+            if(m_clothSLots[static_cast<ClothType>(i)] != nullptr)
+            {
+                ((MainWindow*)m_main)->m_obj->storeCloth(m_clothSLots[static_cast<ClothType>(i)]);
+            }
+            m_clothSLots[static_cast<ClothType>(i)] = nullptr;
+        }
+    }
+    calcVneshBonus();
+    ((MainWindow*)m_main)->m_time.increaseTime(1);
+}
+
+void Player::redressPanties(Cloth* thing)
+{
+    if(m_clothSLots[ClothType::Panties] != nullptr)
+        ((MainWindow*)m_main)->m_obj->storeCloth(m_clothSLots[ClothType::Panties]);
+    m_clothSLots[ClothType::Panties] = thing;
+}
+
+Cloth *Player::getCloth(ClothType type)
+{
+    return m_clothSLots[type];
+}
+
 
 void Player::checkPanties()
 {
@@ -941,11 +929,6 @@ QString Player::getPlayerFace()
         path += ".jpg";
     }
     return makeImg(path);
-}
-
-QString Player::getCurClothName()
-{
-    return m_clothSLots[ClothType::Main]->getName();
 }
 
 QPixmap Player::getPlayerIcon()

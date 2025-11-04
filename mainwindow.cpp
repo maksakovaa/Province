@@ -45,6 +45,8 @@ MainWindow *MainWindow::createMenu()
 
 void MainWindow::start(QString loc)
 {
+    emit m_player->sigInitWardrobe();
+    m_player->calcVneshBonus();
     ui->page_0_main->init(loc);
 }
 
@@ -61,6 +63,8 @@ void MainWindow::setupMainWindow(SettingsForm* settingsForm, CharacterType charT
     ui->scrollAreaBag->setWidget(m_bag);
     m_sex = new SexViewForm(this);
     ui->scrollAreaSexView->setWidget(m_sex);
+    m_obj = new ObjViewForm(this);
+    ui->objViewLayout->addWidget(m_obj);
     m_player = new Player(charType, this);
     m_weather = new Weather;
     setPointers();
@@ -78,19 +82,8 @@ void MainWindow::setPointers()
 {
     m_weather->setTimePtr(&m_time);
     this->ui->page_0_main->setRoot(this);
-    this->ui->page_5_objView->setRoot(this);
-    // ui->page_0_main->setWeatherPtr(m_weather);
-    // ui->page_0_main->setPagePtr(ui->stackedWidget);
     ui->page_0_main->setActionsLayout(ui->actionsLayout);
-    // ui->page_0_main->setPlayerPtr(m_player);
-    // ui->page_0_main->setTimePtr(&m_time);
-    // ui->page_0_main->setCCSEX(&m_ccsex);
-
-    // ui->page_5_objView->setSettingsPtr(page4->settings());
-    ui->page_5_objView->setActLayoutPtr(ui->actionsLayout);
-    // ui->page_5_objView->setPlayerPtr(m_player);
-    // ui->page_5_objView->setPagePtr(ui->stackedWidget);
-    // ui->page_5_objView->setTimeServerPtr(&m_time);
+    m_obj->setActLayoutPtr(ui->actionsLayout);
 
     m_reproductSys.setPlayerPtr(m_player);
     m_reproductSys.setBagPtr(m_bag);
@@ -99,11 +92,7 @@ void MainWindow::setPointers()
     m_ccalko.setPlayerPtr(m_player);
     ui->page_2_pers->setPtr(m_player);
     m_overlayStatus.setParentWidget(ui->page_0_main->getImageLblPtr());
-
-    // m_sex->setPagePtr(ui->stackedWidget);
-    // m_sex->setPlayerPtr(m_player);
     m_sex->setLayoutPtr(ui->actionsLayout);
-    // m_sex->setTimeServerPtr(&m_time);
 }
 
 void MainWindow::connections()
@@ -114,8 +103,8 @@ void MainWindow::connections()
     connect(ui->page_2_pers, &TabWidgetPlayer::sigUpdateStatus, this, &MainWindow::slotUpdParams);
     connect(ui->page_0_main, &LocationForm::sigIsMapAwaylable, this, &MainWindow::slotIsMapAwaylable);
     connect(ui->page_0_main, &LocationForm::sigUpdParams, this, &MainWindow::slotUpdParams);
-    connect(ui->page_5_objView, &ObjViewForm::sigUpdParams, this, &MainWindow::slotUpdParams);
-    connect(ui->page_5_objView, &ObjViewForm::sigSpendTime, &m_time, &TimeServer::increaseTime);
+    connect(m_obj, &ObjViewForm::sigUpdParams, this, &MainWindow::slotUpdParams);
+    connect(m_obj, &ObjViewForm::sigSpendTime, &m_time, &TimeServer::increaseTime);
 
     connect(&m_ccalko, &CC_Alko::sigIncreaseRiscs, &m_reproductSys, &Pregnancy::slotIncreaseRiscs);
 
@@ -129,6 +118,7 @@ void MainWindow::connections()
     connect(ui->label_lust, &QLabel::linkActivated, this, &MainWindow::slotOnStatusClick);
     connect(ui->label_mood, &QLabel::linkActivated, this, &MainWindow::slotOnStatusClick);
     connect(ui->label_son, &QLabel::linkActivated, this, &MainWindow::slotOnStatusClick);
+    connect(m_player, &Player::sigInitWardrobe, m_obj, &ObjViewForm::slotInitWardrobe);
 }
 
 void MainWindow::slotUpdateDateTime()

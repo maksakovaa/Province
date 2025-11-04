@@ -59,6 +59,12 @@ qt_add_executable(Game
     settingsform.h settingsform.cpp settingsform.ui
     
     npc/npc.h npc/npc.cpp
+    nav/clothform.h nav/clothform.cpp nav/clothform.ui
+    customshadoweffect.h customshadoweffect.cpp
+    nav/clothformTrash.ui
+    nav/clothformTrash.h
+    nav/clothformTrash.cpp
+
 )
 
 target_include_directories(Game BEFORE PRIVATE "." "./nav" "./player")

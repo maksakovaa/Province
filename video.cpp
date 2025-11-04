@@ -16,10 +16,9 @@ Video::Video(QWidget *parent): QWidget(parent)
 
 void Video::setQUrl(const QString &url, int width, int height)
 {
-    QUrl link = QUrl(url);
-    m_vplayer->setSource(link);
     this->setFixedSize(width,height);
     m_video->setFixedSize(width,height);
+    m_vplayer->setSource(QUrl(url));
     m_vplayer->play();
 }
 

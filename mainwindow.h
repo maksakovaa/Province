@@ -12,6 +12,7 @@
 #include "weather.h"
 #include "overlaystatus.h"
 #include "nav/objviewform.h"
+#include "nav/locationform.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -23,7 +24,7 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
     friend Player; friend TimeServer; friend OverlayStatus;
-    friend LocationForm; friend ObjViewForm; friend Mirror;
+    friend LocationForm; friend ObjViewForm;
     friend SexViewForm;
 public:
     MainWindow(SettingsForm* settingsForm, CharacterType charType, int year, int month, int day, QWidget *parent = nullptr);
@@ -58,6 +59,7 @@ private: //members
     CC_Alko m_ccalko;
     BagForm* m_bag;
     SexViewForm* m_sex;
+    ObjViewForm* m_obj;
 private: //methods
     void setupMainWindow(SettingsForm* settingsForm, CharacterType charType);
     void connections();

@@ -8,17 +8,29 @@
 #include "enums.h"
 #include "../nav/cloth.h"
 
+class MainWindow;
+class Wardrobe;
+
 class Player: public QObject
 {
     Q_OBJECT
+    friend MainWindow;
 public:
-    Player();
     Player(CharacterType history, QWidget* ptr2);
     ~Player() = default;
 
     bool isCheatsOn();
     bool isPanties();
     bool isAutoTampon();
+
+    Cloth* getCloth(ClothType type);
+    void slotWearAndTear(int value = 1);
+    int getCurClothGroup();
+    void redressMain(Cloth* newCloth);
+    void redressPanties(Cloth* thing);
+    void wearClothes(Cloth* thing);
+
+
     void updVSkill(Skills skill_name, int value);
     void updVBody(Body param, int value);
     void updVStatus(Status stat, int value);
@@ -29,11 +41,6 @@ public:
     void updVAddict(Addiction param, int value);
     void updSkin(char c, int value);
 
-    Cloth* getCloth(ClothType type);
-    void slotWearAndTear(int value = 1);
-    int getCurClothGroup();
-    void redress(Cloth* newCloth);
-
     void setVStatus(Status stat, int value);
     void setVBody(Body param, int value);
     void setVSexVar(SexVar param, int value);
@@ -41,6 +48,7 @@ public:
     void setVSkill(Skills param, int val);
     void setVSick(Sickness param, int val);
     void setVAddict(Addiction param, int value);
+
     int getAge();
     int getSkillValue(Skills skill_name);
     int getVBody(Body param);
@@ -89,17 +97,13 @@ public:
     void checkPanties();
     void updBody();
 signals:
-    void sigUpdClothSize(int size);
+    void sigInitWardrobe();
+    // void sigUpdClothSize(int size);
 private:
     //methods
     void zz_body();
 
     void initDefaultArrays();
-
-    void initWardrobeClothes();
-    void wearClothes(Cloth* thing);
-
-
     int calcHairCurlyBonus();
     int calcLipBonus();
     int calcLipAlmstatBonus();
@@ -124,7 +128,6 @@ private:
     QString f_name;
     QString l_name;
     struct tm m_birthDate{};
-    //Wardrobe m_wardrobe;
     std::unordered_map<ClothType, Cloth*> m_clothSLots;
     std::unordered_map<Skills, int> m_skills;
     std::unordered_map<Body, int> m_body;

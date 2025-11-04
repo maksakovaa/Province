@@ -1,7 +1,6 @@
 #include "objviewform.h"
 #include "ui_objviewform.h"
 #include "../Functions.h"
-#include "../sex/sexviewform.h"
 
 Bed::Bed(QWidget* ptr)
 {
@@ -113,6 +112,7 @@ QString Bed::getDreamsAfter(int i)
 
 void Bed::viewBed()
 {
+    root->ui->stackedWidgetObjForm->setCurrentIndex(0);
     root->ui->labelObjImage->setPixmap(QPixmap(getImage()));
     root->ui->labelObjDesc->setText(getDesc());
     makeBedActBtn("Завести будильник");

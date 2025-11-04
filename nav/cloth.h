@@ -31,11 +31,15 @@ enum ClothGroup
 
 class ClothMain;
 class ClothPanties;
+class Wardrobe;
+class ClothForm;
+class ClothFormTrash;
 
 class Cloth
 {
     friend ClothMain;
     friend ClothPanties;
+    friend Wardrobe;
 public:
     Cloth(ClothType type, QString name, int price, int condition = 100);
     ClothType getClothType();
@@ -51,6 +55,7 @@ private:
 
 class ClothMain: public Cloth
 {
+    friend Wardrobe; friend ClothForm; friend ClothFormTrash;
 public:
     ClothMain(int id, ClothType type, ClothGroup group, QString name, int price = 0, int condition = 100);
     QString getClothImage();
@@ -68,6 +73,7 @@ private:
 
 class ClothPanties: public Cloth
 {
+    friend Wardrobe;
 public:
     ClothPanties(ClothType type, int price = 0, int condition = 500);
     QString getImage();

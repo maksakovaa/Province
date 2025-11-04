@@ -29,37 +29,10 @@ void LocationForm::setRoot(QWidget *ptr)
     root = ptr;
 }
 
-// void LocationForm::setPlayerPtr(Player* ptr)
-// {
-//     m_player = ptr;
-// }
-
 void LocationForm::setActionsLayout(QVBoxLayout *ptr)
 {
     m_actLayout = ptr;
 }
-
-// void LocationForm::setTimePtr(TimeServer *ptr)
-// {
-//     m_time = ptr;
-// }
-
-// void LocationForm::setPagePtr(QStackedWidget *ptr)
-// {
-//     m_page = ptr;
-//     m_bag = m_page->widget(3)->findChild<BagForm*>("BagForm");
-//     m_settings = (SettingsForm*)m_page->widget(6);
-// }
-
-// void LocationForm::setWeatherPtr(Weather *ptr)
-// {
-//     m_weather = ptr;
-// }
-
-// void LocationForm::setCCSEX(CCSex *ptr)
-// {
-//     m_ccsex = ptr;
-// }
 
 void LocationForm::init(QString loc)
 {
@@ -165,7 +138,7 @@ void LocationForm::fillSubLocs()
         actionbtn->setText(i);
         actionbtn->setObjName(i);
         m_actLayout->addWidget(actionbtn);
-        ObjViewForm* m_objView = ((MainWindow*)root)->ui->page_5_objView;
+        ObjViewForm* m_objView = ((MainWindow*)root)->m_obj;
         connect(actionbtn, &QActionButton::sigViewObj, m_objView, &ObjViewForm::slotViewObj);
     }
     for (auto& i: locs)
@@ -318,7 +291,7 @@ bool LocationForm::isAutoTampon()
 
 void LocationForm::redress(Cloth *newCloth)
 {
-    ((MainWindow*)root)->m_player->redress(newCloth);
+    ((MainWindow*)root)->m_player->redressMain(newCloth);
 }
 
 Cloth *LocationForm::getCloth(ClothType type)
@@ -328,7 +301,7 @@ Cloth *LocationForm::getCloth(ClothType type)
 
 void LocationForm::viewObj(QString obj)
 {
-    ((MainWindow*)root)->ui->page_5_objView->slotViewObj(obj);
+    ((MainWindow*)root)->m_obj->slotViewObj(obj);
 }
 
 void LocationForm::updSkin(char c, int val)

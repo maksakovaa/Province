@@ -22,14 +22,14 @@ QString Mirror::getName()
 
 QString Mirror::getImage()
 {
-    return ((MainWindow*)root->root)->m_player->getPlayerFace();
+    return root->player()->getPlayerFace();
 }
 
 QString Mirror::getDesc()
 {
-    QString text = ((MainWindow*)root->root)->m_player->getHairDesc() + "<br>";
-    text += ((MainWindow*)root->root)->m_player->getMakeupDesc() + "<br>";
-    text += ((MainWindow*)root->root)->m_player->getLipsDesc() + "<br>";
+    QString text = root->player()->getHairDesc() + "<br>";
+    text += root->player()->getMakeupDesc() + "<br>";
+    text += root->player()->getLipsDesc() + "<br>";
     if(root->getItmCount(Items::cosmetic) > 0 || root->getItmCount(Items::cosmeticBig) > 0)
     {
         text += "Косметика " + intQStr(root->getItmCount(Items::cosmetic) + root->getItmCount(Items::cosmeticBig)) + "<br>";
@@ -43,9 +43,10 @@ QString Mirror::getDesc()
 
 void Mirror::viewMirror()
 {
+    root->ui->stackedWidgetObjForm->setCurrentIndex(0);
     root->ui->labelObjImage->setText(getImage());
     root->ui->labelObjDesc->setText(getDesc());
-    if(root->getVBody(hairStatus) == 0 && ((MainWindow*)root->root)->page4->isHapri())
+    if(root->getVBody(hairStatus) == 0 && root->isHapri())
     {
         makeMirrorActBtn("Причесаться");
     }
@@ -119,7 +120,8 @@ void Mirror::slotMirrorActHandler(QString actName)
         {
             root->useItem(cosmetic,1);
         }
-        ((MainWindow*)root->root)->m_player->setVBody(makeup, 2);
+
+        root->setVBody(makeup, 2);
         emit root->sigUpdParams();
         root->ui->labelObjImage->setText("<img src=':/img/objects/mirror/mop_2.jpg'></img>");
         root->ui->labelObjDesc->setText("Вы легонечко подвели глаза и немного подкрасили губы.");
