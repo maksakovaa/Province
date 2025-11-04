@@ -43,7 +43,7 @@ qt_add_executable(Game
 
     sex/ccsex.h sex/ccsex.cpp
     sex/sexviewform.h sex/sexviewform.cpp sex/sexviewform.ui
-    sex/selfplay.cpp sex/sex.cpp
+    sex/selfplay.h sex/selfplay.cpp sex/sex.h sex/sex.cpp
 
     menudial.h menudial.cpp menudial.ui
     video.h video.cpp

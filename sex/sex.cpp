@@ -1,3 +1,4 @@
+#include "sex.h"
 #include "sexviewform.h"
 #include "ui_sexviewform.h"
 #include "Functions.h"

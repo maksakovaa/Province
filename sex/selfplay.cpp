@@ -1,3 +1,4 @@
+#include "selfplay.h"
 #include "mainwindow.h"
 #include "sexviewform.h"
 #include "player/enums.h"
