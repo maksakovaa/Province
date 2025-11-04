@@ -316,6 +316,61 @@ enum Items
     lipBalm
 };
 
+enum Food
+{
+    eFood,
+    eDietFood,
+    eBread,
+    eSandwich,
+    eBottledWater,
+    eVine,
+    eVodka,
+    eSausage,
+    eFriedChicken,
+    eChocolate,
+    eCookies,
+    eTicTac
+};
+
+enum Cosmetics
+{
+    eMakeup,
+    eMakeupKit,
+    eShavingRazor,
+    eSunscreen,
+    eShampoo,
+    eTampons,
+    eWetWipes,
+    eBrush
+};
+
+enum Common
+{
+    eDishwashBotltle,
+    eWashingPowder,
+    ePlates,
+    eWallPrint,
+    eFabric
+};
+
+enum Tech
+{
+    eCRTTV,
+    ePlasmaTV,
+    eLaptop,
+    eDishwasher,
+    eWashingMachine,
+    eWebCam,
+    eSinger
+};
+
+enum Sport
+{
+    eSkates,
+    eJumpRope,
+    eHoop
+};
+
 enum GameObjects {
     mirror,
     bed,

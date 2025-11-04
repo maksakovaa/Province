@@ -65,6 +65,9 @@ qt_add_executable(Game
     nav/clothformTrash.ui
     nav/clothformTrash.h
     nav/clothformTrash.cpp
+    nav/atm.h nav/atm.cpp
+    nav/iceacream.h nav/iceacream.cpp
+    nav/coffee.h nav/coffee.cpp
 
 )
 
