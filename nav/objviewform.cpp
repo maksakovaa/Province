@@ -6,6 +6,9 @@
 
 #include "../mainwindow.h"
 #include "../ui_mainwindow.h"
+#include "bed.h"
+#include "mirror.h"
+#include "wardrobe.h"
 
 ObjActionButton::ObjActionButton(QString actName)
 {

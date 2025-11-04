@@ -1,3 +1,4 @@
+#include "wardrobe.h"
 #include "Functions.h"
 #include "objviewform.h"
 #include "ui_objviewform.h"

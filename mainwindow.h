@@ -47,6 +47,15 @@ private slots:
     void on_labelDate_linkActivated(const QString& link);
     void on_labelMoney_linkActivated(const QString &link);
     void slotUpdPlayerIcon();
+private: //methods
+    void setupMainWindow(SettingsForm* settingsForm, CharacterType charType);
+    void connections();
+    void setPointers();
+    void updStatusVal(Status stat, int val);
+    void updatePlayerStatusValue();
+    void updPlayerStatusBarStyle();
+    void loadStrings();
+    void setupActionButtons();
 private: //members
     SettingsForm* page4;
     Weather* m_weather;
@@ -60,14 +69,5 @@ private: //members
     BagForm* m_bag;
     SexViewForm* m_sex;
     ObjViewForm* m_obj;
-private: //methods
-    void setupMainWindow(SettingsForm* settingsForm, CharacterType charType);
-    void connections();
-    void setPointers();
-    void updStatusVal(Status stat, int val);
-    void updatePlayerStatusValue();
-    void updPlayerStatusBarStyle();
-    void loadStrings();
-    void setupActionButtons();
 };
 #endif // MAINWINDOW_H

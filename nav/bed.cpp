@@ -1,3 +1,4 @@
+#include "bed.h"
 #include "objviewform.h"
 #include "ui_objviewform.h"
 #include "../Functions.h"

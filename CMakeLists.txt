@@ -26,9 +26,10 @@ qt_add_executable(Game
     nav/mapform.h nav/mapform.cpp nav/mapform.ui
     nav/locationform.h nav/locationform.cpp nav/locationform.ui
     nav/objviewform.h nav/objviewform.cpp nav/objviewform.ui
-    nav/cloth.h nav/cloth.cpp nav/wardrobe.cpp
-    nav/bathroom.cpp nav/bed.cpp nav/mirror.cpp
-
+    nav/cloth.h nav/cloth.cpp nav/wardrobe.h nav/wardrobe.cpp
+    nav/bathroom.h nav/bathroom.cpp nav/bed.h nav/bed.cpp
+    nav/mirror.h nav/mirror.cpp nav/shop.h nav/shop.cpp
+    nav/GameObj.h
 
     player/player.h player/player.cpp
     player/ccalko.h player/ccalko.cpp

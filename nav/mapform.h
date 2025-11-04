@@ -11,6 +11,8 @@ struct loc {
     QString name;
     int x;
     int y;
+    int hmin;
+    int hmax;
 };
 
 class MapForm : public QWidget
@@ -20,7 +22,7 @@ class MapForm : public QWidget
 public:
     explicit MapForm(QWidget *parent = nullptr);
     ~MapForm();
-    QGraphicsScene* genMap(const QString& loc_name, const QString& current_loc);
+    QGraphicsScene* genMap(const QString& loc_name, const QString& current_loc, int hour);
     void setMap(QGraphicsScene* Scene);
 public slots:
     void onMarkerClicked(const QString& name);

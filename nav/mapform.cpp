@@ -18,7 +18,7 @@ MapForm::~MapForm()
     delete ui;
 }
 
-QGraphicsScene *MapForm::genMap(const QString &loc_name, const QString &current_loc)
+QGraphicsScene *MapForm::genMap(const QString &loc_name, const QString &current_loc, int hour)
 {
     m_current = current_loc;
     QGraphicsScene* scene = new QGraphicsScene(this);
@@ -29,10 +29,25 @@ QGraphicsScene *MapForm::genMap(const QString &loc_name, const QString &current_
         scene->addPixmap(QPixmap(":/img/maps/pavlovo.png"));
         for (auto& i: pavlovo_markers) 
         {
-            SceneMarker* marker = new SceneMarker(i.x,i.y);
-            marker->setData(0, i.name);
-            marker->setToolTip(i.name);
-            scene->addItem(marker);
+            if (i.hmin !=0 && i.hmax != 0)
+            {
+                if (hour >= i.hmin && hour <= i.hmax)
+                {
+                    SceneMarker* marker = new SceneMarker(i.x,i.y);
+                    marker->setData(0, i.name);
+                    marker->setToolTip(i.name);
+                    scene->addItem(marker);
+                }                                
+            }
+            else
+            {
+                SceneMarker* marker = new SceneMarker(i.x,i.y);
+                marker->setData(0, i.name);
+                marker->setToolTip(i.name);
+                scene->addItem(marker);
+            }
+            
+
         }
         for (auto& i: player_markers)
         {
@@ -83,9 +98,18 @@ void MapForm::init()
         {
             line = in.readLine();
             QStringList list = line.split(" ");
-            pavlovo_markers.push_back(loc(list.at(0), list.at(1).toInt() - 10, list.at(2).toInt() - 10));
+            if (list.size() == 3)
+            {
+                pavlovo_markers.push_back(loc(list.at(0), list.at(1).toInt() - 10, list.at(2).toInt() - 10, 0, 0));
+            }
+            else if (list.size() == 5)
+            {
+                pavlovo_markers.push_back(loc(list.at(0), list.at(1).toInt() - 10, list.at(2).toInt() - 10, list.at(3).toInt(), list.at(4).toInt()));
+            }
         }
     }
+
+
     QFile file2(":/locations/map_pavlovo_player_markers");
     if(!file2.open(QIODevice::ReadOnly))
     {

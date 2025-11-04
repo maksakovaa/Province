@@ -247,7 +247,7 @@ void MainWindow::on_pushButtonMap_clicked()
     {
         QString mainloc = ui->page_0_main->getCurPtr()->getLocIn();
         QString prevLoc = ui->page_0_main->getPrevPtr()->getLocId();
-        ui->page_1_map->setMap(ui->page_1_map->genMap(mainloc, prevLoc));
+        ui->page_1_map->setMap(ui->page_1_map->genMap(mainloc, prevLoc, m_time.getHour()));
         ClearLayout(ui->actionsLayout);
         ui->stackedWidget->setCurrentIndex(1);
     }

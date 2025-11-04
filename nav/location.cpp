@@ -173,7 +173,7 @@ void Location::parseLocConfig(QString str, QString folder)
     if(str.startsWith(indStart[desc]))
     {
         res = str.sliced(indStart[desc].size(), str.indexOf(indEnd[desc]) - indStart[desc].size());
-        m_desc = res;
+        m_desc += res;
     }
     if(str.startsWith(indStart[subloc]))
     {
