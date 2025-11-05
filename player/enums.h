@@ -4,12 +4,7 @@
 
 enum CharacterType
 {
-    nerd,
-    schoolgirl,
-    dancer,
-    sportgirl,
-    playgirl,
-    frivolous
+    nerd, schoolgirl, dancer, sportgirl, playgirl, frivolous
 };
 
 enum Skills
@@ -42,52 +37,11 @@ enum Skills
 
 enum Body
 {
-    bodyGroup,
-    weight,
-    base_weight,
-    fat,
-    muscles_body,
-    hips,
-    waist,
-    height,
-    throat,
-    vagina,
-    anus,
-    skin,
-    skinTan,
-    skinVan,
-    breasts,
-    breastsSize,
-    underBreast,
-    hairColor,
-    hairLength,
-    hairLengthDay,
-    hairStatus,
-    hairCurly,
-    pubisHair,
-    legHair,
-    lipbalmstat,
-    lip,
-    piercingA,
-    piercingB,
-    piercingC,
-    piercingD,
-    piercingE,
-    piercingG,
-    piercingF,
-    piercingGL,
-    piercingN,
-    eyeColor,
-    eyeSize,
-    eyeLashes,
-    eyeBrows,
-    blizoruk,
-    makeup,
-    silicone,
-    operation,
-    vidage,
-    colorfulLenses,
-    glass
+    bodyGroup, weight,base_weight,fat,muscles_body,hips,waist,height,throat,vagina,anus,skin,skinTan,skinVan,
+    breasts,breastsSize,underBreast,hairColor,hairLength,hairLengthDay,hairStatus,hairCurly,pubisHair,
+    legHair,lipbalmstat,lip,piercingA, piercingB, piercingC, piercingD, piercingE,piercingG,
+    piercingF,piercingGL,piercingN,eyeColor,eyeSize,eyeLashes,eyeBrows,blizoruk,makeup,silicone,operation,vidage,
+    colorfulLenses,glass
 };
 
 enum Status
@@ -161,6 +115,7 @@ enum Status
 enum SexVar
 {
     selfplaytime,
+    selfmomtoyplay,
     analplay,
     dick,
     silavag,

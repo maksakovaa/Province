@@ -56,7 +56,9 @@ private: //methods
     void updPlayerStatusBarStyle();
     void loadStrings();
     void setupActionButtons();
+    void reloadActions();
 private: //members
+    int prevPage;
     SettingsForm* page4;
     Weather* m_weather;
     Ui::MainWindow* ui;

@@ -440,7 +440,7 @@ void Player::redressMain(Cloth *newCloth)
             {
                 ((MainWindow*)m_main)->m_obj->storeCloth(m_clothSLots[ClothType::Main]);
             }
-            m_clothSLots[ClothType::Main] = newCloth;
+            m_clothSLots[ClothType::Main] = ((MainWindow*)m_main)->m_obj->wearCloth(newCloth);
             if (newClothGroup <= swimsuit)
             {
                 if(m_clothSLots[ClothType::Panties] != nullptr)
@@ -467,26 +467,33 @@ void Player::redressMain(Cloth *newCloth)
         {
             if(m_clothSLots[ClothType::Panties] == nullptr)
             {
-                m_clothSLots[ClothType::Panties] = newCloth;
+                m_clothSLots[ClothType::Panties] = ((MainWindow*)m_main)->m_obj->wearCloth(newCloth);
             }
         }
         if(newCloth->getClothType() == ClothType::Stockings)
         {
             if(m_clothSLots[ClothType::Stockings] == nullptr)
             {
-                m_clothSLots[ClothType::Stockings] = newCloth;
+                m_clothSLots[ClothType::Stockings] = ((MainWindow*)m_main)->m_obj->wearCloth(newCloth);
             }
         }
     }
     else
     {
-        for (int i = 0; i < ClothType::Stockings; ++i)
+        if (m_clothSLots[ClothType::Main] != nullptr)
         {
-            if(m_clothSLots[static_cast<ClothType>(i)] != nullptr)
-            {
-                ((MainWindow*)m_main)->m_obj->storeCloth(m_clothSLots[static_cast<ClothType>(i)]);
-            }
-            m_clothSLots[static_cast<ClothType>(i)] = nullptr;
+            ((MainWindow*)m_main)->m_obj->storeCloth(m_clothSLots[ClothType::Main]);
+            m_clothSLots[ClothType::Main] = nullptr;
+        }
+        if (m_clothSLots[ClothType::Panties] != nullptr)
+        {
+            ((MainWindow*)m_main)->m_obj->storeCloth(m_clothSLots[ClothType::Panties]);
+            m_clothSLots[Panties] = nullptr;
+        }
+        if (m_clothSLots[ClothType::Stockings] != nullptr)
+        {
+            ((MainWindow*)m_main)->m_obj->storeCloth(m_clothSLots[ClothType::Stockings]);
+            m_clothSLots[Stockings] = nullptr;
         }
     }
     calcVneshBonus();
@@ -495,9 +502,16 @@ void Player::redressMain(Cloth *newCloth)
 
 void Player::redressPanties(Cloth* thing)
 {
-    if(m_clothSLots[ClothType::Panties] != nullptr)
-        ((MainWindow*)m_main)->m_obj->storeCloth(m_clothSLots[ClothType::Panties]);
-    m_clothSLots[ClothType::Panties] = thing;
+    if (thing == nullptr && m_clothSLots[ClothType::Panties] != nullptr)
+    {
+        ((MainWindow*)m_main)->m_obj->storeCloth(m_clothSLots[ClothType::Panties],1);
+        m_clothSLots[ClothType::Panties] = nullptr;
+    }
+    else if (thing != nullptr && m_clothSLots[ClothType::Panties] == nullptr)
+    {
+        m_clothSLots[ClothType::Panties] = ((MainWindow*)m_main)->m_obj->wearCloth(thing);
+    }
+        
 }
 
 Cloth *Player::getCloth(ClothType type)
@@ -1173,7 +1187,7 @@ void Player::zz_body()
 
 void Player::slotWearAndTear(int value)
 {
-    if (m_clothSLots[ClothType::Main] != nullptr)
+    if (m_clothSLots[ClothType::Main] != nullptr && m_clothSLots[ClothType::Main]->getCondition() != -99)
     {
         m_clothSLots[ClothType::Main]->decreaseCondition(value);
     }

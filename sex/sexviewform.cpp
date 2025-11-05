@@ -25,9 +25,16 @@ void SexViewForm::setLayoutPtr(QVBoxLayout *ptr)
     m_actLayout = ptr;
 }
 
-void SexViewForm::selfPlayStart(Location *current)
+void SexViewForm::selfPlayStart()
 {
-    m_selfplay->start(current);
+    ((MainWindow*)root)->prevPage = 5;
+    m_selfplay->start();
+    connect(this, &SexViewForm::sigReload, m_selfplay, &SelfPlay::reloadActions);
+}
+
+void SexViewForm::reloadActions()
+{
+    emit sigReload();
 }
 
 void SexViewForm::clearLayout()

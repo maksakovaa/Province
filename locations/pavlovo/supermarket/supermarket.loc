@@ -3,3 +3,4 @@
 <desc><br>Чуть в сторонке разместился небольшой <a href='shop_sport'>магазинчик спорттоваров.</a></desc>
 <desc><br>Недалеко от входа стоит <a href='zz_common_icecream'>прилавок с мороженным</a> и <a href='zz_common_coffee'>кофейня.</a></desc>
 <desc><br>В магазине толпы покупателей.</desc>
+<linkHandler>m_shop</linkHandler>

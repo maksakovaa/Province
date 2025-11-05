@@ -4,6 +4,26 @@
 #include "objviewform.h"
 #include "GameObj.h"
 
+enum BedActs
+{
+    actBed0, actBed1, actBed2, actBed3, actBed4, actBed5, actBed6, actBed7, actBed8, actBed9, actBed10, actBed11
+};
+
+class BedActionButton: public QPushButton
+{
+    Q_OBJECT
+public:
+    BedActionButton(QString actName, BedActs act): m_action(act) 
+    { this->setText(actName); this->setCursor(Qt::PointingHandCursor);
+    connect(this, &BedActionButton::clicked, this, &BedActionButton::handleButtonClick); }
+signals:
+    void sigAction(BedActs act);
+private:
+    BedActs m_action;
+private slots:
+    void handleButtonClick() { emit sigAction(m_action); }
+};
+
 class Bed: public GameObj
 {
     Q_OBJECT
@@ -16,17 +36,19 @@ public:
     QString getDreamsDesc(int i);
     QString getDreamsAfter(int i);
     void viewBed();
+public slots:
+    void reloadActions();
 private slots:
-    void slotBedActHandler(QString actName);
+    void slotActHandler(BedActs act);
     void on_labelObjImage_linkActivated(const QString &link);
     void on_labelObjDesc_linkActivated(const QString &link);
 private:
-    void makeBackBtn(QString text);
-    void makeBedActBtn(QString text);
+    QString str(BedActs act);
+    QString actStr(BedActs act);
+    void makeButtons();
+    void makeBedActBtn(BedActs act);
     void sleepInBed();
     void relaxInBed();
-    void selfPlay();
-    void budilnik();
     void bedDreams();
     ObjViewForm* root;
     QString m_name;
@@ -34,6 +56,7 @@ private:
     Cloth* old_cloth;
     Cloth* old_panties;
     Cloth* old_stockings;
+    BedActs current;
 };
 
 #endif

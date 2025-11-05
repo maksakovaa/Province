@@ -15,19 +15,6 @@ namespace Ui {
 class ObjViewForm;
 }
 
-class ObjActionButton: public QPushButton
-{
-    Q_OBJECT
-public:
-    ObjActionButton(QString actName);
-signals:
-    void sigAction(QString name);
-private:
-    QString m_actionName;
-private slots:
-    void handleButtonClick();
-};
-
 class Mirror;
 class Bed;
 class Wardrobe;
@@ -41,12 +28,14 @@ class ObjViewForm : public QWidget
 signals:
     void sigSpendTime(int min);
     void sigUpdParams();
+    void sigReload();
 public:
     explicit ObjViewForm(QWidget *parent = nullptr);
     ~ObjViewForm();
     void setActLayoutPtr(QVBoxLayout* ptr);
     void storeCloth(Cloth* thing, int count = 1);
     Cloth* wearCloth(Cloth* thing);
+    void reloadActions();
 public slots:
     void slotViewObj(QString objName);
     void slotInitWardrobe();
@@ -76,7 +65,7 @@ private:
     bool isPanties();
     Location* getCurLoc();
     void changeLoc(Location* newLoc, int min);
-    void startSelfPlay(Location* loc);
+    void startSelfPlay();
     Player* player();
     bool isHapri();
 //members

@@ -16,6 +16,11 @@ Mirror::~Mirror()
 
 }
 
+void Mirror::reloadActions()
+{
+    makeButtons();
+}
+
 QString Mirror::getName()
 {
     return m_name;
@@ -44,176 +49,230 @@ QString Mirror::getDesc()
 
 void Mirror::viewMirror()
 {
-    root->ui->stackedWidgetObjForm->setCurrentIndex(0);
-    root->ui->labelObjImage->setText(getImage());
-    root->ui->labelObjDesc->setText(getDesc());
-    if(root->getVBody(hairStatus) == 0 && root->isHapri())
-    {
-        makeMirrorActBtn("Причесаться");
-    }
-    if(root->getVBody(makeup) != 1)
-    {
-        makeMirrorActBtn("Стереть макияж");
-    }
-    if(root->getVBody(makeup) == 1 && (root->getItmCount(Items::cosmetic) + root->getItmCount(Items::cosmeticBig)) > 0)
-    {
-        makeMirrorActBtn("Нанести макияж");
-    }
-    if (root->getVBody(Body::eyeBrows) >= 0 && root->getVBody(Body::eyeBrows) <= 10)
-    {
-        makeMirrorActBtn("Выщипывать брови");
-    }
-    if (root->getItmCount(Items::lipBalm) > 0 && root->getVBody(Body::lipbalmstat) <= 0)
-    {
-        makeMirrorActBtn("Намазать губы увлажняющим бальзамом");
-    }
+    slotMirrorActHandler(actMirr0);
 }
 
 
-void Mirror::slotMirrorActHandler(QString actName)
+void Mirror::slotMirrorActHandler(MirrorActs act)
 {
-    if(actName == "Причесаться")
+    current = act;
+    ClearLayout(root->m_actLayout);
+    switch (act)
     {
-        emit root->sigSpendTime(3);
-        root->setVBody(hairStatus, 1);
-        emit root->sigUpdParams();
-        root->ui->labelObjDesc->setText("Вы расчесали волосы у зеркала");
-
-        makeBackBtn("mirror");
-    }
-    if(actName == "Стереть макияж")
-    {
-        ClearLayout(root->m_actLayout);
-        root->sigSpendTime(3);
-        root->setVBody(makeup, 1);
-        emit root->sigUpdParams();
-        root->ui->labelObjImage->setText("<img src=':/img/objects/mirror/mop_2.jpg'></img>");
-        root->ui->labelObjDesc->setText("Вы быстро вытерли макияж.");
-
-        makeBackBtn("mirror");
-    }
-    if(actName == "Нанести макияж")
-    {
-        ClearLayout(root->m_actLayout);
-
-        makeMirrorActBtn("Лёгкий макияж");
-
-        if(root->getItmCount(Items::cosmetic) + root->getItmCount(Items::cosmeticBig) >= 2)
+    case actMirr0:
         {
-            makeMirrorActBtn("Нормальный макияж");
+            root->ui->stackedWidgetObjForm->setCurrentIndex(0);
+            root->ui->labelObjImage->setText(getImage());
+            root->ui->labelObjDesc->setText(str(actMirr0));
+            makeButtons();
         }
-
-        if(root->getItmCount(Items::cosmetic) + root->getItmCount(Items::cosmeticBig) >= 3)
+        break;
+    case actMirr1:
         {
-            makeMirrorActBtn("Вызывающий макияж");
+            emit root->sigSpendTime(3);
+            root->setVBody(hairStatus, 1);
+            emit root->sigUpdParams();
+            root->ui->labelObjDesc->setText(str(actMirr1));
+            makeButtons();            
         }
-        makeBackBtn("mirror");
-    }
-    if(actName == "Лёгкий макияж")
-    {
-        ClearLayout(root->m_actLayout);
-        root->sigSpendTime(3);
-        if(root->getItmCount(cosmeticBig) >= 1)
+        break;
+    case actMirr2:
         {
-            root->useItem(cosmeticBig,1);
+            ClearLayout(root->m_actLayout);
+            root->sigSpendTime(3);
+            root->setVBody(makeup, 1);
+            emit root->sigUpdParams();
+            root->ui->labelObjImage->setText("<img src=':/img/objects/mirror/mop_2.jpg'></img>");
+            root->ui->labelObjDesc->setText(str(actMirr2));
+            makeButtons();
         }
-        else
+        break;
+    case actMirr3:
         {
-            root->useItem(cosmetic,1);
+            ClearLayout(root->m_actLayout);
+            makeButtons();
         }
-
-        root->setVBody(makeup, 2);
-        emit root->sigUpdParams();
-        root->ui->labelObjImage->setText("<img src=':/img/objects/mirror/mop_2.jpg'></img>");
-        root->ui->labelObjDesc->setText("Вы легонечко подвели глаза и немного подкрасили губы.");
-
-        makeBackBtn("mirror");
-    }
-    if(actName == "Нормальный макияж")
-    {
-        ClearLayout(root->m_actLayout);
-        root->sigSpendTime(5);
-        if(root->getItmCount(cosmeticBig) >= 2)
+        break;
+    case actMirr4:
         {
-            root->useItem(cosmeticBig, 2);
+            ClearLayout(root->m_actLayout);
+            root->sigSpendTime(3);
+            if(root->getItmCount(cosmeticBig) >= 1)
+            {
+                root->useItem(cosmeticBig,1);
+            }
+            else
+            {
+                root->useItem(cosmetic,1);
+            }
+
+            root->setVBody(makeup, 2);
+            emit root->sigUpdParams();
+            root->ui->labelObjImage->setText("<img src=':/img/objects/mirror/mop_2.jpg'></img>");
+            root->ui->labelObjDesc->setText(str(actMirr4));
+            makeButtons();
         }
-        else
+        break;
+    case actMirr5:
         {
-            root->useItem(cosmetic, 2);
+            ClearLayout(root->m_actLayout);
+            root->sigSpendTime(5);
+            if(root->getItmCount(cosmeticBig) >= 2)
+            {
+                root->useItem(cosmeticBig, 2);
+            }
+            else
+            {
+                root->useItem(cosmetic, 2);
+            }
+            root->setVBody(makeup, 3);
+            emit root->sigUpdParams();
+            root->ui->labelObjImage->setText("<img src=':/img/objects/mirror/mop_3.jpg'></img>");
+            root->ui->labelObjDesc->setText(str(actMirr5));
+            makeButtons();
         }
-        root->setVBody(makeup, 3);
-        emit root->sigUpdParams();
-        root->ui->labelObjImage->setText("<img src=':/img/objects/mirror/mop_3.jpg'></img>");
-        root->ui->labelObjDesc->setText("Вы накрасили губы, подвели глаза и наложили тени.");
-
-        makeBackBtn("mirror");
-    }
-    if(actName == "Вызывающий макияж")
-    {
-        ClearLayout(root->m_actLayout);
-        root->sigSpendTime(3);
-        if(root->getItmCount(cosmeticBig) >= 3)
+        break;
+    case actMirr6:
         {
-            root->useItem(cosmeticBig, 3);
+            ClearLayout(root->m_actLayout);
+            root->sigSpendTime(3);
+            if(root->getItmCount(cosmeticBig) >= 3)
+            {
+                root->useItem(cosmeticBig, 3);
+            }
+            else
+            {
+                root->useItem(cosmetic, 3);
+            }
+            root->setVBody(makeup, 4);
+            emit root->sigUpdParams();
+            root->ui->labelObjImage->setText("<img src=':/img/objects/mirror/mop_4.jpg'></img>");
+            root->ui->labelObjDesc->setText(str(actMirr6));
+            makeButtons();
         }
-        else
+        break;
+    case actMirr7:
         {
-            root->useItem(cosmetic, 3);
+            ClearLayout(root->m_actLayout);
+            root->sigSpendTime(10);
+            root->setVBody(Body::eyeBrows, 19);
+            root->updVStatus(Status::mood, -5);
+            emit root->sigUpdParams();
+            root->ui->labelObjImage->setText("<img src=':/img/objects/mirror/eyebrows.jpg'></img>");
+            root->ui->labelObjDesc->setText(str(actMirr7));
+            makeButtons();
         }
-        root->setVBody(makeup, 4);
-        emit root->sigUpdParams();
-        root->ui->labelObjImage->setText("<img src=':/img/objects/mirror/mop_4.jpg'></img>");
-        root->ui->labelObjDesc->setText("Вы густо накрасили глаза, наложили тени и тушь для ресниц, накрасили контур губ карандашом и губы помадой.");
-
-        makeBackBtn("mirror");
-    }
-
-    if(actName == "Выщипывать брови")
-    {
-        ClearLayout(root->m_actLayout);
-        root->sigSpendTime(10);
-        root->setVBody(Body::eyeBrows, 19);
-        root->updVStatus(Status::mood, -5);
-        emit root->sigUpdParams();
-        root->ui->labelObjImage->setText("<img src=':/img/objects/mirror/eyebrows.jpg'></img>");
-        root->ui->labelObjDesc->setText("Вы выщипали ненужные волоски на бровях придав им красивый контур. Правда это довольно больно.");
-
-        makeBackBtn("mirror");
-    }
-
-    if(actName == "Намазать губы увлажняющим бальзамом")
-    {
-        ClearLayout(root->m_actLayout);
-        root->sigSpendTime(10);
-        root->useItem(Items::lipBalm, 1);
-        root->updVBody(Body::lipbalmstat, 8);
-        root->updVStatus(Status::lipkoef, 5);
-        if (root->getVStatus(Status::lipkoef) >= 50)
+        break;
+    case actMirr8:
         {
-            root->setVStatus(Status::lipkoef, 0);
-            root->updVBody(Body::lip, 1);
+            ClearLayout(root->m_actLayout);
+            root->sigSpendTime(10);
+            root->useItem(Items::lipBalm, 1);
+            root->updVBody(Body::lipbalmstat, 8);
+            root->updVStatus(Status::lipkoef, 5);
+            if (root->getVStatus(Status::lipkoef) >= 50)
+            {
+                root->setVStatus(Status::lipkoef, 0);
+                root->updVBody(Body::lip, 1);
+            }
+            emit root->sigUpdParams();
+            root->ui->labelObjImage->setText("<img src=':/img/objects/mirror/wet_lips.jpg'></img>");
+            root->ui->labelObjDesc->setText(str(actMirr8));
+            makeButtons();
         }
-        emit root->sigUpdParams();
-        root->ui->labelObjImage->setText("<img src=':/img/objects/mirror/wet_lips.jpg'></img>");
-        root->ui->labelObjDesc->setText("Вы намазали губы увлажняющим бальзамом.");
-
-        makeBackBtn("mirror");
+        break;
+    case actMirr9:
+        {
+            disconnect(root, &ObjViewForm::sigReload, this, &Mirror::reloadActions);
+            root->changeLoc(root->getCurLoc(),1);
+        }
+        break;
     }
 }
 
-
-void Mirror::makeMirrorActBtn(QString text)
+void Mirror::makeButtons()
 {
-    ObjActionButton* btnx = new ObjActionButton(text);
-    btnx->setText(text);
-    connect(btnx, &ObjActionButton::sigAction, this, &Mirror::slotMirrorActHandler);
-    root->m_actLayout->addWidget(btnx);
+    if (current == MirrorActs::actMirr0)
+    {
+        if (root->getVBody(hairStatus) == 0 && root->isHapri())
+        {
+            makeMirrorActBtn(actMirr1);
+        }
+        if (root->getVBody(makeup) != 1)
+        {
+            makeMirrorActBtn(actMirr2);
+        }
+        if (root->getVBody(makeup) == 1 && (root->getItmCount(Items::cosmetic) + root->getItmCount(Items::cosmeticBig)) > 0)
+        {
+            makeMirrorActBtn(actMirr3);
+        }
+        if (root->getVBody(Body::eyeBrows) >= 0 && root->getVBody(Body::eyeBrows) <= 10)
+        {
+            makeMirrorActBtn(actMirr7);
+        }
+        if (root->getItmCount(Items::lipBalm) > 0 && root->getVBody(Body::lipbalmstat) <= 0)
+        {
+            makeMirrorActBtn(actMirr8);
+        }
+        makeMirrorActBtn(actMirr9);
+    }
+    else if (current == MirrorActs::actMirr3)
+    {
+        makeMirrorActBtn(actMirr4);
+
+        if (root->getItmCount(Items::cosmetic) + root->getItmCount(Items::cosmeticBig) >= 2)
+        {
+            makeMirrorActBtn(actMirr5);
+        }
+
+        if (root->getItmCount(Items::cosmetic) + root->getItmCount(Items::cosmeticBig) >= 3)
+        {
+            makeMirrorActBtn(actMirr6);
+        }
+        makeMirrorActBtn(actMirr0);
+    }
+    else
+    {
+        makeMirrorActBtn(actMirr0);
+    }
+    
 }
 
-void Mirror::makeBackBtn(QString text)
+void Mirror::makeMirrorActBtn(MirrorActs act)
 {
-    ObjActionButton* btnx = new ObjActionButton(text);
-    btnx->setText("Назад");
-    connect(btnx, &ObjActionButton::sigAction, root, &ObjViewForm::slotViewObj);
-    root->m_actLayout->addWidget(btnx);
+    MirrActionButton* btn = new MirrActionButton(actStr(act), act);
+    connect(btn, &MirrActionButton::sigAction, this, &Mirror::slotMirrorActHandler);
+    root->m_actLayout->addWidget(btn);
+}
+
+QString Mirror::actStr(MirrorActs type)
+{
+    QString str[10];
+    str[actMirr0] = "Назад";
+    str[actMirr1] = "Причесаться";
+    str[actMirr2] = "Стереть макияж";
+    str[actMirr3] = "Нанести макияж";
+    str[actMirr4] = "Лёгкий макияж";
+    str[actMirr5] = "Нормальный макияж";
+    str[actMirr6] = "Вызывающий макияж";
+    str[actMirr7] = "Выщипывать брови";
+    str[actMirr8] = "Намазать губы увлажняющим бальзамом";
+    str[actMirr9] = "Назад";
+
+    return str[type];
+}
+
+QString Mirror::str(MirrorActs type)
+{   
+    QString str[9];
+    str[actMirr0] = getDesc();
+    str[actMirr1] = "Вы расчесали волосы у зеркала";
+    str[actMirr2] = "Вы быстро вытерли макияж.";
+    str[actMirr3] = "";
+    str[actMirr4] = "Вы легонечко подвели глаза и немного подкрасили губы.";
+    str[actMirr5] = "Вы накрасили губы, подвели глаза и наложили тени.";
+    str[actMirr6] = "Вы густо накрасили глаза, наложили тени и тушь для ресниц, накрасили контур губ карандашом и губы помадой.";
+    str[actMirr7] = "Вы выщипали ненужные волоски на бровях придав им красивый контур. Правда это довольно больно.";
+    str[actMirr8] = "Вы намазали губы увлажняющим бальзамом.";
+    return str[type];
 }

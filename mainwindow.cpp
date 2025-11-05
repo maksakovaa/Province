@@ -241,6 +241,22 @@ void MainWindow::setupActionButtons()
     ui->widget_2->setStyleSheet(style2);
 }
 
+void MainWindow::reloadActions()
+{
+    if (prevPage == 0)
+    {
+        ui->page_0_main->reloadLocation();
+    }
+    if (prevPage == 4)
+    {
+        m_obj->reloadActions();
+    }
+    if (prevPage == 5)
+    {
+        m_sex->reloadActions();
+    }
+}
+
 void MainWindow::on_pushButtonMap_clicked()
 {
     if(ui->stackedWidget->currentIndex() != 1)
@@ -253,7 +269,8 @@ void MainWindow::on_pushButtonMap_clicked()
     }
     else
     {
-        ui->stackedWidget->setCurrentIndex(0);
+        ui->stackedWidget->setCurrentIndex(prevPage);
+        reloadActions();
     }
 }
 
@@ -276,8 +293,8 @@ void MainWindow::on_pushButtonPlayer_clicked()
     }
     else
     {
-        ui->stackedWidget->setCurrentIndex(0);
-        ui->page_0_main->reloadLocation();
+        ui->stackedWidget->setCurrentIndex(prevPage);
+        reloadActions();
     }
 }
 
@@ -291,8 +308,8 @@ void MainWindow::on_pushButtonSettings_clicked()
     }
     else
     {
-        ui->stackedWidget->setCurrentIndex(0);
-        ui->page_0_main->reloadLocation();
+        ui->stackedWidget->setCurrentIndex(prevPage);
+        reloadActions();
     }
 }
 
@@ -307,8 +324,8 @@ void MainWindow::on_pushButtonBag_clicked()
     }
     else
     {
-        ui->stackedWidget->setCurrentIndex(0);
-        ui->page_0_main->reloadLocation();
+        ui->stackedWidget->setCurrentIndex(prevPage);
+        reloadActions();
     }
 }
 

@@ -19,6 +19,7 @@ ClothForm::ClothForm(ClothMain *cloth, int hips, QWidget *parent) : QWidget(pare
 
 ClothForm::~ClothForm()
 {
+    ptr = nullptr;
     delete ui;
 }
 

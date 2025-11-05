@@ -17,6 +17,7 @@ LocationForm::LocationForm(QWidget *parent)
     ui->labelLocDesc->setWordWrap(true);
     m_currentLoc = nullptr;
     m_bath = new BathRoom(this);
+    m_shop = new Shop(this);
 }
 
 LocationForm::~LocationForm()
@@ -43,7 +44,6 @@ void LocationForm::init(QString loc)
         m_currentLoc = m_locations[loc];
         slotChangeLoc(m_currentLoc, 0);
         incTime(1);
-//        m_time->firstStart();
     }
     else
     {
@@ -81,6 +81,8 @@ void LocationForm::slotOnChangeLocation(const QString &name, int min)
 
 void LocationForm::slotChangeLoc(Location *locPtr, int min)
 {
+    ((MainWindow*)root)->prevPage = 0;
+    ui->labelLocDesc->disconnect();
     ((MainWindow*)root)->ui->stackedWidget->setCurrentIndex(0);
     ui->imageAndWideoWdgt->setCurrentIndex(0);
     m_prevLoc = m_currentLoc;
@@ -138,8 +140,8 @@ void LocationForm::fillSubLocs()
         actionbtn->setText(i);
         actionbtn->setObjName(i);
         m_actLayout->addWidget(actionbtn);
-        ObjViewForm* m_objView = ((MainWindow*)root)->m_obj;
-        connect(actionbtn, &QActionButton::sigViewObj, m_objView, &ObjViewForm::slotViewObj);
+        ObjViewForm* objView = ((MainWindow*)root)->m_obj;
+        connect(actionbtn, &QActionButton::sigViewObj, objView, &ObjViewForm::slotViewObj);
     }
     for (auto& i: locs)
     {
@@ -149,6 +151,15 @@ void LocationForm::fillSubLocs()
         m_actLayout->addWidget(actionbtn);
         connect(actionbtn, &QActionButton::sigChangeSubLoc, this, &LocationForm::slotChangeLoc);
     }
+    if (!m_currentLoc->getLocHandler().isEmpty())
+    {
+        if (m_currentLoc->getLocHandler() == "m_shop")
+        {
+            connect(ui->labelLocDesc, &QLabel::linkActivated, m_shop, &Shop::slotShopHandler);
+        }
+        
+    }
+    
 }
 
 void LocationForm::createLocations()
@@ -234,9 +245,9 @@ void LocationForm::setVBody(Body param, int value)
     ((MainWindow*)root)->m_player->setVBody(param, value);
 }
 
-void LocationForm::startSelfPlay(Location *current)
+void LocationForm::startSelfPlay()
 {
-    ((MainWindow*)root)->ui->page_6_sexView->findChild<SexViewForm*>("SexViewForm")->selfPlayStart(current);
+    ((MainWindow*)root)->ui->page_6_sexView->findChild<SexViewForm*>("SexViewForm")->selfPlayStart();
 }
 
 int LocationForm::getVBody(Body param)

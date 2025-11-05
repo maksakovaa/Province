@@ -2,9 +2,11 @@
 #define SHOP_H
 
 #include "locationform.h"
+#include "../player/itemform.h"
 
-class Shop
+class Shop: public QObject
 {
+    friend LocationForm;
 public:
     Shop(QWidget* parent);
     void shop_food();
@@ -13,7 +15,12 @@ public:
     void shop_clothing();
     void shop_tech();
     void shop_sport();
+private slots:
+    void slotShopHandler(const QString& link);
 private:
+    void initClothArray();
+    std::vector<Cloth*> initClothArray(ClothGroup group);
+    ItemForm* makeForm();
     int foodPrice(Food type);
     QString foodName(Food type);
     int cosmeticsPrice(Cosmetics type);
@@ -27,6 +34,7 @@ private:
     int sportPrice(Sport type);
     QString sportName(Sport type);
     LocationForm* root;
+    std::unordered_map<ClothGroup, std::vector<QString>> m_cloth;
 };
 
 #endif

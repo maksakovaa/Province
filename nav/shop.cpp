@@ -1,9 +1,42 @@
 #include "shop.h"
 #include "locationform.h"
+#include "../Functions.h"
+#include <iostream>
+#include <QDirIterator>
 
-Shop::Shop(QWidget *parent)
+Shop::Shop(QWidget *parent): QObject(parent)
 {
     root = (LocationForm*)parent;
+    initClothArray();
+}
+
+void Shop::slotShopHandler(const QString& link)
+{
+    std::cout << link.toStdString() << std::endl;
+    if (link == "shop_food")
+    {
+        shop_food();
+    }
+    else if(link == "shop_cosmetics")
+    {
+        shop_cosmetics();
+    }
+    else if(link == "shop_common")
+    {
+        shop_common();
+    }
+    else if(link == "shop_clothing")
+    {
+        shop_clothing();
+    }
+    else if (link == "shop_tech")
+    {
+        shop_tech();
+    }
+    else if (link == "shop_sport")
+    {
+        shop_sport();
+    }
 }
 
 void Shop::shop_food()
@@ -23,7 +56,10 @@ void Shop::shop_common()
 
 void Shop::shop_clothing()
 {
-
+    ClothGroup::sportsSuit;
+    ClothGroup::jeans;
+    ClothGroup::skirt;
+    ClothGroup::officeSuit;
 }
 
 void Shop::shop_tech()
@@ -34,6 +70,84 @@ void Shop::shop_tech()
 void Shop::shop_sport()
 {
 
+}
+
+void Shop::initClothArray()
+{
+    QString path = ":/img/clothing/";
+    for(int i = ClothGroup::sportsSuit; i <= ClothGroup::sexualUnderwear; i++)
+    {
+        QDirIterator iter(path + intQStr(i), QDir::Files);
+        while (iter.hasNext())
+        {
+            m_cloth[static_cast<ClothGroup>(i)].push_back(iter.fileName());
+            iter.next();
+        }
+    }   
+}
+
+std::vector<Cloth *> Shop::initClothArray(ClothGroup group)
+{
+    std::vector<Cloth*> clothes;
+    
+    switch (group)
+    {
+    case ClothGroup::sportsSuit:
+        for (size_t i = 0; i < m_cloth[sportsSuit].size(); i++)
+        {
+            std::cout << m_cloth[sportsSuit][i].toStdString() << std::endl;
+        }
+        break;
+    case ClothGroup::jeans:
+        for (size_t i = 0; i < m_cloth[jeans].size(); i++)
+        {
+            /* code */
+        }
+        break;
+    case ClothGroup::casualDress:
+        for (size_t i = 0; i < m_cloth[casualDress].size(); i++)
+        {
+            /* code */
+        }
+        break;
+    case ClothGroup::eveningDress:
+        for (size_t i = 0; i < m_cloth[eveningDress].size(); i++)
+        {
+            /* code */
+        }
+        break;
+    case ClothGroup::officeSuit:
+        for (size_t i = 0; i < m_cloth[officeSuit].size(); i++)
+        {
+            /* code */
+        }
+        break;
+    case ClothGroup::revealingOutfit:
+        for (size_t i = 0; i < m_cloth[revealingOutfit].size(); i++)
+        {
+            /* code */
+        }
+        break;
+    case ClothGroup::blouseWithShorts:
+        for (size_t i = 0; i < m_cloth[blouseWithShorts].size(); i++)
+        {
+            /* code */
+        }
+        break;
+    case ClothGroup::sexualUnderwear:
+        for (size_t i = 0; i < m_cloth[sexualUnderwear].size(); i++)
+        {
+            /* code */
+        }
+        break;
+    }
+
+    return clothes;
+}
+
+ItemForm *Shop::makeForm()
+{
+    return new ItemForm("","","");
 }
 
 int Shop::foodPrice(Food type)
@@ -131,12 +245,32 @@ QString Shop::commonName(Common type)
 
 int Shop::clothPrice(ClothGroup type)
 {
+    int price[8];
+    price[0] = 5000;
+    price[1] = 3000;
+    price[2] = 7000;
+    price[3] = 10000;
+    price[4] = 40000;
+    price[5] = 20000;
+    price[6] = 15000;
+    price[7] = 15000;
+    price[8] = 8000;
     return 0;
 }
 
 QString Shop::clothName(ClothGroup type)
 {
-    return "";
+    QString str[9];
+    str[0] = "Спортивный костюм";
+    str[1] = "Джинсы";
+    str[2] = "Наряд с юбкой";
+    str[3] = "Повседневное платье";
+    str[4] = "Вечернее платье";
+    str[5] = "Офисный костюм";
+    str[6] = "Откровенный наряд";
+    str[7] = "Блузка с шортами";
+    str[8] = "Сексуальное бельё";
+    return str[type - 6];
 }
 
 int Shop::techPrice(Tech type)

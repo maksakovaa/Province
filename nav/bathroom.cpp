@@ -271,7 +271,7 @@ void BathRoom::slotBathActionHandler(bathActs action)
     
     case actBath3:
     {
-        root->startSelfPlay(root->getCurPtr());
+        root->startSelfPlay();
     }
     break;
     

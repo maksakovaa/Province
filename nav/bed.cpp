@@ -17,6 +17,11 @@ Bed::~Bed()
 
 }
 
+void Bed::reloadActions()
+{
+    makeButtons();
+}
+
 QString Bed::getName()
 {
     return m_name;
@@ -57,137 +62,105 @@ QString Bed::getDesc()
     return text;
 }
 
-QString Bed::getDreamsDesc(int i)
-{
-    QString strArray[28];
-    strArray[0] = "Вам снится какой-то старый город, стоящий на противоположных берегах высокого водопада, а между его шпилей летают какие-то существа";
-    strArray[1] = "Вам снится какая-то башня, окутанная снегом льдом на вершине замерзшей скалы";
-    strArray[2] = "Вам снится ледяная гора, на вершине которой стоит непонятное здание похожее на монастырь";
-    strArray[3] = "Вам снится высокая незнакомая девушка, идущая под проливным дождем по темной и узкой улице";
-    strArray[4] = "Вам снится ваша улыбающаяся мать в комнате, полной старых вещей из прошлого или позапрошлого века. Странно, к чему бы это";
-    strArray[5] = "Вам снится какой-то всадник, стоящий у озера, окруженного высокими и отвесными горами";
-    strArray[6] = "Вам снится страшный мужчина с обгоревшей кожей, держащий на цепи непонятное существо, пока на него с мечом идет беловолосый средних лет парень. Пора прекращая смотреть телевизор..";
-    strArray[7] = "Вам снова снится беловолосый парень, но заметно постаревший и с густой бородой, а рядом с ним стоит красивая беловолосая девушка. Может это его дочь? Почему вам вообще это снится";
-    strArray[8] = "Вам снится, будто вы стоите среди людей на улице и наблюдаете большой ядерный гриб. О, боже, как это страшно";
-    strArray[9] =  "Вам снится плотно застроенная из какого-то мусора улица и большая очередь к какому-то прилавку";
-    strArray[10] = "Вам снится красивый и величественный собор на берегу реки";
-    strArray[11] = "Вам снится, что вы стоите зимой на берегу озера и наблюдаете за темной фигурой, стоящей на окруженной водой верандой, под светом Луны, которая почему-то выглядит как светящийся циферблат часов";
-    strArray[12] = "Вам снится, что в школе всех девочек обязали присутствовать на уроках только в обнаженном виде";
-    strArray[13] = "Вам снится, что вас голую ласкает какой-то атлетичный парень на диване. Он целует вашу шею и опускается поцелуями к вашей груди, лаская своим языком ваши сосочки";
-    strArray[14] = "Вам снится, что вы моетесь голышом в душе с каким-то парнем. Он мылит ваше тело, уделяя особое внимание вашей груди и киске, в то время как его твердый член упирается вам в спину";
-    strArray[15] = "Вам снится, что вы голышом целуетесь и ласкаете друг-друга с какой-то девушкой на кровати";
-    strArray[16] = "Вам снится, что вы абсолютно голые страстно целуетесь с каким-то незнакомым парнем";
-    strArray[17] = "Вам снится, что вы, стоя раком, попкой к верху, делаете минет какому-то парню в лучах заката, на берегу океана";
-    strArray[18] = "Вам снится, что вы, прикованная к лестнице, сидя на корточках с широко раздвинутыми ножками, смакуя отсасываете член какому-то парню в хорошем костюме";
-    strArray[19] = "Вам снится, что вы занимаетесь сексом с атлетичным парнем возле бассейна дорогого особняка. Вы скачете верхом на его члене, пока он крепко сжимает вашу попку";
-    strArray[20] = "Вам снится, что вы занимаетесь сексом с незнакомым парнем на диване. Он нежно вас целует и ласкает вашу грудь руками, пока его член поршнем работает в вашей текущей киске";
-    strArray[21] = "Вам снится, что вы на берегу океана занимаетесь сексом с незнакомым парнем. Вы лежите вся в песке, а он ритмично имеет вас в миссионерской позе, лаская поцелуями вашу шею";
-    strArray[22] = "Вам снится, что вас на светлом диване жестко имеет раком какой-то парень. Он крепко сжимает своими руками вашу попку, а вы старательно подмахиваете ему, прикусив губу от удовольствия";
-    strArray[23] = "Вам снится, что вы скачите верхом на крепком члене какого-то парня";
-//только анальный секс
-    strArray[24] = "Вам снится, что вас раком жестко имеет в попку какой-то парень, пока вы теребите пальчиками свой клитор";
-    strArray[25] = "Вам снится, что вас сзади, на боку трахает в попку парень, а вы громко стонете";
-//только групповуха
-    strArray[26] = "Вам снится, что вы занимаетесь сексом с двумя парнями. Вы лежите между ними и смакуете член одного, пока другой имеет вас в попку";
-    strArray[27] = "Вам снится, что вас страстно трахают в два ствола какие-то парни. Их члены, как поршни, поочередно и с силой входят в обе ваши дырочки и вы громко стонете от удовольствия";
-    return strArray[i];
-}
-
-QString Bed::getDreamsAfter(int i)
-{
-    QString strArray[10];
-    strArray[0] = "Вы еще ни разу не делали никому минет, но ощущения и форма члена в вашем ротике были настолько реальные, что это одновременно вас испугало и не на шутку возбудило";
-    strArray[1] = "Похоже, что ваше подсознание очень настойчиво вам намекает";
-    strArray[2] = "В вашей девственной киске и члена-то ни разу не было, но ощущения были настолько реальные что вас это не на шутку возбудило";
-    strArray[3] = "В вашей киске и члена-то ни разу не было, хоть вы и не девственница, но ощущения были настолько реальные что вас это не на шутку возбудило";
-    strArray[4] = "Похоже, что ваша <<$vaginatipe>> киска срочно требует чем-то себя заполнить";
-    strArray[5] = "У вас ни разу не было анального секса, но ощущения были настолько реальные что вас это не на шутку возбудило";
-    strArray[6] = "В вашей попке и члена-то ни разу не было, хоть она и не девственна, но ощущения были настолько реальные что вас это не на шутку возбудило";
-    strArray[7] = "Похоже, что ваш <<$anustipe>> анус срочно требует чем-то себя заполнить";
-    strArray[8] = "Похоже, что ваш опыт групповухи с не прошел даром и ваше подсознание активно вам об этом напоминает";
-    strArray[9] = "Сегодня вам приснился весьма странный сон: вы с завязанными глазами занимались сексом с незнакомцем и лишь по завершению действа, сняв повязку, вы узнали своего отчима";
-    return strArray[i];
-}
-
 
 
 void Bed::viewBed()
 {
-    root->ui->stackedWidgetObjForm->setCurrentIndex(0);
-    root->ui->labelObjImage->setPixmap(QPixmap(getImage()));
-    root->ui->labelObjDesc->setText(getDesc());
-    makeBedActBtn("Завести будильник");
-    if(root->getVStatus(Status::son) < 10)
-    {
-        makeBedActBtn("Раздеться и лечь спать");
-    }
-    else
-    {
-        makeBedActBtn("Постараться уснуть");
-    }
-    if (root->getVStatus(Status::horny) >= 60)
-    {
-        makeBedActBtn("Мастурбировать");
-    }
+    slotActHandler(actBed0);
 }
 
-void Bed::slotBedActHandler(QString actName)
-{
-    if(actName == "Завести будильник")
-    {
-        ClearLayout(root->m_actLayout);
-        budilnik();
-    }
-    if(actName == "Раздеться и лечь спать")
-    {
-        ClearLayout(root->m_actLayout);
-        sleepInBed();
-    }
-    if(actName == "Постараться уснуть")
-    {
-        ClearLayout(root->m_actLayout);
-        sleepInBed();
-    }
-    if(actName == "Мастурбировать")
-    {
-        ClearLayout(root->m_actLayout);
-        selfPlay();
-    }
-    if(actName == "Встать с кровати и одеться")
-    {
-        ClearLayout(root->m_actLayout);
-        root->redress(old_cloth);
-        root->redress(old_panties);
-        root->redress(old_stockings);
 
-        root->setVStatus(InSleep, 0);
-        root->incTime(15);
-        // if clothesswamphouse = 1 or clothesbackwater = 1: gs 'zz_clothing2','redress',0
-        // if swamp_clothes = 1: gs 'zz_clothing2','redress',1
-        root->setVSexVar(analplugIN, 0);
-        root->changeLoc(root->getCurLoc(),0);
-    }
-    if(actName == "Встать с кровати")
+void Bed::slotActHandler(BedActs act)
+{
+    current = act;
+    ClearLayout(root->m_actLayout);
+    switch (act)
     {
-        ClearLayout(root->m_actLayout);
-        root->setVStatus(InSleep, 0);
-        root->setVSexVar(analplugIN, 0);
-        root->changeLoc(root->getCurLoc(),0);
-    }
-    if(actName == "Еще минутку...")
-    {
-        ClearLayout(root->m_actLayout);
-        relaxInBed();
+    case actBed0:
+        {
+            root->ui->stackedWidgetObjForm->setCurrentIndex(0);
+            root->ui->labelObjImage->setPixmap(QPixmap(getImage()));
+            root->ui->labelObjDesc->setText(getDesc());
+            makeButtons();
+        }
+        break;
+    case actBed1:
+        {
+            relaxInBed();
+        }
+        break;
+    case actBed2:
+        {
+            QString text = "<a style='text-decoration: none; color: black;' href='hour'>" + intQStr(root->getVBuzzer(timerH)) + "</a>:";
+            text += "<a style='text-decoration: none; color: black' href = 'minut'>" + intQStr(root->getVBuzzer(timerM)) + "</a>";
+            root->ui->labelObjImage->setText(text);
+            root->ui->labelObjImage->setStyleSheet("font-size: 160px");
+            root->ui->labelObjDesc->clear();
+        }
+        break;
+    case actBed6:
+    case actBed7:
+        {
+            sleepInBed();
+        }
+        break;
+    case actBed8:
+        {
+            root->setVStatus(InSleep, 0);
+            root->setVSexVar(analplugIN, 0);
+            root->changeLoc(root->getCurLoc(),0);
+        }
+        break;
+    case actBed9:
+        {
+            disconnect(root, &ObjViewForm::sigReload, this, &Bed::reloadActions);
+            root->startSelfPlay();
+        }
+        break;
+    case actBed10:
+        {
+            if (old_cloth != nullptr)         
+                root->redress(old_cloth);
+            else
+                std::cout << "OLD_CLOTH NULLPTR!" << std::endl;
+            if(old_panties != nullptr)
+                root->redress(old_panties);
+            else
+                std::cout << "OLD_PANTIES NULLPTR!" << std::endl;
+            if(old_stockings != nullptr)
+                root->redress(old_stockings);
+            else
+                std::cout << "OLD_STOCKINGS NULLPTR!"<< std::endl;
+                
+            root->setVStatus(InSleep, 0);
+            root->incTime(15);
+            // if clothesswamphouse = 1 or clothesbackwater = 1: gs 'zz_clothing2','redress',0
+            // if swamp_clothes = 1: gs 'zz_clothing2','redress',1
+            root->setVSexVar(analplugIN, 0);
+            disconnect(root, &ObjViewForm::sigReload, this, &Bed::reloadActions);
+            root->changeLoc(root->getCurLoc(),0);
+        }
+    break;
+    case actBed11:
+        {
+            root->setVStatus(InSleep, 0);
+            root->setVSexVar(analplugIN,0);
+            disconnect(root, &ObjViewForm::sigReload, this, &Bed::reloadActions);
+            root->changeLoc(root->getCurLoc(),0);
+        }
+        break;
     }
 }
 
 void Bed::sleepInBed()
 {
     root->decreaseClothCond();
-
-    old_cloth = root->getCloth(ClothType::Main);
-    old_panties = root->getCloth(ClothType::Panties);
-    old_stockings = root->getCloth(ClothType::Stockings);
+    if (root->getCloth(ClothType::Main) != nullptr && old_cloth == nullptr)
+        old_cloth = root->getCloth(ClothType::Main);
+    if (root->getCloth(ClothType::Panties) != nullptr && old_panties == nullptr)
+        old_panties = root->getCloth(ClothType::Panties);
+    if (root->getCloth(ClothType::Stockings) != nullptr && old_stockings == nullptr)
+        old_stockings = root->getCloth(ClothType::Stockings);
 
     root->redress(nullptr);
     if(root->getVStatus(energy) >=8)
@@ -272,22 +245,14 @@ void Bed::sleepInBed()
     int curTimeInMin = root->getHour()*60 + root->getMin();
     if(root->getVBuzzer(budilnikOn) == 1 && budInMin == curTimeInMin)
     {
-        root->ui->labelObjDesc->setText("Звенит будильник");
+        root->ui->labelObjDesc->setText(root->ui->labelObjDesc->text() + actStr(actBed3));
         root->updVStatus(mood, -3);
     }
     if(root->getVStatus(oversleep) == 1)
     {
-        root->ui->labelObjDesc->setText("Черт, черт, черт! Вот тебе и \"подремлю еще минутку\"!");
+        root->ui->labelObjDesc->setText(root->ui->labelObjDesc->text() + actStr(actBed4));
     }
-    makeBedActBtn("Еще минутку...");
-    makeBedActBtn("Встать с кровати и одеться");
-
-    if(root->getVStatus(shamelessFlag) >= 2)
-    {
-        makeBedActBtn("Встать с кровати");
-    }
-    makeBedActBtn("Постараться уснуть");
-    root->setVStatus(oversleep, 0);
+    makeButtons();
     //AUTOSAVE
 }
 
@@ -315,24 +280,8 @@ void Bed::relaxInBed()
     }
     else
     {
-        root->slotViewObj("bed");
+        slotActHandler(actBed0);
     }
-}
-
-void Bed::selfPlay()
-{
-    root->startSelfPlay(root->getCurLoc());
-    // root->m_page->widget(5)->findChild<SexViewForm*>("SexViewForm")->selfPlayStart(root->getCurLoc());
-}
-
-void Bed::budilnik()
-{
-    QString text = "<a style='text-decoration: none; color: black;' href='hour'>" + intQStr(root->getVBuzzer(timerH)) + "</a>:";
-    text += "<a style='text-decoration: none; color: black' href = 'minut'>" + intQStr(root->getVBuzzer(timerM)) + "</a>";
-    root->ui->labelObjImage->setText(text);
-    root->ui->labelObjImage->setStyleSheet("font-size: 160px");
-    root->ui->labelObjDesc->clear();
-    makeBackBtn("bed");
 }
 
 void Bed::bedDreams()
@@ -446,20 +395,11 @@ void Bed::bedDreams()
     root->ui->labelObjDesc->setText(text);
 }
 
-void Bed::makeBedActBtn(QString text)
+void Bed::makeBedActBtn(BedActs act)
 {
-    ObjActionButton* btnx = new ObjActionButton(text);
-    btnx->setText(text);
-    connect(btnx, &ObjActionButton::sigAction, this, &Bed::slotBedActHandler);
-    root->m_actLayout->addWidget(btnx);
-}
-
-void Bed::makeBackBtn(QString text)
-{
-    ObjActionButton* btnx = new ObjActionButton(text);
-    btnx->setText("Назад");
-    connect(btnx, &ObjActionButton::sigAction, root, &ObjViewForm::slotViewObj);
-    root->m_actLayout->addWidget(btnx);
+    BedActionButton* btn = new BedActionButton(actStr(act), act);
+    connect(btn, &BedActionButton::sigAction, this, &Bed::slotActHandler);
+    root->m_actLayout->addWidget(btn);
 }
 
 void Bed::on_labelObjImage_linkActivated(const QString &link)
@@ -467,12 +407,12 @@ void Bed::on_labelObjImage_linkActivated(const QString &link)
     if(link == "hour")
     {
         root->updBuzzer(budilnik::timerH, 1);
-        slotBedActHandler("Завести будильник");
+        slotActHandler(actBed2);
     }
     if(link == "minut")
     {
         root->updBuzzer(budilnik::timerM, 5);
-        slotBedActHandler("Завести будильник");
+        slotActHandler(actBed2);
     }
 }
 
@@ -484,4 +424,116 @@ void Bed::on_labelObjDesc_linkActivated(const QString &link)
         root->updBuzzer(budilnik::budilnikOn, 1);
         root->ui->labelObjDesc->setText(getDesc());
     }
+}
+
+
+QString Bed::str(BedActs act)
+{
+    return QString();
+}
+
+QString Bed::actStr(BedActs act)
+{
+    QString str[12];
+    str[0] = "";
+    str[1] = "Еще минутку...";
+    str[2] = "Завести будильник";
+
+    str[3] = "Звенит будильник";
+    str[4] = "Черт, черт, черт! Вот тебе и \"подремлю еще минутку\"!";
+    str[5] = "Спать почему то не хочется.";
+    
+    str[6] = "Раздеться и лечь спать";
+    str[7] = "Постараться уснуть";
+    str[8] = "Встать с кровати";
+    str[9] = "Мастурбировать";
+    str[10] = "Встать с кровати и одеться";
+    str[11] = "Встать с кровати";
+    return  str[act];
+}
+
+void Bed::makeButtons()
+{
+    if (current == actBed0)
+    {
+        makeBedActBtn(actBed2);
+        if (root->getVStatus(Status::son) < 10)
+        {
+            makeBedActBtn(actBed6);
+        }
+        else
+        {
+            makeBedActBtn(actBed7);
+        }
+        if (root->getVStatus(Status::horny) >= 60)
+        {
+            makeBedActBtn(actBed9);
+        }
+        makeBedActBtn(actBed8);
+    }
+    else if(current == actBed6 || current == actBed7)
+    {
+        makeBedActBtn(actBed1);
+        makeBedActBtn(actBed10);
+
+        if(root->getVStatus(shamelessFlag) >= 2)
+        {
+            makeBedActBtn(actBed11);
+        }
+        makeBedActBtn(actBed7);
+        root->setVStatus(oversleep, 0);
+    }
+    
+}
+
+QString Bed::getDreamsDesc(int i)
+{
+    QString strArray[28];
+    strArray[0] = "Вам снится какой-то старый город, стоящий на противоположных берегах высокого водопада, а между его шпилей летают какие-то существа";
+    strArray[1] = "Вам снится какая-то башня, окутанная снегом льдом на вершине замерзшей скалы";
+    strArray[2] = "Вам снится ледяная гора, на вершине которой стоит непонятное здание похожее на монастырь";
+    strArray[3] = "Вам снится высокая незнакомая девушка, идущая под проливным дождем по темной и узкой улице";
+    strArray[4] = "Вам снится ваша улыбающаяся мать в комнате, полной старых вещей из прошлого или позапрошлого века. Странно, к чему бы это";
+    strArray[5] = "Вам снится какой-то всадник, стоящий у озера, окруженного высокими и отвесными горами";
+    strArray[6] = "Вам снится страшный мужчина с обгоревшей кожей, держащий на цепи непонятное существо, пока на него с мечом идет беловолосый средних лет парень. Пора прекращая смотреть телевизор..";
+    strArray[7] = "Вам снова снится беловолосый парень, но заметно постаревший и с густой бородой, а рядом с ним стоит красивая беловолосая девушка. Может это его дочь? Почему вам вообще это снится";
+    strArray[8] = "Вам снится, будто вы стоите среди людей на улице и наблюдаете большой ядерный гриб. О, боже, как это страшно";
+    strArray[9] =  "Вам снится плотно застроенная из какого-то мусора улица и большая очередь к какому-то прилавку";
+    strArray[10] = "Вам снится красивый и величественный собор на берегу реки";
+    strArray[11] = "Вам снится, что вы стоите зимой на берегу озера и наблюдаете за темной фигурой, стоящей на окруженной водой верандой, под светом Луны, которая почему-то выглядит как светящийся циферблат часов";
+    strArray[12] = "Вам снится, что в школе всех девочек обязали присутствовать на уроках только в обнаженном виде";
+    strArray[13] = "Вам снится, что вас голую ласкает какой-то атлетичный парень на диване. Он целует вашу шею и опускается поцелуями к вашей груди, лаская своим языком ваши сосочки";
+    strArray[14] = "Вам снится, что вы моетесь голышом в душе с каким-то парнем. Он мылит ваше тело, уделяя особое внимание вашей груди и киске, в то время как его твердый член упирается вам в спину";
+    strArray[15] = "Вам снится, что вы голышом целуетесь и ласкаете друг-друга с какой-то девушкой на кровати";
+    strArray[16] = "Вам снится, что вы абсолютно голые страстно целуетесь с каким-то незнакомым парнем";
+    strArray[17] = "Вам снится, что вы, стоя раком, попкой к верху, делаете минет какому-то парню в лучах заката, на берегу океана";
+    strArray[18] = "Вам снится, что вы, прикованная к лестнице, сидя на корточках с широко раздвинутыми ножками, смакуя отсасываете член какому-то парню в хорошем костюме";
+    strArray[19] = "Вам снится, что вы занимаетесь сексом с атлетичным парнем возле бассейна дорогого особняка. Вы скачете верхом на его члене, пока он крепко сжимает вашу попку";
+    strArray[20] = "Вам снится, что вы занимаетесь сексом с незнакомым парнем на диване. Он нежно вас целует и ласкает вашу грудь руками, пока его член поршнем работает в вашей текущей киске";
+    strArray[21] = "Вам снится, что вы на берегу океана занимаетесь сексом с незнакомым парнем. Вы лежите вся в песке, а он ритмично имеет вас в миссионерской позе, лаская поцелуями вашу шею";
+    strArray[22] = "Вам снится, что вас на светлом диване жестко имеет раком какой-то парень. Он крепко сжимает своими руками вашу попку, а вы старательно подмахиваете ему, прикусив губу от удовольствия";
+    strArray[23] = "Вам снится, что вы скачите верхом на крепком члене какого-то парня";
+//только анальный секс
+    strArray[24] = "Вам снится, что вас раком жестко имеет в попку какой-то парень, пока вы теребите пальчиками свой клитор";
+    strArray[25] = "Вам снится, что вас сзади, на боку трахает в попку парень, а вы громко стонете";
+//только групповуха
+    strArray[26] = "Вам снится, что вы занимаетесь сексом с двумя парнями. Вы лежите между ними и смакуете член одного, пока другой имеет вас в попку";
+    strArray[27] = "Вам снится, что вас страстно трахают в два ствола какие-то парни. Их члены, как поршни, поочередно и с силой входят в обе ваши дырочки и вы громко стонете от удовольствия";
+    return strArray[i];
+}
+
+QString Bed::getDreamsAfter(int i)
+{
+    QString strArray[10];
+    strArray[0] = "Вы еще ни разу не делали никому минет, но ощущения и форма члена в вашем ротике были настолько реальные, что это одновременно вас испугало и не на шутку возбудило";
+    strArray[1] = "Похоже, что ваше подсознание очень настойчиво вам намекает";
+    strArray[2] = "В вашей девственной киске и члена-то ни разу не было, но ощущения были настолько реальные что вас это не на шутку возбудило";
+    strArray[3] = "В вашей киске и члена-то ни разу не было, хоть вы и не девственница, но ощущения были настолько реальные что вас это не на шутку возбудило";
+    strArray[4] = "Похоже, что ваша <<$vaginatipe>> киска срочно требует чем-то себя заполнить";
+    strArray[5] = "У вас ни разу не было анального секса, но ощущения были настолько реальные что вас это не на шутку возбудило";
+    strArray[6] = "В вашей попке и члена-то ни разу не было, хоть она и не девственна, но ощущения были настолько реальные что вас это не на шутку возбудило";
+    strArray[7] = "Похоже, что ваш <<$anustipe>> анус срочно требует чем-то себя заполнить";
+    strArray[8] = "Похоже, что ваш опыт групповухи с не прошел даром и ваше подсознание активно вам об этом напоминает";
+    strArray[9] = "Сегодня вам приснился весьма странный сон: вы с завязанными глазами занимались сексом с незнакомцем и лишь по завершению действа, сняв повязку, вы узнали своего отчима";
+    return strArray[i];
 }

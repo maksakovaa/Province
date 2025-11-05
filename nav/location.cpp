@@ -9,7 +9,6 @@ Location::Location(QString globalLoc)
 {
     m_parent = nullptr;
     m_locId = globalLoc;
-    initIndexQStrArr();
     m_isweather = false;
     QString folder_path = ":/locations/" + globalLoc + "/";
     QFile file(folder_path + globalLoc + ".loc");
@@ -31,9 +30,6 @@ Location::Location(QString globalLoc)
 
 Location::Location(Location *parent, QString subloc, QString folder): m_parent(parent), m_locId(subloc)
 {
-    initIndexQStrArr();
-    indStart = new QString[]{ "<name>", "<actName>", "<image>", "<obj>", "<desc>", "<subloc>", "<action>", "<required>", "<param>", "<minv>", "<maxv>", "<value>", "<noteq>", "<item>" };
-    indEnd = new QString[]{ "</name>", "</actName>" , "</image>", "</obj>", "</desc>", "</subloc>", "</action>", "</required>", "</param>", "</minv>", "</maxv>", "</value>", "</noteq>", "</item>" };
     m_isweather = false;
     QString folder_path = folder + subloc + "/";
     QFile file(folder_path + subloc + ".loc");
@@ -137,6 +133,11 @@ QString Location::getLocDesc()
     return m_desc;
 }
 
+QString Location::getLocHandler()
+{
+    return m_linkHandler;
+}
+
 Location *Location::getParentPtr()
 {
     return m_parent;
@@ -186,6 +187,12 @@ void Location::parseLocConfig(QString str, QString folder)
         res = str.sliced(indStart[action].size(), str.indexOf(indEnd[action]) - indStart[action].size());
         parseActConfig(res);
     }
+    if (str.startsWith(indStart[linkHandler]))
+    {
+        res = str.sliced(indStart[linkHandler].size(), str.indexOf(indEnd[linkHandler]) - indStart[linkHandler].size());
+        m_linkHandler = res;
+    }
+    
 }
 
 void Location::parseRequiredImage(QString str, QString folder)
@@ -263,10 +270,4 @@ void Location::parseValue(QString &str, int &value, ValueType &type)
         str = str.sliced(str.indexOf(indEnd[notValue]) + indEnd[notValue].size());
     }
     
-}
-
-void Location::initIndexQStrArr()
-{
-    indStart = new QString[]{ "<name>", "<actName>", "<image>", "<obj>", "<desc>", "<subloc>", "<action>", "<required>", "<param>", "<minv>", "<maxv>", "<value>", "<noteq>", "<item>" };
-    indEnd = new QString[]{ "</name>", "</actName>" , "</image>", "</obj>", "</desc>", "</subloc>", "</action>", "</required>", "</param>", "</minv>", "</maxv>", "</value>", "</noteq>", "</item>" };
 }

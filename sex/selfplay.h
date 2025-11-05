@@ -7,7 +7,7 @@ class SexViewForm;
 
 enum SelfPlayActs
 {
-    actSP1, actSP2, actSP3, actSP4, actSP5, actSP6, actSP7, actSP8, actSP9, actSP10, actSP11, actSP12, actSP13, actSP14, actSP15,
+    actSP0, actSP1, actSP2, actSP3, actSP4, actSP5, actSP6, actSP7, actSP8, actSP9, actSP10, actSP11, actSP12, actSP13, actSP14, actSP15,
     actSP16, actSP17, actSP18, actSP19, actSP20, actSP21, actSP22, actSP23, actSP24, actSP25, actSP26
 };
 
@@ -40,11 +40,14 @@ class SelfPlay: public QObject
     Q_OBJECT
 public:
     SelfPlay(QWidget* parent);
-    void start(Location* current);
+    void start();
+public slots:
+    void reloadActions();
 private slots:
     void slotActionHandler(SelfPlayActs act);
 private:
     Location* getCurLoc();
+    void makeButtons();
     void makeActBtn(SelfPlayActs act);
     void incTime(int min);
     void updVSexVar(SexVar var, int count);
@@ -65,6 +68,7 @@ private:
     QString getActDesc(SelfPlayDesc desc);
     SexViewForm* root;
     int m_dildohand;
+    SelfPlayActs current;
 };
 
 #endif

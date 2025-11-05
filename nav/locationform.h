@@ -10,17 +10,18 @@
 #include "../video.h"
 #include "cloth.h"
 #include "bathroom.h"
+#include "shop.h"
 
 namespace Ui {
 class LocationForm;
 }
 
-class BathRoom;
+class BathRoom; class Shop;
 
 class LocationForm : public QWidget
 {
     Q_OBJECT
-    friend BathRoom;
+    friend BathRoom; friend Shop;
 signals:
     void sigIsMapAwaylable(bool status);
     void sigUpdParams();
@@ -51,7 +52,7 @@ private:
     void setSexVar(SexVar var, int value);
     void setVStatus(Status param, int value);
     void setVBody(Body param, int value);
-    void startSelfPlay(Location* current);
+    void startSelfPlay();
     int getVBody(Body param);
     int getVStatus(Status param);
     int getItmCount(Items item);
@@ -76,6 +77,7 @@ private:
     QVBoxLayout* m_actLayout;
     Video* videoWidg;
     BathRoom* m_bath;
+    Shop* m_shop;
 };
 
 #endif // LOCATIONFORM_H

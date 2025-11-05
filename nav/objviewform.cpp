@@ -10,19 +10,6 @@
 #include "mirror.h"
 #include "wardrobe.h"
 
-ObjActionButton::ObjActionButton(QString actName)
-{
-    m_actionName = actName;
-    connect(this, &ObjActionButton::clicked, this, &ObjActionButton::handleButtonClick);
-    this->setCursor(Qt::PointingHandCursor);
-}
-
-void ObjActionButton::handleButtonClick()
-{
-    emit sigAction(m_actionName);
-}
-
-
 ObjViewForm::ObjViewForm(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::ObjViewForm)
@@ -60,30 +47,37 @@ Cloth *ObjViewForm::wearCloth(Cloth *thing)
     return m_wardrobe->wearCloth(thing);
 }
 
+void ObjViewForm::reloadActions()
+{
+    emit sigReload();
+}
+
 void ObjViewForm::slotViewObj(QString objName)
 {
+    ((MainWindow*)root)->prevPage = 4;
     ((MainWindow*)root)->ui->stackedWidget->setCurrentIndex(4);
-
-    ClearLayout(m_actLayout);
 
     if (objName == "wardrobe")
     {
+        connect(this, &ObjViewForm::sigReload, m_wardrobe, &Wardrobe::reloadActions);
         m_wardrobe->viewWardrobe();
     }
     else if (objName == "bed")
     {
+        connect(this, &ObjViewForm::sigReload, m_bed, &Bed::reloadActions);
         m_bed->viewBed();
     }
     else if (objName == "mirror")
     {
+        connect(this, &ObjViewForm::sigReload, m_mirror, &Mirror::reloadActions);
         m_mirror->viewMirror();
     }
 
-    QActionButton* actionbtn = new QActionButton(0);
-    actionbtn->setText("Назад");
-    actionbtn->setLocPtr(getCurLoc());
-    m_actLayout->addWidget(actionbtn);
-    connect(actionbtn, &QActionButton::sigChangeSubLoc, ((MainWindow*)root)->ui->page_0_main, &LocationForm::slotChangeLoc);
+    // QActionButton* actionbtn = new QActionButton(0);
+    // actionbtn->setText("Назад");
+    // actionbtn->setLocPtr(getCurLoc());
+    // m_actLayout->addWidget(actionbtn);
+    // connect(actionbtn, &QActionButton::sigChangeSubLoc, ((MainWindow*)root)->ui->page_0_main, &LocationForm::slotChangeLoc);
 }
 
 void ObjViewForm::slotInitWardrobe()
@@ -216,9 +210,9 @@ void ObjViewForm::changeLoc(Location *newLoc, int min)
     ((MainWindow*)root)->ui->page_0_main->slotChangeLoc(newLoc, min);
 }
 
-void ObjViewForm::startSelfPlay(Location *loc)
+void ObjViewForm::startSelfPlay()
 {
-    ((MainWindow*)root)->ui->page_6_sexView->findChild<SexViewForm*>("SexViewForm")->selfPlayStart(loc);
+    ((MainWindow*)root)->ui->page_6_sexView->findChild<SexViewForm*>("SexViewForm")->selfPlayStart();
 }
 
 Player *ObjViewForm::player()
