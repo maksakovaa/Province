@@ -5,6 +5,7 @@
 #include "qactionbutton.h"
 #include "objviewform.h"
 #include "../ui_mainwindow.h"
+#include <QPropertyAnimation>
 
 LocationForm::LocationForm(QWidget *parent)
     : QWidget(parent)
@@ -105,6 +106,11 @@ void LocationForm::slotChangeLoc(Location *locPtr, int min)
     fillSubLocs();
 }
 
+void LocationForm::sendNotif(QString text)
+{
+    ((MainWindow*)root)->showNotif(text);
+}
+
 void LocationForm::DFSlocations(Location* parent)
 {
     std::vector<Location*> tmp = parent->awailableLocs();
@@ -129,6 +135,7 @@ void LocationForm::fillSubLocs()
     std::vector<Location*> locs = m_currentLoc->awailableLocs();
     std::vector<QString> objs = m_currentLoc->availableObjs();
     std::vector<struct Action*> acts = m_currentLoc->availableActions();
+    std::vector<QString> locLinks = m_currentLoc->awailableLocLinks();
 
     if(m_currentLoc->isParent())
     {
@@ -158,6 +165,18 @@ void LocationForm::fillSubLocs()
             connect(ui->labelLocDesc, &QLabel::linkActivated, m_shop, &Shop::slotShopHandler);
         }
         
+    }
+    if (!locLinks.empty())
+    {
+        for (auto& i: locLinks)
+        {
+            Location* loc  = m_locations[i]; 
+            QActionButton* actionbtn = new QActionButton(1);
+            actionbtn->setText(loc->getActName());
+            actionbtn->setLocPtr(loc);
+            m_actLayout->addWidget(actionbtn);
+            connect(actionbtn, &QActionButton::sigChangeSubLoc, this, &LocationForm::slotChangeLoc);
+        }
     }
     
 }
@@ -227,7 +246,7 @@ void LocationForm::updVStatistic(SC param, int val)
 
 void LocationForm::useItem(Items item, int count)
 {
-    ((MainWindow*)root)->m_bag->removeFromBag(item, count);
+    ((MainWindow*)root)->m_bag->useItem(item, count);
 }
 
 void LocationForm::setSexVar(SexVar var, int value)
@@ -247,7 +266,7 @@ void LocationForm::setVBody(Body param, int value)
 
 void LocationForm::startSelfPlay()
 {
-    ((MainWindow*)root)->ui->page_6_sexView->findChild<SexViewForm*>("SexViewForm")->selfPlayStart();
+    ((MainWindow*)root)->ui->page_5_sexView->findChild<SexViewForm*>("SexViewForm")->selfPlayStart();
 }
 
 int LocationForm::getVBody(Body param)
@@ -295,6 +314,11 @@ void LocationForm::addDesc(QString str)
     ui->labelLocDesc->setText(ui->labelLocDesc->text() + str);
 }
 
+void LocationForm::setVideoDesc(QString str)
+{
+    ui->labelVideoDesc->setText(str);
+}
+
 bool LocationForm::isAutoTampon()
 {
     return ((MainWindow*)root)->page4->isAutoTampon();
@@ -325,9 +349,24 @@ TimeServer *LocationForm::gTime()
     return &((MainWindow*)root)->m_time;
 }
 
+void LocationForm::addCloth(Cloth *thing)
+{
+    ((MainWindow*)root)->m_obj->storeCloth(thing);
+}
+
+void LocationForm::addItem(Items id, int count)
+{
+    ((MainWindow*)root)->m_bag->putInBag(id,count);
+}
+
 QString LocationForm::sextToysBlock(int val)
 {
     return ((MainWindow*)root)->m_ccsex.sextToysBlock(val);
+}
+
+QString LocationForm::getItemName(Items id)
+{
+    return ((MainWindow*)root)->m_bag->getItemName(id);
 }
 
 BathActBtn::BathActBtn(bathActs act, QString actName)

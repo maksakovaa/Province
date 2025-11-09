@@ -36,9 +36,9 @@ QString Mirror::getDesc()
     QString text = root->player()->getHairDesc() + "<br>";
     text += root->player()->getMakeupDesc() + "<br>";
     text += root->player()->getLipsDesc() + "<br>";
-    if(root->getItmCount(Items::cosmetic) > 0 || root->getItmCount(Items::cosmeticBig) > 0)
+    if(root->getItmCount(iCosmetic) > 0 || root->getItmCount(iCosmeticBig) > 0)
     {
-        text += "Косметика " + intQStr(root->getItmCount(Items::cosmetic) + root->getItmCount(Items::cosmeticBig)) + "<br>";
+        text += "Косметика " + intQStr(root->getItmCount(iCosmetic) + root->getItmCount(iCosmeticBig)) + "<br>";
     }
     else
     {
@@ -97,13 +97,13 @@ void Mirror::slotMirrorActHandler(MirrorActs act)
         {
             ClearLayout(root->m_actLayout);
             root->sigSpendTime(3);
-            if(root->getItmCount(cosmeticBig) >= 1)
+            if(root->getItmCount(iCosmeticBig) >= 1)
             {
-                root->useItem(cosmeticBig,1);
+                root->useItem(iCosmeticBig,1);
             }
             else
             {
-                root->useItem(cosmetic,1);
+                root->useItem(iCosmetic,1);
             }
 
             root->setVBody(makeup, 2);
@@ -117,13 +117,13 @@ void Mirror::slotMirrorActHandler(MirrorActs act)
         {
             ClearLayout(root->m_actLayout);
             root->sigSpendTime(5);
-            if(root->getItmCount(cosmeticBig) >= 2)
+            if(root->getItmCount(iCosmeticBig) >= 2)
             {
-                root->useItem(cosmeticBig, 2);
+                root->useItem(iCosmeticBig, 2);
             }
             else
             {
-                root->useItem(cosmetic, 2);
+                root->useItem(iCosmetic, 2);
             }
             root->setVBody(makeup, 3);
             emit root->sigUpdParams();
@@ -136,13 +136,13 @@ void Mirror::slotMirrorActHandler(MirrorActs act)
         {
             ClearLayout(root->m_actLayout);
             root->sigSpendTime(3);
-            if(root->getItmCount(cosmeticBig) >= 3)
+            if(root->getItmCount(iCosmeticBig) >= 3)
             {
-                root->useItem(cosmeticBig, 3);
+                root->useItem(iCosmeticBig, 3);
             }
             else
             {
-                root->useItem(cosmetic, 3);
+                root->useItem(iCosmetic, 3);
             }
             root->setVBody(makeup, 4);
             emit root->sigUpdParams();
@@ -167,7 +167,7 @@ void Mirror::slotMirrorActHandler(MirrorActs act)
         {
             ClearLayout(root->m_actLayout);
             root->sigSpendTime(10);
-            root->useItem(Items::lipBalm, 1);
+            root->useItem(iLipBalm, 1);
             root->updVBody(Body::lipbalmstat, 8);
             root->updVStatus(Status::lipkoef, 5);
             if (root->getVStatus(Status::lipkoef) >= 50)
@@ -202,7 +202,7 @@ void Mirror::makeButtons()
         {
             makeMirrorActBtn(actMirr2);
         }
-        if (root->getVBody(makeup) == 1 && (root->getItmCount(Items::cosmetic) + root->getItmCount(Items::cosmeticBig)) > 0)
+        if (root->getVBody(makeup) == 1 && (root->getItmCount(iCosmetic) + root->getItmCount(iCosmeticBig)) > 0)
         {
             makeMirrorActBtn(actMirr3);
         }
@@ -210,7 +210,7 @@ void Mirror::makeButtons()
         {
             makeMirrorActBtn(actMirr7);
         }
-        if (root->getItmCount(Items::lipBalm) > 0 && root->getVBody(Body::lipbalmstat) <= 0)
+        if (root->getItmCount(iLipBalm) > 0 && root->getVBody(Body::lipbalmstat) <= 0)
         {
             makeMirrorActBtn(actMirr8);
         }
@@ -220,12 +220,12 @@ void Mirror::makeButtons()
     {
         makeMirrorActBtn(actMirr4);
 
-        if (root->getItmCount(Items::cosmetic) + root->getItmCount(Items::cosmeticBig) >= 2)
+        if (root->getItmCount(iCosmetic) + root->getItmCount(iCosmeticBig) >= 2)
         {
             makeMirrorActBtn(actMirr5);
         }
 
-        if (root->getItmCount(Items::cosmetic) + root->getItmCount(Items::cosmeticBig) >= 3)
+        if (root->getItmCount(iCosmetic) + root->getItmCount(iCosmeticBig) >= 3)
         {
             makeMirrorActBtn(actMirr6);
         }

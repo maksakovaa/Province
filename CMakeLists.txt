@@ -68,6 +68,8 @@ qt_add_executable(Game
     nav/atm.h nav/atm.cpp
     nav/iceacream.h nav/iceacream.cpp
     nav/coffee.h nav/coffee.cpp
+    popup.h popup.cpp
+    notificationqueue.h notificationqueue.cpp
 
 )
 

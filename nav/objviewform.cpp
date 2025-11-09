@@ -137,7 +137,7 @@ int ObjViewForm::getVSC(SC param)
 
 void ObjViewForm::useItem(Items type, int count)
 {
-    ((MainWindow*)root)->m_bag->removeFromBag(type,count);
+    ((MainWindow*)root)->m_bag->useItem(type,count);
 }
 
 void ObjViewForm::setVStatus(Status type, int value)
@@ -212,7 +212,7 @@ void ObjViewForm::changeLoc(Location *newLoc, int min)
 
 void ObjViewForm::startSelfPlay()
 {
-    ((MainWindow*)root)->ui->page_6_sexView->findChild<SexViewForm*>("SexViewForm")->selfPlayStart();
+    ((MainWindow*)root)->ui->page_5_sexView->findChild<SexViewForm*>("SexViewForm")->selfPlayStart();
 }
 
 Player *ObjViewForm::player()

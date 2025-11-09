@@ -172,19 +172,10 @@ enum Sickness
 
 enum Addiction
 {
-    alko,
-    maxAlko,
-    alkoday,
-    max_hangoverDay,
-    alkoholism,
-    hangoverDay,
-    alkoAbstainDay,
-    alkoAbstainCount,
-    hangVneshAlko,
-    lenghangoverday,
+    alko, maxAlko, alkoday, max_hangoverDay, alkoholism, hangoverDay, alkoAbstainDay,
+    alkoAbstainCount, hangVneshAlko, lenghangoverday,
 
-    drugEffect,
-    drugStatus
+    drugEffect, drugStatus
 };
 
 enum SC     //Статистика
@@ -222,42 +213,33 @@ enum SC     //Статистика
 
 enum Const
 {
-    dec_anti_rubbing,
-    max_dry_v_rubbing,
-    max_dry_a_rubbing,
-    max_vaginal_grease,
-    max_sweat_grease,
-    many_vaginal_grease,
-    out_vaginal_grease,
+    dec_anti_rubbing, max_dry_v_rubbing, max_dry_a_rubbing,
+    max_vaginal_grease, max_sweat_grease, many_vaginal_grease, out_vaginal_grease,
     max_hour_lust,
-    shameStage1,
-    shameStage2,
-    shameStage3,
-    dv_breast,
-    dv_hips
+    shameStage1,shameStage2,shameStage3,
+    dv_breast,dv_hips
 };
 
 enum budilnik
 {
-    budilnikOn,
-    timerH,
-    timerM
+    budilnikOn,timerH,timerM
 };
 
 enum Items
 {
-    cosmetic,
-    cosmeticBig,
-    condoms,
-    wetWipes,
-    vagGel,
-    morningCare,
-    tampon,
-    antiPregPills,
-    razor,
-    lubri,
-    shampoo,
-    pregtest,
+    //itFood
+    iFood,iDietFood,iBread,iSandwich,iBottledWater,iVine,iVodka,iSausage,
+    iFriedChicken,iChocolate,iCookies,iTicTac,
+    //itCosmetics
+    iCosmetic,iCosmeticBig,iRazor,iSunscreen,iVagGel,
+    iShampoo,iTampon,iWetWipes,iMorningCare,iComb, //расческа
+    //itCommon
+    iDishwashBotltle,iWashingPowder,iPlates,iWallPrint,iFabric,
+    //itTech
+    iCRTTV,iPlasmaTV,iLaptop,iDishwasher,iWashingMachine,iWebCam,iSinger,
+    //itSport
+    iSkates,iJumpRope,iHoop,
+    //itSexToys
     iDildo,
     iMidDildo,
     iLargeDildo,
@@ -268,62 +250,19 @@ enum Items
     iAnalPlug,
     iVibrator,
     iStrapon,
-    lipBalm
+    //itMedSupplies
+    iCondoms,iAntiPregPills,iLubri,iPregtest,iVitamins,iAntibiotics,iLipBalm,iFatBurners
 };
 
-enum Food
+enum itemType
 {
-    eFood,
-    eDietFood,
-    eBread,
-    eSandwich,
-    eBottledWater,
-    eVine,
-    eVodka,
-    eSausage,
-    eFriedChicken,
-    eChocolate,
-    eCookies,
-    eTicTac
-};
-
-enum Cosmetics
-{
-    eMakeup,
-    eMakeupKit,
-    eShavingRazor,
-    eSunscreen,
-    eShampoo,
-    eTampons,
-    eWetWipes,
-    eBrush
-};
-
-enum Common
-{
-    eDishwashBotltle,
-    eWashingPowder,
-    ePlates,
-    eWallPrint,
-    eFabric
-};
-
-enum Tech
-{
-    eCRTTV,
-    ePlasmaTV,
-    eLaptop,
-    eDishwasher,
-    eWashingMachine,
-    eWebCam,
-    eSinger
-};
-
-enum Sport
-{
-    eSkates,
-    eJumpRope,
-    eHoop
+    itFood,
+    itCosmetics,
+    itCommon,
+    itTech,
+    itSport,
+    itSexToys,
+    itMedSupplies
 };
 
 enum GameObjects {

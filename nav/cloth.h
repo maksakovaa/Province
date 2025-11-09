@@ -57,7 +57,7 @@ class ClothMain: public Cloth
 {
     friend Wardrobe; friend ClothForm; friend ClothFormTrash;
 public:
-    ClothMain(int id, ClothType type, ClothGroup group, QString name, int price = 0, int condition = 100);
+    ClothMain(int id, ClothGroup group, QString name, int price = 0, int condition = 100);
     QString getClothImage();
     ClothType getType();
     ClothGroup getClothGroup();

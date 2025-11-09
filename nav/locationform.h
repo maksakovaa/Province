@@ -38,9 +38,11 @@ public:
 public slots:
     void slotOnChangeLocation(const QString& name, int min);
     void slotChangeLoc(Location* locPtr, int min);
+    void sendNotif(QString text);
 private:
 //methods:
     QString sextToysBlock(int val);
+    QString getItemName(Items id);
     void DFSlocations(Location* parent);
     void fillSubLocs();
     void createLocations();
@@ -62,12 +64,15 @@ private:
     void setImage(QString path);
     void setDesc(QString text);
     void addDesc(QString str);
+    void setVideoDesc(QString str);
     bool isAutoTampon();
     void redress(Cloth* newCloth);
     Cloth* getCloth(ClothType type);
     void viewObj(QString obj);
     void updSkin(char c, int val);
     TimeServer* gTime();
+    void addCloth(Cloth* thing);
+    void addItem(Items id, int count = 1);
 //members:
     Ui::LocationForm *ui;
     QWidget* root;

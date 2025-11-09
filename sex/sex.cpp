@@ -21,17 +21,17 @@ QString boy;
         setSexVar(vibratorIN,0);
         root->ui->labelSexDesc->setText(root->ui->labelSexDesc->text() + "<br>" + "Вы вынули вибратор из влагалища.");
     }
-    if (getItemCount(Items::condoms) > 0 && (getSexVar(use_condoms) == 1 || protect == 1))
+    if (getItemCount(iCondoms) > 0 && (getSexVar(use_condoms) == 1 || protect == 1))
     {
-        useItem(Items::condoms, 1);
+        useItem(iCondoms, 1);
         m_protect = 1;
         updSexVar(lubonus,1);
         m_cc_sex_usecondom = 1;
         checkTextOutput(1, boy + " взял у вас презерватив и одел его на свой член.");
     }
-    if (getVStatus(horny)/10 + getVBody(vagina) + getVAddict(alko) < getSexVar(dick) && getItemCount(Items::lubri) > 0)
+    if (getVStatus(horny)/10 + getVBody(vagina) + getVAddict(alko) < getSexVar(dick) && getItemCount(iLubri) > 0)
     {
-        useItem(Items::lubri,1);
+        useItem(iLubri,1);
         updSexVar(lubonus,5);
         if(getRandInt(1,2) == 1)
         {
@@ -53,9 +53,9 @@ void Sex::analStart(ToolType type, int protect)
     
     m_cc_sex_usecondom = 0;
     QString final;
-    if(getItemCount(Items::condoms) > 0 && (getSexVar(use_condoms) == 1 || protect == 1))
+    if(getItemCount(iCondoms) > 0 && (getSexVar(use_condoms) == 1 || protect == 1))
     {
-        useItem(Items::condoms, 1);
+        useItem(iCondoms, 1);
         m_protect = 1;
         m_cc_sex_usecondom = 1;
         updSexVar(lubonus,1);
@@ -67,9 +67,9 @@ void Sex::analStart(ToolType type, int protect)
         setSexVar(analplugIN, 0);
         checkTextOutput(1, "Вы вытащили из вашей  попки анальную пробку.");
     }
-    if(getItemCount(lubri) > 0)
+    if(getItemCount(iLubri) > 0)
     {
-        useItem(lubri,1);
+        useItem(iLubri,1);
         updSexVar(lubonus, 10);
         final = "Вы выдавили анальной смазки себе на руку и начали намазывать свою попку. ";
         if(type == ToolType::tDick)

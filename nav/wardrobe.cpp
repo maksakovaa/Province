@@ -285,10 +285,10 @@ void Wardrobe::initNewLayout()
 void Wardrobe::initWarDrobe()
 {
     m_size = root->getVBody(hips);
-    ClothMain* first = new ClothMain(3, ClothType::Main, ClothGroup::sundress, "Сарафан",0,-99);
-    ClothMain* second = new ClothMain(4, ClothType::Main, ClothGroup::schoolUniform, "Школьная форма",0,-99);
-    ClothMain* third = new ClothMain(getRandInt(10,29), ClothType::Main, ClothGroup::sportsSuit, "Спортивный костюм");
-    ClothMain* four = new ClothMain(getRandInt(30,49), ClothType::Main, ClothGroup::jeans, "Джинсы");
+    ClothMain* first = new ClothMain(3, ClothGroup::sundress, "Сарафан",0,-99);
+    ClothMain* second = new ClothMain(4, ClothGroup::schoolUniform, "Школьная форма",0,-99);
+    ClothMain* third = new ClothMain(getRandInt(10,29), ClothGroup::sportsSuit, "Спортивный костюм");
+    ClothMain* four = new ClothMain(getRandInt(30,49), ClothGroup::jeans, "Джинсы");
     m_panties = new ClothPanties(ClothType::Panties);
 
     addCloth(first,1);

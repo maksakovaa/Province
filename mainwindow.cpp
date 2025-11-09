@@ -16,6 +16,7 @@ MainWindow::MainWindow(SettingsForm* settingsForm, CharacterType charType, int y
     this->setStyleSheet("background-color: #ffffff; color: #464646; font-size: 16px; font-family: 'Serif';");
     ui->setupUi(this);
     setupMainWindow(settingsForm, charType);
+    m_que = new NotificationQueue(ui->centralwidget);
 }
 
 MainWindow::~MainWindow()
@@ -76,6 +77,7 @@ void MainWindow::setupMainWindow(SettingsForm* settingsForm, CharacterType charT
     m_time.firstStart();
     slotUpdParams();
     setupActionButtons();
+    this->adjustSize();
 }
 
 void MainWindow::setPointers()
@@ -189,6 +191,12 @@ void MainWindow::slotUpdParams()
     ui->page_2_pers->reload();
     m_overlayStatus.genOverlay();
     slotUpdateDateTime();
+}
+
+void MainWindow::showNotif(QString text)
+{
+    // std::cout << "Push request sent" << std::endl;
+    m_que->push(text);
 }
 
 void MainWindow::loadStrings()

@@ -28,6 +28,7 @@ public:
     const std::vector<struct Action*> availableActions();
     const std::vector<Location*> awailableLocs();
     const std::vector<QString> availableObjs();
+    const std::vector<QString> awailableLocLinks();
     bool isParent();
     QString getLocPic(bool isDay, bool isSnow);
     QString getLocId();
@@ -42,6 +43,7 @@ private:
     Location* m_parent;
     std::vector<QString> m_obj;
     std::vector<struct Action*> m_actions;
+    std::vector<QString> m_locLinks;
     QString m_image;
     bool m_isweather;
     QString m_locId;
@@ -50,10 +52,10 @@ private:
     QString m_locIn;
     QString m_desc;
     BagForm* m_bag;
-    QString indStart[15]{ "<name>", "<actName>", "<image>", "<obj>", "<desc>", "<subloc>", "<action>", "<required>", "<param>", "<minv>", "<maxv>", "<value>", "<noteq>", "<item>", "<linkHandler>" };
-    QString indEnd[15]{ "</name>", "</actName>" , "</image>", "</obj>", "</desc>", "</subloc>", "</action>", "</required>", "</param>", "</minv>", "</maxv>", "</value>", "</noteq>", "</item>", "</linkHandler>"};
+    QString indStart[16]{ "<name>", "<actName>", "<image>", "<obj>", "<desc>", "<subloc>", "<action>", "<required>", "<param>", "<minv>", "<maxv>", "<value>", "<noteq>", "<item>", "<linkHandler>", "<goto>" };
+    QString indEnd[16]{ "</name>", "</actName>" , "</image>", "</obj>", "</desc>", "</subloc>", "</action>", "</required>", "</param>", "</minv>", "</maxv>", "</value>", "</noteq>", "</item>", "</linkHandler>", "</goto>"};
     QString m_linkHandler;
-    enum params { name, actName, image, object, desc, subloc, action, required, param, minValue, maxValue, accValue, notValue, reqitem, linkHandler };
+    enum params { name, actName, image, object, desc, subloc, action, required, param, minValue, maxValue, accValue, notValue, reqitem, linkHandler, goTo };
 
     void parseLocConfig(QString str, QString folder);
     void parseRequiredImage(QString str, QString folder);

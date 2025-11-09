@@ -2,7 +2,6 @@
 #define SHOP_H
 
 #include "locationform.h"
-#include "../player/itemform.h"
 
 class Shop: public QObject
 {
@@ -17,24 +16,25 @@ public:
     void shop_sport();
 private slots:
     void slotShopHandler(const QString& link);
+    void slotBuyItem(Items id);
+    void slotBuyCloth(int id, ClothGroup group);
 private:
+    void makeShop();
     void initClothArray();
-    std::vector<Cloth*> initClothArray(ClothGroup group);
-    ItemForm* makeForm();
-    int foodPrice(Food type);
-    QString foodName(Food type);
-    int cosmeticsPrice(Cosmetics type);
-    QString cosmeticsName(Cosmetics type);
-    int commonPrice(Common type);
-    QString commonName(Common type);
+    std::vector<int> initClothArray(ClothGroup group);
+    int itemPrice(int itemId);
+    QString itemName(int itemId);
     int clothPrice(ClothGroup type);
     QString clothName(ClothGroup type);
-    int techPrice(Tech type);
-    QString techName(Tech type);
-    int sportPrice(Sport type);
-    QString sportName(Sport type);
+    void createHLayoyt();
+    void makeItemForm(Items id, itemType type);
+    void makeClothForm(int clothId, ClothGroup group);
+    QString current;
     LocationForm* root;
-    std::unordered_map<ClothGroup, std::vector<QString>> m_cloth;
+    QVBoxLayout* layoutMain;
+    QWidget* widgetMain;
+    std::vector<QHBoxLayout*> m_layouts;
+    std::unordered_map<ClothGroup, std::vector<int>> m_cloth;
 };
 
 #endif

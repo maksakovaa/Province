@@ -208,6 +208,10 @@ void Player::updVBody(Body param, int value)
 void Player::updVStatus(Status stat, int value)
 {
     m_status[stat] += value;
+    if(stat == money)
+    {
+        ((MainWindow*)m_main)->slotUpdMoney();
+    }
 }
 
 void Player::setVStatus(Status stat, int value)

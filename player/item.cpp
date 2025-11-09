@@ -1,195 +1,187 @@
 #include "item.h"
+#include "Functions.h"
+
+Item::Item(Items id)
+{
+    m_id = id;
+    if (m_id <= iTicTac) m_type = itFood;
+    else if (m_id > iTicTac && m_id <= iComb) m_type = itCosmetics;
+    else if (m_id > iComb && m_id <= iFabric) m_type = itCommon;
+    else if (m_id > iFabric && m_id <= iSinger) m_type = itTech;
+    else if (m_id > iSinger && m_id <= iHoop) m_type = itSport;
+    else if (m_id > iHoop && m_id <= iStrapon) m_type = itSexToys;
+    else if (m_id > iStrapon) m_type = itMedSupplies;
+
+    if (m_id == iCosmetic) m_quantity = m_quantity_max = 15;
+    if (m_id == iCosmeticBig) m_quantity = m_quantity_max = 30;
+    if (m_id == iTampon) m_quantity = m_quantity_max = 20;
+    if (m_id == iMorningCare) m_quantity = m_quantity_max = 5;
+    if (m_id == iVagGel) m_quantity = m_quantity_max = 5;
+    if (m_id == iSunscreen) m_quantity = m_quantity_max = 20;
+    if (m_id == iWetWipes) m_quantity = m_quantity_max = 10;
+}
 
 QString Item::getName()
 {
-    return m_name;
+    return str(m_id);
 }
 
 QString Item::getDesc()
 {
-    return m_desc;
+    return strDesc(m_id);
 }
 
 QString Item::getImage()
 {
-    return "<img src='" + m_image + "'></img>";
+    return "<img src=':/img/items/" + intQStr(m_type) + "/" + intQStr(m_id) + ".png'></img>";
 }
 
-Cosmetic::Cosmetic()
-{
-    m_name = "Косметичка";
-    m_image = ":/img/items/kosmet_small.png";
-    m_desc = "Улучшает внешность";
-    m_quantity = 15;
-    m_maxQuantity = 15;
-}
-
-int Cosmetic::getQuantity()
+int Item::getQuantity()
 {
     return m_quantity;
 }
 
-int Cosmetic::getMaxQuantity()
+int Item::getMaxQuantity()
 {
-    return m_maxQuantity;
+    return m_quantity_max;
 }
 
-void Cosmetic::useCosmetic(int value)
+void Item::use(int count)
 {
-    m_quantity -= value;
+    m_quantity - count;
 }
 
-void Cosmetic::setQuantity(int value)
+void Item::setQuantity(int value)
 {
     m_quantity = value;
 }
 
-Condoms::Condoms()
+QString Item::str(Items id)
 {
-    m_image = ":/img/items/condom.png";
-    m_name = "Презервативы";
-    m_desc = "Резиновое изделение № 1";
+    QString str[55];
+    str[0] = "Еда";
+    str[1] = "Диетическая еда";
+    str[2] = "Хлеб";
+    str[3] = "Бутерброд";
+    str[4] = "Бутылочка воды";
+    str[5] = "Вино";
+    str[6] = "Водка";
+    str[7] = "Сосиски";
+    str[8] = "Куриные крылышки";
+    str[9] = "Шоколад";
+    str[10] = "Печенье";
+    str[11] = "TicTac";
+
+    str[12] = "Косметика";
+    str[13] = "Косметический набор";
+    str[14] = "Бритвенный станок(5 шт)";
+    str[15] = "Солнцезащитный крем";
+    str[16] = "Шампунь";
+    str[17] = "Тампоны(20 шт)";
+    str[18] = "Влажные салфетки";
+    str[19] = "Напиток Morning Care(5 доз)";
+    str[20] = "Гель для вагины Touch(5 доз)";
+    str[21] = "Расческа";
+
+    str[22] = "Средство для мытья посуды";
+    str[23] = "Стиральный порошок";
+    str[24] = "Набор из 3-х тарелок";
+    str[25] = "Краска для стен";
+    str[26] = "Рулон ткани";
+
+    str[27] = "Небольшой телевизор с кинескопом";
+    str[28] = "Большой плазменный телевизор";
+    str[29] = "Ноутбук";
+    str[30] = "Посудомоечная машина";
+    str[31] = "Стиральная машина";
+    str[32] = "Веб камера";
+    str[33] = "Швейная машинка Singer";
+
+    str[34] = "Коньки";
+    str[35] = "Скакалка";
+    str[36] = "Обруч";
+    str[37] = "Маленький фаллоимитатор";
+    str[38] = "Фаллоимитатор, 15 см";
+    str[39] = "Фаллоимитатор, 20 см";
+    str[40] = "Фаллоимитатор, 25 см";
+    str[41] = "Фаллоимитатор, 30 см";
+    str[42] = "Фаллоимитатор, 35 см";
+    str[43] = "Фаллоимитатор, 40 см";
+    str[44] = "Анальная пробка";
+    str[45] = "Вибратор";
+    str[46] = "Страпон";
+    str[47] = "Презервативы";
+    str[48] = "Противозачаточные";
+    str[49] = "Лубрикант";
+    str[50] = "Тест на беременность";
+    str[51] = "Витамины";
+    str[52] = "Антибиотики";
+    str[53] = "Бальзам для губ";
+    str[54] = "Жиросжигатели";
+    return str[id];
 }
 
-CosmeticBig::CosmeticBig()
+QString Item::strDesc(Items id)
 {
-    m_name = "Набор косметики";
-    m_image = ":/img/items/kosmet_big.png";
-    m_quantity = 30;
-    m_maxQuantity = 30;
-}
+    QString str[55];
+    str[0] = "Еда";
+    str[1] = "Диетическая еда";
+    str[2] = "Хлеб";
+    str[3] = "Бутерброд";
+    str[4] = "Бутылочка воды";
+    str[5] = "Вино";
+    str[6] = "Водка";
+    str[7] = "Сосиски";
+    str[8] = "Куриные крылышки";
+    str[9] = "Шоколад";
+    str[10] = "Печенье";
+    str[11] = "TicTac";
 
-WetWipes::WetWipes()
-{
-    m_name = "Влажные салфетки";
-    m_image = ":/img/items/wet_wipes.png";
-    m_desc = "Подтереть последствия";
-}
+    str[12] = "Косметика";
+    str[13] = "Косметический набор";
+    str[14] = "Бритвенный станок(5 шт)";
+    str[15] = "Солнцезащитный крем";
+    str[16] = "Шампунь";
+    str[17] = "Тампоны(20 шт)";
+    str[18] = "Влажные салфетки";
+    str[19] = "Напиток Morning Care(5 доз)";
+    str[20] = "Гель для вагины Touch(5 доз)";
+    str[21] = "Расческа";
 
-VagGel::VagGel()
-{
-    m_name = "Гель для вагины Touch";
-    m_image = ":/img/items/vaggel.png";
-    m_desc = "Лечит натертости в течении 8 часов";
-}
+    str[22] = "Средство для мытья посуды";
+    str[23] = "Стиральный порошок";
+    str[24] = "Набор из 3-х тарелок";
+    str[25] = "Краска для стен";
+    str[26] = "Рулон ткани";
 
-MorningCare::MorningCare()
-{
-    m_name = "Напиток Morning Care";
-    m_image = ":/img/items/antihangover.png";
-    m_desc = "Выпить при полхмелье";
-}
+    str[27] = "Небольшой телевизор с кинескопом";
+    str[28] = "Большой плазменный телевизор";
+    str[29] = "Ноутбук";
+    str[30] = "Посудомоечная машина";
+    str[31] = "Стиральная машина";
+    str[32] = "Веб камера";
+    str[33] = "Швейная машинка Singer";
 
-Tampon::Tampon()
-{
-    m_name = "Прокладки";
-    m_image = ":/img/items/tampons.png";
-    m_desc = "Защитят при тех самых днях";
-}
-
-AntiPregPills::AntiPregPills()
-{
-    m_name = "Противозачаточные";
-    m_image = ":/img/items/pills.png";
-    m_desc = "От нежелательной беременности";
-}
-
-Razor::Razor()
-{
-    m_name = "Одноразовая бритва";
-    m_image = ":/img/items/razor.png";
-    m_desc = "Убрать растительность";
-}
-
-LipBalm::LipBalm()
-{
-    m_name = "Бальзам для губ";
-    m_image = ":/img/items/libpalm.png";
-    m_desc = "Бальзам увлажняет губы, придает им блеск, тем самым увеличивает привлекательность губ. Есть побочные эффекты: при постоянном использовании необратимо увеличивает губы.**Тюбик, хватит на 25 применений.";
-}
-
-Lubricant::Lubricant()
-{
-    m_name = "Лубрикант";
-    m_image = ":/img/items/lubri.png";
-    m_desc = "Смазать дырочки";
-}
-
-/////////////////   SEX TOYS \\\\\\\\\\\\\\\\\\\
-
-Dildo::Dildo()
-{
-    m_name = "Маленький фаллоимитатор";
-    m_image = ":/img/items/dildo_mini.png";
-    m_desc = "Смазать дырочки";
-}
-
-MidDildo::MidDildo()
-{
-    m_name = "Фаллоимитатор, 15 см";
-    m_image = ":/img/items/dildo15.png";
-    m_desc = "";
-}
-
-LargeDildo::LargeDildo()
-{
-    m_name = "Фаллоимитатор, 20 см";
-    m_image = ":/img/items/dildo20.png";
-    m_desc = "";
-}
-
-BigDildo::BigDildo()
-{
-    m_name = "Фаллоимитатор, 25 см";
-    m_image = ":/img/items/dildo25.png";
-    m_desc = "";
-}
-
-ExtraDildo::ExtraDildo()
-{
-    m_name = "Фаллоимитатор, 30 см";
-    m_image = ":/img/items/dildo30.png";
-    m_desc = "";
-}
-
-SuperDildo::SuperDildo()
-{
-    m_name = "Фаллоимитатор, 35 см";
-    m_image = ":/img/items/dildo35.png";
-    m_desc = "";
-}
-
-MadDildo::MadDildo()
-{
-    m_name = "Фаллоимитатор, 40 см";
-    m_image = ":/img/items/dildo40.png";
-    m_desc = "";
-}
-
-AnalPlug::AnalPlug()
-{
-    m_name = "Анальная пробка";
-    m_image = ":/img/items/analplug.png";
-    m_desc = "";
-}
-
-Vibrator::Vibrator()
-{
-    m_name = "Вибратор";
-    m_image = ":/img/items/vibrator.png";
-    m_desc = "";
-}
-
-Strapon::Strapon()
-{
-    m_name = "Страпон";
-    m_image = ":/img/items/strapon.png";
-    m_desc = "";
-}
-
-Shampoo::Shampoo()
-{
-    m_name = "Шампунь";
-    m_image = ":/img/items/shampoo.png";
-    m_desc = "";
+    str[34] = "Коньки";
+    str[35] = "Скакалка";
+    str[36] = "Обруч";
+    str[37] = "Маленький фаллоимитатор";
+    str[38] = "Фаллоимитатор, 15 см";
+    str[39] = "Страпон";
+    str[40] = "Презервативы";
+    str[41] = "Фаллоимитатор, 30 см";
+    str[42] = "Фаллоимитатор, 35 см";
+    str[43] = "Фаллоимитатор, 40 см";
+    str[44] = "Анальная пробка";
+    str[45] = "Вибратор";
+    str[46] = "Страпон";
+    str[47] = "Презервативы";
+    str[48] = "Противозачаточные";
+    str[49] = "Лубрикант";
+    str[50] = "Тест на беременность";
+    str[51] = "Витамины";
+    str[52] = "Антибиотики";
+    str[53] = "Бальзам для губ";
+    str[54] = "Жиросжигатели";
+    return str[id];
 }

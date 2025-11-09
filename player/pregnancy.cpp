@@ -225,9 +225,9 @@ void Pregnancy::slotMenstruus()
         updVBody(Body::skinTan, -2);
     }
 
-    if (m_bag->getQuantityof(Items::antiPregPills) > 0)
+    if (m_bag->getQuantityof(iAntiPregPills) > 0)
     {
-        m_bag->removeFromBag(Items::antiPregPills);
+        m_bag->useItem(iAntiPregPills);
     }
     
     updVBody(legHair, 1);
@@ -252,10 +252,10 @@ void Pregnancy::slotMenstruus()
             m_player->setVStatus(mesec, 4);
             m_cikl = 0;
         }
-        if (getVStatus(mesec) > 0 && m_player->isAutoTampon() && m_bag->getQuantityof(Items::tampon) > 0)
+        if (getVStatus(mesec) > 0 && m_player->isAutoTampon() && m_bag->getQuantityof(iTampon) > 0)
         {
             m_player->setVStatus(isprok, 1);
-            m_bag->removeFromBag(Items::tampon);
+            m_bag->useItem(iTampon);
         }
     }
     else
@@ -284,7 +284,7 @@ void Pregnancy::slotMenstruus()
         m_player->setVStatus(Status::horny, 100);
     }
 
-    if (m_bag->getQuantityof(Items::antiPregPills) > 0)
+    if (m_bag->getQuantityof(iAntiPregPills) > 0)
     {
         m_player->setVStatus(Status::inc_day_weight, 2);
         m_player->setVStatus(Status::hormonal_drug, 1);
@@ -317,7 +317,7 @@ void Pregnancy::slotMenstruus()
         updVStatus(Status::increase_weight, getVStatus(Status::inc_preg_weight));
         m_player->setVStatus(Status::day_weight, 0);
     }
-    else if (getVStatus(Status::day_weight) <= 0 && m_bag->getQuantityof(Items::antiPregPills) == 0)
+    else if (getVStatus(Status::day_weight) <= 0 && m_bag->getQuantityof(iAntiPregPills) == 0)
     {
         if (getVStatus(Status::hungry_time) >= 36)
         {

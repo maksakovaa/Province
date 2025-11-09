@@ -319,7 +319,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
             {
                 setDesc(getActDesc(descSP23));
             }
-            if(root->getItemCount(lubri) > 0)
+            if(root->getItemCount(iLubri) > 0)
             {
                 emit root->sigSetGape(anus, 10, 3, 0);
             }
@@ -363,7 +363,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
                 updVStatus(horny, -50);
                 setDesc(getActDesc(descSP29));
             }
-            if(root->getItemCount(lubri) > 0)
+            if(root->getItemCount(iLubri) > 0)
             {
                 emit root->sigSetGape(anus, 10, 5, 0);
             }
@@ -415,7 +415,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
                 updVStatus(horny, -50);
                 setDesc(getActDesc(descSP34));
             }
-            if(root->getItemCount(lubri) > 0)
+            if(root->getItemCount(iLubri) > 0)
             {
                 emit root->sigSetGape(anus, 10, 10, 0);
             }
@@ -468,7 +468,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
                 updVStatus(horny, -50);
                 setDesc(getActDesc(descSP39));
             }
-            if(root->getItemCount(lubri) > 0)
+            if(root->getItemCount(iLubri) > 0)
             {
                 emit root->sigSetGape(anus, 10, 15, 0);
             }
@@ -521,7 +521,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
                     updVStatus(horny, -50);
                     setDesc(getActDesc(descSP44));
                 }
-                if(root->getItemCount(lubri) > 0)
+                if(root->getItemCount(iLubri) > 0)
                 {
                     emit root->sigSetGape(anus, 10, 15, 0);
                 }

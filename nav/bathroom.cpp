@@ -91,11 +91,11 @@ void BathRoom::start()
             makeActBtn(actBath24);
         }
     }
-    if (root->getItmCount(razor) > 0)
+    if (root->getItmCount(iRazor) > 0)
     {
         root->addDesc(bathStr(15));
     }
-    if (root->getItmCount(tampon) > 0)
+    if (root->getItmCount(iTampon) > 0)
     {
         if (no_bath == 0)
         {
@@ -136,7 +136,7 @@ void BathRoom::start()
     {
         makeActBtn(actBath4);
     }
-    if(root->getItmCount(tampon) > 0 && root->getVStatus(mesec) > 0 && root->getVStatus(isprok) == 0 && !root->isAutoTampon())
+    if(root->getItmCount(iTampon) > 0 && root->getVStatus(mesec) > 0 && root->getVStatus(isprok) == 0 && !root->isAutoTampon())
     {
         makeActBtn(actBath6);
     }
@@ -161,12 +161,12 @@ void BathRoom::start()
         makeActBtn(actBath10);
     }
 
-    if(root->getVBody(legHair) > 0 && root->getItmCount(razor) > 0)
+    if(root->getVBody(legHair) > 0 && root->getItmCount(iRazor) > 0)
     {
         makeActBtn(actBath11);
     }
 
-    if(root->getVBody(pubisHair) > 0 && root->getItmCount(razor) > 0)
+    if(root->getVBody(pubisHair) > 0 && root->getItmCount(iRazor) > 0)
     {
         makeActBtn(actBath13);
     }
@@ -179,7 +179,7 @@ void BathRoom::start()
             makeActBtn(actBath15);
     }
 
-    if(root->getItmCount(pregtest) > 0)
+    if(root->getItmCount(iPregtest) > 0)
     {
         makeActBtn(actBath16);
     }
@@ -208,7 +208,7 @@ void BathRoom::start()
                 root->addDesc(bathStr(44));
             }
         }
-        if(root->getItmCount(shampoo) > 0)
+        if(root->getItmCount(iShampoo) > 0)
         {
             root->addDesc(bathStr(45));
         }
@@ -296,7 +296,7 @@ void BathRoom::slotBathActionHandler(bathActs action)
     
     case actBath6:
     {
-        root->useItem(tampon,1);
+        root->useItem(iTampon,1);
         root->setVStatus(isprok,1);
         root->incTime(5);
         root->updVStatus(mood, -5);
@@ -359,9 +359,9 @@ void BathRoom::slotBathActionHandler(bathActs action)
         root->incTime(15);
         root->updVBody(legHair, -5);
         root->updVStatus(horny, 5);
-        root->useItem(razor, 1);
+        root->useItem(iRazor, 1);
         emit root->sigUpdParams();
-        root->setDesc(bathStr(33));
+        root->setVideoDesc(bathStr(33));
         root->videoWidg->setQUrl("qrc:/actions/shave/legs.webm",900,508);
         root->ui->imageAndWideoWdgt->setCurrentIndex(1);
 
@@ -380,10 +380,10 @@ void BathRoom::slotBathActionHandler(bathActs action)
         root->incTime(15);
         root->updVBody(pubisHair, -5);
         root->updVStatus(horny, 5);
-        root->useItem(razor, 1);
+        root->useItem(iRazor, 1);
         emit root->sigUpdParams();
         root->videoWidg->setQUrl("qrc:/actions/shave/pubic.webm",900,448);
-        root->setDesc(bathStr(34));
+        root->setVideoDesc(bathStr(34));
         root->ui->imageAndWideoWdgt->setCurrentIndex(1);
         makeActBtn(actBath12);
     }
@@ -438,7 +438,7 @@ void BathRoom::slotBathActionHandler(bathActs action)
     
     case actBath16:
     {
-        root->useItem(pregtest,1);
+        root->useItem(iPregtest,1);
         if(root->getVStatus(pregnancy) > 0)
         {
             root->setVStatus(pregnancyKnow,1);
@@ -511,7 +511,7 @@ void BathRoom::slotBathActionHandler(bathActs action)
     
     case actBath22:
     {
-        if((backLoc() == "korr" || backLoc() == "skk" || backLoc() == "uni_dorm") && root->getItmCount(Items::shampoo) == 0)
+        if((backLoc() == "korr" || backLoc() == "skk" || backLoc() == "uni_dorm") && root->getItmCount(iShampoo) == 0)
         {
             noShampoo();
         }
@@ -523,7 +523,7 @@ void BathRoom::slotBathActionHandler(bathActs action)
             root->updVStatus(hygiene, 3);
             shower();
             savePrevCloth();
-            root->redress(new ClothMain(1, ClothType::Main, ClothGroup::towel, "Полотенце"));
+            root->redress(new ClothMain(1, ClothGroup::towel, "Полотенце"));
             root->setImage(":/actions/bathroom/dush.jpg");
             root->setDesc(bathStr(22));
             if(bath_lock == 0 && backLoc() == "parents_home")
@@ -542,7 +542,7 @@ void BathRoom::slotBathActionHandler(bathActs action)
     case actBath23:
     {
         savePrevCloth();
-        root->redress(new ClothMain(1,ClothType::Main,ClothGroup::towel,"Полотенце"));
+        root->redress(new ClothMain(1,ClothGroup::towel,"Полотенце"));
         root->slotChangeLoc(root->getCurPtr()->getParentPtr(),1);
     }
     break;
@@ -576,7 +576,7 @@ void BathRoom::slotBathActionHandler(bathActs action)
     
     case actBath27:
     {
-        if(backLoc() == "korr" && root->getItmCount(shampoo) <= 0)
+        if(backLoc() == "korr" && root->getItmCount(iShampoo) <= 0)
         {
             noShampoo();
         }
@@ -838,10 +838,10 @@ QString BathRoom::bathStr(int value)
     str[12] = "";
     str[13] = "";
     str[14] = "";
-    str[15] = "<br>Вашего бритвенного станка хватит ещё на " + intQStr(root->getItmCount(razor)) + " раз.";
+    str[15] = "<br>Вашего бритвенного станка хватит ещё на " + intQStr(root->getItmCount(iRazor)) + " раз.";
     str[16] = "<br>На полке лежит";
     str[17] = "<br>У вас имеется";
-    str[18] = " упаковка тампонов. Ее хватит ещё на <b>" + intQStr(root->getItmCount(tampon)) + "</b> раз.";
+    str[18] = " упаковка тампонов. Ее хватит ещё на <b>" + intQStr(root->getItmCount(iTampon)) + "</b> раз.";
     str[19] = "У вас нет тампонов.";
     str[20] = "<br>Судя по оставшемуся контуру, на этом месте висело зеркало.";
     str[21] = "<br>Над раковиной висит <a href='mirror'>зеркало</a>.";
@@ -1098,9 +1098,9 @@ void BathRoom::shower()
 {
     root->incTime(15);
     cleanMe();
-    if(backLoc() == "korr" && root->getItmCount(shampoo) > 0)
+    if(backLoc() == "korr" && root->getItmCount(iShampoo) > 0)
     {
-        root->useItem(shampoo, 1);
+        root->useItem(iShampoo, 1);
     }
 }
 

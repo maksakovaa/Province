@@ -64,6 +64,11 @@ const std::vector<QString> Location::availableObjs()
     return m_obj;
 }
 
+const std::vector<QString> Location::awailableLocLinks()
+{
+    return m_locLinks;
+}
+
 bool Location::isParent()
 {
     if(m_parent == nullptr)
@@ -192,7 +197,11 @@ void Location::parseLocConfig(QString str, QString folder)
         res = str.sliced(indStart[linkHandler].size(), str.indexOf(indEnd[linkHandler]) - indStart[linkHandler].size());
         m_linkHandler = res;
     }
-    
+    if (str.startsWith(indStart[goTo]))
+    {
+        res = str.sliced(indStart[goTo].size(), str.indexOf(indEnd[goTo]) - indStart[goTo].size());
+        m_locLinks.push_back(res);
+    }
 }
 
 void Location::parseRequiredImage(QString str, QString folder)

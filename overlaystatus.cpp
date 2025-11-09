@@ -621,14 +621,14 @@ void OverlayStatus::grabInd_PillsAndCondoms()
     m_statuses[ind_PillsAndCondoms] = "";
     m_statusesImg[ind_PillsAndCondoms] = "pills";
 
-    if (((MainWindow*)root)->m_bag->getQuantityof(Items::condoms) > 0)
+    if (((MainWindow*)root)->m_bag->getQuantityof(iCondoms) > 0)
     {
         m_statusesImg[ind_PillsAndCondoms] = "condoms";
-        m_statuses[ind_PillsAndCondoms] += "<font color = red><b>Презервативы</b></font> - " + intQStr(((MainWindow*)root)->m_bag->getQuantityof(Items::condoms)) + " штук.<br>";
+        m_statuses[ind_PillsAndCondoms] += "<font color = red><b>Презервативы</b></font> - " + intQStr(((MainWindow*)root)->m_bag->getQuantityof(iCondoms)) + " штук.<br>";
     }
-    if (((MainWindow*)root)->m_bag->getQuantityof(Items::antiPregPills) > 0)
+    if (((MainWindow*)root)->m_bag->getQuantityof(iAntiPregPills) > 0)
     {
-        m_statuses[ind_PillsAndCondoms] += "<b>Вы используете пр.зачаточные средства:</b><br><font color = red><b>Пр.зачаточные таблетки</b></font> - " + intQStr(((MainWindow*)root)->m_bag->getQuantityof(Items::antiPregPills)) + " штук.<br>";
+        m_statuses[ind_PillsAndCondoms] += "<b>Вы используете пр.зачаточные средства:</b><br><font color = red><b>Пр.зачаточные таблетки</b></font> - " + intQStr(((MainWindow*)root)->m_bag->getQuantityof(iAntiPregPills)) + " штук.<br>";
     }
 }
 

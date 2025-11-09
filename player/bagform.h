@@ -18,10 +18,11 @@ class BagForm : public QWidget
 public:
     explicit BagForm(QWidget *parent = nullptr);
     ~BagForm();
-    void putInBag(Items name, int count);
+    void putInBag(Items name, int count = 1);
     int getQuantityof(Items name);
-    void removeFromBag(Items name, int count = 1);
+    void useItem(Items name, int count = 1);
     void fillItemList();
+    QString getItemName(Items id);
 private:
     void updQuantity(Items type, int count);
     void initNewLayout();

@@ -19,6 +19,7 @@ ItemForm::ItemForm(QString image, QString name, QString desc, QWidget *parent)
                          "}"
                         "QLabel#imageLabel {background-color: transparent;}"
                         "QLabel#descLabel {background-color: transparent;}");
+    connect(ui->labelUse, &QLabel::linkActivated, this, &ItemForm::useHandler);
 }
 
 ItemForm::~ItemForm()
@@ -38,6 +39,22 @@ void ItemForm::addCounter(int value)
     countLayout->addWidget(text);
 }
 
+void ItemForm::setUnavailable(QString text)
+{
+    ui->labelUse->setStyleSheet("QLabel#labelUse {border: 1px solid black; border-radius: 10px; background-color: gray; color: rgb(255, 255, 255);}");
+    ui->labelUse->setText(text);
+}
+
+void ItemForm::setUseBtnText(QString text)
+{
+    ui->labelUse->setText(text);
+}
+
+void ItemForm::useHandler(const QString &link)
+{
+
+}
+
 void ItemForm::clearLayout()
 {
     while (countLayout->count() > 0)
@@ -49,4 +66,25 @@ void ItemForm::clearLayout()
         }
         delete item;
     }
+}
+
+ItemFormCloth::ItemFormCloth(int id, ClothGroup group, QString image, QString name, QString desc, QWidget *parent): ItemForm(image,name,desc,parent)
+{
+    m_Id = id;
+    m_group = group;
+}
+
+void ItemFormCloth::useHandler(const QString &link)
+{
+    emit sigBuyCloth(m_Id, m_group);
+}
+
+ItemFormShop::ItemFormShop(Items id, QString image, QString name, QString desc, QWidget *parent): ItemForm(image,name,desc,parent)
+{
+    m_id = id;
+}
+
+void ItemFormShop::useHandler(const QString &link)
+{
+    emit sigBuyItem(m_id);
 }

@@ -13,6 +13,7 @@
 #include "overlaystatus.h"
 #include "nav/objviewform.h"
 #include "nav/locationform.h"
+#include "notificationqueue.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -35,6 +36,7 @@ public slots:
     void slotUpdateDateTime();
     void slotUpdMoney();
     void slotUpdParams();
+    void showNotif(QString text);
 private slots:
     void slotIsMapAwaylable(bool status);
     void on_pushButtonMap_clicked();
@@ -58,6 +60,7 @@ private: //methods
     void setupActionButtons();
     void reloadActions();
 private: //members
+    NotificationQueue* m_que;
     int prevPage;
     SettingsForm* page4;
     Weather* m_weather;

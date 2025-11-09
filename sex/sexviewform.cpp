@@ -117,7 +117,7 @@ void SexViewForm::updVBody(Body param, int val)
 
 void SexViewForm::useItem(Items item, int count)
 {
-    ((MainWindow*)root)->m_bag->removeFromBag(item, count);
+    ((MainWindow*)root)->m_bag->useItem(item, count);
 }
 
 void SexViewForm::setVBody(Body param, int val)

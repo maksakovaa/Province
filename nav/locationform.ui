@@ -13,14 +13,14 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2" stretch="4,2">
+  <layout class="QVBoxLayout" name="verticalLayout_2" stretch="4">
    <property name="sizeConstraint">
     <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
    </property>
    <item>
     <widget class="QStackedWidget" name="imageAndWideoWdgt">
-     <widget class="QWidget" name="page_image">
-      <layout class="QVBoxLayout" name="verticalLayout">
+     <widget class="QWidget" name="page0image">
+      <layout class="QVBoxLayout" name="verticalLayout" stretch="4,2">
        <item>
         <widget class="QLabel" name="labelLocImage">
          <property name="text">
@@ -31,10 +31,26 @@
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QLabel" name="labelLocDesc">
+         <property name="font">
+          <font>
+           <family>Serif</family>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="page_video">
-      <layout class="QVBoxLayout" name="verticalLayout_3">
+     <widget class="QWidget" name="page1video">
+      <layout class="QVBoxLayout" name="verticalLayout_3" stretch="4,2">
        <item>
         <layout class="QVBoxLayout" name="videoLayout">
          <item>
@@ -42,24 +58,44 @@
          </item>
         </layout>
        </item>
+       <item>
+        <widget class="QLabel" name="labelVideoDesc">
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="labelLocDesc">
-     <property name="font">
-      <font>
-       <family>Serif</family>
-       <pointsize>12</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
-     </property>
+     <widget class="QWidget" name="page2shop">
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <widget class="QScrollArea" name="scrollAreaShop">
+         <property name="widgetResizable">
+          <bool>true</bool>
+         </property>
+         <widget class="QWidget" name="scrollAreaWidgetContents">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>678</width>
+            <height>509</height>
+           </rect>
+          </property>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
   </layout>

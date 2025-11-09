@@ -23,7 +23,7 @@ int Cloth::getCondition()
     return m_condition;
 }
 
-ClothMain::ClothMain(int id, ClothType type, ClothGroup group, QString name, int price, int condition): Cloth(type, name, price, condition)
+ClothMain::ClothMain(int id, ClothGroup group, QString name, int price, int condition): Cloth(ClothType::Main, name, price, condition)
 {
     m_id = id;
     m_group = group;

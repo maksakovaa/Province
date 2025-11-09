@@ -33,24 +33,15 @@ int BagForm::getQuantityof(Items name)
     return m_storage[m_items[name]];
 }
 
-void BagForm::removeFromBag(Items name, int count)
+void BagForm::useItem(Items name, int count)
 {
-    if (name == cosmetic)
+    if (name == iCosmetic || name == iCosmeticBig || name == iTampon || name == iMorningCare || name == iVagGel || name == iSunscreen || iWetWipes)
     {
-        ((Cosmetic*)m_items[name])->useCosmetic(count);
-        if(((Cosmetic*)m_items[name])->getQuantity() <= 0)
+        (m_items[name])->use(count);
+        if((m_items[name])->getQuantity() <= 0)
         {
             m_storage[m_items[name]] -= 1;
-            ((Cosmetic*)m_items[name])->setQuantity(((Cosmetic*)m_items[name])->getMaxQuantity() + ((Cosmetic*)m_items[name])->getQuantity());
-        }
-    }
-    else if(name == cosmeticBig)
-    {
-        ((CosmeticBig*)m_items[name])->useCosmetic(count);
-        if(((CosmeticBig*)m_items[name])->getQuantity() <= 0)
-        {
-            m_storage[m_items[name]] -= 1;
-            ((CosmeticBig*)m_items[name])->setQuantity(((CosmeticBig*)m_items[name])->getMaxQuantity() + ((CosmeticBig*)m_items[name])->getQuantity());
+            m_items[name]->setQuantity(m_items[name]->getMaxQuantity() + m_items[name]->getQuantity());
         }
     }
     else
@@ -73,51 +64,11 @@ void BagForm::fillItemList()
     descs.clear();
     counters.clear();
 
-    if (m_storage[m_items[condoms]] > 0)
-        grabItemsDesc(m_items[condoms]);
-    if (m_storage[m_items[cosmetic]] > 0)
-        grabItemsDesc(m_items[cosmetic]);
-    if (m_storage[m_items[cosmeticBig]] > 0)
-        grabItemsDesc(m_items[cosmeticBig]);
-    if (m_storage[m_items[tampon]] > 0)
-        grabItemsDesc(m_items[tampon]);
-    if (m_storage[m_items[antiPregPills]] > 0)
-        grabItemsDesc(m_items[antiPregPills]);
-    if (m_storage[m_items[wetWipes]] > 0)
-        grabItemsDesc(m_items[wetWipes]);
-    if (m_storage[m_items[morningCare]] > 0)
-        grabItemsDesc(m_items[morningCare]);
-    if (m_storage[m_items[vagGel]] > 0)
-        grabItemsDesc(m_items[vagGel]);
-    if (m_storage[m_items[razor]] > 0)
-        grabItemsDesc(m_items[razor]);
-    if(m_storage[m_items[lipBalm]] > 0)
-        grabItemsDesc(m_items[lipBalm]);
-    if(m_storage[m_items[lubri]] > 0)
-        grabItemsDesc(m_items[lubri]);
-    if(m_storage[m_items[shampoo]] > 0)
-        grabItemsDesc(m_items[shampoo]);
-
-    if(m_storage[m_items[iDildo]] > 0)
-        grabItemsDesc(m_items[iDildo]);
-    if(m_storage[m_items[iMidDildo]] > 0)
-        grabItemsDesc(m_items[iMidDildo]);
-    if(m_storage[m_items[iLargeDildo]] > 0)
-        grabItemsDesc(m_items[iLargeDildo]);
-    if(m_storage[m_items[iBigDildo]] > 0)
-        grabItemsDesc(m_items[iBigDildo]);
-    if(m_storage[m_items[iExtraDildo]] > 0)
-        grabItemsDesc(m_items[iExtraDildo]);
-    if(m_storage[m_items[iSuperDildo]] > 0)
-        grabItemsDesc(m_items[iSuperDildo]);
-    if(m_storage[m_items[iMadDildo]] > 0)
-        grabItemsDesc(m_items[iMadDildo]);
-    if(m_storage[m_items[iAnalPlug]] > 0)
-        grabItemsDesc(m_items[iAnalPlug]);
-    if(m_storage[m_items[iVibrator]] > 0)
-        grabItemsDesc(m_items[iVibrator]);
-    if(m_storage[m_items[iStrapon]] > 0)
-        grabItemsDesc(m_items[iStrapon]);
+    for (int i = iFood; i < iFatBurners; ++i)
+    {
+        if(m_storage[m_items[static_cast<Items>(i)]] > 0)
+            grabItemsDesc(m_items[static_cast<Items>(i)]);
+    }
 
     int layoutIndex = 0;
     for (int i = 0; i < imgs.size(); ++i)
@@ -132,10 +83,14 @@ void BagForm::fillItemList()
             layoutIndex++;
         }
         ItemForm* form = makeItemWidget(imgs[i], names[i], descs[i]);
-        // std::cout << imgs[i].toStdString() << names[i].toStdString() << std::endl;
         form->addCounter(counters[i]);
         m_layouts.back()->addWidget(form);
     }
+}
+
+QString BagForm::getItemName(Items id)
+{
+    return m_items[id]->getName();
 }
 
 void BagForm::updQuantity(Items type, int count)
@@ -153,47 +108,27 @@ void BagForm::initNewLayout()
 
 void BagForm::initBag()
 {
-    m_items[Items::antiPregPills] = new AntiPregPills;
-    m_items[Items::condoms] = new Condoms;
-    m_items[Items::cosmetic] = new Cosmetic;
-    m_items[Items::cosmeticBig] = new CosmeticBig;
-    m_items[Items::lipBalm] = new LipBalm;
-    m_items[Items::morningCare] = new MorningCare;
-    m_items[Items::razor] = new Razor;
-    m_items[Items::tampon] = new Tampon;
-    m_items[Items::vagGel] = new VagGel;
-    m_items[Items::wetWipes] = new WetWipes;
-    m_items[Items::lipBalm] = new LipBalm;
-    m_items[Items::lubri] = new Lubricant;
-    m_items[Items::shampoo] = new Shampoo;
-    m_items[iDildo] = new Dildo;
-    m_items[iMidDildo] = new MidDildo;
-    m_items[iLargeDildo] = new LargeDildo;
-    m_items[iBigDildo] = new BigDildo;
-    m_items[iExtraDildo] = new ExtraDildo;
-    m_items[iSuperDildo] = new SuperDildo;
-    m_items[iMadDildo] = new MadDildo;
-    m_items[iAnalPlug] = new AnalPlug;
-    m_items[iVibrator] = new Vibrator;
-    m_items[iStrapon] = new Strapon;
-
-
-    for (int i = 0; i < lipBalm; ++i)
+    for (size_t i = 0; i <= iFatBurners; i++)
+    {
+        m_items[static_cast<Items>(i)] = new Item(static_cast<Items>(i));
+    }
+    
+    for (int i = 0; i < iFatBurners; ++i)
     {
         m_storage[m_items[static_cast<Items>(i)]] = 0;
     }
 
-    m_storage[m_items[condoms]] = 10;
-    m_storage[m_items[cosmetic]] = 10;
-    m_storage[m_items[cosmeticBig]] = 10;
-    m_storage[m_items[tampon]] = 20;
-    m_storage[m_items[antiPregPills]] = 0;
-    m_storage[m_items[wetWipes]] = 1;
-    m_storage[m_items[morningCare]] = 1;
-    m_storage[m_items[vagGel]] = 1;
-    m_storage[m_items[razor]] = 10;
-    m_storage[m_items[lipBalm]] = 25;
-    m_storage[m_items[lubri]] = 20;
+    m_storage[m_items[iCondoms]] = 10;
+    m_storage[m_items[iCosmetic]] = 10;
+    m_storage[m_items[iCosmeticBig]] = 10;
+    m_storage[m_items[iTampon]] = 20;
+    m_storage[m_items[iAntiPregPills]] = 0;
+    m_storage[m_items[iWetWipes]] = 1;
+    m_storage[m_items[iMorningCare]] = 1;
+    m_storage[m_items[iVagGel]] = 1;
+    m_storage[m_items[iRazor]] = 10;
+    m_storage[m_items[iLipBalm]] = 25;
+    m_storage[m_items[iLubri]] = 20;
 
     m_storage[m_items[iDildo]] = 1;
     m_storage[m_items[iMidDildo]] = 1;
