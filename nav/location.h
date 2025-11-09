@@ -30,7 +30,7 @@ public:
     const std::vector<QString> availableObjs();
     const std::vector<QString> awailableLocLinks();
     bool isParent();
-    QString getLocPic(bool isDay, bool isSnow);
+    QString getLocPic(bool isDay, int month);
     QString getLocId();
     QString getLocName();
     QString getActName();
@@ -46,6 +46,7 @@ private:
     std::vector<QString> m_locLinks;
     QString m_image;
     bool m_isweather;
+    bool m_isExtend;
     QString m_locId;
     QString m_locName;
     QString m_actName;

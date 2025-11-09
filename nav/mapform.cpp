@@ -126,12 +126,29 @@ void MapForm::init()
             player_markers.push_back(loc(list2.at(0), list2.at(1).toInt() - 10, list2.at(2).toInt() - 10));
         }
     }
+
+    QFile file3(":/locations/time_markers");
+    if (!file3.open(QIODevice::ReadOnly))
+    {
+        std::cout << "Error opening file!" << std::endl;
+    }
+    else
+    {
+        QTextStream in3(&file3);
+        QString line3;
+        while (!in3.atEnd())
+        {
+            line3 = in3.readLine();
+            QStringList list3 = line3.split(" ");
+            timeMarkers.push_back(loc(list3.at(0), list3.at(1).toInt(), list3.at(2).toInt()));
+        }
+    }
 }
 
 int MapForm::calcDistance(const QString &from, const QString &to)
 {
     int x1, x2, y1, y2;
-    for (auto& i: player_markers)
+    for (auto& i: timeMarkers)
     {
         if(i.name == from)
         {
@@ -139,7 +156,7 @@ int MapForm::calcDistance(const QString &from, const QString &to)
             y1 = i.y;
         }
     }
-    for (auto& i: pavlovo_markers)
+    for (auto& i: timeMarkers)
     {
         if(i.name == to)
         {
@@ -147,10 +164,21 @@ int MapForm::calcDistance(const QString &from, const QString &to)
             y2 = i.y;
         }
     }
-    return std::sqrt(pow((x2 - x1),2) + pow((y2 - y1),2));
+    int t1, t2;
+    if(x2 - x1 < 0)
+        t1 = x1 - x2;
+    else
+        t1 = x2 - x1;
+    if(y2 - y1 < 0)
+        t2 = y1 - y2;
+    else
+        t2 = y2 - y1;
+    std::cout << x1 << " " << x2 << std::endl;
+    std::cout << y1 << " " << y2 << std::endl;
+    return (t1+t2)*2;
 }
 
 int MapForm::calcTimeToGo(const QString &from, const QString &to)
 {
-    return calcDistance(from, to) / 6;
+    return calcDistance(from, to);
 }

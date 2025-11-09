@@ -61,6 +61,7 @@ private:
     int getSexVar(SexVar var);
     int getVStatistic(SC param);
     int getDay();
+    int getMonth();
     void setImage(QString path);
     void setDesc(QString text);
     void addDesc(QString str);
@@ -73,6 +74,7 @@ private:
     TimeServer* gTime();
     void addCloth(Cloth* thing);
     void addItem(Items id, int count = 1);
+    bool isDay();
 //members:
     Ui::LocationForm *ui;
     QWidget* root;

@@ -91,7 +91,7 @@ void LocationForm::slotChangeLoc(Location *locPtr, int min)
 
     if(m_currentLoc != nullptr)
     {
-        setImage(m_currentLoc->getLocPic(((MainWindow*)root)->m_weather->isDay(), ((MainWindow*)root)->m_weather->isSnow()));
+        setImage(m_currentLoc->getLocPic(isDay(), getMonth()));
         setDesc(m_currentLoc->getLocDesc());
     }
     incTime(min);
@@ -299,6 +299,11 @@ int LocationForm::getDay()
     return ((MainWindow*)root)->m_time.getDay();
 }
 
+int LocationForm::getMonth()
+{
+    return ((MainWindow*)root)->m_time.getMonth();
+}
+
 void LocationForm::setImage(QString path)
 {
     ui->labelLocImage->setText("<img src='" + path + "'></img>");
@@ -357,6 +362,11 @@ void LocationForm::addCloth(Cloth *thing)
 void LocationForm::addItem(Items id, int count)
 {
     ((MainWindow*)root)->m_bag->putInBag(id,count);
+}
+
+bool LocationForm::isDay()
+{
+    return ((MainWindow*)root)->m_weather->isDay();
 }
 
 QString LocationForm::sextToysBlock(int val)

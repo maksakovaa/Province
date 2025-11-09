@@ -10,6 +10,7 @@ Location::Location(QString globalLoc)
     m_parent = nullptr;
     m_locId = globalLoc;
     m_isweather = false;
+    m_isExtend = false;
     QString folder_path = ":/locations/" + globalLoc + "/";
     QFile file(folder_path + globalLoc + ".loc");
     if(!file.open(QIODevice::ReadOnly))
@@ -31,6 +32,7 @@ Location::Location(QString globalLoc)
 Location::Location(Location *parent, QString subloc, QString folder): m_parent(parent), m_locId(subloc)
 {
     m_isweather = false;
+    m_isExtend = false;
     QString folder_path = folder + subloc + "/";
     QFile file(folder_path + subloc + ".loc");
     if(!file.open(QIODevice::ReadOnly))
@@ -77,11 +79,15 @@ bool Location::isParent()
         return true;
 }
 
-QString Location::getLocPic(bool isDay, bool isSnow)
+QString Location::getLocPic(bool isDay, int month)
 {
     if (m_isweather == true)
     {
-        return makeImage(m_image, isDay, isSnow);   
+        return makeImage(m_image, isDay, month);   
+    }
+    else if(m_isExtend == true)
+    {
+        return makeExtImage(m_image, isDay, month);
     }
     else
     {
@@ -211,6 +217,11 @@ void Location::parseRequiredImage(QString str, QString folder)
     {
         m_image = folder + str.sliced(str.indexOf(indEnd[param]) + indEnd[param].size());
         m_isweather = true;
+    }
+    if (req == "image_ex")
+    {
+        m_image = folder + str.sliced(str.indexOf(indEnd[param]) + indEnd[param].size());
+        m_isExtend = true;
     }
 }
 

@@ -3,6 +3,7 @@
         <file>../img/icons/map.png</file>
         <file>../locations/map_pavlovo_location_markers</file>
         <file>../locations/map_pavlovo_player_markers</file>
+        <file>../locations/time_markers</file>
         <file>../img/maps/pavlovo.png</file>
         <file>../locations/locations.list</file>
         <file>../locations/pavlovo/school/school.loc</file>
@@ -86,5 +87,55 @@
         <file>../locations/pavlovo/rail_station/vokzal/vokzalg_kabinet/vokzal_nach.jpg</file>
         <file>../locations/pavlovo/rail_station/vokzal/vokzal.loc</file>
         <file>../locations/pavlovo/rail_station/vokzal/vokzal.jpg</file>
+        <file>../locations/pavlovo/apteka/apteka.loc</file>
+        <file>../locations/pavlovo/apteka/apteka_worker_1.jpg</file>
+        <file>../locations/pavlovo/barbershop/barbershop.jpg</file>
+        <file>../locations/pavlovo/barbershop/barbershop.loc</file>
+        <file>../locations/pavlovo/gamehall/gamehall.jpg</file>
+        <file>../locations/pavlovo/gamehall/gamehall.loc</file>
+        <file>../locations/pavlovo/gargazel/gargazel.jpg</file>
+        <file>../locations/pavlovo/gargazel/gargazel_empty.jpg</file>
+        <file>../locations/pavlovo/gdk/dk.jpg</file>
+        <file>../locations/pavlovo/gdk/dk_night.jpg</file>
+        <file>../locations/pavlovo/gdk/dk_winter.jpg</file>
+        <file>../locations/pavlovo/gdk/dk_winter_night.jpg</file>
+        <file>../locations/pavlovo/gdk/gdk.loc</file>
+        <file>../locations/pavlovo/ghomeyard/podezd/3floor/floor3.jpg</file>
+        <file>../locations/pavlovo/ghomeyard/podezd/4floor/floor4.jpg</file>
+        <file>../locations/pavlovo/ghomeyard/podezd/5floor/floor5.jpg</file>
+        <file>../locations/pavlovo/grinok/grinok.loc</file>
+        <file>../locations/pavlovo/grinok/market.jpg</file>
+        <file>../locations/pavlovo/grinok/market_night.jpg</file>
+        <file>../locations/pavlovo/grinok/market_winter.jpg</file>
+        <file>../locations/pavlovo/grinok/market_winter_night.jpg</file>
+        <file>../locations/pavlovo/Gshveyfab/Gshveyfab.jpg</file>
+        <file>../locations/pavlovo/Gshveyfab/Gshveyfab.loc</file>
+        <file>../locations/pavlovo/hotel/hotel.jpg</file>
+        <file>../locations/pavlovo/hotel/hotel.loc</file>
+        <file>../locations/pavlovo/park/park.jpg</file>
+        <file>../locations/pavlovo/park/park.loc</file>
+        <file>../locations/pavlovo/park/park_autumn.jpg</file>
+        <file>../locations/pavlovo/park/park_autumn_night.jpg</file>
+        <file>../locations/pavlovo/park/park_spring.jpg</file>
+        <file>../locations/pavlovo/park/park_spring_night.jpg</file>
+        <file>../locations/pavlovo/park/park_summer.jpg</file>
+        <file>../locations/pavlovo/park/park_summer_night.jpg</file>
+        <file>../locations/pavlovo/park/park_winter.jpg</file>
+        <file>../locations/pavlovo/park/park_winter_night.jpg</file>
+        <file>../locations/pavlovo/road/road.jpg</file>
+        <file>../locations/pavlovo/road/road.loc</file>
+        <file>../locations/pavlovo/road/road_night.jpg</file>
+        <file>../locations/pavlovo/road/road_winter.jpg</file>
+        <file>../locations/pavlovo/road/road_winter_night.jpg</file>
+        <file>../locations/pavlovo/cinema/cinema.jpg</file>
+        <file>../locations/pavlovo/cinema/cinema.loc</file>
+        <file>../locations/pavlovo/delParco/caffe_del_parco.jpg</file>
+        <file>../locations/pavlovo/delParco/caffe_del_parco_night.jpg</file>
+        <file>../locations/pavlovo/delParco/caffe_del_parco_winter.jpg</file>
+        <file>../locations/pavlovo/delParco/caffe_del_parco_winter_night.jpg</file>
+        <file>../locations/pavlovo/delParco/delParco.loc</file>
+        <file>../locations/pavlovo/hospital/hospital.loc</file>
+        <file>../locations/pavlovo/hospital/poli.jpg</file>
+        <file>../locations/pavlovo/gargazel/gargazel.loc</file>
     </qresource>
 </RCC>

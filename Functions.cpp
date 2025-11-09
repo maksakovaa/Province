@@ -168,7 +168,7 @@ QString makeImg(QString path)
     return "<img style='max-width: 500px; max-height: 1000px' src='"+path+"'></img>";
 }
 
-QString makeImage(QString path, bool isDay, bool isSnow)
+QString makeImage(QString path, bool isDay, int month)
 {
     if (path.isEmpty())
     {
@@ -184,7 +184,7 @@ QString makeImage(QString path, bool isDay, bool isSnow)
         img = path.split(".")[0];
     }
 
-    if (isSnow)
+    if (month == 1 || month == 2 || month == 12)
     {
         img.append("_winter");
     }
@@ -194,6 +194,45 @@ QString makeImage(QString path, bool isDay, bool isSnow)
     }
    img.append("." + ext);
    return img;
+}
+
+QString makeExtImage(QString path, bool isDay, int month)
+{
+    if (path.isEmpty())
+    {
+        return "";
+    }
+    QString img, ext = path.split(".")[1];
+    if (ext.isEmpty())
+    {
+        ext = "jpg";
+    }
+    else
+    {
+        img = path.split(".")[0];
+    }
+    if (month  >= 3 && month <= 5)
+    {
+        img.append("_spring");
+    }
+    else if(month >=6 && month <= 8)
+    {
+        img.append("_summer");
+    }
+    else if(month >= 9 && month <= 11)
+    {
+        img.append("_autumn");
+    }
+    else
+    {
+        img.append("_winter");
+    }
+    if (!isDay)
+    {
+        img.append("_night");
+    }
+    img.append("." + ext);    
+    return img;
 }
 
 void ClearLayout(QLayout *layout)
