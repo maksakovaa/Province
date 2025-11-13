@@ -104,7 +104,7 @@ void MapForm::init()
             }
             else if (list.size() == 5)
             {
-                pavlovo_markers.push_back(loc(list.at(0), list.at(1).toInt() - 10, list.at(2).toInt() - 10, list.at(3).toInt(), list.at(4).toInt()));
+                pavlovo_markers.push_back(loc(list.at(0), list.at(1).toInt(), list.at(2).toInt(), list.at(3).toInt(), list.at(4).toInt()));
             }
         }
     }
@@ -173,8 +173,6 @@ int MapForm::calcDistance(const QString &from, const QString &to)
         t2 = y1 - y2;
     else
         t2 = y2 - y1;
-    std::cout << x1 << " " << x2 << std::endl;
-    std::cout << y1 << " " << y2 << std::endl;
     return (t1+t2)*2;
 }
 
