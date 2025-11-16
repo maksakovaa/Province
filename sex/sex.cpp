@@ -561,6 +561,39 @@ void Sex::anal(ToolType type)
     checkTextOutput(1,result);
 }
 
+void Sex::cum(QString target)
+{
+    if(target == "cumfrot")
+        root->updVStatus(cumFrot,1);
+    if(target == "face")
+    {
+        root->updVStatus(cumFace,1);
+        root->updVSC(facialCum,1);
+    }
+    if(target == "lip")
+        root->updVStatus(cumLips,1);
+    if(target == "belly")
+        root->updVStatus(cumBelly,2);
+    if(target == "ass")
+        root->updVStatus(cumAss,2);
+    if(target == "pussy")
+    {
+        if(getSexVar(protect) == 1)
+        {
+            bool defcondom = false;
+            if(getSexVar(use_condoms) == 1 && getItemCount(iCondoms) > 0)
+            {
+                defcondom = root->condomDefense();
+            }
+            if((getVStatus(pregnancyKnow) > 0 && getItemCount(iCondoms) == 0) ||
+                (getVStatus(pregnancyKnow) > 0 && getItemCount(iCondoms) > 0 && defcondom == false))
+            {
+
+            }
+        }
+    }
+}
+
 int Sex::getSexVar(SexVar param)
 {
     return root->getSexVar(param);

@@ -85,6 +85,11 @@ int SexViewForm::getBSC(SC param)
     return ((MainWindow*)root)->m_player->getStatisticsValue(param);
 }
 
+bool SexViewForm::condomDefense()
+{
+    return ((MainWindow*)root)->m_reproductSys.condomDef();
+}
+
 void SexViewForm::setSexVar(SexVar param, int value)
 {
     ((MainWindow*)root)->m_player->setVSexVar(param, value);

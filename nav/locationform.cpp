@@ -19,6 +19,7 @@ LocationForm::LocationForm(QWidget *parent)
     m_currentLoc = nullptr;
     m_bath = new BathRoom(this);
     m_shop = new Shop(this);
+    quests = new QuestHandler(this);
 }
 
 LocationForm::~LocationForm()
@@ -178,7 +179,10 @@ void LocationForm::fillSubLocs()
             connect(actionbtn, &QActionButton::sigChangeSubLoc, this, &LocationForm::slotChangeLoc);
         }
     }
-    
+    if(quests->isQuest(m_currentLoc->getLocId()))
+    {
+        quests->runQuests(m_currentLoc->getLocId());
+    }
 }
 
 void LocationForm::createLocations()
@@ -244,6 +248,16 @@ void LocationForm::updVStatistic(SC param, int val)
     ((MainWindow*)root)->m_player->updVStatistic(param,val);
 }
 
+void LocationForm::updVSkill(Skills type, int val)
+{
+    ((MainWindow*)root)->m_player->updVSkill(type,val);
+}
+
+void LocationForm::updVSex(SexVar param, int val)
+{
+    ((MainWindow*)root)->m_player->updVSexVar(param,val);
+}
+
 void LocationForm::useItem(Items item, int count)
 {
     ((MainWindow*)root)->m_bag->useItem(item, count);
@@ -294,6 +308,11 @@ int LocationForm::getVStatistic(SC param)
     return ((MainWindow*)root)->m_player->getStatisticsValue(param);
 }
 
+int LocationForm::getVSkill(Skills type)
+{
+    return ((MainWindow*)root)->m_player->getSkillValue(type);
+}
+
 int LocationForm::getDay()
 {
     return ((MainWindow*)root)->m_time.getDay();
@@ -317,6 +336,11 @@ void LocationForm::setDesc(QString text)
 void LocationForm::addDesc(QString str)
 {
     ui->labelLocDesc->setText(ui->labelLocDesc->text() + str);
+}
+
+void LocationForm::addVideoDesc(QString txt)
+{
+    ui->labelVideoDesc->setText(ui->labelVideoDesc->text() + txt);
 }
 
 void LocationForm::setVideoDesc(QString str)

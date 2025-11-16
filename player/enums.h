@@ -114,6 +114,9 @@ enum Status
 
 enum SexVar
 {
+    protect,
+    use_condoms,
+    use_anti_preg_pills,
     selfplaytime,
     selfmomtoyplay,
     analplay,
@@ -144,7 +147,6 @@ enum SexVar
     level_v_rubbing,
     level_a_rubbing,
     use_anti_rubbing,
-    use_condoms,
     SelfFisting,
     nippain,
     painpub,
@@ -240,16 +242,8 @@ enum Items
     //itSport
     iSkates,iJumpRope,iHoop,
     //itSexToys
-    iDildo,
-    iMidDildo,
-    iLargeDildo,
-    iBigDildo,
-    iExtraDildo,
-    iSuperDildo,
-    iMadDildo,
-    iAnalPlug,
-    iVibrator,
-    iStrapon,
+    iDildo, iMidDildo,iLargeDildo,iBigDildo,iExtraDildo,iSuperDildo,iMadDildo,
+    iAnalPlug,iVibrator,iStrapon,
     //itMedSupplies
     iCondoms,iAntiPregPills,iLubri,iPregtest,iVitamins,iAntibiotics,iLipBalm,iFatBurners
 };

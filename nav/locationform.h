@@ -10,6 +10,7 @@
 #include "../video.h"
 #include "cloth.h"
 #include "bathroom.h"
+#include "questHandler.h"
 #include "shop.h"
 
 namespace Ui {
@@ -21,7 +22,7 @@ class BathRoom; class Shop;
 class LocationForm : public QWidget
 {
     Q_OBJECT
-    friend BathRoom; friend Shop;
+    friend BathRoom; friend Shop; friend QuestHandler;
 signals:
     void sigIsMapAwaylable(bool status);
     void sigUpdParams();
@@ -50,6 +51,8 @@ private:
     void updVBody(Body param, int val);
     void updVStatus(Status param, int val);
     void updVStatistic(SC param, int val);
+    void updVSkill(Skills type, int val);
+    void updVSex(SexVar param, int val);
     void useItem(Items item, int count);
     void setSexVar(SexVar var, int value);
     void setVStatus(Status param, int value);
@@ -60,11 +63,13 @@ private:
     int getItmCount(Items item);
     int getSexVar(SexVar var);
     int getVStatistic(SC param);
+    int getVSkill(Skills type);
     int getDay();
     int getMonth();
     void setImage(QString path);
     void setDesc(QString text);
     void addDesc(QString str);
+    void addVideoDesc(QString txt);
     void setVideoDesc(QString str);
     bool isAutoTampon();
     void redress(Cloth* newCloth);
@@ -85,6 +90,7 @@ private:
     Video* videoWidg;
     BathRoom* m_bath;
     Shop* m_shop;
+    QuestHandler* quests;
 };
 
 #endif // LOCATIONFORM_H

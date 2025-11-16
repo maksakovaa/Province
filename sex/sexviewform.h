@@ -43,6 +43,7 @@ private:
     int getItemCount(Items item);
     int getVAddict(Addiction param);
     int getBSC(SC param);
+    bool condomDefense();
     void setSexVar(SexVar param, int value);
     void updSexVar(SexVar param, int value);
     void setVStatus(Status param, int value);

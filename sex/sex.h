@@ -23,6 +23,7 @@ public:
     void analStart(ToolType type = tDick, int protect = 0);
     void vaginal(ToolType type, QString pos = "");
     void anal(ToolType type);
+    void cum(QString target);
 private:
     SexViewForm* root;
     int m_protect;

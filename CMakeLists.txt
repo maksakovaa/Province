@@ -29,7 +29,7 @@ qt_add_executable(Game
     nav/cloth.h nav/cloth.cpp nav/wardrobe.h nav/wardrobe.cpp
     nav/bathroom.h nav/bathroom.cpp nav/bed.h nav/bed.cpp
     nav/mirror.h nav/mirror.cpp nav/shop.h nav/shop.cpp
-    nav/GameObj.h
+    nav/GameObj.h nav/questHandler.h nav/questHandler.cpp
 
     player/player.h player/player.cpp
     player/ccalko.h player/ccalko.cpp
@@ -70,7 +70,9 @@ qt_add_executable(Game
     nav/coffee.h nav/coffee.cpp
     popup.h popup.cpp
     notificationqueue.h notificationqueue.cpp
-
+    Quests/gadukino/pirat.h Quests/gadukino/pirat.cpp
+    Quests/quest.h
+    data/pirat.qrc
 )
 
 target_include_directories(Game BEFORE PRIVATE "." "./nav" "./player")
