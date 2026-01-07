@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QString>
-#include <iostream>
+#include "nav/loc_enums.h"
 
 int getRandInt(int min, int max);
 int getItemArr(int arr[], int arr_size, int id);
@@ -19,5 +19,8 @@ int getSexuality();
 int genDick(int arg = 0);
 void ClearLayout(QLayout* layout);
 int valChecker(int val, int min = 0, int max = 100);
+int upSportSkill(int val);
 
+LocId getLocId(QString locIdStr);
+QString getLocIdStr(LocId id);
 #endif

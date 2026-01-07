@@ -1,17 +1,17 @@
 #ifndef CCALKO_H
 #define CCALKO_H
 
-#include "player.h"
+#include "enums.h"
 #include <QObject>
 
 class CC_Alko: public QObject
 {
     Q_OBJECT
 public:
-    CC_Alko() = default;
-    void setPlayerPtr(Player* ptr);
+    CC_Alko(QWidget* ptr);
     void anti_hangover();
     void alkoAbstain();
+    void fnAlko(int val);
 signals:
     void sigIncreaseRiscs(int value);
 public slots:
@@ -26,14 +26,9 @@ private:
     int getVStatus(Status param);
     void updVStatus(Status param, int value);
     void setVStatus(Status param, int value);
-    Player* m_player;
-    // int m_max_hangoverDay{0};
-    // int m_alkoholism{0};
-    // int m_hangoverDay{0};
-    // int m_alkoAbstainDay{0};
-    // int m_alkoAbstainCount{0};
-    // int m_hangVneshAlko{0};
-    // int m_lenghangoverday{0};
+    void incTime(int min);
+    void updSkin(char c, int value);
+    QWidget* root;
 };
 
 #endif

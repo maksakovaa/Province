@@ -1,17 +1,18 @@
 #include "player.h"
 #include "../Functions.h"
 #include <QPixmap>
-#include "cloth.h"
-#include "../mainwindow.h"
+#include "../items/cloth.h"
+#include "../menu/mainwindow.h"
 
-Player::Player(CharacterType history, QWidget* ptr2): m_main(ptr2)
+Player::Player(QWidget *ptr): m_main(ptr)
 {
     initDefaultArrays();
-
     f_name = "Света";
     l_name = "Лебедева";
-    
+}
 
+void Player::newPlayer(CharacterType history)
+{
     m_birthDate.tm_mday= 5;
     m_birthDate.tm_mon = 8 - 1;
     m_birthDate.tm_year = 1998 - 1900;
@@ -43,7 +44,7 @@ Player::Player(CharacterType history, QWidget* ptr2): m_main(ptr2)
     m_skills[Skills::endurance] = 10;
     m_skills[Skills::intellect] = 10;
     m_skills[Skills::react] = 10;
-    m_skills[Skills::schoolProgress] = 75;
+    ((MainWindow*)m_main)->locHandler->m_events->sVSchool(progress,75);
 
     if(history == CharacterType::nerd)
     {
@@ -58,8 +59,8 @@ Player::Player(CharacterType history, QWidget* ptr2): m_main(ptr2)
         m_skills[Skills::endurance] = 5;
         m_skills[Skills::agility] = 1;
         m_skills[Skills::domination] = 0;
-        m_skills[Skills::schoolProgress] = 50;
         m_status[Status::nerdism] = 100;
+        ((MainWindow*)m_main)->locHandler->m_events->sVSchool(progress,50);
     }
     else if(history == CharacterType::schoolgirl)
     {
@@ -73,8 +74,8 @@ Player::Player(CharacterType history, QWidget* ptr2): m_main(ptr2)
         m_skills[Skills::agility] = 1;
         m_skills[Skills::intellect] = 70;
         m_skills[Skills::domination] = -20;
-        m_skills[Skills::schoolProgress] = 100;
         m_status[Status::nerdism] = 100;
+        ((MainWindow*)m_main)->locHandler->m_events->sVSchool(progress,100);
     }
     else if (history == CharacterType::dancer)
     {
@@ -86,10 +87,11 @@ Player::Player(CharacterType history, QWidget* ptr2): m_main(ptr2)
         m_skills[Skills::agility] = 60;
         m_skills[Skills::strenght] = 20;
         m_skills[Skills::endurance] = 20;
-        m_skills[Skills::schoolProgress] = 40;
         m_skills[Skills::vokal] = 80;
         m_skills[Skills::dance] = 90;
         m_skills[Skills::domination] = getRandInt(-10, 10);
+        ((MainWindow*)m_main)->locHandler->m_events->sVSchool(progress,40);
+
     }
     else if (history == CharacterType::sportgirl)
     {
@@ -105,7 +107,7 @@ Player::Player(CharacterType history, QWidget* ptr2): m_main(ptr2)
         m_skills[Skills::volleyball] = 70;
         m_skills[Skills::runner] = 40;
         m_skills[Skills::domination] = getRandInt(10,30);
-        m_skills[Skills::schoolProgress] = 30; 
+        ((MainWindow*)m_main)->locHandler->m_events->sVSchool(progress,30);
     }
     else if (history == CharacterType::playgirl)
     {
@@ -116,7 +118,7 @@ Player::Player(CharacterType history, QWidget* ptr2): m_main(ptr2)
         m_skills[Skills::agility] = 20;
         m_skills[Skills::endurance] = 20;
         m_skills[Skills::domination] = getRandInt(30,60);
-        m_skills[Skills::schoolProgress] = 30;
+        ((MainWindow*)m_main)->locHandler->m_events->sVSchool(progress,30);
     }
     else if (history == CharacterType::frivolous)
     {
@@ -133,9 +135,9 @@ Player::Player(CharacterType history, QWidget* ptr2): m_main(ptr2)
         m_body[Body::height] = getRandInt(169,175);
         m_skills[Skills::intellect] = 15;
         m_skills[Skills::agility] = 30;
-        m_skills[Skills::schoolProgress] = 28;
         m_skills[Skills::dance] = 50;
         m_skills[Skills::domination] = getRandInt(-5,5);
+        ((MainWindow*)m_main)->locHandler->m_events->sVSchool(progress,28);
     }
     zz_body();
     calcVneshBonus();
@@ -145,6 +147,21 @@ Player::Player(CharacterType history, QWidget* ptr2): m_main(ptr2)
 QString Player::getName()
 {
     return f_name + " " + l_name;
+}
+
+QString Player::getPFName()
+{
+    return pfname;
+}
+
+QString Player::getBoyName()
+{
+    return boy;
+}
+
+QString Player::getBoy2Name()
+{
+    return boy2;
 }
 
 int Player::getSkillValue(Skills skill_name)
@@ -249,6 +266,21 @@ void Player::setVAddict(Addiction param, int value)
     m_addict[param] = value;
 }
 
+void Player::setVJob(JobStatus param, int val)
+{
+    m_job[param] = val;
+}
+
+void Player::setBoyName(QString name)
+{
+    boy = name;
+}
+
+void Player::setBoy2Name(QString name)
+{
+    boy2 = name;
+}
+
 void Player::updVBuzzer(budilnik type, int value)
 {
     m_budilnik[type] += value;
@@ -277,6 +309,11 @@ void Player::updVAddict(Addiction param, int value)
     m_addict[param] += value;
 }
 
+void Player::updVJob(JobStatus param, int val)
+{
+    m_job[param] += val;
+}
+
 void Player::updSkin(char c, int value)
 {
     if(c == '+') { skinIncrement(value); }
@@ -303,7 +340,12 @@ int Player::getVAddict(Addiction param)
     return m_addict[param];
 }
 
-int Player::getCurClothGroup()
+int Player::getVJob(JobStatus param)
+{
+    return m_job[param];
+}
+
+int Player::getClothGroup()
 {
     if(m_clothSLots[ClothType::Main] != nullptr)
     {
@@ -317,7 +359,7 @@ int Player::getCurClothGroup()
 }
 void Player::initDefaultArrays()
 {
-    for (int i = Skills::strenght; i <= Skills::truancy; ++i)
+    for (int i = Skills::strenght; i <= Skills::posSkill; ++i)
     {
         m_skills[static_cast<Skills>(i)] = 0;
     }
@@ -346,6 +388,11 @@ void Player::initDefaultArrays()
     for (int i = Addiction::alko; i <= Addiction::drugStatus; i++)
     {
         m_addict[static_cast<Addiction>(i)] = 0;
+    }
+
+    for (int i = workout; i <= last_job; ++i)
+    {
+        m_job[static_cast<JobStatus>(i)] = 0;
     }
     
     m_sex[protect] = 1;
@@ -383,7 +430,7 @@ void Player::calcShamelessFlag()
                          + m_body[Body::throat] * 3 + m_statistic[SC::gangBang] * 6
                          + m_statistic[SC::sluttyLove] * 6 + m_statistic[SC::pornoFilmModel] * 6;
 
-    int shameless_flag;
+    int shameless_flag = 0;
     if (shameless_main < m_const[shameStage1]) { shameless_flag = 0; }
     else if (shameless_main >= m_const[shameStage1] && shameless_main < m_const[shameStage2])
     {
@@ -415,6 +462,57 @@ bool Player::isAutoTampon()
     return ((MainWindow*)m_main)->page4->settings()->isAutoTampon();
 }
 
+bool Player::isSkirt()
+{
+    ClothMain* ptr = (ClothMain*)m_clothSLots[ClothType::Main];
+    if(ptr != nullptr)
+    {
+        if(ptr->getClothGroup() >= ClothGroup::sundress)
+            return true;
+        else return false;
+    }
+    else return false;
+}
+
+bool Player::isGlamour()
+{
+    ClothMain* ptr = (ClothMain*)m_clothSLots[ClothType::Main];
+    if(ptr != nullptr)
+    {
+        if(ptr->getClothGroup() == ClothGroup::eveningDress)
+            return true;
+        else return false;
+    }
+    else return false;
+}
+
+bool Player::isJeans()
+{
+    ClothMain* ptr = (ClothMain*)m_clothSLots[ClothType::Main];
+    if(ptr != nullptr)
+    {
+        if(ptr->getClothGroup() == ClothGroup::jeans)
+            return true;
+        else return false;
+    }
+    else return false;
+}
+
+bool Player::isNude()
+{
+    return m_clothSLots[ClothType::Main] == nullptr;
+}
+
+bool Player::isCloth()
+{
+    if(!isNude())
+    {
+        return ((ClothMain*)m_clothSLots[ClothType::Main])->getClothGroup() > swimsuit;
+    }
+    else
+        return false;
+}
+
 void Player::updBody()
 {
     zz_body();
@@ -424,7 +522,7 @@ void Player::updBody()
 
 void Player::wearClothes(Cloth* thing)
 {
-    m_clothSLots[thing->getClothType()] = ((MainWindow*)m_main)->m_obj->wearCloth(thing);
+    m_clothSLots[thing->getClothType()] = ((MainWindow*)m_main)->objHandler->wearCloth(thing);
 }
 
 QString Player::getCurClothName()
@@ -433,28 +531,58 @@ QString Player::getCurClothName()
 }
 
 
-void Player::redressMain(Cloth *newCloth)
+void Player::redress(ClothType type, Cloth *newCloth)
 {
-    if (newCloth != nullptr)
+    if(type == ClothType::Main)
     {
-        if(newCloth->getClothType() == ClothType::Main)
+        if(newCloth == nullptr)
         {
-            ClothGroup newClothGroup = ((ClothMain*)newCloth)->getClothGroup();
-            if (m_clothSLots[ClothType::Main] != nullptr)
+            if(isNude())
+                return;
+            else
             {
-                ((MainWindow*)m_main)->m_obj->storeCloth(m_clothSLots[ClothType::Main]);
+                if(!isNude() && isCloth())
+                {
+                    m_prevCloth[ClothType::Main] = m_clothSLots[ClothType::Main];
+                    ((MainWindow*)m_main)->objHandler->storeCloth(m_clothSLots[ClothType::Main]);
+                }
+                if(m_clothSLots[ClothType::Panties] != nullptr)
+                {
+                    m_prevCloth[ClothType::Panties] = m_clothSLots[ClothType::Panties];
+                    ((MainWindow*)m_main)->objHandler->storeCloth(m_clothSLots[ClothType::Panties]);
+                }
+                if(m_clothSLots[ClothType::Stockings])
+                {
+                    m_prevCloth[ClothType::Stockings] = m_clothSLots[ClothType::Stockings];
+                    ((MainWindow*)m_main)->objHandler->storeCloth(m_clothSLots[ClothType::Stockings]);
+                }
+                m_clothSLots[ClothType::Main] = nullptr;
+                m_clothSLots[ClothType::Panties] = nullptr;
+                m_clothSLots[ClothType::Stockings] = nullptr;
+                return;
             }
-            m_clothSLots[ClothType::Main] = ((MainWindow*)m_main)->m_obj->wearCloth(newCloth);
-            if (newClothGroup <= swimsuit)
+        }
+        else
+        {
+            if(!isNude() && isCloth())
+            {
+                m_prevCloth[ClothType::Main] = m_clothSLots[ClothType::Main];
+                ((MainWindow*)m_main)->objHandler->storeCloth(m_clothSLots[ClothType::Main]);
+            }
+            m_clothSLots[ClothType::Main] = ((MainWindow*)m_main)->objHandler->wearCloth(newCloth);
+            ClothGroup newClothGroup = ((ClothMain*)newCloth)->getClothGroup();
+            if(newClothGroup <= swimsuit)
             {
                 if(m_clothSLots[ClothType::Panties] != nullptr)
                 {
-                    ((MainWindow*)m_main)->m_obj->storeCloth(m_clothSLots[ClothType::Panties]);
+                    m_prevCloth[ClothType::Panties] = m_clothSLots[ClothType::Panties];
+                    ((MainWindow*)m_main)->objHandler->storeCloth(m_clothSLots[ClothType::Panties]);
                 }
                 m_clothSLots[ClothType::Panties] = nullptr;
                 if(m_clothSLots[ClothType::Stockings] != nullptr)
                 {
-                    ((MainWindow*)m_main)->m_obj->storeCloth(m_clothSLots[ClothType::Stockings]);
+                    m_prevCloth[ClothType::Stockings] = m_clothSLots[ClothType::Stockings];
+                    ((MainWindow*)m_main)->objHandler->storeCloth(m_clothSLots[ClothType::Stockings]);
                 }
                 m_clothSLots[ClothType::Stockings] = nullptr;
             }
@@ -462,60 +590,59 @@ void Player::redressMain(Cloth *newCloth)
             {
                 if(m_clothSLots[ClothType::Stockings] != nullptr)
                 {
-                    ((MainWindow*)m_main)->m_obj->storeCloth(m_clothSLots[ClothType::Stockings]);
+                    m_prevCloth[ClothType::Stockings] = m_clothSLots[ClothType::Stockings];
+                    ((MainWindow*)m_main)->objHandler->storeCloth(m_clothSLots[ClothType::Stockings]);
                 }
                 m_clothSLots[ClothType::Stockings] = nullptr;
             }
         }
-        if(newCloth->getClothType() == ClothType::Panties)
-        {
-            if(m_clothSLots[ClothType::Panties] == nullptr)
-            {
-                m_clothSLots[ClothType::Panties] = ((MainWindow*)m_main)->m_obj->wearCloth(newCloth);
-            }
-        }
-        if(newCloth->getClothType() == ClothType::Stockings)
-        {
-            if(m_clothSLots[ClothType::Stockings] == nullptr)
-            {
-                m_clothSLots[ClothType::Stockings] = ((MainWindow*)m_main)->m_obj->wearCloth(newCloth);
-            }
-        }
     }
-    else
+    else if(type == ClothType::Panties)
     {
-        if (m_clothSLots[ClothType::Main] != nullptr)
+        if(isPanties())
         {
-            ((MainWindow*)m_main)->m_obj->storeCloth(m_clothSLots[ClothType::Main]);
-            m_clothSLots[ClothType::Main] = nullptr;
+            m_prevCloth[ClothType::Panties] = m_clothSLots[ClothType::Panties];
+            ((MainWindow*)m_main)->objHandler->storeCloth(m_clothSLots[ClothType::Panties]);
         }
-        if (m_clothSLots[ClothType::Panties] != nullptr)
+        m_clothSLots[ClothType::Panties] = newCloth;
+    }
+    else if(type == ClothType::Stockings)
+    {
+        if(m_clothSLots[ClothType::Stockings] != nullptr)
         {
-            ((MainWindow*)m_main)->m_obj->storeCloth(m_clothSLots[ClothType::Panties]);
-            m_clothSLots[Panties] = nullptr;
+            m_prevCloth[ClothType::Stockings] = m_clothSLots[ClothType::Stockings];
+            ((MainWindow*)m_main)->objHandler->storeCloth(m_clothSLots[ClothType::Stockings]);
         }
-        if (m_clothSLots[ClothType::Stockings] != nullptr)
-        {
-            ((MainWindow*)m_main)->m_obj->storeCloth(m_clothSLots[ClothType::Stockings]);
-            m_clothSLots[Stockings] = nullptr;
-        }
+        m_clothSLots[ClothType::Stockings] = newCloth;
     }
     calcVneshBonus();
     ((MainWindow*)m_main)->m_time.increaseTime(1);
 }
 
-void Player::redressPanties(Cloth* thing)
+void Player::redressOld()
 {
-    if (thing == nullptr && m_clothSLots[ClothType::Panties] != nullptr)
-    {
-        ((MainWindow*)m_main)->m_obj->storeCloth(m_clothSLots[ClothType::Panties],1);
-        m_clothSLots[ClothType::Panties] = nullptr;
-    }
-    else if (thing != nullptr && m_clothSLots[ClothType::Panties] == nullptr)
-    {
-        m_clothSLots[ClothType::Panties] = ((MainWindow*)m_main)->m_obj->wearCloth(thing);
-    }
-        
+    if(m_prevCloth[ClothType::Main] != nullptr)
+        redress(ClothType::Main,m_prevCloth[ClothType::Main]);
+    if(m_prevCloth[ClothType::Panties] != nullptr)
+        redress(ClothType::Panties,m_prevCloth[ClothType::Panties]);
+    if(m_prevCloth[ClothType::Stockings] != nullptr)
+        redress(ClothType::Stockings, m_prevCloth[ClothType::Stockings]);
+    m_prevCloth[ClothType::Main] = nullptr;
+    m_prevCloth[ClothType::Panties] = nullptr;
+    m_prevCloth[ClothType::Stockings] = nullptr;
+}
+
+void Player::storeOldToWardrobe()
+{
+    if(m_prevCloth[ClothType::Main] != nullptr)
+        ((MainWindow*)m_main)->objHandler->storeCloth(m_prevCloth[ClothType::Main]);
+    if(m_prevCloth[ClothType::Panties] != nullptr)
+        ((MainWindow*)m_main)->objHandler->storeCloth(m_prevCloth[ClothType::Panties]);
+    if(m_prevCloth[ClothType::Stockings] != nullptr)
+        ((MainWindow*)m_main)->objHandler->storeCloth(m_prevCloth[ClothType::Stockings]);
+    m_prevCloth[ClothType::Main] = nullptr;
+    m_prevCloth[ClothType::Panties] = nullptr;
+    m_prevCloth[ClothType::Stockings] = nullptr;
 }
 
 Cloth *Player::getCloth(ClothType type)
@@ -606,7 +733,7 @@ int Player::calcLenseBonus()
 
 int Player::calcSkinTanBonus()
 {
-    int res;
+    int res = 0;
     if (m_body[skinTan] == 0)
     {
         res = 0;
@@ -763,7 +890,7 @@ int Player::calcGlassBonus()
 
 int Player::calcLegBonus()
 {
-    int legkoef;
+    int legkoef = 0;
     if (m_body[Body::legHair] <= 0) { legkoef = 0; }
     if (m_body[Body::legHair] > 0 && m_body[Body::legHair] <= 2) { legkoef = 3;}
     if (m_body[Body::legHair] > 2 && m_body[Body::legHair] <= 5) { legkoef = 10; } 
@@ -782,7 +909,7 @@ int Player::calcLegBonus()
 
 int Player::calcZZTits()
 {
-    int quot, zz_tits, tmp = m_body[breasts] - m_body[silicone];
+    int quot{0}, zz_tits{0}, tmp = m_body[breasts] - m_body[silicone];
     if (m_body[silicone] == 0)
     {
         quot = 0;
@@ -918,14 +1045,14 @@ QString Player::getPlayerFace()
     {
         if(m_body[Body::makeup] == 0)
         {
-            path += ":/img/body/face_alt/2/" + intQStr(m_body[Body::hairColor]);
+            path += "data/img/body/face_alt/2/" + intQStr(m_body[Body::hairColor]);
             if(m_body[Body::hairCurly] > 0) { path += intQStr(1) ; }
             else { path += intQStr(0); }
             path += ".jpg";
         }
         else
         {
-            path += ":/img/body/face_alt/" + intQStr(m_body[Body::hairStatus]) + "/" + intQStr(m_body[Body::hairColor]);
+            path += "data/img/body/face_alt/" + intQStr(m_body[Body::hairStatus]) + "/" + intQStr(m_body[Body::hairColor]);
             if(m_body[Body::glass] > 2) { path += intQStr(2); }
             else { path += intQStr(m_body[Body::glass]); }
             path += intQStr(m_body[Body::hairLength]);
@@ -939,7 +1066,7 @@ QString Player::getPlayerFace()
     }
     else
     {
-        path += ":/img/body/face/" + intQStr(m_body[Body::hairColor]) + intQStr(m_body[Body::glass]);
+        path += "data/img/body/face/" + intQStr(m_body[Body::hairColor]) + intQStr(m_body[Body::glass]);
         if(m_body[Body::hairLength] <= 1) { path += intQStr(0); }
         else { path += intQStr(0); }
         if(m_body[Body::hairCurly] > 0) { path += intQStr(1); }
@@ -951,7 +1078,7 @@ QString Player::getPlayerFace()
 
 QPixmap Player::getPlayerIcon()
 {
-    QString path = ":/img/icons/player/" + intQStr(m_body[Body::hairColor]);
+    QString path = "data/img/icons/player/" + intQStr(m_body[Body::hairColor]);
 
     if(m_body[Body::hairLength] >= 2) { path += intQStr(2); }
     else { path += intQStr(m_body[Body::hairLength]); }
@@ -971,10 +1098,10 @@ QString Player::getPlayerBody()
     {
         if (koef >= 50)
         {
-            path = ":/img/body/body_fit/0.jpg";
+            path = "data/img/body/body_fit/0.jpg";
         }
         else {
-            path = ":/img/body/body_normal/3.jpg";
+            path = "data/img/body/body_normal/3.jpg";
 
         }
     }
@@ -982,45 +1109,45 @@ QString Player::getPlayerBody()
     {
         if (koef < 50)
         {
-            path = ":/img/body/body_normal/5.jpg";
+            path = "data/img/body/body_normal/5.jpg";
         }
         else if (koef >= 50 && koef < 100)
         {
-            path = ":/img/body/body_fit/3.jpg";
+            path = "data/img/body/body_fit/3.jpg";
         }
         else
         {
-            path = ":/img/body/body_fit/4.jpg";
+            path = "data/img/body/body_fit/4.jpg";
         }
     }
     else if (m_body[Body::bodyGroup] == 2)
     {
         if (koef >= 50)
         {
-            path = ":/img/body/body_fit/5.jpg";
+            path = "data/img/body/body_fit/5.jpg";
         }
         else {
-            path = ":/img/body/body_normal/9.jpg";
+            path = "data/img/body/body_normal/9.jpg";
         }
     }
     else if (m_body[Body::bodyGroup] == 3)
     {
         if (koef >= 50)
         {
-            path = ":/img/body/body_fit/6.jpg";
+            path = "data/img/body/body_fit/6.jpg";
         }
         else {
-            path = ":/img/body/body_normal/11.jpg";
+            path = "data/img/body/body_normal/11.jpg";
         }
     }
     else if (m_body[Body::bodyGroup] == 4)
     {
         if (koef >= 50)
         {
-            path = ":/img/body/body_fit/7.jpg";
+            path = "data/img/body/body_fit/7.jpg";
         }
         else {
-            path = ":/img/body/body_normal/12.jpg";
+            path = "data/img/body/body_normal/12.jpg";
         }
     }
     return makeImg(path);
@@ -1033,7 +1160,7 @@ QString Player::getPlayerVagina()
     if (vag == 0) { tmp_pussy = 0; }
     else if (vag > 0 && vag <= 15) { tmp_pussy = (vag-1)/5+1; }
     else { tmp_pussy = (vag - 16)/10 + 4; }
-    QString path = ":/img/body/vagina/" + intQStr(tmp_pussy) + ".jpg";
+    QString path = "data/img/body/vagina/" + intQStr(tmp_pussy) + ".jpg";
     return makeImg(path);
 }
 
@@ -1091,7 +1218,7 @@ QString Player::getPlayerAnus()
             }
         }
     }
-    QString path = ":/img/body/anus/" + tmp_anus + ".jpg";
+    QString path = "data/img/body/anus/" + tmp_anus + ".jpg";
     return makeImg(path);
 }
 
@@ -1101,15 +1228,15 @@ QString Player::getPlayerPubis()
     int lobok = m_body[Body::pubisHair];
     if(lobok <= 0)
     {
-        path = ":/img/body/pubis/shaved.jpg";
+        path = "data/img/body/pubis/shaved.jpg";
     }
     else if (lobok > 0 && lobok <= 2)
     {
-        path = ":/img/body/pubis/trim.jpg";
+        path = "data/img/body/pubis/trim.jpg";
     }
     else
     {
-        path = ":/img/body/pubis/hairy.jpg";
+        path = "data/img/body/pubis/hairy.jpg";
     }
     return makeImg(path);
 }
@@ -1119,7 +1246,7 @@ QString Player::getPlayerClothes()
     QString path;
     if(m_clothSLots[ClothType::Main] == nullptr)
     {
-        path = ":/img/clothing/0/0.jpg";
+        path = "data/img/clothing/0/0.jpg";
     }
     else
     {
@@ -1131,7 +1258,7 @@ QString Player::getPlayerClothes()
 
 QString Player::getPlayerBreasts()
 {
-    QString path = ":/img/body/breasts/" + intQStr(m_body[breastsSize]) + ".jpg";
+    QString path = "data/img/body/breasts/" + intQStr(m_body[breastsSize]) + ".jpg";
     return makeImg(path);
 }
 
@@ -1189,7 +1316,7 @@ void Player::zz_body()
     if (m_body[breastsSize] > 6) { m_body[breastsSize] = 6; }
 }
 
-void Player::slotWearAndTear(int value)
+void Player::decreaseCondition(int value)
 {
     if (m_clothSLots[ClothType::Main] != nullptr && m_clothSLots[ClothType::Main]->getCondition() != -99)
     {

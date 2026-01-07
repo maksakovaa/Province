@@ -14,8 +14,14 @@ Video::Video(QWidget *parent): QWidget(parent)
     m_vplayer->setLoops(-1);
 }
 
+Video::~Video()
+{
+
+}
+
 void Video::setQUrl(const QString &url, int width, int height)
 {
+    qDebug() << url;
     this->setFixedSize(width,height);
     m_video->setFixedSize(width,height);
     m_vplayer->setSource(QUrl(url));

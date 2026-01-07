@@ -1,10 +1,8 @@
 #include "ccalko.h"
 #include "../Functions.h"
+#include "../menu/mainwindow.h"
 
-void CC_Alko::setPlayerPtr(Player *ptr)
-{
-    m_player = ptr;
-}
+CC_Alko::CC_Alko(QWidget *ptr): root(ptr){}
 
 void CC_Alko::slotCheckAlkoBlock(int& value)
 {
@@ -116,17 +114,17 @@ void CC_Alko::slotAlkoholism()
 
 int CC_Alko::getVAlco(Addiction param)
 {
-    return m_player->getVAddict(param);
+    return ((MainWindow*)root)->m_player->getVAddict(param);
 }
 
 void CC_Alko::setVAlco(Addiction param, int value)
 {
-    m_player->setVAddict(param, value);
+    ((MainWindow*)root)->m_player->setVAddict(param, value);
 }
 
 void CC_Alko::updVAlco(Addiction param, int value)
 {
-    m_player->updVAddict(param,value);
+    ((MainWindow*)root)->m_player->updVAddict(param,value);
 }
 
 void CC_Alko::slotDataInitAlko()
@@ -160,17 +158,27 @@ void CC_Alko::slotDataInitAlko()
 
 int CC_Alko::getVStatus(Status param)
 {
-    return m_player->getVStatus(param);
+    return ((MainWindow*)root)->m_player->getVStatus(param);
 }
 
 void CC_Alko::updVStatus(Status param, int value)
 {
-    m_player->updVStatus(param, value);
+    ((MainWindow*)root)->m_player->updVStatus(param, value);
 }
 
 void CC_Alko::setVStatus(Status param, int value)
 {
-    m_player->setVStatus(param, value);
+    ((MainWindow*)root)->m_player->setVStatus(param, value);
+}
+
+void CC_Alko::incTime(int min)
+{
+    ((MainWindow*)root)->m_time.increaseTime(min);
+}
+
+void CC_Alko::updSkin(char c, int value)
+{
+    ((MainWindow*)root)->m_player->updSkin(c,value);
 }
 
 void CC_Alko::alkoAbstain()
@@ -202,4 +210,22 @@ void CC_Alko::alkoAbstain()
         updVAlco(alkoholism, -getRandInt(0,1));
         setVAlco(alkoAbstainDay, daystart);
     }    
+}
+
+void CC_Alko::fnAlko(int val)
+{
+    setVStatus(frost,0);
+    incTime(getRandInt(5,15));
+    updVStatus(mood,10*val);
+    setVStatus(cumLips,0);
+    if(val <= 0)
+        updVAlco(alko,1);
+    else
+        updVAlco(alko,val);
+    if(getVStatus(energy) > 20)
+        updVStatus(day_weight,1);
+    if(val > 2)
+        updSkin('-',1);
+    if(getVAlco(alko) >= 6)
+        updVStatus(vidageday,-1);
 }

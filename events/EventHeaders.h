@@ -1,0 +1,24 @@
+#ifndef EVENTHEADERS_H
+#define EVENTHEADERS_H
+
+//Gadukino events
+#include "gad_events/andreihanter.h"
+#include "gad_events/bicycle.h"
+#include "gad_events/gadforest_event.h"
+#include "gad_events/gadforestlost.h"
+#include "gad_events/gadforestrelax.h"
+#include "gad_events/gadukino_events.h"
+#include "gad_events/grandma.h"
+#include "gad_events/grandmahelp.h"
+#include "gad_events/grandpa.h"
+#include "gad_events/grandpahelp.h"
+#include "gad_events/miroslava.h"
+#include "gad_events/mitka.h"
+#include "gad_events/mitkasex.h"
+#include "gad_events/pirat.h"
+#include "gad_events/riverevents.h"
+#include "gad_events/swampevents.h"
+
+//Parent events
+#include "parent_events/family.h"
+#endif // EVENTHEADERS_H

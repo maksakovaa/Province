@@ -1,0 +1,3 @@
+pose 2 = cow girl
+pose 1 = on bell (from behind), dog
+pose 0 = missionary

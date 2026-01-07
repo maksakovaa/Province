@@ -14,6 +14,7 @@ class Video: public QWidget
     Q_OBJECT
 public:
     Video(QWidget *parent = nullptr);
+    ~Video();
     void setQUrl(const QString& url, int width, int height);
 private:
     QMediaPlayer* m_vplayer = nullptr;

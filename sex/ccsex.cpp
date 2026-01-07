@@ -1,9 +1,8 @@
 #include "ccsex.h"
 #include "../Functions.h"
+#include "../menu/mainwindow.h"
 
-CCSex::CCSex() {
-
-}
+CCSex::CCSex(QWidget *ptr): root(ptr) {}
 
 void CCSex::ability(Body holeType, int value)
 {
@@ -61,7 +60,7 @@ QString CCSex::sextToysBlock(int arg)
         {
             res = "<br>Ваше влагалище натёрто и болит.<br><br><b>Вы не можете вопользоваться анальной пробкой - вашей попе и так досталось.</b>";
         }
-        else if (m_reproductSys->isMesec())
+        else if (isMesec())
         {
             QString red[] { "Гости из Краснодара","Красная армия","Борщ без сметаны","Монстры",
                 "Красные дни календаря","Праздники","Красный москвич","Мурзики","Месячный отчёт", "Бесячные"
@@ -97,16 +96,6 @@ QString CCSex::sextToysBlock(int arg)
     return res;
 }
 
-void CCSex::setPlayerPtr(Player *ptr)
-{
-    m_player = ptr;
-}
-
-void CCSex::setPregPtr(Pregnancy *ptr)
-{
-    m_reproductSys = ptr;
-}
-
 int CCSex::getVaginaDampness()
 {
     int vag_grease = getVStatus(Status::vaginal_grease);
@@ -114,19 +103,19 @@ int CCSex::getVaginaDampness()
     {
         return 0;
     }
-    else if (vag_grease < m_player->getVConst(out_vaginal_grease))
+    else if (vag_grease < getVConst(out_vaginal_grease))
     {
         return 1;
     }
-    else if (vag_grease >= m_player->getVConst(out_vaginal_grease) && vag_grease < (m_player->getVConst(out_vaginal_grease) * 3))
+    else if (vag_grease >= getVConst(out_vaginal_grease) && vag_grease < (getVConst(out_vaginal_grease) * 3))
     {
         return 2;
     }
-    else if (vag_grease >= (m_player->getVConst(out_vaginal_grease) * 3) && vag_grease < (m_player->getVConst(out_vaginal_grease) * 5))
+    else if (vag_grease >= (getVConst(out_vaginal_grease) * 3) && vag_grease < (getVConst(out_vaginal_grease) * 5))
     {
         return 3;
     }
-    else if (vag_grease >= (m_player->getVConst(out_vaginal_grease) * 5) && vag_grease < m_player->getVConst(many_vaginal_grease))
+    else if (vag_grease >= (getVConst(out_vaginal_grease) * 5) && vag_grease < getVConst(many_vaginal_grease))
     {
         return 4;
     }
@@ -179,7 +168,7 @@ void CCSex::slotCalcRubbing()
         updVStatus(Status::horny, -(getVSexVar(level_a_rubbing) + getVSexVar(level_v_rubbing))*2/3);
         if (getVStatus(Status::horny) <= 0)
         {
-            m_player->setVStatus(Status::horny, 1);
+            setVStatus(Status::horny, 1);
         }
     }
     if (getVSexVar(dry_v_rubbing) > 0)
@@ -203,11 +192,11 @@ void CCSex::slotCalcRubbing()
 
     if (getVStatus(Status::vaginal_grease) < 0)
     {
-       m_player->setVStatus(Status::vaginal_grease, 0);
+       setVStatus(Status::vaginal_grease, 0);
     }
-    if (getVStatus(Status::vaginal_grease) > m_player->getVConst(max_vaginal_grease))
+    if (getVStatus(Status::vaginal_grease) > getVConst(max_vaginal_grease))
     {
-        m_player->setVStatus(Status::vaginal_grease, m_player->getVConst(max_vaginal_grease));
+        setVStatus(Status::vaginal_grease, getVConst(max_vaginal_grease));
     }
 }
 
@@ -219,9 +208,9 @@ void CCSex::slotVagGelTouch()
 
     if (useAntiRub > 0 || (useAntiRub > 0 && (vagRubLvl > 0 || dryVagRub > 0)))
     {
-        updVSexVar(dry_v_rubbing, -m_player->getVConst(dec_anti_rubbing));
-        updVSexVar(level_v_rubbing, - m_player->getVConst(dec_anti_rubbing) / 2);
-        updVSexVar(use_anti_rubbing, - m_player->getVConst(dec_anti_rubbing));
+        updVSexVar(dry_v_rubbing, -getVConst(dec_anti_rubbing));
+        updVSexVar(level_v_rubbing, - getVConst(dec_anti_rubbing) / 2);
+        updVSexVar(use_anti_rubbing, - getVConst(dec_anti_rubbing));
     }
 }
 
@@ -231,8 +220,8 @@ void CCSex::slotDecRubbing(Body holeType)
     {
         if(getVSexVar(dry_v_rubbing) <= 0)
         {
-            m_player->setVSexVar(dry_v_rubbing, 0);
-            m_player->setVSexVar(level_v_rubbing,0);
+            setVSexVar(dry_v_rubbing, 0);
+            setVSexVar(level_v_rubbing,0);
         }
         int _tmp = getVSexVar(dry_v_rubbing) / 24;
         int moodDec = getRandInt(0, 3 + _tmp);
@@ -261,8 +250,8 @@ void CCSex::slotDecRubbing(Body holeType)
     {
         if(getVSexVar(dry_a_rubbing) <= 0)
         {
-            m_player->setVSexVar(dry_a_rubbing, 0);
-            m_player->setVSexVar(level_a_rubbing,0);
+            setVSexVar(dry_a_rubbing, 0);
+            setVSexVar(level_a_rubbing,0);
         }
         int _tmp = getVSexVar(dry_a_rubbing) / 24;
         int moodDec = getRandInt(0, 3 + _tmp);
@@ -405,6 +394,11 @@ void CCSex::slotSetGape(Body holeType, int horny, int dick, int silavag)
     }
 }
 
+bool CCSex::isMesec()
+{
+    return ((MainWindow*)root)->m_reproductSys.isMesec();
+}
+
 void CCSex::slotSexCorrector()
 {
     if (m_global_level_sex > 5) { m_global_level_sex = 5; }
@@ -420,40 +414,45 @@ int CCSex::getVagDamp()
 
 int CCSex::getVStatus(Status param)
 {
-    return m_player->getVStatus(param);
+    return ((MainWindow*)root)->m_player->getVStatus(param);
 }
 
 int CCSex::getVBody(Body param)
 {
-    return m_player->getVBody(param);
+    return ((MainWindow*)root)->m_player->getVBody(param);
 }
 
 int CCSex::getVSexVar(SexVar param)
 {
-    return m_player->getVSexVar(param);
+    return ((MainWindow*)root)->m_player->getVSexVar(param);
+}
+
+int CCSex::getVConst(Const param)
+{
+    return ((MainWindow*)root)->m_player->getVConst(param);
 }
 
 void CCSex::updVStatus(Status param, int value)
 {
-    m_player->updVStatus(param, value);
+    ((MainWindow*)root)->m_player->updVStatus(param, value);
 }
 
 void CCSex::updVBody(Body param, int value)
 {
-    m_player->updVBody(param, value);
+    ((MainWindow*)root)->m_player->updVBody(param, value);
 }
 
 void CCSex::updVSexVar(SexVar param, int value)
 {
-    m_player->updVSexVar(param, value);
+    ((MainWindow*)root)->m_player->updVSexVar(param, value);
 }
 
-void CCSex::setVSexVar(SexVar param, int value)
+void CCSex::setVSexVar(SexVar param, int val)
 {
-    m_player->setVSexVar(param,value);
+    ((MainWindow*)root)->m_player->setVSexVar(param,val);
 }
 
 void CCSex::setVStatus(Status param, int value)
 {
-    m_player->setVStatus(param, value);
+    ((MainWindow*)root)->m_player->setVStatus(param, value);
 }

@@ -1,7 +1,7 @@
 #include "timeServer.h"
 #include <chrono>
 #include "Functions.h"
-#include "mainwindow.h"
+#include "menu/mainwindow.h"
 
 TimeServer::TimeServer(QWidget* ptr, int year, int month, int day, int hour, int minutes): root(ptr)
 {
@@ -703,6 +703,8 @@ void TimeServer::calcEnding()
     setVStatus(son, valChecker(vStatus(son),0,24));
 
     ((MainWindow*)root)->m_weather->mainFunc();
+
+    if(vStatus(sweat) > 4) setVStatus(sweat,4);
 }
 
 int TimeServer::vBody(Body param)

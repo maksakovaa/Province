@@ -31,8 +31,6 @@ enum Skills
     danceStrip,     //Стриптиз
     dancePole,      //Танцы на шесте
     posSkill,       //Кройка и шитьё
-    schoolProgress, //Успеваемость
-    truancy         //Прогулы
 };
 
 enum Body
@@ -58,12 +56,20 @@ enum Status
     cumPussy,
     bawdy_body,
     clearClothes,
+    clearclothesH,
     dirtyClothes,
+    dirty,
+    clothesswamphouse,
+    clothesbackwater,
+    clothesforest,
+    swamp_clothes,
+
     hygiene,
     panties_grease,
     vaginal_grease,
     inc_vag_grease,
     sweat,
+    dirtylip,
 
     isprok,
     mesec,
@@ -76,11 +82,21 @@ enum Status
     daystart,
     frost,
     nerdism,
+    sport,
+
+    eda,
     boletus,
+    boletus_hot,
     bilberry,
+    fish,
 
     house_debt,
     obkvsdam,
+    edahot,
+    dirttarelka,
+    garbage,
+    clrtarelka,
+    coffee_drink,
 
     inc_day_weight,
     inc_preg_weight,
@@ -90,8 +106,12 @@ enum Status
     hungry_time,
     fatdel_day,
     downmuscl,
+
     vidageday,
     money,
+
+    inriver,
+
     horny,
     hornyStat,
     addHorny,
@@ -120,7 +140,20 @@ enum SexVar
     selfplaytime,
     selfmomtoyplay,
     analplay,
+    guy,
+    girl,
+    anal_no,
+    bj_temp,
+    hj_temp,
+    anal_temp,
+    sex_temp,
+    kuni_temp,
+    dikos,
+    hanters_kuni,
+    harakBoy,
+    boyage,
     dick,
+    dick2,
     silavag,
     pose,
     analplugIN,
@@ -142,6 +175,8 @@ enum SexVar
     agape,
     lubricant,
     lubonus,
+    lubonus_a,
+    lubonus_v,
     dry_v_rubbing,
     dry_a_rubbing,
     level_v_rubbing,
@@ -152,6 +187,16 @@ enum SexVar
     painpub,
     pirs_pain_ton,
     spanked
+};
+
+enum ToolType
+{
+    tDick,
+    tDildo,
+    tBottle,
+    tGirlDildo,
+    tGirlBottle,
+    tStrapon
 };
 
 enum Sickness
@@ -185,7 +230,9 @@ enum SC     //Статистика
     piss,
     exhibi,
     stripDanceSum,
+    modelfoto,
     nudeModelFoto,
+    film,
     pornoFilmModel,
     voyeurism,
     peek1day,
@@ -210,7 +257,19 @@ enum SC     //Статистика
     vaginalOrgasm,
     analOrgasm,
     DualPenetrationOrgasm,
-    sexWithFuta
+    sexWithFuta,
+    sWinBeg,
+    sWinBegGor,
+    goldBeg,
+    razradBeg,
+    razradBegK,
+    razradBegEB,
+    razradBegEG,
+    razradBegES,
+    bronzBeg,
+    silverBeg,
+    gobelen,
+    newGobelen
 };
 
 enum Const
@@ -243,7 +302,7 @@ enum Items
     iSkates,iJumpRope,iHoop,
     //itSexToys
     iDildo, iMidDildo,iLargeDildo,iBigDildo,iExtraDildo,iSuperDildo,iMadDildo,
-    iAnalPlug,iVibrator,iStrapon,
+    iAnalPlug,iVibrator,iStrapon,iPornMagazine,
     //itMedSupplies
     iCondoms,iAntiPregPills,iLubri,iPregtest,iVitamins,iAntibiotics,iLipBalm,iFatBurners
 };
@@ -259,10 +318,32 @@ enum itemType
     itMedSupplies
 };
 
-enum GameObjects {
-    mirror,
-    bed,
-    wardrobe
+enum JobStatus
+{
+    workout,
+    workGarden,
+    waterGarden,
+    harvest_garden,
+    collect_strawberries,
+    fruit_collect,
+    go_in_boletus,
+    go_in_bilberry,
+    go_in_boletus_bilberry,
+    grandpa_boletus,
+    grandpa_bilberry,
+    feed_horse,
+    feed_cow,
+    comb_horse,
+    feed_boar,
+    horse_field,
+    cow_field,
+    milk_cow,
+    feed_chickens,
+    graze_cow,
+    graze_cow_exp,
+    horse_river,
+    haying_time,
+    last_job
 };
 
 #endif // ENUMS_H

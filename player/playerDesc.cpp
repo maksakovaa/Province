@@ -1,6 +1,6 @@
 #include "player.h"
 #include "../Functions.h"
-#include "../mainwindow.h"
+#include "../menu/mainwindow.h"
 
 QString Player::getNameDesc()
 {
@@ -106,6 +106,57 @@ QString Player::getLipsDesc()
     return result;
 }
 
+QString Player::getLipTalk()
+{
+    int val = m_body[lip];
+    QString res;
+    if(val == 0)
+        res = "тонкими губами";
+    else if(val == 1)
+        res = "нежными губами";
+    else if(val == 2)
+        res = "пухленькими губами";
+    else if(val == 3)
+        res = "пухлыми губами";
+    else if(val == 4)
+        res = "толстыми губами";
+    return res;
+}
+
+QString Player::getLipTalk2()
+{
+    int val = m_body[lip];
+    QString res;
+    if(val == 0)
+        res = "тонким губам";
+    else if(val == 1)
+        res = "нежным губам";
+    else if(val == 2)
+        res = "пухленьким губам";
+    else if(val == 3)
+        res = "пухлым губам";
+    else if(val == 4)
+        res = "толстым губам";
+    return res;
+}
+
+QString Player::getLipTalk3()
+{
+    int val = m_body[lip];
+    QString res;
+    if(val == 0)
+        res = "тонкие губы";
+    else if(val == 1)
+        res = "нежные губы";
+    else if(val == 2)
+        res = "пухленькие губы";
+    else if(val == 3)
+        res = "пухлые губы";
+    else if(val == 4)
+        res = "толстые губы";
+    return res;
+}
+
 QString Player::getThroatDesc()
 {
     QString res;
@@ -142,6 +193,40 @@ QString Player::getThroatDesc()
         makeLink(res, "throat");
     }
 
+    return res;
+}
+
+QString Player::getThroattipe()
+{
+    QString res;
+    if (m_body[Body::throat] == 0)
+    {
+        res += "девственное";
+    }
+    else if (m_body[Body::throat] > 0 && m_body[Body::throat] <= 5)
+    {
+        res += "абсолютно непривычное";
+    }
+    else if (m_body[Body::throat] > 5 && m_body[Body::throat] <= 10)
+    {
+        res += "чувствительное";
+    }
+    else if (m_body[Body::throat] > 10 && m_body[Body::throat] <= 15)
+    {
+        res += "слегка растянутое";
+    }
+    else if (m_body[Body::throat] > 15 && m_body[Body::throat] <= 25)
+    {
+        res += "растянутое";
+    }
+    else if (m_body[Body::throat] > 25 && m_body[Body::throat] <= 35)
+    {
+        res += "лужёное";
+    }
+    else
+    {
+        res += "бездонное";
+    }
     return res;
 }
 
@@ -184,6 +269,111 @@ QString Player::getVaginaDesc()
     return res;
 }
 
+QString Player::getVaginaTipe1()
+{
+    int val = m_body[Body::vagina];
+    QString res;
+    if (val == 0)
+    {
+        res += "девственная";
+    }
+    else if (val > 0 && val <= 5)
+    {
+        res += "узенькая";
+    }
+    else if (val > 5 && val <= 10)
+    {
+        res += "тесная";
+    }
+    else if (val > 10 && val <= 15)
+    {
+        res += "тугая";
+    }
+    else if (val > 15 && val <= 25)
+    {
+        res += "разработанная";
+    }
+    else if (val > 25 && val <= 35)
+    {
+        res += "раздолбанная";
+    }
+    else
+    {
+        res += "безразмерная";
+    }
+    return res;
+}
+
+QString Player::getVaginaTipe2()
+{
+    int val = m_body[Body::vagina];
+    QString res;
+    if (val == 0)
+    {
+        res += "девственную";
+    }
+    else if (val > 0 && val <= 5)
+    {
+        res += "узенькую";
+    }
+    else if (val > 5 && val <= 10)
+    {
+        res += "тесную";
+    }
+    else if (val > 10 && val <= 15)
+    {
+        res += "тугую";
+    }
+    else if (val > 15 && val <= 25)
+    {
+        res += "разработанную";
+    }
+    else if (val > 25 && val <= 35)
+    {
+        res += "раздолбанную";
+    }
+    else
+    {
+        res += "безразмерную";
+    }
+    return res;
+}
+
+QString Player::getVaginaTipe3()
+{
+    int val = m_body[Body::vagina];
+    QString res;
+    if (val == 0)
+    {
+        res += "девственной";
+    }
+    else if (val > 0 && val <= 5)
+    {
+        res += "узенькой";
+    }
+    else if (val > 5 && val <= 10)
+    {
+        res += "тесной";
+    }
+    else if (val > 10 && val <= 15)
+    {
+        res += "тугой";
+    }
+    else if (val > 15 && val <= 25)
+    {
+        res += "разработанной";
+    }
+    else if (val > 25 && val <= 35)
+    {
+        res += "раздолбанной";
+    }
+    else
+    {
+        res += "бездонной";
+    }
+    return res;
+}
+
 QString Player::getAnusDesc()
 {
     QString res;
@@ -218,6 +408,108 @@ QString Player::getAnusDesc()
     if (isCheatsOn())
     {
         makeLink(res, "anus");
+    }
+    return res;
+}
+
+QString Player::getAnusTipe1()
+{
+    QString res;
+    if (m_body[Body::anus] == 0)
+    {
+        res += "девственный";
+    }
+    else if (m_body[Body::anus] > 0 && m_body[Body::anus] <= 5)
+    {
+        res += "крошечный";
+    }
+    else if (m_body[Body::anus] > 5 && m_body[Body::anus] <= 10)
+    {
+        res += "тугой";
+    }
+    else if (m_body[Body::anus] > 10 && m_body[Body::anus] <= 15)
+    {
+        res += "слегка растянутый";
+    }
+    else if (m_body[Body::anus] > 15 && m_body[Body::anus] <= 25)
+    {
+        res += "растянутый";
+    }
+    else if (m_body[Body::anus] > 25 && m_body[Body::anus] <= 35)
+    {
+        res += "раздолбанный";
+    }
+    else
+    {
+        res += "разрушенный";
+    }
+    return res;
+}
+
+QString Player::getAnusTipe2()
+{
+    QString res;
+    if (m_body[Body::anus] == 0)
+    {
+        res += "девственную";
+    }
+    else if (m_body[Body::anus] > 0 && m_body[Body::anus] <= 5)
+    {
+        res += "крошечную";
+    }
+    else if (m_body[Body::anus] > 5 && m_body[Body::anus] <= 10)
+    {
+        res += "тугую";
+    }
+    else if (m_body[Body::anus] > 10 && m_body[Body::anus] <= 15)
+    {
+        res += "слегка растянутую";
+    }
+    else if (m_body[Body::anus] > 15 && m_body[Body::anus] <= 25)
+    {
+        res += "растянутую";
+    }
+    else if (m_body[Body::anus] > 25 && m_body[Body::anus] <= 35)
+    {
+        res += "раздолбанную";
+    }
+    else
+    {
+        res += "разрушенную";
+    }
+    return res;
+}
+
+QString Player::getAnusTipe3()
+{
+    QString res;
+    if (m_body[Body::anus] == 0)
+    {
+        res += "девственной";
+    }
+    else if (m_body[Body::anus] > 0 && m_body[Body::anus] <= 5)
+    {
+        res += "крошечной";
+    }
+    else if (m_body[Body::anus] > 5 && m_body[Body::anus] <= 10)
+    {
+        res += "тугой";
+    }
+    else if (m_body[Body::anus] > 10 && m_body[Body::anus] <= 15)
+    {
+        res += "слегка растянутой";
+    }
+    else if (m_body[Body::anus] > 15 && m_body[Body::anus] <= 25)
+    {
+        res += "растянутой";
+    }
+    else if (m_body[Body::anus] > 25 && m_body[Body::anus] <= 35)
+    {
+        res += "раздолбанной";
+    }
+    else
+    {
+        res += "разрушенной";
     }
     return res;
 }

@@ -1,9 +1,11 @@
 #ifndef SELFPLAY_H
 #define SELFPLAY_H
 
-#include "sexviewform.h"
+#include <QPushButton>
+#include "enums.h"
+#include "location.h"
 
-class SexViewForm;
+class SexHandler;
 
 enum SelfPlayActs
 {
@@ -25,13 +27,22 @@ class SexActionButton: public QPushButton
 {
     Q_OBJECT
 public:
-    SexActionButton(SelfPlayActs act, QString actName);
+    SexActionButton(SelfPlayActs act, QString actName)
+    {
+        this->setCursor(Qt::PointingHandCursor);
+        connect(this, &SexActionButton::clicked, this, &SexActionButton::handleButtonClick);
+        this->setText(actName);
+        m_action = act;
+    }
 signals:
     void sigAction(SelfPlayActs act);
 private:
     SelfPlayActs m_action;
 private slots:
-    void handleButtonClick();
+    void handleButtonClick()
+    {
+        emit sigAction(m_action);
+    }
 };
 
 
@@ -39,34 +50,21 @@ class SelfPlay: public QObject
 {
     Q_OBJECT
 public:
-    SelfPlay(QWidget* parent);
+    SelfPlay(SexHandler* parent);
     void start();
-public slots:
-    void reloadActions();
 private slots:
     void slotActionHandler(SelfPlayActs act);
 private:
     Location* getCurLoc();
     void makeButtons();
     void makeActBtn(SelfPlayActs act);
-    void incTime(int min);
-    void updVSexVar(SexVar var, int count);
-    int getVSexVar(SexVar var);
     void bathInvasion();
     void selfPlayEnding();
-    int getVStatus(Status param);
-    int getVBody(Body param);
-    void updVStatus(Status param, int value);
-    void setVStatus(Status param, int value);
-    void setVSexVar(SexVar param, int value);
-    void setImg(QString text);
-    void setDesc(QString text);
-    void appendDesc(QString text);
     int m_vagTemp{0};
     int getItemCount(Items i);
     QString getActName(SelfPlayActs act);
     QString getActDesc(SelfPlayDesc desc);
-    SexViewForm* root;
+    SexHandler* root;
     int m_dildohand;
     SelfPlayActs current;
 };

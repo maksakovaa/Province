@@ -2,14 +2,13 @@
 #define PREGNANCY_H
 
 #include <QObject>
-#include "bagform.h"
-#include "player.h"
+#include "enums.h"
 
 class Pregnancy: public QObject
 {
     Q_OBJECT
 public:
-    Pregnancy();
+    Pregnancy(QWidget* ptr);
     bool isEstrus();
     bool isMesec();
     bool isPregnancy();
@@ -17,8 +16,6 @@ public:
     void chanceOfPregnancy();
     bool condomDef();
     bool PregVisibility();
-    void setPlayerPtr(Player* ptr);
-    void setBagPtr(BagForm* ptr);
 public slots:
     void slotMenstruus();
     void slotEstrus();
@@ -26,15 +23,17 @@ public slots:
     void slotPregRecalc();
     void slotRiscsUpdate();
 private:
+    QWidget* root;
     int getVBody(Body param);
     int getVStatus(Status param);
     int getVSkill(Skills skil);
     void updVBody(Body param, int value);
     void updVStatus(Status param, int value);
     void updVSkill(Skills skil, int value);
+    void setVStatus(Status param,int val);
     void initPregData();
-    Player* m_player;
-    BagForm* m_bag;
+    int getQuantityof(Items id);
+    void useItem(Items id,int count);
 
     int status_mc_vagina;
     int m_mesecPregOdds;

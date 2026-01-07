@@ -1,8 +1,8 @@
 #include "pregnancy.h"
 #include "../Functions.h"
-#include "cloth.h"
+#include "mainwindow.h"
 
-Pregnancy::Pregnancy() {}
+Pregnancy::Pregnancy(QWidget *ptr): root(ptr) {}
 
 bool Pregnancy::isEstrus()
 {
@@ -48,7 +48,7 @@ void Pregnancy::chanceOfPregnancy()
             if (m_barrenness != 100)
             {
                 /* $father = $boy*/
-                m_player->setVStatus(pregnancy,1);
+                setVStatus(pregnancy,1);
             }
         }
     }
@@ -59,7 +59,7 @@ void Pregnancy::chanceOfPregnancy()
             if (m_barrenness != 100)
             {
                 /* code */
-                m_player->setVStatus(pregnancy,1);
+                setVStatus(pregnancy,1);
             }
             m_pregRisc = getRandInt(150,240);
         }
@@ -71,7 +71,7 @@ void Pregnancy::chanceOfPregnancy()
             if (m_barrenness != 100)
             {
                 /* $father = $boy */
-                m_player->setVStatus(pregnancy,1);
+                setVStatus(pregnancy,1);
             }
             m_pregRisc = getRandInt(150,250);
         }
@@ -83,7 +83,7 @@ void Pregnancy::chanceOfPregnancy()
             if(m_barrenness != 100)
             {
                 /* $father = $boy*/
-                m_player->setVStatus(pregnancy,1);
+                setVStatus(pregnancy,1);
             }
         }
     }   
@@ -201,16 +201,6 @@ void Pregnancy::slotPregRecalc()
     }
 }
 
-void Pregnancy::setPlayerPtr(Player *ptr)
-{
-    m_player = ptr;
-}
-
-void Pregnancy::setBagPtr(BagForm *ptr)
-{
-    m_bag = ptr;
-}
-
 void Pregnancy::slotMenstruus()
 {
     if (getVBody(Body::hairCurly) > 0)
@@ -225,9 +215,9 @@ void Pregnancy::slotMenstruus()
         updVBody(Body::skinTan, -2);
     }
 
-    if (m_bag->getQuantityof(iAntiPregPills) > 0)
+    if (getQuantityof(iAntiPregPills) > 0)
     {
-        m_bag->useItem(iAntiPregPills);
+        useItem(iAntiPregPills,1);
     }
     
     updVBody(legHair, 1);
@@ -249,13 +239,13 @@ void Pregnancy::slotMenstruus()
         }
         if (m_cikl >= 23 && getVStatus(pregnancy) == 0)
         {
-            m_player->setVStatus(mesec, 4);
+            setVStatus(mesec, 4);
             m_cikl = 0;
         }
-        if (getVStatus(mesec) > 0 && m_player->isAutoTampon() && m_bag->getQuantityof(iTampon) > 0)
+        if (getVStatus(mesec) > 0 && ((MainWindow*)root)->m_player->isAutoTampon() && getQuantityof(iTampon) > 0)
         {
-            m_player->setVStatus(isprok, 1);
-            m_bag->useItem(iTampon);
+            setVStatus(isprok, 1);
+            useItem(iTampon,1);
         }
     }
     else
@@ -277,52 +267,52 @@ void Pregnancy::slotMenstruus()
     }
     if (getVStatus(Status::horny) < 0)
     {
-        m_player->setVStatus(Status::horny, 0);
+        setVStatus(Status::horny, 0);
     }
     if (getVStatus(Status::horny) > 100)
     {
-        m_player->setVStatus(Status::horny, 100);
+        setVStatus(Status::horny, 100);
     }
 
-    if (m_bag->getQuantityof(iAntiPregPills) > 0)
+    if (getQuantityof(iAntiPregPills) > 0)
     {
-        m_player->setVStatus(Status::inc_day_weight, 2);
-        m_player->setVStatus(Status::hormonal_drug, 1);
+        setVStatus(Status::inc_day_weight, 2);
+        setVStatus(Status::hormonal_drug, 1);
     }
     else
     {
-        m_player->setVStatus(Status::inc_day_weight, 3);
-        m_player->setVStatus(Status::hormonal_drug, 0);
+        setVStatus(Status::inc_day_weight, 3);
+        setVStatus(Status::hormonal_drug, 0);
     }
 
     if (getVStatus(pregnancy) > 0)
     {
-        if (m_pregWeeks <= 6) { m_player->setVStatus(Status::inc_preg_weight, 3); }
-        if (m_pregWeeks > 6 && m_pregWeeks <= 24) { m_player->setVStatus(Status::inc_preg_weight, 2); }
-        if (m_pregWeeks > 24 && m_pregWeeks <= 33) { m_player->setVStatus(Status::inc_preg_weight, getRandInt(1,2)); }
-        if (m_pregWeeks > 33) { m_player->setVStatus(Status::inc_preg_weight, getRandInt(1,2)); }
+        if (m_pregWeeks <= 6) { setVStatus(Status::inc_preg_weight, 3); }
+        if (m_pregWeeks > 6 && m_pregWeeks <= 24) { setVStatus(Status::inc_preg_weight, 2); }
+        if (m_pregWeeks > 24 && m_pregWeeks <= 33) { setVStatus(Status::inc_preg_weight, getRandInt(1,2)); }
+        if (m_pregWeeks > 33) { setVStatus(Status::inc_preg_weight, getRandInt(1,2)); }
     }
     else
     {
-        m_player->setVStatus(Status::inc_preg_weight, 0);
+        setVStatus(Status::inc_preg_weight, 0);
     }
 
     if (getVStatus(Status::day_weight) >= getVStatus(Status::inc_day_weight))
     {
         updVStatus(Status::increase_weight, 1);
-        m_player->setVStatus(Status::day_weight, 0);
+        setVStatus(Status::day_weight, 0);
     }
     else if (getVStatus(Status::inc_preg_weight) != 0 && getVStatus(Status::day_weight) >= getVStatus(Status::inc_preg_weight))
     {
         updVStatus(Status::increase_weight, getVStatus(Status::inc_preg_weight));
-        m_player->setVStatus(Status::day_weight, 0);
+        setVStatus(Status::day_weight, 0);
     }
-    else if (getVStatus(Status::day_weight) <= 0 && m_bag->getQuantityof(iAntiPregPills) == 0)
+    else if (getVStatus(Status::day_weight) <= 0 && getQuantityof(iAntiPregPills) == 0)
     {
         if (getVStatus(Status::hungry_time) >= 36)
         {
             updVBody(Body::weight, -1);
-            m_player->setVStatus(Status::hungry_time, 0);
+            setVStatus(Status::hungry_time, 0);
             updVStatus(Status::health, -10);
         }
         else
@@ -330,11 +320,11 @@ void Pregnancy::slotMenstruus()
             if (getVBody(Body::weight) > (getVBody(base_weight) + 5))
             {
                 updVStatus(Status::increase_weight, -1);
-                m_player->setVStatus(Status::day_weight, 0);
+                setVStatus(Status::day_weight, 0);
             }
         }
     }
-    m_player->setVStatus(Status::day_weight, 0);
+    setVStatus(Status::day_weight, 0);
     if (getVStatus(Status::fatdel_day) > 0)
     {
         updVStatus(Status::fatdel_day, -1);
@@ -343,18 +333,18 @@ void Pregnancy::slotMenstruus()
     if (getVStatus(Status::day_weight) >= 5)
     {
         updVBody(Body::weight, 1);
-        m_player->setVStatus(Status::increase_weight, 0); 
+        setVStatus(Status::increase_weight, 0);
     }
     else if (getVStatus(Status::increase_weight) <= -5)
     {
         updVBody(Body::weight, -1);
-        m_player->setVStatus(Status::increase_weight, 0);
+        setVStatus(Status::increase_weight, 0);
     }
     
     updVStatus(Status::downmuscl, 1);
     if (getVStatus(Status::downmuscl) > 5)
     {
-        m_player->setVStatus(Status::downmuscl, 0);
+        setVStatus(Status::downmuscl, 0);
         if (getVSkill(Skills::strenght) > 10)
         {
             updVSkill(Skills::strenght, -1);
@@ -392,7 +382,7 @@ void Pregnancy::slotMenstruus()
             updVSkill(Skills::kikDef, -1);
         }
     }
-    m_player->getCloth(ClothType::Main)->decreaseCondition();
+    ((MainWindow*)root)->m_player->decreaseCondition();
 }
 
 void Pregnancy::slotEstrus()
@@ -413,18 +403,18 @@ void Pregnancy::slotEstrus()
 
     if (getVStatus(pregnancy) > 0)
     {
-        m_player->setVStatus(addHorny, 0);
-        m_player->setVStatus(sexyAppeal, 0);
-        m_player->setVStatus(inc_vag_grease, 2);
+        setVStatus(addHorny, 0);
+        setVStatus(sexyAppeal, 0);
+        setVStatus(inc_vag_grease, 2);
     }
     else if (getVStatus(mesec) > 0)
     {
         m_mesecPregOdds = 1;
         m_withoutPregOdds = m_mesecPregOdds;
         m_againstPregOdds = getRandInt(1, 2);
-        m_player->setVStatus(sexyAppeal, -3);
-        m_player->setVStatus(addHorny, -3);
-        m_player->setVStatus(inc_vag_grease, 1);
+        setVStatus(sexyAppeal, -3);
+        setVStatus(addHorny, -3);
+        setVStatus(inc_vag_grease, 1);
     }
     else if (getVStatus(mesec) == 0)
     {
@@ -437,24 +427,24 @@ void Pregnancy::slotEstrus()
         }
         m_withoutPregOdds = _tmp;
         m_againstPregOdds = getRandInt(1, 2);
-        m_player->setVStatus(inc_vag_grease, _tmp / 10 - m_player->getVSexVar(level_v_rubbing));
+        setVStatus(inc_vag_grease, _tmp / 10 - ((MainWindow*)root)->m_player->getVSexVar(level_v_rubbing));
         if (getVStatus(inc_vag_grease) < 0)
         {
-            m_player->setVStatus(inc_vag_grease, 0);
+            setVStatus(inc_vag_grease, 0);
         }
-        m_player->setVStatus(sexyAppeal, -1);
-        m_player->setVStatus(addHorny, m_estrus/3);
+        setVStatus(sexyAppeal, -1);
+        setVStatus(addHorny, m_estrus/3);
         if (m_estrus > 2)
         {
-            m_player->setVStatus(sexyAppeal, 0);
+            setVStatus(sexyAppeal, 0);
         }
         if (m_estrus > 6)
         {
-            m_player->setVStatus(sexyAppeal, 1);
+            setVStatus(sexyAppeal, 1);
         }
         if (m_estrus > 11)
         {
-            m_player->setVStatus(sexyAppeal, 2);
+            setVStatus(sexyAppeal, 2);
         }
     }
 }
@@ -467,8 +457,8 @@ void Pregnancy::slotIncreaseRiscs(int value)
 void Pregnancy::slotRiscsUpdate()
 {
     int alkoVal, max_alko;
-    alkoVal = m_player->getVAddict(alko);
-    max_alko = m_player->getVAddict(maxAlko);
+    alkoVal = ((MainWindow*)root)->m_player->getVAddict(alko);
+    max_alko = ((MainWindow*)root)->m_player->getVAddict(maxAlko);
 
     if (alkoVal == 0)
     {
@@ -488,32 +478,37 @@ void Pregnancy::slotRiscsUpdate()
 
 int Pregnancy::getVBody(Body param)
 {
-    return m_player->getVBody(param);
+    return ((MainWindow*)root)->m_player->getVBody(param);
 }
 
 int Pregnancy::getVStatus(Status param)
 {
-    return m_player->getVStatus(param);
+    return ((MainWindow*)root)->m_player->getVStatus(param);
 }
 
 int Pregnancy::getVSkill(Skills skil)
 {
-    return m_player->getSkillValue(skil);
+    return ((MainWindow*)root)->m_player->getSkillValue(skil);
 }
 
 void Pregnancy::updVBody(Body param, int value)
 {
-    m_player->updVBody(param, value);
+    ((MainWindow*)root)->m_player->updVBody(param, value);
 }
 
 void Pregnancy::updVStatus(Status param, int value)
 {
-    m_player->updVStatus(param, value);
+    ((MainWindow*)root)->m_player->updVStatus(param, value);
 }
 
 void Pregnancy::updVSkill(Skills skil, int value)
 {
-    m_player->updVSkill(skil,value);
+    ((MainWindow*)root)->m_player->updVSkill(skil,value);
+}
+
+void Pregnancy::setVStatus(Status param, int val)
+{
+    ((MainWindow*)root)->m_player->setVStatus(param,val);
 }
 
 void Pregnancy::initPregData()
@@ -533,4 +528,14 @@ void Pregnancy::initPregData()
     m_Arr_Estrus[12]  =	56;
     m_Arr_Estrus[13]  =	80;
     m_Arr_Estrus[14]  = 95;
+}
+
+int Pregnancy::getQuantityof(Items id)
+{
+    return ((MainWindow*)root)->m_bag->getQuantityof(id);
+}
+
+void Pregnancy::useItem(Items id, int count)
+{
+    ((MainWindow*)root)->m_bag->useItem(id,count);
 }

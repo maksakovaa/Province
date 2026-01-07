@@ -1,28 +1,30 @@
 #include "weather.h"
 #include "Functions.h"
+#include "mainwindow.h"
 
-Weather::Weather() 
+Weather::Weather(QWidget* ptr): root(ptr)
 {
     initTemperatureArray();
-    _forecast_flag = 0;
+    m_weather[_forecast_flag] = 0;
+    mainFunc();
 }
 
 bool Weather::isDay()
 {
-    return (m_time->getHour() >= getSunrise(m_time->getMonth()) && m_time->getHour() <= getSunset(m_time->getMonth()));
+    return (getHour() >= getSunrise(getMonth()) && getHour() <= getSunset(getMonth()));
 }
 
 bool Weather::isSnow()
 {
-    return m_snow > 0;
+    return m_weather[snow] > 0;
 }
 
 QString Weather::getImage()
 {
     QString image;
-    if (sunWeather == 1)
+    if (m_weather[sunWeather] == 1)
     {
-        if(m_time->getHour() > 12)
+        if(getHour() > 12)
         {
             image += intQStr(4);
         }
@@ -32,22 +34,22 @@ QString Weather::getImage()
         }
     }
 
-    if(sunWeather == 2)
+    if(m_weather[sunWeather] == 2)
     {
         image += intQStr(2);
     }
 
-    if(sunWeather == 3)
+    if(m_weather[sunWeather] == 3)
     {
         image += intQStr(1);
     }
-    if(sunWeather >= 4)
+    if(m_weather[sunWeather] >= 4)
     {
         image += intQStr(0);
     }
-    if(sunWeather == -1)
+    if(m_weather[sunWeather] == -1)
     {
-        if(currentTemp > 0)
+        if(m_weather[currentTemp] > 0)
         {
             image += intQStr(5);
         }
@@ -56,9 +58,9 @@ QString Weather::getImage()
             image += intQStr(7);
         }
     }
-    if(sunWeather < -1)
+    if(m_weather[sunWeather] < -1)
     {
-        if(currentTemp > 0)
+        if(m_weather[currentTemp] > 0)
         {
             image += intQStr(6);
         }
@@ -68,7 +70,7 @@ QString Weather::getImage()
         }
     }
 
-    if(_forecast_flag == 0)
+    if(m_weather[_forecast_flag] == 0)
     {
         if(isDay())
         {
@@ -83,99 +85,113 @@ QString Weather::getImage()
     {
         image = "d" + image;
     }
-    return ":/img/weather/"+ image + ".png";
+    return "data/img/weather/"+ image + ".png";
 }
 
 QString Weather::getCurrentTemp()
 {
     QString text;
-    if(_forecast_flag == 0)
+    if(m_weather[_forecast_flag] == 0)
     {
-        text = intQStr(currentTemp) + " °C";
+        text = intQStr(m_weather[currentTemp]) + " °C";
     }
     else
     {
-        if(m_forecast_tcMin <= m_forecast_tcMax)
+        if(m_weather[forecast_tcMin] <= m_weather[forecast_tcMax])
         {
-            text = intQStr(m_forecast_tcMin) + "..." + intQStr(m_forecast_tcMax) + "<br>°C";
+            text = intQStr(m_weather[forecast_tcMin]) + "..." + intQStr(m_weather[forecast_tcMax]) + "<br>°C";
         }
         else
         {
-            text = intQStr(m_forecast_tcMax) + "..." + intQStr(m_forecast_tcMin) + "<br>°C";
+            text = intQStr(m_weather[forecast_tcMax]) + "..." + intQStr(m_weather[forecast_tcMin]) + "<br>°C";
         }
     }
     return text;
 }
 
-void Weather::setTimePtr(TimeServer *ptr)
-{
-    m_time = ptr;
-    mainFunc();
-}
-
 void Weather::updOnTimeMove()
 {
-    weatherDay = -1;
+    m_weather[weatherDay] = -1;
     mainFunc();
-    if (currentTemp < 0)
+    if (m_weather[currentTemp] < 0)
     {
-        m_snow += getRandInt(2,5);
+        m_weather[snow] += getRandInt(2,5);
     }
-    else if (currentTemp > 0)
+    else if (m_weather[currentTemp] > 0)
     {
-        m_snow = 0;
+        m_weather[snow] = 0;
     }
 }
 
 void Weather::mainFunc()
 {
-    if (weatherDay == m_time->getDay())
+    if (m_weather[weatherDay] == getDay())
     {
         return;
     }
-    weatherDay = m_time->getDay();
+    m_weather[weatherDay] = getDay();
     
-    if(currentTemp > 0 && m_snow > 0)
+    if(m_weather[currentTemp] > 0 && m_weather[snow] > 0)
     {
-        m_snow -= currentTemp;
+        m_weather[snow] -= m_weather[currentTemp];
     }
     getSunWeather();
     setCurrentTemp();
-    if(sunWeather < -1)
+    if(m_weather[sunWeather] < -1)
     {
-        sunWeather += 1;
+        m_weather[sunWeather] += 1;
     }
-    else if (sunWeather > 1)
+    else if (m_weather[sunWeather] > 1)
     {
-        sunWeather -= 1;
+        m_weather[sunWeather] -= 1;
     }
 
-    if (sunWeather >0)
+    if (m_weather[sunWeather] >0)
     {
-        if(currentTemp < 0)
+        if(m_weather[currentTemp] < 0)
         {
-            currentTemp -= getRandInt(1,3);
+            m_weather[currentTemp] -= getRandInt(1,3);
         }
         else
         {
-            currentTemp += getRandInt(1,3);
+            m_weather[currentTemp] += getRandInt(1,3);
         }
     }
-    else if (sunWeather < 0)
+    else if (m_weather[sunWeather] < 0)
     {
-        if(currentTemp < 0)
+        if(m_weather[currentTemp] < 0)
         {
-            if (m_snow < 30)
+            if (m_weather[snow] < 30)
             {
-                m_snow += 1;
-                currentTemp += getRandInt(1,3);
+                m_weather[snow] += 1;
+                m_weather[currentTemp] += getRandInt(1,3);
             }
-            if(currentTemp > 0)
+            if(m_weather[currentTemp] > 0)
             {
-                currentTemp = 0;
+                m_weather[currentTemp] = 0;
             }
         }
     }
+}
+
+int Weather::getHour()
+{
+    return ((MainWindow*)root)->m_time.getHour();
+}
+
+int Weather::getMonth()
+{
+    return ((MainWindow*)root)->m_time.getMonth();
+}
+
+int Weather::getDay()
+{
+    return ((MainWindow*)root)->m_time.getDay();
+}
+
+int Weather::getYear()
+{
+    return ((MainWindow*)root)->m_time.getYear();
 }
 
 int Weather::getSunrise(int month)
@@ -255,98 +271,98 @@ void Weather::initTemperatureArray()
 
 void Weather::setCurrentTemp()
 {
-    currentTemp = temperature[m_time->getMonth() - 1][m_time->getDay()/10];
+    m_weather[currentTemp] = temperature[getMonth() - 1][getDay()/10];
 }
 
 void Weather::setForecast()
 {
-    m_forecast_month = m_time->getMonth();
-    m_forecast_day = m_time->getDay();
+    m_weather[forecast_month] = getMonth();
+    m_weather[forecast_day] = getDay();
 
-    if((m_time->getMonth() == 1 || m_time->getMonth() == 5|| m_time->getMonth() == 7|| m_time->getMonth() == 8|| m_time->getMonth() == 10 || m_time->getMonth() == 12) && m_time->getDay() == 31)
+    if((getMonth() == 1 || getMonth() == 5|| getMonth() == 7|| getMonth() == 8|| getMonth() == 10 || getMonth() == 12) && getDay() == 31)
     {
-        m_forecast_day = 1;
+        m_weather[forecast_day] = 1;
     }
-    else if(m_time->getMonth() == 2 && ( m_time->getDay() == 28 || m_time->getDay() == 29))
+    else if(getMonth() == 2 && ( getDay() == 28 || getDay() == 29))
     {
-        if((m_time->getYear() % 4 == 0 && m_time->getDay() == 29) || (m_time->getYear() % 4 > 0 && m_time->getDay() == 28))
+        if((getYear() % 4 == 0 && getDay() == 29) || (getYear() % 4 > 0 && getDay() == 28))
         {
-            m_forecast_day = 1;
+            m_weather[forecast_day] = 1;
         }
         else
         {
-            m_forecast_day += 1;
+            m_weather[forecast_day] += 1;
         }
     }
-    else if ((m_time->getMonth() == 2 || m_time->getMonth() == 4 || m_time->getMonth() == 6 || m_time->getMonth() == 9 || m_time->getMonth() == 11) && m_time->getDay() == 30)
+    else if ((getMonth() == 2 || getMonth() == 4 || getMonth() == 6 || getMonth() == 9 || getMonth() == 11) && getDay() == 30)
     {
-        m_forecast_day = 1;
+        m_weather[forecast_day] = 1;
     }
     else
     {
-        m_forecast_day += 1;
+        m_weather[forecast_day] += 1;
     }
     //check month
-    if(m_forecast_day == 1)
+    if(m_weather[forecast_day] == 1)
     {
-        m_forecast_month += 1;
+        m_weather[forecast_month] += 1;
     }
-    if (m_forecast_month == 13)
+    if (m_weather[forecast_month] == 13)
     {
-        m_forecast_month = 1;
+        m_weather[forecast_month] = 1;
     }
-    if(sunWeather > 1)
+    if(m_weather[sunWeather] > 1)
     {
-        m_forecast_sunny = sunWeather - 1;
+        m_weather[forecast_sunny] = sunWeather - 1;
     }
-    else if (sunWeather == 1)
+    else if (m_weather[sunWeather] == 1)
     {
-        m_forecast_sunny = -1;
+        m_weather[forecast_sunny] = -1;
     }
-    else if(sunWeather == 0)
+    else if(m_weather[sunWeather] == 0)
     {
-        m_forecast_sunny = 1;
+        m_weather[forecast_sunny] = 1;
     }
-    else if(sunWeather == -1)
+    else if(m_weather[sunWeather] == -1)
     {
-        m_forecast_sunny = 3;
+        m_weather[forecast_sunny] = 3;
     }
-    else if(sunWeather < -1)
+    else if(m_weather[sunWeather] < -1)
     {
-        m_forecast_sunny = sunWeather + 1;
+        m_weather[forecast_sunny] = m_weather[sunWeather] + 1;
     }
-    m_forecast_tc = temperature[m_forecast_month - 1][m_forecast_day / 10];
-    if (m_forecast_sunny >= 0)
+    m_weather[forecast_tc] = temperature[m_weather[forecast_month] - 1][m_weather[forecast_day] / 10];
+    if (m_weather[forecast_sunny] >= 0)
     {
-        if(m_forecast_tc < 0)
+        if(m_weather[forecast_tc] < 0)
         {
-            m_forecast_tcMin = m_forecast_tc - 3;
-            m_forecast_tcMax = m_forecast_tc - 1;
+            m_weather[forecast_tcMin] = m_weather[forecast_tc] - 3;
+            m_weather[forecast_tcMax] = m_weather[forecast_tc] - 1;
         }
         else
         {
-            m_forecast_tcMin = m_forecast_tc + 1;
-            m_forecast_tcMax = m_forecast_tc + 3;
+            m_weather[forecast_tcMin] = m_weather[forecast_tc] + 1;
+            m_weather[forecast_tcMax] = m_weather[forecast_tc] + 3;
         }
     }
     else
     {
-        if(m_forecast_tc < 0)
+        if(m_weather[forecast_tc] < 0)
         {
-            m_forecast_tcMin = m_forecast_tc + 1;
-            m_forecast_tcMax = m_forecast_tc + 3;
-            if(m_forecast_tcMax > 0)
+            m_weather[forecast_tcMin] = m_weather[forecast_tc] + 1;
+            m_weather[forecast_tcMax] = m_weather[forecast_tc] + 3;
+            if(m_weather[forecast_tcMax] > 0)
             {
-                m_forecast_tcMax = 0;
+                m_weather[forecast_tcMax] = 0;
             }
         }
         else
         {
-            m_forecast_tcMin = m_forecast_tc - 3;
-            m_forecast_tcMax = m_forecast_tc - 1;
-            if(m_forecast_tcMin < 0)
+            m_weather[forecast_tcMin] = m_weather[forecast_tc] - 3;
+            m_weather[forecast_tcMax] = m_weather[forecast_tc] - 1;
+            if(m_weather[forecast_tcMin] < 0)
             {
-                m_forecast_tcMin = 0;
+                m_weather[forecast_tcMin] = 0;
             }
         }
     }
@@ -354,43 +370,63 @@ void Weather::setForecast()
 
 int Weather::getSunWeather()
 {
-    if(sunWeather == 1)
+    if(m_weather[sunWeather] == 1)
     {
-        if(m_time->getMonth() == 4 || m_time->getMonth() == 5)
+        if(getMonth() == 4 || getMonth() == 5)
         {
-            sunWeather = getRandInt(-3,-1);
+            m_weather[sunWeather] = getRandInt(-3,-1);
         }
-        else if(m_time->getMonth() >= 9 && m_time->getMonth() <= 11)
+        else if(getMonth() >= 9 && getMonth() <= 11)
         {
-            sunWeather = getRandInt(-4,-1);
+            m_weather[sunWeather] = getRandInt(-4,-1);
         }
-        else if (m_time->getMonth() >= 6 && m_time->getMonth() <= 8)
+        else if (getMonth() >= 6 && getMonth() <= 8)
         {
-            sunWeather = getRandInt(-2,-1);
+            m_weather[sunWeather] = getRandInt(-2,-1);
         }
         else
-            sunWeather = getRandInt(-3,-1);
+            m_weather[sunWeather] = getRandInt(-3,-1);
     }
-    else if (sunWeather == -1)
+    else if (m_weather[sunWeather] == -1)
     {
-        if(m_time->getMonth() == 4 || m_time->getMonth() == 5)
+        if(getMonth() == 4 || getMonth() == 5)
         {
-            sunWeather = getRandInt(4,6);
+            m_weather[sunWeather] = getRandInt(4,6);
         }
-        else if(m_time->getMonth() >= 9 && m_time->getMonth() <= 11)
+        else if(getMonth() >= 9 && getMonth() <= 11)
         {
-            sunWeather = getRandInt(3,5);
+            m_weather[sunWeather] = getRandInt(3,5);
         }
-        else if (m_time->getMonth() >= 6 && m_time->getMonth() <= 8)
+        else if (getMonth() >= 6 && getMonth() <= 8)
         {
-            sunWeather = getRandInt(6,10);
+            m_weather[sunWeather] = getRandInt(6,10);
         }
         else
-            sunWeather = getRandInt(3,6);
+            m_weather[sunWeather] = getRandInt(3,6);
     }
-    else if (sunWeather == 0)
+    else if (m_weather[sunWeather] == 0)
     {
-        sunWeather = getRandInt(1,3);
+        m_weather[sunWeather] = getRandInt(1,3);
     }
-    return sunWeather;
+    return m_weather[sunWeather];
+}
+
+int Weather::getSnow()
+{
+    return m_weather[snow];
+}
+
+int Weather::getTemp()
+{
+    return m_weather[currentTemp];
+}
+
+int Weather::getSunrise()
+{
+    return getSunrise(getMonth());
+}
+
+int Weather::getSunset()
+{
+    return getSunset(getMonth());
 }

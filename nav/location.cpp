@@ -1,293 +1,552 @@
 #include "location.h"
-#include <QFile>
-#include <QTextStream>
-#include <QDebug>
-#include <iostream>
+#include "locationhandler.h"
+#include "../menu/qactbutton.h"
 #include "../Functions.h"
 
-Location::Location(QString globalLoc)
+int Location::getWeekNum()
 {
-    m_parent = nullptr;
-    m_locId = globalLoc;
-    m_isweather = false;
-    m_isExtend = false;
-    QString folder_path = ":/locations/" + globalLoc + "/";
-    QFile file(folder_path + globalLoc + ".loc");
-    if(!file.open(QIODevice::ReadOnly))
-    {
-        qDebug() << "Error opening file! " + file.fileName();
-    }
-    else
-    {
-        QTextStream in(&file);
-        QString line;
-        while (!in.atEnd())
-        {
-            line = in.readLine();
-            parseLocConfig(line, folder_path);
-        }
-    }
+    return root->getWeekNum();
 }
 
-Location::Location(Location *parent, QString subloc, QString folder): m_parent(parent), m_locId(subloc)
+int Location::getHour()
 {
-    m_isweather = false;
-    m_isExtend = false;
-    QString folder_path = folder + subloc + "/";
-    QFile file(folder_path + subloc + ".loc");
-    if(!file.open(QIODevice::ReadOnly))
-    {
-        qDebug() << "Error opening file! " + file.fileName();
-    }
-    else
-    {
-        QTextStream in(&file);
-        QString line;
-        while (!in.atEnd())
-        {
-            line = in.readLine();
-            parseLocConfig(line, folder_path);
-        }
-    }
+    return root->getHour();
 }
 
-const std::vector<struct Action*> Location::availableActions()
+int Location::getMin()
 {
-    return m_actions;
+    return root->getMin();
 }
 
-const std::vector<Location *> Location::awailableLocs()
+int Location::getDay()
 {
-    return m_subLocs;
+    return root->getDay();
 }
 
-const std::vector<QString> Location::availableObjs()
+int Location::getMonth()
 {
-    return m_obj;
+    return root->getMonth();
 }
 
-const std::vector<QString> Location::awailableLocLinks()
+int Location::getSunWeather()
 {
-    return m_locLinks;
+    return root->getSunWeather();
 }
 
-bool Location::isParent()
+int Location::getSnow()
 {
-    if(m_parent == nullptr)
-        return false;
-    else
-        return true;
+    return root->getSnow();
 }
 
-QString Location::getLocPic(bool isDay, int month)
+int Location::getTemp()
 {
-    if (m_isweather == true)
-    {
-        return makeImage(m_image, isDay, month);   
-    }
-    else if(m_isExtend == true)
-    {
-        return makeExtImage(m_image, isDay, month);
-    }
-    else
-    {
-        return m_image;
-    }
+    return root->getTemp();
 }
 
-QString Location::getLocId()
+int Location::getSunrise()
 {
-    return m_locId;
+    return root->getSunrise();
 }
 
-QString Location::getLocName()
+int Location::getSunset()
 {
-    if (m_locName.isEmpty())
-    {
-        return m_locId;
-    }
-    else
-    {
-        return m_locName;
-    }
+    return root->getSunset();
 }
 
-QString Location::getActName()
+int Location::cardCheck()
 {
-    if(m_actName.isEmpty())
-    {
-        return getLocName();
-    }
-    else
-    {
-        return m_actName;
-    }
+    return root->m_card.check();
 }
 
-QString Location::getLocIn()
+void Location::cardInit(int count, int time)
 {
-    Location* parent = m_parent;
-    if (parent != nullptr)
-    {
-        while (parent->isParent())
-        {
-            parent = parent->getParentPtr();
-        }
-        return parent->getLocId();
-    }
-    else
-        return m_locId;
+    root->m_card.init(count, time);
 }
 
-QString Location::getLocDesc()
+QString Location::getCard()
 {
-    return m_desc;
+    return root->m_card.getCard();
 }
 
-QString Location::getLocHandler()
+int Location::getCardTime()
 {
-    return m_linkHandler;
+    return root->m_card.getCardTime();
 }
 
-Location *Location::getParentPtr()
+int Location::getCardHorny()
 {
-    return m_parent;
+    return root->m_card.getCardHorny();
 }
 
-void Location::parseLocConfig(QString str, QString folder)
+int Location::gVStatus(Status param)
 {
-    QString res;
-    if(str.startsWith(indStart[name]))
-    {
-        m_locName = str.sliced(indStart[name].size(), str.indexOf(indEnd[name]) - indStart[name].size());
-    }
-    if (str.startsWith(indStart[actName]))
-    {
-        m_locName = str.sliced(indStart[actName].size(), str.indexOf(indEnd[actName]) - indStart[actName].size());
-    }
-    if(str.startsWith(indStart[image]))
-    {
-        res = str.sliced(indStart[image].size(), str.indexOf(indEnd[image]) - indStart[image].size());
-        if (res.startsWith(indStart[param]))
-        {
-            parseRequiredImage(res, folder);
-        }
-        else
-        {
-            m_image = folder + res;
-        }
-    }
-    if(str.startsWith(indStart[object]))
-    {
-        res = str.sliced(indStart[object].size(), str.indexOf(indEnd[object]) - indStart[object].size());
-        m_obj.push_back(res);
-    }
-    if(str.startsWith(indStart[desc]))
-    {
-        res = str.sliced(indStart[desc].size(), str.indexOf(indEnd[desc]) - indStart[desc].size());
-        m_desc += res;
-    }
-    if(str.startsWith(indStart[subloc]))
-    {
-        res = str.sliced(indStart[subloc].size(), str.indexOf(indEnd[subloc]) - indStart[subloc].size());
-        Location* subLoc = new Location(this, res, folder);
-        m_subLocs.push_back(subLoc);
-    }
-    if(str.startsWith(indStart[action]))
-    {
-        res = str.sliced(indStart[action].size(), str.indexOf(indEnd[action]) - indStart[action].size());
-        parseActConfig(res);
-    }
-    if (str.startsWith(indStart[linkHandler]))
-    {
-        res = str.sliced(indStart[linkHandler].size(), str.indexOf(indEnd[linkHandler]) - indStart[linkHandler].size());
-        m_linkHandler = res;
-    }
-    if (str.startsWith(indStart[goTo]))
-    {
-        res = str.sliced(indStart[goTo].size(), str.indexOf(indEnd[goTo]) - indStart[goTo].size());
-        m_locLinks.push_back(res);
-    }
+    return root->getVStatus(param);
 }
 
-void Location::parseRequiredImage(QString str, QString folder)
+int Location::gVSick(Sickness param)
 {
-    QString req = str.sliced(str.indexOf(indStart[param]) + indStart[param].size(), str.indexOf(indEnd[param]) - indStart[param].size());
-    if (req == "night_snow")
-    {
-        m_image = folder + str.sliced(str.indexOf(indEnd[param]) + indEnd[param].size());
-        m_isweather = true;
-    }
-    if (req == "image_ex")
-    {
-        m_image = folder + str.sliced(str.indexOf(indEnd[param]) + indEnd[param].size());
-        m_isExtend = true;
-    }
+    return root->getVSick(param);
 }
 
-void Location::parseActConfig(QString res)
+int Location::gVBody(Body param)
 {
-    Action *Act = new Action;
-    if (res.startsWith(indStart[required]))
-    {
-        size_t reqOn = res.indexOf(indStart[required]) + indStart[required].size();
-        size_t reqOff = res.indexOf(indEnd[required]) - reqOn;
-        QString req = res.sliced(reqOn, reqOff);
-
-        if (req.startsWith(indStart[reqitem]))
-        {
-            size_t itemStart = req.indexOf(indStart[reqitem]) + indStart[reqitem].size();
-            size_t itemEnd = req.indexOf(indEnd[reqitem]) - itemStart;
-            Act->item = req.sliced(itemStart, itemEnd);
-            req = req.sliced(req.indexOf(indEnd[reqitem]) + indEnd[reqitem].size());
-            parseValue(req, Act->itmValue, Act->itemVType);                
-        }
-        if (req.startsWith(indStart[param]))
-        {
-            size_t paramStart = indStart[param].size();
-            size_t paramEnd = req.indexOf(indEnd[param]) - paramStart;
-            Act->param = req.sliced(paramStart, paramEnd);
-            req = req.sliced(req.indexOf(indEnd[param]) + indEnd[param].size());
-            parseValue(req, Act->paramValue, Act->paramVType);
-        }
-        QString act = res.sliced(res.indexOf(indEnd[required]) + indEnd[required].size());
-        if (act.startsWith(indStart[actName]))
-        {
-            size_t actNameStart = indStart[actName].size();
-            size_t actNameEnd = act.indexOf(indEnd[actName]) - actNameStart;
-            Act->actId = act.sliced(actNameStart,actNameEnd).toInt();
-            act = act.sliced(act.indexOf(indEnd[actName]) + indEnd[actName].size());
-        }
-        Act->act = act;
-    }
-    m_actions.push_back(Act);
+    return root->getVBody(param);
 }
 
-void Location::parseValue(QString &str, int &value, ValueType &type)
+int Location::gVSex(SexVar param)
 {
-    if (str.startsWith(indStart[minValue]))
-    {
-        type = ValueType::min;
-        value = str.sliced(indStart[minValue].size(), str.indexOf(indEnd[minValue]) - indStart[minValue].size()).toInt();
-        str = str.sliced(str.indexOf(indEnd[minValue]) + indEnd[minValue].size());
-    }
-    else if (str.startsWith(indStart[maxValue]))
-    {
-        type = ValueType::max;
-        value = str.sliced(indStart[maxValue].size(), str.indexOf(indEnd[maxValue]) - indStart[maxValue].size()).toInt();
-        str = str.sliced(str.indexOf(indEnd[maxValue]) + indEnd[maxValue].size());
-    }
-    else if (str.startsWith(indStart[accValue]))
-    {
-        type = ValueType::accurate;
-        value = str.sliced(indStart[accValue].size(), str.indexOf(indEnd[accValue]) - indStart[accValue].size()).toInt();
-        str = str.sliced(str.indexOf(indEnd[accValue]) + indEnd[accValue].size());
-    }
-    else if (str.startsWith(indStart[notValue]))
-    {
-        type = ValueType::notequal;
-        value = str.sliced(indStart[notValue].size(), str.indexOf(indEnd[notValue]) - indStart[notValue].size()).toInt();
-        str = str.sliced(str.indexOf(indEnd[notValue]) + indEnd[notValue].size());
-    }
-    
+    return root->getSexVar(param);
+}
+
+int Location::gVSkill(Skills param)
+{
+    return root->getVSkill(param);
+}
+
+int Location::getItemCount(Items id)
+{
+    return root->getItmCount(id);
+}
+
+int Location::gVSC(SC param)
+{
+    return root->getVStatistic(param);
+}
+
+int Location::gVJob(JobStatus param)
+{
+    return root->getVJob(param);
+}
+
+int Location::gVAddict(Addiction param)
+{
+    return root->getVAddict(param);
+}
+
+bool Location::isAutoTampon()
+{
+    return root->isAutoTampon();
+}
+
+bool Location::isDay()
+{
+    return root->isDay();
+}
+
+Location::Location(LocationHandler *ptr): root(ptr){}
+
+void Location::rendImagePage()
+{
+    root->m_render->rendImagePage(root);
+}
+
+void Location::rendVideoPage()
+{
+    root->m_render->rendVideoPage(root);
+}
+
+void Location::rendObjPage()
+{
+    root->m_render->rendObjPage(root);
+}
+
+void Location::addLayoutInObjPage(QLayout *layout)
+{
+    root->m_render->addLayoutsInObjPage(layout);
+}
+
+void Location::setImage(QString path)
+{
+    root->m_render->setImage(path);
+}
+
+void Location::setVideo(QString path, int width, int height)
+{
+    root->m_render->setVideo(path, width, height);
+}
+
+void Location::setDesc(QString text)
+{
+    root->m_render->setText(text);
+}
+
+void Location::addText(QString text)
+{
+    root->m_render->addText(text);
+}
+
+void Location::addActBtn(QPushButton *btn)
+{
+    root->m_actions->addWidget(btn);
+}
+
+void Location::addLocBtn(LocButton *btn)
+{
+    root->m_actions->addWidget(btn);
+    connect(btn, SIGNAL(sigChangeLoc), root, SLOT(slotChangeLoc));
+}
+
+void Location::clearActions()
+{
+    ClearLayout(root->m_actions);
+}
+
+void Location::updateParams()
+{
+    root->updateParams();
+}
+
+void Location::sendNotif(QString message)
+{
+    root->sendNotif(message);
+}
+
+void Location::fancywork()
+{
+    root->m_common->fancywork();
+}
+
+void Location::home_workout()
+{
+    root->m_common->home_workout();
+}
+
+void Location::drinkAll()
+{
+    root->m_kitchenActs->drink_all();
+}
+
+void Location::cookies()
+{
+    root->m_kitchenActs->cookie();
+}
+
+void Location::fatDel()
+{
+    root->m_kitchenActs->fatdel();
+}
+
+void Location::vitamin()
+{
+    root->m_kitchenActs->vitamin();
+}
+
+void Location::pills()
+{
+    root->m_kitchenActs->pills();
+}
+
+void Location::eat(QString foodtype, QString image, QString text)
+{
+    root->m_kitchenActs->eat(foodtype,image,text);
+}
+
+void Location::drink(QString napitokType)
+{
+    root->m_kitchenActs->drink(napitokType);
+}
+
+void Location::fnAlko(int val)
+{
+    root->fnAlko(val);
+}
+
+void Location::incTime(int min)
+{
+    root->incTime(min);
+}
+
+void Location::uVStatus(Status param, int val)
+{
+    root->updVStatus(param,val);
+}
+
+void Location::uVBody(Body param, int val)
+{
+    root->updVBody(param,val);
+}
+
+void Location::uVSC(SC param, int val)
+{
+    root->updVStatistic(param,val);
+}
+
+void Location::uVSkill(Skills param, int val)
+{
+    root->updVSkill(param,val);
+}
+
+void Location::uVJob(JobStatus param, int val)
+{
+    root->updVJob(param,val);
+}
+
+void Location::uVEvent(EventParams param, int val)
+{
+    root->m_events->uVEvent(param, val);
+}
+
+void Location::uVSex(SexVar param, int val)
+{
+    root->updVSex(param,val);
+}
+
+void Location::sVStatus(Status param, int val)
+{
+    root->setVStatus(param,val);
+}
+
+void Location::sVBody(Body param, int val)
+{
+    root->setVBody(param,val);
+}
+
+void Location::sVSex(SexVar param, int val)
+{
+    root->setSexVar(param,val);
+}
+
+void Location::sVJob(JobStatus param, int val)
+{
+    root->setVJob(param,val);
+}
+
+void Location::updSkin(char c, int val)
+{
+    root->updSkin(c, val);
+}
+
+void Location::setBoyName(QString name)
+{
+    root->setBoyName(name);
+}
+
+void Location::decrease_condition(int val)
+{
+    root->decreaseCondition(val);
+}
+
+void Location::startEvent(QString event, QString arg)
+{
+    root->m_events->eventStart(event, arg);
+}
+
+int Location::gVQuest(QuestParams param)
+{
+    return root->m_events->gVQuest(param);
+}
+
+void Location::sVQuest(QuestParams param, int val)
+{
+    root->m_events->sVQuest(param,val);
+}
+
+void Location::uVQuest(QuestParams param, int val)
+{
+    root->m_events->uVQuest(param,val);
+}
+
+int Location::gVEvent(EventParams param)
+{
+    return root->m_events->gVEvent(param);
+}
+
+void Location::sVEvent(EventParams param, int val)
+{
+    root->m_events->sVEvent(param,val);
+}
+
+bool Location::isHanters()
+{
+    return root->m_events->isHanters();
+}
+
+void Location::changeLoc(LocId locId, int min)
+{
+    root->slotChangeLoc(locId,min);
+}
+
+void Location::viewObj(QString object)
+{
+    root->viewObj(object);
+}
+
+void Location::startSelfPlay()
+{
+    root->startSelfPlay();
+}
+
+void Location::fnSport(int arg)
+{
+    root->m_common->fnsport(arg);
+}
+
+void Location::fnBlowJob()
+{
+    root->blow_job();
+}
+
+void Location::fnCum(QString target)
+{
+    root->cum(target);
+}
+
+void Location::fnSwallow()
+{
+    root->fnswallow();
+}
+
+void Location::redress(ClothType type, Cloth *newCloth)
+{
+    root->redress(type, newCloth);
+}
+
+void Location::redressOld()
+{
+    root->redressOld();
+}
+
+void Location::storeOldToWardrobe()
+{
+    root->storeOldToWardrobe();
+}
+
+void Location::useItem(Items id, int count)
+{
+    root->useItem(id,count);
+}
+
+void Location::addItem(Items id, int count)
+{
+    root->addItem(id,count);
+}
+
+void Location::addCloth(Cloth *thing)
+{
+    root->addCloth(thing);
+}
+
+int Location::getClothGroup()
+{
+    return root->getClothGroup();
+}
+
+Cloth *Location::getCloth(ClothType type)
+{
+    return root->getCloth(type);
+}
+
+bool Location::isSkirt()
+{
+    return root->isSkirt();
+}
+
+bool Location::isPanties()
+{
+    return root->isPanties();
+}
+
+bool Location::isGlamour()
+{
+    return root->isGlamour();
+}
+
+bool Location::isJeans()
+{
+    return root->isJeans();
+}
+
+bool Location::isNude()
+{
+    return root->isNude();
+}
+
+bool Location::isCloth()
+{
+    return root->isCloth();
+}
+
+QString Location::sextToysBlock(int val)
+{
+    return root->sextToysBlock(val);
+}
+
+QString Location::getItemName(Items id)
+{
+    return root->getItemName(id);
+}
+
+void Location::walk()
+{
+    root->m_beach->walk();
+}
+
+void Location::undress(int arg)
+{
+    root->m_beach->undress(arg);
+}
+
+void Location::sunbathe(int isCream)
+{
+    root->m_beach->sunbathe(isCream);
+}
+
+void Location::cream()
+{
+    root->m_beach->cream();
+}
+
+void Location::swim()
+{
+    root->m_beach->swim();
+}
+
+void Location::getDressed(int arg)
+{
+    root->m_beach->getDressed(arg);
+}
+
+QString Location::getPFName()
+{
+    return root->getPFName();
+}
+
+Location *Location::getLocPtr(LocId locId)
+{
+    return root->getLocPtr(locId);
+}
+
+int Location::gVSchool(SchoolVar param)
+{
+    return root->m_events->gVSchool(param);
+}
+
+void Location::uVSchool(SchoolVar param, int val)
+{
+    root->m_events->uVSchool(param,val);
+}
+
+void Location::sVSchool(SchoolVar param, int val)
+{
+    root->m_events->sVSchool(param,val);
+}
+
+LocId Location::getPrevId()
+{
+    return root->m_prev->getLocId();
+}
+
+LocId Location::getPrevIn()
+{
+    return root->m_prev->getLocIn();
+}
+
+QLabel *Location::getTextPtr()
+{
+    return root->m_render->getTextPtr();
+}
+
+NPC Location::gNPC(int id)
+{
+    return root->gNPC(id);
 }
