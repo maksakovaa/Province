@@ -1,5 +1,5 @@
 #include "swamp.h"
-#include "../menu/qactbutton.h"
+#include "../menu/buttons.h"
 #include "../Functions.h"
 
 Swamp::Swamp(LocationHandler* ptr): Location(ptr) {}

@@ -2,7 +2,7 @@
 #include "../nav/locationhandler.h"
 #include "../Functions.h"
 #include "bathroom.h"
-#include "../menu/qactbutton.h"
+#include "../menu/buttons.h"
 
 Beach::Beach(LocationHandler *ptr): root(ptr) {}
 

@@ -1,6 +1,6 @@
 #include "grandpahelp.h"
 #include "../eventhandler.h"
-#include "../../menu/qactbutton.h"
+#include "../../menu/buttons.h"
 #include "../../Functions.h"
 
 GrandpaHelp::GrandpaHelp(EventHandler* ptr): root(ptr) {}

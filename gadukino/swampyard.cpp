@@ -1,6 +1,6 @@
 #include "swampyard.h"
 #include "../Functions.h"
-#include "../menu/qactbutton.h"
+#include "../menu/buttons.h"
 
 SwampYard::SwampYard(LocationHandler* ptr): Location(ptr) {}
 

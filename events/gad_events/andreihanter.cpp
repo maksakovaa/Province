@@ -1,5 +1,5 @@
 #include "andreihanter.h"
-#include "../../menu/qactbutton.h"
+#include "../../menu/buttons.h"
 #include "../eventhandler.h"
 #include "../../Functions.h"
 

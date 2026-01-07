@@ -1,7 +1,7 @@
 #include "gadriver.h"
 #include "../Functions.h"
 #include "../nav/locationhandler.h"
-#include "../menu/qactbutton.h"
+#include "../menu/buttons.h"
 
 Gadriver::Gadriver(LocationHandler *ptr): Location(ptr) {}
 

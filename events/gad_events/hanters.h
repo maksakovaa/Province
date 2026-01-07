@@ -28,6 +28,17 @@ private:
     void groupORALsi();
     void groupORALsi1();
     void groupORALasi();
+
+    void groupVa();
+    void groupVas();
+    void groupVas1();
+    void groupVi();
+    void groupVi1();
+    void groupVis();
+    void groupVis1();
+    void groupVias();
+    void groupVs();
+
     void hanters_talk();
     QString str(int id);
     QString act(int id);

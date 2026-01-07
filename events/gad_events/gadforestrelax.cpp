@@ -1,5 +1,5 @@
 #include "gadforestrelax.h"
-#include "../../menu/qactbutton.h"
+#include "../../menu/buttons.h"
 #include "../../Functions.h"
 #include "../eventhandler.h"
 

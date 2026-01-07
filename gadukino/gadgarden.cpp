@@ -1,6 +1,6 @@
 #include "gadgarden.h"
 #include "../Functions.h"
-#include "../menu/qactbutton.h"
+#include "../menu/buttons.h"
 Gadgarden::Gadgarden(LocationHandler *ptr): Location(ptr) {}
 
 void Gadgarden::show(QString arg)

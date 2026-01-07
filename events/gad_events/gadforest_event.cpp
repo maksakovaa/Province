@@ -1,5 +1,5 @@
 #include "gadforest_event.h"
-#include "../../menu/qactbutton.h"
+#include "../../menu/buttons.h"
 #include "../eventhandler.h"
 #include "../../Functions.h"
 #include "../../gadukino/gadforest.h"

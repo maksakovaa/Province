@@ -1,6 +1,6 @@
 #include "gadsarai.h"
 #include "../Functions.h"
-#include "../menu/qactbutton.h"
+#include "../menu/buttons.h"
 Gadsarai::Gadsarai(LocationHandler* ptr): Location(ptr){}
 
 void Gadsarai::show(QString arg)

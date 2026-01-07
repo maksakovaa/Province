@@ -1,7 +1,7 @@
 #include "gaddvor.h"
 #include "../Functions.h"
 #include "../events/questenums.h"
-#include "../menu/qactbutton.h"
+#include "../menu/buttons.h"
 Gaddvor::Gaddvor(LocationHandler *ptr): Location(ptr) {}
 
 void Gaddvor::show(QString arg)

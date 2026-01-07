@@ -1,5 +1,5 @@
-#ifndef QACTBUTTON_H
-#define QACTBUTTON_H
+#ifndef BUTTONS_H
+#define BUTTONS_H
 
 #include <QPushButton>
 #include "../nav/loc_enums.h"
@@ -43,4 +43,4 @@ private:
     QString m_objName;
 };
 
-#endif // QACTBUTTON_H
+#endif // BUTTONS_H

@@ -1,6 +1,6 @@
 #include "hanterslovesex.h"
 #include "../eventhandler.h"
-#include "../../menu/qactbutton.h"
+#include "../../menu/buttons.h"
 #include "../../Functions.h"
 
 HantersLoveSex::HantersLoveSex(EventHandler* ptr): root(ptr) {}

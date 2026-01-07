@@ -1,6 +1,6 @@
 #include "gadbana.h"
 #include "../Functions.h"
-#include "../menu/qactbutton.h"
+#include "../menu/buttons.h"
 Gadbana::Gadbana(LocationHandler *ptr): Location(ptr) {}
 
 void Gadbana::show(QString arg)

@@ -1,6 +1,6 @@
 #include "gadbeach.h"
 #include "../Functions.h"
-#include "../menu/qactbutton.h"
+#include "../menu/buttons.h"
 Gadbeach::Gadbeach(LocationHandler* ptr): Location(ptr) {}
 
 void Gadbeach::show(QString arg)

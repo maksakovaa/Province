@@ -1,4 +1,4 @@
-#include "qactbutton.h"
+#include "buttons.h"
 
 QActButton::QActButton(QString action)
 {

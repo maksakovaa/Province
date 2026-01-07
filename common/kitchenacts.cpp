@@ -2,7 +2,7 @@
 #include "../nav/location.h"
 #include "../nav/locationhandler.h"
 #include "../Functions.h"
-#include "../menu/qactbutton.h"
+#include "../menu/buttons.h"
 
 KitchenActs::KitchenActs(LocationHandler* ptr): root(ptr) {}
 

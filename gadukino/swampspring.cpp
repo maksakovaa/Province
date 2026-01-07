@@ -1,5 +1,5 @@
 #include "swampspring.h"
-#include "../menu/qactbutton.h"
+#include "../menu/buttons.h"
 #include "../Functions.h"
 
 SwampSpring::SwampSpring(LocationHandler* ptr): Location(ptr) {}

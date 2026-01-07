@@ -1,5 +1,5 @@
 #include "meadow.h"
-#include "../menu/qactbutton.h"
+#include "../menu/buttons.h"
 #include "../Functions.h"
 
 Meadow::Meadow(LocationHandler* ptr): Location(ptr) {}

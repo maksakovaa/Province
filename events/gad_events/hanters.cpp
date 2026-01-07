@@ -1,6 +1,7 @@
 #include "hanters.h"
 #include "../eventhandler.h"
 #include "../../Functions.h"
+#include "../../menu/buttons.h"
 
 Hanters::Hanters(EventHandler* ptr): root(ptr) {}
 
@@ -661,10 +662,13 @@ void Hanters::actionHandler(QString action)
     if(action == "groupORALsi1") groupORALsi1();
     if(action == "groupORALasi") groupORALasi();
     if(action == "groupOia") groupOia();
+    if(action == "groupOsa") groupOsa();
+
+    //на колени
+    if(action == "groupOaend") groupOaend();
+    if(action == "groupOsend") groupOsend();
     if(action == "groupOiend") groupOiend();
     if(action == "groupOis") groupOis();
-    if(action == "groupOsend") groupOsend();
-    if(action == "groupOsa") groupOsa();
 
     //Стать на четвереньки/раком
     if(action == "groupVa") groupVa();
@@ -681,6 +685,9 @@ void Hanters::actionHandler(QString action)
     if(action == "groupVaOHi") groupVaOHi();
     if(action == "groupVOsHi") groupVOsHi();
 
+    if(action == "groupAa") groupAa();
+    if(action == "groupAaEnd1") groupAaEnd1();
+    if(action == "groupAaEnd2") groupAaEnd2();
     if(action == "groupAi") groupAi();
     if(action == "groupAiEnd1") groupAiEnd1();
     if(action == "groupAiEnd2") groupAiEnd2();
@@ -714,6 +721,8 @@ void Hanters::actionHandler(QString action)
     if(action == "groupDPsi") groupDPsi();
     if(action == "groupDPasi") groupDPasi();
 
+    if(action == "groupVa2") groupVa2();
+    if(action == "groupVa2end") groupVa2end();
     if(action == "groupVi") groupVi();
     if(action == "groupVi3") groupVi3();
     if(action == "groupVi3end") groupVi3end();
@@ -752,7 +761,10 @@ void Hanters::actionHandler(QString action)
 
 void Hanters::makeActBtn(QString action, QString actName)
 {
-
+    QActButton* btn = new QActButton(action);
+    btn->setText(actName);
+    connect(btn, &QActButton::sigAct, this, &Hanters::actionHandler);
+    root->addActBtn(btn);
 }
 
 void Hanters::groupfaint()
@@ -1356,6 +1368,422 @@ void Hanters::groupORALasi()
         makeActBtn("groupfaint",act(13));
 }
 
+void Hanters::groupVa()
+{
+    root->incTime(5);
+    root->sVSex(pose,1);
+    root->setImage(media(85));
+    if(root->gVEvent(hantersexnude) == 1 || root->gVEvent(forest_hantersex) == 3)
+    {
+        root->setDesc(str(75));
+        setSergei();
+        root->blow_job();
+        setAndrei();
+        root->vaginal(tDick);
+        setSergei();
+    }
+    if(root->gVEvent(forest_gopsex) == 3)
+    {
+        root->setDesc(str(76));
+        setKolyamba();
+        root->blow_job();
+        setMitka();
+        root->vaginal(tDick);
+        setKolyamba();
+    }
+    root->fnswallow();
+    root->addDesc(str(77));
+    hantsexa = getRandInt(1,4);
+    hantsexb = getRandInt(1,8);
+    if(root->vStatus(health) > 50)
+    {
+        if (hantsexa == 1) makeActBtn("groupORALa1end",act(10)); // Сосать
+        if (hantsexa == 2) // Стать на четвереньки
+        {
+            if(hantsexb == 5) makeActBtn("groupAa",act(25));
+            if(hantsexb < 5) makeActBtn("groupAaEnd1",act(25));
+            if(hantsexb > 5) makeActBtn("groupAaEnd2",act(25));
+        }
+        if(hantsexa == 3) // groupOaend
+        {
+            if(hantsexb <= 3) makeActBtn("groupVa2",act(27));
+            if(hantsexb > 3) makeActBtn("groupVa2end",act(27));
+        }
+        if(hantsexa == 4) makeActBtn("groupOaend",act(30)); // Стать на колени
+    }
+    else
+        makeActBtn("groupfaint",act(13));
+
+}
+void Hanters::groupVas()
+{
+    root->sVSex(pose,2);
+    root->incTime(5);
+    if(root->vSex(lubonus) == 0)
+        root->uVSex(lubonus,2);
+    root->setImage(media(79));
+    if(root->gVEvent(hantersexnude) == 1 || root->gVEvent(forest_hantersex) == 3)
+    {
+        root->setDesc(str(73));
+        setSergei();
+        root->blow_job();
+        setAndrei();
+        root->blow_job();
+        setIgor();
+    }
+    if(root->gVEvent(forest_gopsex) == 3)
+    {
+        root->setDesc(str(74));
+        setKolyamba();
+        root->blow_job();
+        setMitka();
+        root->blow_job();
+        setVasyan();
+    }
+    if(boyCsex == 0)
+    {
+        boyCsex = 1;
+        root->uVSC(vaginalSex,1);
+    }
+    root->sVSex(protect,1);
+    root->sexStart();
+    root->vaginal(tDick);
+    root->sex_cum();
+    hantsexa = getRandInt(1,4);
+    hantsexb = getRandInt(1,8);
+    if(root->vStatus(health) > 50)
+    {
+        if (hantsexa == 1) // Стать на четвереньки
+        {
+            if(hantsexb < 6) makeActBtn("groupVas1",act(25));
+            if(hantsexb == 6) makeActBtn("groupVa",act(25));
+            if(hantsexb > 6) makeActBtn("groupVs",act(25));
+        }
+        if (hantsexa == 2) // Лечь на живот
+        {
+            if(hantsexb < 6) makeActBtn("groupVaOs",act(29));
+            if(hantsexb > 6) makeActBtn("groupVOs",act(29));
+            if(hantsexb == 6) makeActBtn("groupVaO",act(29));
+        }
+        if(hantsexa == 3) // Стать на четвереньки
+        {
+            if(hantsexb > 5) makeActBtn("groupAsOa",act(25));
+            if(hantsexb == 5) makeActBtn("groupAsO",act(25));
+            if(hantsexb < 5) makeActBtn("groupAOa",act(25));
+        }
+        if(hantsexa == 4) makeActBtn("groupOsa",act(30)); // Стать на колени
+    }
+    else
+        makeActBtn("groupfaint",act(13));
+}
+void Hanters::groupVas1()
+{
+    root->incTime(5);
+    root->sVSex(pose,1);
+    if(root->vSex(lubonus) == 0)
+        root->uVSex(lubonus,1);
+    root->setImage(media(getRandInt(80,84)));
+    if(root->gVEvent(hantersexnude) == 1 || root->gVEvent(forest_hantersex) == 3)
+    {
+        root->setDesc(str(75));
+        setSergei();
+        root->blow_job();
+        setAndrei();
+    }
+    if(root->gVEvent(forest_gopsex) == 3)
+    {
+        root->setDesc(str(76));
+        setKolyamba();
+        root->blow_job();
+        setMitka();
+    }
+    if(boyAsex == 0)
+    {
+        boyAsex = 1;
+        root->uVSC(vaginalSex,1);
+    }
+    root->vaginal(tDick);
+    hantsexa = getRandInt(1,4);
+    hantsexb = getRandInt(1,8);
+    if(root->vStatus(health) > 50)
+    {
+        if (hantsexa == 1) // Стать на четвереньки
+        {
+            if(hantsexb < 6) makeActBtn("groupVas1",act(25));
+            if(hantsexb == 6) makeActBtn("groupVa",act(25));
+            if(hantsexb > 6) makeActBtn("groupVs",act(25));
+        }
+        if (hantsexa == 2) // Лечь на живот
+        {
+            if(hantsexb < 6) makeActBtn("groupVaOs",act(29));
+            if(hantsexb > 6) makeActBtn("groupVOs",act(29));
+            if(hantsexb == 6) makeActBtn("groupVaO",act(29));
+        }
+        if(hantsexa == 3) // Стать на четвереньки
+        {
+            if(hantsexb > 5) makeActBtn("groupAsOa",act(25));
+            if(hantsexb == 5) makeActBtn("groupAsO",act(25));
+            if(hantsexb < 5) makeActBtn("groupAOa",act(25));
+        }
+        if(hantsexa == 4) makeActBtn("groupOsa",act(30)); // Стать на колени
+    }
+    else
+        makeActBtn("groupfaint",act(13));
+}
+void Hanters::groupVi()
+{
+    root->incTime(5);
+    root->sVSex(pose,2);
+    root->setImage(media(89));
+    if(root->gVEvent(hantersexnude) == 1 || root->gVEvent(forest_hantersex) == 3)
+    {
+        root->setDesc(str(73));
+        setSergei();
+    }
+    if(root->gVEvent(forest_gopsex) == 3)
+    {
+        root->setDesc(str(74));
+        setKolyamba();
+    }
+    root->blow_job();
+    if(root->gVEvent(hantersexnude) == 1 || root->gVEvent(forest_hantersex) == 3)
+        setAndrei();
+    if(root->gVEvent(forest_gopsex) == 3)
+        setMitka();
+    root->blow_job();
+    if(root->gVEvent(hantersexnude) == 1 || root->gVEvent(forest_hantersex) == 3)
+        setIgor();
+    if(root->gVEvent(forest_gopsex) == 3)
+        setVasyan();
+    if(boyCsex == 0)
+    {
+        boyCsex = 1;
+        root->uVSC(vaginalSex,1);
+    }
+    root->sVSex(protect,1);
+    root->vaginal(tDick);
+    if(root->gVEvent(hantersexnude) == 1 || root->gVEvent(forest_hantersex) == 3)
+        setAndrei();
+    if(root->gVEvent(forest_gopsex) == 3)
+        setMitka();
+    root->cum("face");
+    root->fnswallow();
+    if(root->gVEvent(hantersexnude) == 1 || root->gVEvent(forest_hantersex) == 3)
+        setSergei();
+    if(root->gVEvent(forest_gopsex) == 3)
+        setKolyamba();
+    root->cum("face");
+    root->fnswallow();
+    if(root->gVEvent(hantersexnude) == 1 || root->gVEvent(forest_hantersex) == 3)
+        root->addDesc(str(79));
+    if(root->gVEvent(forest_gopsex) == 3)
+        root->addDesc(str(80));
+    hantsexa = getRandInt(2,4);
+    hantsexb = getRandInt(1,8);
+    if(root->vStatus(health) > 50)
+    {
+        if (hantsexa == 1) makeActBtn("groupORALi1end",act(21));
+        if (hantsexa == 2) // Стать на четвереньки
+        {
+            if(hantsexb == 5) makeActBtn("groupAi",act(25));
+            if(hantsexb < 5) makeActBtn("groupAiEnd1",act(25));
+            if(hantsexb > 5) makeActBtn("groupAiEnd2",act(25));
+        }
+        if(hantsexa == 3) // Сесть сверху
+        {
+            if(hantsexb <= 3) makeActBtn("groupVi3",act(27));
+            if(hantsexb > 3) makeActBtn("groupVi3end",act(27));
+        }
+        if(hantsexa == 4) makeActBtn("groupOiend",act(30)); // Стать на колени
+    }
+    else
+        makeActBtn("groupfaint",act(13));
+}
+void Hanters::groupVi1()
+{
+    root->incTime(5);
+    root->sVSex(pose,1);
+    if(root->vSex(lubonus) == 0)
+        root->uVSex(lubonus,1);
+    root->setImage(media(90));
+    if(root->gVEvent(hantersexnude) == 1 || root->gVEvent(forest_hantersex) == 3)
+    {
+        root->setDesc(str(83));
+        setIgor();
+    }
+    if(root->gVEvent(forest_gopsex) == 3)
+    {
+        root->setDesc(str(84));
+        setVasyan();
+    }
+    root->blow_job();
+    if(root->gVEvent(hantersexnude) == 1 || root->gVEvent(forest_hantersex) == 3)
+        setSergei();
+    if(root->gVEvent(forest_gopsex) == 3)
+        setKolyamba();
+    if(boyBsex == 0)
+    {
+        boyBsex = 1;
+        root->uVSC(vaginalSex,1);
+    }
+    root->sVSex(protect,1);
+    root->sexStart();
+    root->vaginal(tDick);
+    root->sex_cum();
+    root->addDesc(str(85));
+    hantsexa = getRandInt(2,4);
+    hantsexb = getRandInt(1,8);
+    if(root->vStatus(health) > 50)
+    {
+        if (hantsexa == 1) makeActBtn("groupORALi1end",act(21));
+        if (hantsexa == 2) // Стать на четвереньки
+        {
+            if(hantsexb == 5) makeActBtn("groupAi",act(25));
+            if(hantsexb < 5) makeActBtn("groupAiEnd1",act(25));
+            if(hantsexb > 5) makeActBtn("groupAiEnd2",act(25));
+        }
+        if(hantsexa == 3) // Сесть сверху
+        {
+            if(hantsexb <= 3) makeActBtn("groupVi3",act(27));
+            if(hantsexb > 3) makeActBtn("groupVi3end",act(27));
+        }
+        if(hantsexa == 4) makeActBtn("groupOiend",act(30)); // Стать на колени
+    }
+    else
+        makeActBtn("groupfaint",act(13));
+}
+void Hanters::groupVis()
+{
+    root->incTime(5);
+    root->sVSex(pose,2);
+    if(root->vSex(lubonus) == 0)
+        root->uVSex(lubonus,1);
+    root->setImage(media(92));
+    if(root->gVEvent(hantersexnude) == 1 || root->gVEvent(forest_hantersex) == 3)
+    {
+        root->setDesc(str(73));
+        setSergei();
+    }
+    if(root->gVEvent(forest_gopsex) == 3)
+    {
+        root->setDesc(str(74));
+        setKolyamba();
+    }
+    root->blow_job();
+    if(root->gVEvent(hantersexnude) == 1 || root->gVEvent(forest_hantersex) == 3)
+        setAndrei();
+    if(root->gVEvent(forest_gopsex) == 3)
+        setMitka();
+    root->blow_job();
+    if(root->gVEvent(hantersexnude) == 1 || root->gVEvent(forest_hantersex) == 3)
+        setIgor();
+    if(root->gVEvent(forest_gopsex) == 3)
+        setVasyan();
+    if(boyCsex == 0)
+    {
+        boyCsex = 1;
+        root->uVSC(vaginalSex,1);
+    }
+    root->sVSex(protect,1);
+    root->vaginal(tDick);
+    if(root->gVEvent(hantersexnude) == 1 || root->gVEvent(forest_hantersex) == 3)
+        setAndrei();
+    if(root->gVEvent(forest_gopsex) == 3)
+        setMitka();
+    root->fnswallow();
+    if(root->gVEvent(hantersexnude) == 1 || root->gVEvent(forest_hantersex) == 3)
+        root->addDesc(str(81));
+    if(root->gVEvent(forest_gopsex) == 3)
+        root->addDesc(str(82));
+    hantsexa = getRandInt(2,5);
+    hantsexb = getRandInt(1,8);
+    if(root->vStatus(health) > 50)
+    {
+        if(hantsexa == 1) // Сосать дальше
+        {
+            if(hantsexb < 6) makeActBtn("groupORALsi1",act(21));
+            if(hantsexb == 6) makeActBtn("groupORALs",act(21));
+            if(hantsexb == 7) makeActBtn("groupORALi",act(21));
+            if(hantsexb == 8) makeActBtn("groupORALend1",act(21));
+        }
+        if(hantsexa == 2) // Стать на четвереньки
+        {
+            if(hantsexb <= 5) makeActBtn("groupVis1",act(25));
+            if(hantsexb > 6) makeActBtn("groupVi1",act(25));
+            if(hantsexb == 6) makeActBtn("groupVs1",act(25));
+        }
+        if(hantsexa == 3) // Лечь на бок
+        {
+            if(hantsexb <= 5) makeActBtn("groupVsOi",act(26));
+            if(hantsexb > 6) makeActBtn("groupVOi",act(26));
+            if(hantsexb == 6) makeActBtn("groupVsO",act(26));
+        }
+        if(hantsexa == 4) makeActBtn("groupDPis",act(27)); // Сесть сверху
+        if(hantsexa == 5) makeActBtn("groupOis",act(30)); // Стать на колени
+    }
+    else
+        makeActBtn("groupfaint",act(13));
+}
+void Hanters::groupVis1()
+{
+    root->incTime(5);
+    root->sVSex(pose,1);
+    if(root->vSex(lubonus) == 0)
+        root->uVSex(lubonus,2);
+    root->setImage(media(getRandInt(93,97)));
+    if(root->gVEvent(hantersexnude) == 1 || root->gVEvent(forest_hantersex) == 3)
+    {
+        root->setDesc(str(83));
+        setIgor();
+    }
+    if(root->gVEvent(forest_gopsex) == 3)
+    {
+        root->setDesc(str(84));
+        setVasyan();
+    }
+    root->blow_job();
+    if(root->gVEvent(hantersexnude) == 1 || root->gVEvent(forest_hantersex) == 3)
+        setSergei();
+    if(root->gVEvent(forest_gopsex) == 3)
+        setKolyamba();
+    if(boyBsex == 0)
+    {
+        boyBsex = 1;
+        root->uVSC(vaginalSex,1);
+    }
+    root->sVSex(protect,1);
+    root->sexStart();
+    root->vaginal(tDick);
+    hantsexa = getRandInt(2,5);
+    hantsexb = getRandInt(1,8);
+    if(root->vStatus(health) > 50)
+    {
+        if(hantsexa == 1) // Сосать дальше
+        {
+            if(hantsexb < 6) makeActBtn("groupORALsi1",act(21));
+            if(hantsexb == 6) makeActBtn("groupORALs",act(21));
+            if(hantsexb == 7) makeActBtn("groupORALi",act(21));
+            if(hantsexb == 8) makeActBtn("groupORALend1",act(21));
+        }
+        if(hantsexa == 2) // Стать на четвереньки
+        {
+            if(hantsexb <= 5) makeActBtn("groupVis1",act(25));
+            if(hantsexb > 6) makeActBtn("groupVi1",act(25));
+            if(hantsexb == 6) makeActBtn("groupVs1",act(25));
+        }
+        if(hantsexa == 3) // Лечь на бок
+        {
+            if(hantsexb <= 5) makeActBtn("groupVsOi",act(26));
+            if(hantsexb > 6) makeActBtn("groupVOi",act(26));
+            if(hantsexb == 6) makeActBtn("groupVsO",act(26));
+        }
+        if(hantsexa == 4) makeActBtn("groupDPis",act(27)); // Сесть сверху
+        if(hantsexa == 5) makeActBtn("groupOis",act(30)); // Стать на колени
+    }
+    else
+        makeActBtn("groupfaint",act(13));
+
+}
 void Hanters::groupVias()
 {
     root->sVSex(pose,2);
@@ -1392,39 +1820,92 @@ void Hanters::groupVias()
     hantsexb = getRandInt(1,8);
     if(root->vStatus(health) > 50)
     {
-        if (hantsexa == 1) makeActBtn();
-        if (hantsexa == 2)
+        if (hantsexa == 1) makeActBtn("groupORALasi",act(21));
+        if (hantsexa == 2) // Сесть сверху
         {
-            if(hantsexb > 5) makeActBtn();
-            if(hantsexb == 3) makeActBtn();
-            if(hantsexb == 4) makeActBtn();
-            if(hantsexb == 5) makeActBtn();
-            if(hantsexb < 3) makeActBtn();
+            if(hantsexb > 5) makeActBtn("groupVias",act(27));
+            if(hantsexb == 3) makeActBtn("groupVia",act(27));
+            if(hantsexb == 4) makeActBtn("groupVis",act(27));
+            if(hantsexb == 5) makeActBtn("groupVi",act(27));
+            if(hantsexb < 3) makeActBtn("groupVas",act(27));
         }
-        if(hantsexa == 3)
+        if(hantsexa == 3) // Стать раком
         {
-            if(hantsexb > 5) makeActBtn();
-            if(hantsexb == 5) makeActBtn();
-            if(hantsexb < 5) makeActBtn();
+            if(hantsexb > 5) makeActBtn("groupVaOsHi",act(28));
+            if(hantsexb == 5) makeActBtn("groupVaOHi",act(28));
+            if(hantsexb < 5) makeActBtn("groupVOsHi",act(28));
         }
-        if(hantsexa == 4)
+        if(hantsexa == 4) // Сесть сверху
         {
-            if(hantsexb < 5) makeActBtn();
-            if(hantsexb > 5) makeActBtn();
-            if(hantsexb == 6) makeActBtn();
-            if(hantsexb == 5) makeActBtn();
+            if(hantsexb < 5) makeActBtn("groupDPasi",act(27));
+            if(hantsexb > 5) makeActBtn("groupDPas",act(27));
+            if(hantsexb == 6) makeActBtn("groupDPsi",act(27));
+            if(hantsexb == 5) makeActBtn("groupDPai",act(27));
         }
-        if(hantsexa == 5)
+        if(hantsexa == 5) // Лечь на бок
         {
-            if(hantsexb > 5) makeActBtn();
-            if(hantsexb == 5) makeActBtn();
-            if(hantsexb < 5) makeActBtn();
+            if(hantsexb > 5) makeActBtn("groupVsOaHi",act(26));
+            if(hantsexb == 5) makeActBtn("groupVsOHi",act(26));
+            if(hantsexb < 5) makeActBtn("groupVOaHi",act(26));
         }
     }
     else
-
+        makeActBtn("groupfaint",act(13));
 }
-
+void Hanters::groupVs()
+{
+    root->sVSex(pose,2);
+    root->incTime(5);
+    if(root->vSex(lubonus) == 0)
+        root->uVSex(lubonus,1);
+    root->setImage(media(87));
+    if(root->gVEvent(hantersexnude) == 1 || root->gVEvent(forest_hantersex) == 3)
+    {
+        root->setDesc(str(75));
+        setSergei();
+        root->blow_job();
+        setAndrei();
+    }
+    if(root->gVEvent(forest_gopsex) == 3)
+    {
+        root->setDesc(str(76));
+        setKolyamba();
+        root->blow_job();
+        setMitka();
+    }
+    if(boyAsex == 0)
+    {
+        boyAsex = 1;
+        root->uVSC(vaginalSex,1);
+    }
+    root->sVSex(protect,1);
+    root->sexStart();
+    root->vaginal(tDick);
+    root->sex_cum();
+    root->addDesc(str(78));
+    if(root->vStatus(health) > 50)
+    {
+        if(hantsexa == 1) // Сосать дальше
+        {
+            if(hantsexb <= 4) makeActBtn("groupORALs1",act(21));
+            if(hantsexb > 4) makeActBtn("groupORALs1end",act(21));
+        }
+        if(hantsexa == 2) // Стать на четвереньки
+        {
+            if(hantsexb == 5) makeActBtn("groupAs",act(25));
+            if(hantsexb < 5) makeActBtn("groupAsEnd1",act(25));
+            if(hantsexb > 5) makeActBtn("groupAsEnd2",act(25));
+        }
+        if(hantsexa == 3) // Сесть сверху
+        {
+            if(hantsexb <= 3) makeActBtn("groupVs2",act(27));
+            if(hantsexb > 3) makeActBtn("groupVs2end",act(27));
+        }
+        if(hantsexa == 4) makeActBtn("groupOsend",act(30)); // Стать на колени
+    }
+    else
+        makeActBtn("groupfaint",act(13));
+}
 void Hanters::hanters_talk()
 {
 
@@ -1552,20 +2033,20 @@ QString Hanters::str(int id)
         str[72] = root->getBoyName() + " со вздохом кончил и отошел в сторону.";
         str[73] = "Игорь лёг на землю, потянув вас за собой. Андрей и Сергей стали перед вами выставив свои члены перед вашим лицом.";
         str[74] = "Васян лёг на землю, потянув вас за собой. Митька и Колямба стали перед вами выставив свои члены перед вашим лицом.";
-        str[75] = "";
-        str[76] = "";
-        str[77] = "";
-        str[78] = "";
-        str[79] = "";
+        str[75] = "Андрей поставил вас на четвереньки и начал пристраиваться сзади, Сергей подошел спереди...";
+        str[76] = "Митька поставил вас на четвереньки и начал пристраиваться сзади, Колямба подошел спереди...";
+        str[77] = root->getBoyName() + " кончил и отошел в сторону.. ";
+        str[78] = root->getBoyName() + " кончил и отвалил отдыхать.";
+        str[79] = "Спермы оказалось так много, что вы не сумели всю проглотить и стряхнув остатки вам на лицо Андрей с Сергеем довольные отошли в сторону, а вы продолжили скакать на Игоре...";
     }
     if(id >= 80 && id < 100)
     {
-        str[80] = "";
-        str[81] = "";
-        str[82] = "";
-        str[83] = "";
-        str[84] = "";
-        str[85] = "";
+        str[80] = "Спермы оказалось так много, что вы не сумели всю проглотить и стряхнув остатки вам на лицо Митька с Колямбой довольные отошли в сторону, а вы продолжили скакать на Васяне...";
+        str[81] = "Удовлетворённый Андрей отошел в сторону, а вы продолжили скакать на Игоре, отсасывая у Сергея...";
+        str[82] = "Удовлетворённый Митька отошел в сторону, а вы продолжили скакать на Васяне, отсасывая у Колямбы...";
+        str[83] = "Сергей поставил вас на четвереньки и начал пристраиваться сзади, Игорь поднес член к вашему лицу...";
+        str[84] = "Колямба поставил вас на четвереньки и начал пристраиваться сзади, Васян поднес член к вашему лицу...";
+        str[85] = root->getBoyName() + " кончил и отправился отдыхать в тенек...";
         str[86] = "";
         str[87] = "";
         str[88] = "";
@@ -1624,7 +2105,7 @@ QString Hanters::act(int id)
         act[27] = "Сесть сверху";
         act[28] = "Стать раком";
         act[29] = "Лечь на живот";
-        act[30] = "";
+        act[30] = "Стать на колени";
         act[31] = "";
         act[32] = "";
         act[33] = "";
@@ -1745,28 +2226,28 @@ QString Hanters::media(int id)
         med[76] = "data/qwest/hantersex/hantersgroupVias3.2.jpg";
         med[77] = "data/qwest/hantersex/hantersgroupVias3.3.jpg";
         med[78] = "data/qwest/hantersex/hantersgroupVias3.4.jpg";
-        med[79] = "";
+        med[79] = "data/qwest/hantersex/hantersgroupVas.jpg";
     }
     if(id >= 80 && id < 100)
     {
-        med[80] = "";
-        med[81] = "";
-        med[82] = "";
-        med[83] = "";
-        med[84] = "";
-        med[85] = "";
-        med[86] = "";
-        med[87] = "";
-        med[88] = "";
-        med[89] = "";
-        med[90] = "";
-        med[91] = "";
-        med[92] = "";
-        med[93] = "";
-        med[94] = "";
-        med[95] = "";
-        med[96] = "";
-        med[97] = "";
+        med[80] = "data/qwest/hantersex/hantersgroupVas1.0.jpg";
+        med[81] = "data/qwest/hantersex/hantersgroupVas1.1.jpg";
+        med[82] = "data/qwest/hantersex/hantersgroupVas1.2.jpg";
+        med[83] = "data/qwest/hantersex/hantersgroupVas1.3.jpg";
+        med[84] = "data/qwest/hantersex/hantersgroupVas1.4.jpg";
+        med[85] = "data/qwest/hantersex/hantersgroupVa.jpg";
+        med[86] = "data/qwest/hantersex/hantersgroupVa1.jpg";
+        med[87] = "data/qwest/hantersex/hantersgroupVs.jpg";
+        med[88] = "data/qwest/hantersex/hantersgroupVs1.jpg";
+        med[89] = "data/qwest/hantersex/hantersgroupVi.jpg";
+        med[90] = "data/qwest/hantersex/hantersgroupVi1.jpg";
+        med[91] = "data/qwest/hantersex/hantersgroupVi2.jpg";
+        med[92] = "data/qwest/hantersex/hantersgroupVis.jpg";
+        med[93] = "data/qwest/hantersex/hantersgroupVis1.0.jpg";
+        med[94] = "data/qwest/hantersex/hantersgroupVis1.1.jpg";
+        med[95] = "data/qwest/hantersex/hantersgroupVis1.2.jpg";
+        med[96] = "data/qwest/hantersex/hantersgroupVis1.3.jpg";
+        med[97] = "data/qwest/hantersex/hantersgroupVis1.4.jpg";
         med[98] = "";
         med[99] = "";
     }

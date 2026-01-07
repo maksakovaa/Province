@@ -1,6 +1,6 @@
 #include "gadhouse.h"
 #include "../Functions.h"
-#include "../menu/qactbutton.h"
+#include "../menu/buttons.h"
 
 Gadhouse::Gadhouse(LocationHandler *ptr): Location(ptr) {}
 

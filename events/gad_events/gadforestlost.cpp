@@ -1,6 +1,6 @@
 #include "gadforestlost.h"
 #include "../eventhandler.h"
-#include "../../menu/qactbutton.h"
+#include "../../menu/buttons.h"
 #include "../../Functions.h"
 
 GadforestLost::GadforestLost(EventHandler* ptr): root(ptr) {}

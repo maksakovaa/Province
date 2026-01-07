@@ -1,7 +1,7 @@
 #include "common.h"
 #include "../nav/locationhandler.h"
 #include "../Functions.h"
-#include "../menu/qactbutton.h"
+#include "../menu/buttons.h"
 
 Common::Common(LocationHandler* ptr): root(ptr) {}
 

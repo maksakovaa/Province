@@ -1,5 +1,5 @@
 #include "gadforest.h"
-#include "../menu/qactbutton.h"
+#include "../menu/buttons.h"
 #include "../nav/locationhandler.h"
 #include "../Functions.h"
 

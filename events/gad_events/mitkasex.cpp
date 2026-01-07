@@ -1,7 +1,7 @@
 #include "mitkasex.h"
 #include "../eventhandler.h"
 #include "../../Functions.h"
-#include "../../menu/qactbutton.h"
+#include "../../menu/buttons.h"
 
 MitkaSex::MitkaSex(EventHandler *ptr):
     root(ptr),

@@ -3,7 +3,7 @@
 #include "../Functions.h"
 #include <QDirIterator>
 #include "../items/itemform.h"
-#include "../menu/qactbutton.h"
+#include "../menu/buttons.h"
 
 Shop::Shop(LocationHandler *parent): Location(parent)
 {

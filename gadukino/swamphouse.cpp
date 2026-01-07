@@ -1,5 +1,5 @@
 #include "swamphouse.h"
-#include "../menu/qactbutton.h"
+#include "../menu/buttons.h"
 #include "../Functions.h"
 
 SwampHouse::SwampHouse(LocationHandler* ptr): Location(ptr) {}

@@ -1,6 +1,6 @@
 #include "bicycle.h"
 #include "../eventhandler.h"
-#include "../../menu/qactbutton.h"
+#include "../../menu/buttons.h"
 #include "../../Functions.h"
 
 Bicycle::Bicycle(EventHandler *ptr): root(ptr) {}

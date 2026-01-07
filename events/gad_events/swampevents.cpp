@@ -1,5 +1,5 @@
 #include "swampevents.h"
-#include "../../menu/qactbutton.h"
+#include "../../menu/buttons.h"
 #include "../eventhandler.h"
 #include "../../gadukino/backwater.h"
 

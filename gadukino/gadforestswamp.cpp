@@ -1,5 +1,5 @@
 #include "gadforestswamp.h"
-#include "../menu/qactbutton.h"
+#include "../menu/buttons.h"
 #include "../Functions.h"
 
 GadForestSwamp::GadForestSwamp(LocationHandler *ptr): Location(ptr) {}

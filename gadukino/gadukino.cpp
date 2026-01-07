@@ -1,7 +1,7 @@
 #include "gadukino.h"
 #include "../nav/locationhandler.h"
 #include "../Functions.h"
-#include "../menu/qactbutton.h"
+#include "../menu/buttons.h"
 Gadukino::Gadukino(LocationHandler *ptr): Location(ptr){}
 
 void Gadukino::show(QString arg)

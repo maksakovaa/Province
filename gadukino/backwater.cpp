@@ -1,7 +1,7 @@
 #include "backwater.h"
 #include "../Functions.h"
 #include "../common/bathroom.h"
-#include "../menu/qactbutton.h"
+#include "../menu/buttons.h"
 Backwater::Backwater(LocationHandler *ptr): Location(ptr) {}
 
 void Backwater::show(QString arg)

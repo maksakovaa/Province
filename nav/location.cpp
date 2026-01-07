@@ -1,6 +1,6 @@
 #include "location.h"
 #include "locationhandler.h"
-#include "../menu/qactbutton.h"
+#include "../menu/buttons.h"
 #include "../Functions.h"
 
 int Location::getWeekNum()

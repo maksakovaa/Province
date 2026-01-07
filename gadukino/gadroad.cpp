@@ -1,6 +1,6 @@
 #include "gadroad.h"
 #include "../Functions.h"
-#include "../menu/qactbutton.h"
+#include "../menu/buttons.h"
 Gadroad::Gadroad(LocationHandler *ptr): Location(ptr) {}
 
 void Gadroad::show(QString arg)

@@ -1,5 +1,5 @@
 #include "miroslavahome.h"
-#include "../menu/qactbutton.h"
+#include "../menu/buttons.h"
 #include "../Functions.h"
 
 MiroslavaHome::MiroslavaHome(LocationHandler* ptr): Location(ptr) {}

@@ -1,7 +1,7 @@
 #include "pirat.h"
 #include "../eventhandler.h"
 #include "../../Functions.h"
-#include "../../menu/qactbutton.h"
+#include "../../menu/buttons.h"
 
 Pirat::Pirat(EventHandler* ptr): root(ptr) {}
 

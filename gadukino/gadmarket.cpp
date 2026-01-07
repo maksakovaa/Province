@@ -1,5 +1,5 @@
 #include "gadmarket.h"
-#include "../menu/qactbutton.h"
+#include "../menu/buttons.h"
 
 Gadmarket::Gadmarket(LocationHandler *ptr): Location(ptr) {}
 

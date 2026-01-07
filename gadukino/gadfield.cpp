@@ -1,7 +1,7 @@
 #include "gadfield.h"
 #include "../Functions.h"
 #include "../common/bathroom.h"
-#include "../menu/qactbutton.h"
+#include "../menu/buttons.h"
 Gadfield::Gadfield(LocationHandler *ptr): Location(ptr) {}
 
 void Gadfield::show(QString arg)

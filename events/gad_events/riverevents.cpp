@@ -1,7 +1,7 @@
 #include "riverevents.h"
 #include "../../Functions.h"
 #include "../eventhandler.h"
-#include "../../menu/qactbutton.h"
+#include "../../menu/buttons.h"
 
 #include "../../common/bathroom.h"
 

@@ -28,7 +28,7 @@ qt_add_executable(Game
     menu/customshadoweffect.h menu/customshadoweffect.cpp
     menu/overlaystatus.h menu/overlaystatus.cpp
     menu/bagform.h menu/bagform.cpp menu/bagform.ui
-    menu/qactbutton.h menu/qactbutton.cpp
+    menu/buttons.h menu/buttons.cpp
 
     map/scenemarker.h map/scenemarker.cpp
     map/sceneviewer.h map/sceneviewer.cpp

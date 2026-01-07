@@ -1,5 +1,5 @@
 #include "korrPar.h"
-#include "../menu/qactbutton.h"
+#include "../menu/buttons.h"
 korrPar::korrPar(LocationHandler *ptr): Location(ptr){}
 
 void korrPar::show(QString arg)
