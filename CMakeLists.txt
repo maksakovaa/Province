@@ -133,6 +133,7 @@ qt_add_executable(Game
     events/gad_events/mirasex.h events/gad_events/mirasex.cpp
     events/gad_events/mitkabuh.h events/gad_events/mitkabuh.cpp
     events/gad_events/mitkabuhgroup.h events/gad_events/mitkabuhgroup.cpp
+    events/gad_events/sergeihanter.h events/gad_events/sergeihanter.cpp
 
 )
 
