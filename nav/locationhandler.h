@@ -63,6 +63,7 @@ private: //Access methods
     void blow_job();
     void anal_cum();
     void fnswallow();
+    void dp_start();
     void double_penetration();
     void sleepInBed();
 

@@ -89,6 +89,10 @@ void EventHandler::initEvents()
     m_events["grandmahelp"] = new GrandmaHelp(this);
     m_events["grandpa"] = new Grandpa(this);
     m_events["grandpahelp"] = new GrandpaHelp(this);
+    m_events["grandparents_events"] = new GrandparentsEvents(this);
+    m_events["hantersex"] = new HanterSex(this);
+    m_events["hanters"] = new Hanters(this);
+    m_events["HanterLoveSex"] = new HantersLoveSex(this);
     m_events["Miroslava"] = new Miroslava(this);
     m_events["Mitka"] = new Mitka(this);
     m_events["mitkasex"] = new MitkaSex(this);
@@ -254,6 +258,11 @@ void EventHandler::setBoy2Name(QString name)
     root->setBoy2Name(name);
 }
 
+void EventHandler::fnAlko(int val)
+{
+    root->fnAlko(val);
+}
+
 QString EventHandler::getLipTalk()
 {
     return root->getLipTalk();
@@ -382,6 +391,11 @@ void EventHandler::anal_cum()
 void EventHandler::fnswallow()
 {
     root->fnswallow();
+}
+
+void EventHandler::dp_start()
+{
+    root->dp_start();
 }
 
 void EventHandler::double_penetration()

@@ -57,6 +57,11 @@ void SexHandler::fnswallow()
     m_sex->fnswallow();
 }
 
+void SexHandler::dp_start()
+{
+    m_sex->dp_start();
+}
+
 void SexHandler::double_penetration()
 {
     m_sex->double_penetration();

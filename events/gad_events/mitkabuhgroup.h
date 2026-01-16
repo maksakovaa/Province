@@ -1,14 +1,13 @@
-#ifndef MITKA_H
-#define MITKA_H
+#ifndef MITKABUHGROUP_H
+#define MITKABUHGROUP_H
 
 #include "../event.h"
 class EventHandler;
 
-class Mitka: public Event
+class MitkaBuhGroup: public Event
 {
-    Q_OBJECT
 public:
-    Mitka(EventHandler* ptr);
+    MitkaBuhGroup(EventHandler* ptr);
     void start(QString arg = "") override;
 private slots:
     void actionHandler(QString action);
@@ -17,9 +16,14 @@ private:
     QString str(int id);
     QString act(int id);
     QString media(int id);
+    void setMitka();
+    void setVasyan();
+    void setKolyamba();
+    void sexDepOnMesec();
 private:
     EventHandler* root;
-    int tmp;
+    int order{0};
+    int mirapiss;
 };
 
-#endif // MITKA_H
+#endif // MITKABUHGROUP_H

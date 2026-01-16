@@ -1,7 +1,6 @@
 #include "mitka.h"
 #include "../eventhandler.h"
 #include "../../Functions.h"
-
 #include "../../menu/buttons.h"
 
 Mitka::Mitka(EventHandler *ptr): root(ptr) {}

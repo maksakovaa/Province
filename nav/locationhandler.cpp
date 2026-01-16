@@ -245,6 +245,11 @@ void LocationHandler::fnswallow()
     ((MainWindow*)m_root)->sexHandler->fnswallow();
 }
 
+void LocationHandler::dp_start()
+{
+    ((MainWindow*)m_root)->sexHandler->dp_start();
+}
+
 void LocationHandler::double_penetration()
 {
     ((MainWindow*)m_root)->sexHandler->double_penetration();

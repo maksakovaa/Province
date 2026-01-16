@@ -791,6 +791,44 @@ void Sex::fnswallow()
     root->m_render->addText(str[getRandInt(0,2)] + str[getRandInt(3,5)] + str[getRandInt(6,8)]);
 }
 
+void Sex::dp_start()
+{
+    QString boy;
+    if(root->getBoyName().isEmpty())
+        boy = "Парень";
+    else
+        boy = root->getBoyName();
+    m_cc_sex_usecondom = 0;
+    if(root->getVSexVar(use_condoms) == 1 && root->getVSexVar(protect) == 1 && root->getItemCount(iCondoms) > 0)
+    {
+        root->useItem(iCondoms,1);
+        m_cc_sex_usecondom = 1;
+        root->updVSexVar(lubonus_v,1);
+        root->m_render->addText(boy + "взял у вас презерватив и одел его на свой член.");
+    }
+    if(root->getVSexVar(analplugIN) == 1)
+    {
+        root->setVSexVar(analpluginbonus,5);
+        root->setVSexVar(analplugIN,0);
+        root->m_render->addText("Вы вытащили из вашей  попки анальную пробку.");
+    }
+    if(root->getItemCount(iLubri) > 0)
+    {
+        root->useItem(iLubri,1);
+        root->updVSexVar(lubonus_a,5);
+        root->m_render->addText("Выдавив анальной смазки себе на руку, вы начали смазывать им свою попку. После этого вы выдавили еще немного лубриканта на руку и начали смазывать им член." + boy + " был совсем не против и с легкой усмешкой наблюдал за вашими действиями.");
+    }
+    if(root->getVStatus(horny) / 10 + root->getVBody(vagina) + root->getVAddict(alko) < root->getVSexVar(dick) && root->getItemCount(iLubri) > 0)
+    {
+        root->useItem(iLubri,1);
+        root->updVSexVar(lubonus_v,5);
+        if(getRandInt(1,2) == 1)
+            root->m_render->addText("Вы выдавили лубрикант себе на руку и начали намазывать парню член.");
+        else
+            root->m_render->addText("Парень взял у вас тюбик с лубрикантом и смазал свой член смазкой.");
+    }
+}
+
 void Sex::double_penetration()
 {
     if(root->getVSexVar(analplugIN) == 1)

@@ -1,14 +1,13 @@
-#ifndef MITKA_H
-#define MITKA_H
+#ifndef IGORHANTER_H
+#define IGORHANTER_H
 
 #include "../event.h"
 class EventHandler;
 
-class Mitka: public Event
+class IgorHanter: public Event
 {
-    Q_OBJECT
 public:
-    Mitka(EventHandler* ptr);
+    IgorHanter(EventHandler* ptr);
     void start(QString arg = "") override;
 private slots:
     void actionHandler(QString action);
@@ -19,7 +18,17 @@ private:
     QString media(int id);
 private:
     EventHandler* root;
-    int tmp;
+    int boypic;
+    int dick;
+    int silaVag;
+    int finance;
+    int vneshBoy;
+    int figurBoy;
+    int titBoy;
+    int haerBoy;
+    int harakBoy;
+    int izvrat;
+    int boyage;
 };
 
-#endif // MITKA_H
+#endif // IGORHANTER_H

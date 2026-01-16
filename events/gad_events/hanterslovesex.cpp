@@ -7,6 +7,11 @@ HantersLoveSex::HantersLoveSex(EventHandler* ptr): root(ptr) {}
 
 void HantersLoveSex::start(QString arg)
 {
+    if(!arg.isEmpty())
+    {
+        actionHandler(arg);
+        return;
+    }
     if(root->gVEvent(hantersIgorLove) > 0 && root->gVQuest(hantersIgorQW) <= 50)
     {
         root->rendImagePage();

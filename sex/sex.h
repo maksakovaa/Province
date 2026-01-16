@@ -20,6 +20,7 @@ public:
     void anal_cum();
     void blow_job();
     void fnswallow();
+    void dp_start();
     void double_penetration();
 private:
     SexHandler* root;

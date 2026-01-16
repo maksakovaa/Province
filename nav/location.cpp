@@ -396,6 +396,11 @@ void Location::fnSwallow()
     root->fnswallow();
 }
 
+void Location::dp_start()
+{
+    root->dp_start();
+}
+
 void Location::redress(ClothType type, Cloth *newCloth)
 {
     root->redress(type, newCloth);

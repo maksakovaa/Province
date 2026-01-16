@@ -35,7 +35,6 @@ void Miroslava::actionHandler(QString action)
     if(action == "Miroslava")
     {
         age = root->getAge();
-        // temp = rand(0,20)
         int mira_temp = getRandInt(0,20);
         if(root->gVEvent(mirainriver) == 1)
         {
@@ -1460,7 +1459,7 @@ QString Miroslava::act(int id)
 
 QString Miroslava::media(int id)
 {
-    QString med[30];
+    QString med[38];
     med[0] = "data/locations/gadukino/river/events/MiraBeach.jpg";
     med[1] = "data/locations/gadukino/river/events/MiraBeachNude.jpg";
     med[2] = "data/npc/gadukino/miroslava/Mira.jpg";

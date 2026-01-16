@@ -126,6 +126,13 @@ qt_add_executable(Game
     events/gad_events/grandparentsevents.h events/gad_events/grandparentsevents.cpp
     events/gad_events/hanterslovesex.h events/gad_events/hanterslovesex.cpp
     events/gad_events/hanters.h events/gad_events/hanters.cpp
+    events/gad_events/hantersex.h events/gad_events/hantersex.cpp
+    events/gad_events/igorhanter.h events/gad_events/igorhanter.cpp
+    events/gad_events/meadowevent.h events/gad_events/meadowevent.cpp
+    events/gad_events/mirafather.h events/gad_events/mirafather.cpp
+    events/gad_events/mirasex.h events/gad_events/mirasex.cpp
+    events/gad_events/mitkabuh.h events/gad_events/mitkabuh.cpp
+    events/gad_events/mitkabuhgroup.h events/gad_events/mitkabuhgroup.cpp
 
 )
 

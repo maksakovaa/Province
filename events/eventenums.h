@@ -31,6 +31,7 @@ enum EventParams
     grandpahelping,
     monthbabkapay,
     monthgrandmahelp,
+    grandpa_mira_guest,
     //Pirat
     pir_pirat,
     pirat,
@@ -164,6 +165,7 @@ enum EventParams
     mitka,
     mitboyrand,
     mitkaday,
+    mitkadaybuh,
     mitkasextimes,
     mitkasex,
     mitkagadsex,
@@ -196,7 +198,10 @@ enum EventParams
     miralesb,
     lickmira,
     mirafathertalk,
+    mirafatherday,
     miralko,
+    mirahorny,
+    miraorgasm,
 
     family_trip_month,
     family_trip,

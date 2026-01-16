@@ -1,14 +1,13 @@
-#ifndef MITKA_H
-#define MITKA_H
+#ifndef MIRAFATHER_H
+#define MIRAFATHER_H
 
 #include "../event.h"
 class EventHandler;
 
-class Mitka: public Event
+class MiraFather: public Event
 {
-    Q_OBJECT
 public:
-    Mitka(EventHandler* ptr);
+    MiraFather(EventHandler* ptr);
     void start(QString arg = "") override;
 private slots:
     void actionHandler(QString action);
@@ -19,7 +18,10 @@ private:
     QString media(int id);
 private:
     EventHandler* root;
-    int tmp;
+    QString boy {"Афанасий"};
+    int dickSize = 18;
+    int sexSkill = 0;
+    int harakBoy = 1;
 };
 
-#endif // MITKA_H
+#endif // MIRAFATHER_H

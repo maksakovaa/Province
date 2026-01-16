@@ -148,6 +148,7 @@ protected:
     void fnBlowJob();
     void fnCum(QString target);
     void fnSwallow();
+    void dp_start();
     LocId getPrevId();
     LocId getPrevIn();
     QLabel* getTextPtr();

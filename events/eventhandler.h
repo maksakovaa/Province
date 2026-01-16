@@ -66,7 +66,7 @@ public:
     void sVBody(Body param, int val);
     void setBoyName(QString name);
     void setBoy2Name(QString name);
-
+    void fnAlko(int val);
     QString getLipTalk();
     QString getLipTalk3();
     QString getAnusTipe();
@@ -95,6 +95,7 @@ public:
     void blow_job();
     void anal_cum();
     void fnswallow();
+    void dp_start();
     void double_penetration();
 
     void changeLoc(LocId locId, int min = 0, QString arg = "");
