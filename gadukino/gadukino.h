@@ -22,8 +22,6 @@ private:
     QString str(int id);
     QString act(int id);
     QString media(int id);
-private:
-    LocationHandler* root;
 };
 
 #endif // GADUKINO_H

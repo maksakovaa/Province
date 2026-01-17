@@ -22,11 +22,6 @@ private:
     QString str(int id);
     QString media(int id);
     void makeActBtn(QString action, QString actName);
-private:
-    int grandma_ingadgarden{0};
-    int grandpa_ingadgarden{0};
-    int strawberriesday{0};
-    int fruitday{0};
 };
 
 #endif // GADGARDEN_H

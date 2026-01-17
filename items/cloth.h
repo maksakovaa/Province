@@ -46,6 +46,7 @@ public:
     QString getName();
     void decreaseCondition(int value = 1);
     int getCondition();
+    int getPrice();
 private:
     ClothType m_type;
     QString m_name;
@@ -64,6 +65,7 @@ public:
     int getId();
     int getClothBonus();
     void setSize(int size);
+    int getSize();
 private:
     int m_id;
     ClothGroup m_group;

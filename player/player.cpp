@@ -345,6 +345,11 @@ int Player::getVJob(JobStatus param)
     return m_job[param];
 }
 
+int &Player::vPreg(PregVar param)
+{
+    return m_preg[param];
+}
+
 int Player::getClothGroup()
 {
     if(m_clothSLots[ClothType::Main] != nullptr)
@@ -378,6 +383,11 @@ void Player::initDefaultArrays()
     for (int i = SexVar::protect; i <= SexVar::spanked; ++i)
     {
         m_sex[static_cast<SexVar>(i)] = 0;
+    }
+
+    for (int i = PregVar::status_mc_vagina; i <= PregVar::estrus; ++i)
+    {
+        m_preg[static_cast<PregVar>(i)] = 0;
     }
     
     for (int i = Sickness::sick; i <= Sickness::Kandidoz; i++)

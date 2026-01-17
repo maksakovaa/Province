@@ -24,8 +24,6 @@ private:
     QString media(int id);
     void dirtySwampHouse();
     void clothes_read_magazines();
-private:
-    LocationHandler* root;
 };
 
 #endif // SWAMPHOUSE_H

@@ -23,7 +23,6 @@ private:
     QString act(int id);
     QString media(int id);
 private:
-    LocationHandler* root;
     int tmp;
     QString boy;
 };

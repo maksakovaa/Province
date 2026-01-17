@@ -131,24 +131,7 @@
           </layout>
          </widget>
          <widget class="SettingsForm" name="page_2_settings"/>
-         <widget class="QWidget" name="page_3_load">
-          <widget class="QLabel" name="txtLabel">
-           <property name="geometry">
-            <rect>
-             <x>9</x>
-             <y>9</y>
-             <width>73</width>
-             <height>18</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>Load Game:</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
-           </property>
-          </widget>
-         </widget>
+         <widget class="LoadForm" name="page_3_load"/>
         </widget>
        </item>
       </layout>
@@ -474,6 +457,13 @@ a:visited {
    <header>settingsform.h</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>LoadForm</class>
+   <extends>QWidget</extends>
+   <header>loadform.h</header>
+   <container>1</container>
+  </customwidget>
  </customwidgets>
+ <resources/>
  <connections/>
 </ui>

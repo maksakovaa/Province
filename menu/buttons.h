@@ -43,4 +43,17 @@ private:
     QString m_objName;
 };
 
+class SaveBtn: public QPushButton
+{
+    Q_OBJECT
+public:
+    SaveBtn(QString file);
+signals:
+    void sigSaveClick(QString file);
+private slots:
+    void slotClick();
+private:
+    QString m_file;
+};
+
 #endif // BUTTONS_H

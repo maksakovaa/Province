@@ -14,7 +14,8 @@
    <string>Провинциалка: Remake</string>
   </property>
   <property name="windowIcon">
-    <iconset><normaloff>data/img/icons/game.ico</normaloff>data/img/icons/game.ico</iconset>
+   <iconset>
+    <normaloff>data/img/icons/game.ico</normaloff>data/img/icons/game.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="5,1">
@@ -35,7 +36,7 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>406</width>
+             <width>410</width>
              <height>673</height>
             </rect>
            </property>
@@ -70,8 +71,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>415</width>
-             <height>691</height>
+             <width>89</width>
+             <height>28</height>
             </rect>
            </property>
           </widget>
@@ -188,7 +189,8 @@
               <string/>
              </property>
              <property name="icon">
-               <iconset><normaloff>data/img/icons/save.png</normaloff>data/img/icons/save.png</iconset>
+              <iconset>
+               <normaloff>data/img/icons/save.png</normaloff>data/img/icons/save.png</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -222,7 +224,8 @@
               <string/>
              </property>
              <property name="icon">
-               <iconset><normaloff>data/img/icons/load.png</normaloff>data/img/icons/load.png</iconset>
+              <iconset>
+               <normaloff>data/img/icons/load.png</normaloff>data/img/icons/load.png</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -633,7 +636,8 @@
             <string/>
            </property>
            <property name="icon">
-             <iconset><normaloff>data/img/icons/map.png</normaloff>
+            <iconset>
+             <normaloff>data/img/icons/map.png</normaloff>
              <disabledoff>data/img/icons/nomap.png</disabledoff>data/img/icons/map.png</iconset>
            </property>
            <property name="iconSize">
@@ -784,5 +788,6 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <resources/>
  <connections/>
 </ui>

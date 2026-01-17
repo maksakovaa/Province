@@ -32,6 +32,9 @@ enum EventParams
     monthbabkapay,
     monthgrandmahelp,
     grandpa_mira_guest,
+    strawberriesday,
+    fruitday,
+
     //Pirat
     pir_pirat,
     pirat,

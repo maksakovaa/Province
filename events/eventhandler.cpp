@@ -93,11 +93,18 @@ void EventHandler::initEvents()
     m_events["hantersex"] = new HanterSex(this);
     m_events["hanters"] = new Hanters(this);
     m_events["HanterLoveSex"] = new HantersLoveSex(this);
+    m_events["IgorHanter"] = new IgorHanter(this);
+    m_events["Meadow_event"] = new MeadowEvent(this);
+    m_events["Mirafather"] = new MiraFather(this);
+    m_events["mirasex"] = new MiraSex(this);
     m_events["Miroslava"] = new Miroslava(this);
+    m_events["mitkabuh_group"] = new MitkaBuhGroup(this);
+    m_events["mitkabuh"] = new MitkaBuh(this);
     m_events["Mitka"] = new Mitka(this);
     m_events["mitkasex"] = new MitkaSex(this);
     m_events["Pirat"] = new Pirat(this);
     m_events["river_events"] = new RiverEvents(this);
+    m_events["SergeiHanter"] = new SergeiHanter(this);
     m_events["swamp_events"] = new SwampEvents(this);
 
     m_events["family"] = new Family(this);

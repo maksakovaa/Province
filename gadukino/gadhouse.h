@@ -22,8 +22,6 @@ private:
     QString str(int id);
     QString media(int id);
     void makeActBtn(QString action, QString actName);
-private:
-
 };
 
 #endif // GADHOUSE_H

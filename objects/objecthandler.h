@@ -15,7 +15,7 @@ class Wardrobe;
 class ObjectHandler: public QObject
 {
     Q_OBJECT
-    friend Mirror; friend Bed; friend Wardrobe;
+    friend Mirror; friend Bed; friend Wardrobe; friend SaveForm; friend LoadForm;
 public:
     ObjectHandler(Render* ptr, QWidget* parent = nullptr, QVBoxLayout* actions = nullptr);
     Cloth* wearCloth(Cloth* thing);

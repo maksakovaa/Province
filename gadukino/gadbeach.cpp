@@ -55,7 +55,7 @@ void Gadbeach::actionHandler(QString action)
             addText(str(3));
         if(getTemp() >= 20 && isDay())
         {
-            if(gVEvent(mirainriver) == 0 && gVEvent(mitkasextimes) >= 13 && i == 0 && getSunWeather() >= 0 && guysriver != getDay())
+            if(gVEvent(mirainriver) == 0 && gVEvent(mitkasextimes) >= 13 && i == 0 && getSunWeather() >= 0 && gVEvent(guysriver) != getDay())
             {
                 startEvent("river_events", "guys_beach");
             }

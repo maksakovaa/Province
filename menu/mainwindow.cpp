@@ -13,7 +13,23 @@ MainWindow::MainWindow(SettingsForm* settingsForm, int year, int month, int day,
     , m_time(this, year, month, day, 8, 0),
     m_ccalko(this),
     m_reproductSys(this),
-    m_ccsex(this)
+    m_ccsex(this),
+    savePage(this), loadPage(this)
+{
+    this->setStyleSheet("background-color: #ffffff; color: #464646; font-size: 16px; font-family: 'Serif';");
+    ui->setupUi(this);
+    setupMainWindow(settingsForm);
+    m_que = new NotificationQueue(ui->centralwidget);
+}
+
+MainWindow::MainWindow(SettingsForm *settingsForm, QWidget *parent)
+    : QMainWindow(parent),
+    ui(new Ui::MainWindow),
+    m_time(this),
+    m_ccalko(this),
+    m_reproductSys(this),
+    m_ccsex(this),
+    savePage(this),loadPage(this)
 {
     this->setStyleSheet("background-color: #ffffff; color: #464646; font-size: 16px; font-family: 'Serif';");
     ui->setupUi(this);
@@ -34,16 +50,27 @@ MainWindow *MainWindow::createMenu()
     {
         return nullptr;
     }
-    SettingsForm* settings = m.getSettingsPtr();
-    CharacterType type = m.getCharType();
-    QString loc = m.getStartLoc();
-    int year = m.getStartYear();
-    int month = m.getStartMonth();
-    int day = m.getStartDay();
-    auto w = new MainWindow(settings, year, month, day);
-    w->start(loc, type);
-    w->setAttribute(Qt::WA_DeleteOnClose);
-    return w;
+    else if (result == QDialog::Accepted)
+    {
+        SettingsForm* settings = m.getSettingsPtr();
+        CharacterType type = m.getCharType();
+        QString loc = m.getStartLoc();
+        int year = m.getStartYear();
+        int month = m.getStartMonth();
+        int day = m.getStartDay();
+        auto w = new MainWindow(settings, year, month, day);
+        w->start(loc, type);
+        w->setAttribute(Qt::WA_DeleteOnClose);
+        return w;   
+    }
+    else
+    {
+        SettingsForm* settings = m.getSettingsPtr();
+        auto w = new MainWindow(settings);
+        w->loadPage.loadSave(m.getSave());
+        w->setAttribute(Qt::WA_DeleteOnClose);
+        return w;
+    }
 }
 
 void MainWindow::start(QString loc, CharacterType charType)
@@ -86,6 +113,8 @@ void MainWindow::setupMainWindow(SettingsForm* settingsForm)
     connections();
     setupActionButtons();;
     loadStrings();
+    ui->stackedWidget->addWidget(&savePage);
+    ui->stackedWidget->addWidget(&loadPage);
     this->adjustSize();
 }
 
@@ -548,3 +577,39 @@ void MainWindow::slotUpdPlayerIcon()
 {
     ui->pushButtonPlayer->setIcon(m_player->getPlayerIcon());
 }
+
+void MainWindow::on_pushButtonSave_clicked()
+{
+    if(ui->stackedWidget->currentIndex() != 5)
+    {
+        saveActions();
+        ui->pushButtonMap->setEnabled(false);
+        ui->stackedWidget->setCurrentIndex(5);
+        ClearLayout(ui->actionsLayout);
+        savePage.viewSaves();
+    }
+    else
+    {
+        ui->stackedWidget->setCurrentIndex(0);
+        reloadActions();
+    }
+}
+
+
+void MainWindow::on_pushButtonLoad_clicked()
+{
+    if(ui->stackedWidget->currentIndex() != 6)
+    {
+        saveActions();
+        ui->pushButtonMap->setEnabled(false);
+        ui->stackedWidget->setCurrentIndex(6);
+        ClearLayout(ui->actionsLayout);
+        loadPage.viewSaves();
+    }
+    else
+    {
+        ui->stackedWidget->setCurrentIndex(0);
+        reloadActions();
+    }
+}
+

@@ -15,6 +15,7 @@ class LocationHandler: public QObject
     Q_OBJECT
     friend Location; friend EventHandler; friend KitchenActs;
     friend Common; friend Beach; friend Player;
+    friend SaveForm; friend LoadForm;
 public:
     LocationHandler(Render* ptr, QWidget *parent, QVBoxLayout* actionsLayout);
     LocId getCurLoc();
@@ -25,7 +26,6 @@ public:
     void uVSchool(SchoolVar param, int val);
     void sVSchool(SchoolVar param, int val);
 public slots:
-//    void slotChangeLoc(const QString& locId, int time, QString arg = "");
     void slotChangeLoc(LocId id, int time, QString arg = "");
 signals:
     void sigUpdParams();

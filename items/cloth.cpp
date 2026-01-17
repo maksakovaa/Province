@@ -23,6 +23,11 @@ int Cloth::getCondition()
     return m_condition;
 }
 
+int Cloth::getPrice()
+{
+    return m_price;
+}
+
 ClothMain::ClothMain(int id, ClothGroup group, QString name, int price, int condition): Cloth(ClothType::Main, name, price, condition)
 {
     m_id = id;
@@ -83,6 +88,11 @@ int ClothMain::getClothBonus()
 void ClothMain::setSize(int size)
 {
     m_size = size;
+}
+
+int ClothMain::getSize()
+{
+    return m_size;
 }
 
 ClothPanties::ClothPanties(ClothType type, int price, int condition): Cloth(type, "трусы", price, condition)

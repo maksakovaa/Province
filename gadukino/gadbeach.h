@@ -22,7 +22,6 @@ private:
     QString str(int id);
     QString act(int id);
     QString media(int id);
-    int guysriver{0};
 };
 
 #endif // GADBEACH_H

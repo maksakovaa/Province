@@ -22,7 +22,6 @@ private:
     QString getStr(int id);
     QString media(int id);
 private:
-    int grandpa_ingaddvor{0};
     int mira_temp{0};
 };
 

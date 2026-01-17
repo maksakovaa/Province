@@ -6,6 +6,7 @@ Render::Render(QWidget *parent): root(parent){}
 
 void Render::rendVideoPage(QObject* ptr)
 {
+    curpage = 1;
     handler = ptr;
     resetCurrent();
 
@@ -29,6 +30,7 @@ void Render::rendVideoPage(QObject* ptr)
 
 void Render::rendImagePage(QObject* ptr)
 {
+    curpage = 0;
     handler = ptr;
     resetCurrent();
     

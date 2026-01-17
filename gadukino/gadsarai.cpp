@@ -159,11 +159,11 @@ void Gadsarai::actionHandler(QString action)
         {
             startEvent("grandma");
         }
-        if (know_no_pirat == 0)
+        if (gVEvent(know_no_pirat) == 0)
         {
             clearActions();
             incTime(60);
-            know_no_pirat = 1;
+            sVEvent(know_no_pirat, 1);
             setImage(media(1));
             setDesc(str(14));
             makeActBtn("sarai", act(5));

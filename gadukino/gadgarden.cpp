@@ -41,8 +41,8 @@ void Gadgarden::actionHandler(QString action)
     clearActions();
     if(action == "garden")
     {
-        grandma_ingadgarden = 0;
-        grandpa_ingadgarden = 0;
+        sVEvent(grandma_ingadgarden, 0);
+        sVEvent(grandpa_ingadgarden, 0);
         int month = getMonth();
         setImage(makeImage(media(0),isDay(),month));
         setDesc(str(0));
@@ -51,13 +51,13 @@ void Gadgarden::actionHandler(QString action)
         if((month >= 6 && month <= 8 && gVJob(graze_cow) == 0) || (month >= 5 && month <= 9 && gVJob(graze_cow) > 0) )
             if(getSunWeather() >= 0 && getHour() > 7 && getHour() < 13)
             {
-                grandma_ingadgarden = 1;
+                sVEvent(grandma_ingadgarden, 1);
                 addText(str(2));
             }
         if(getSunWeather() >= 0 && getHour() > 7 && getHour() < 13 && gVJob(graze_cow) == 0 && (month == 5 || month == 9))
         {
-            grandpa_ingadgarden = 1;
-            grandma_ingadgarden = 1;
+            sVEvent(grandpa_ingadgarden, 1);
+            sVEvent(grandma_ingadgarden, 1);
             addText(str(3));
         }
         if(grandma_ingadgarden == 1 && gVEvent(grandmaknowsick) == 1)
@@ -127,7 +127,7 @@ void Gadgarden::actionHandler(QString action)
     {
         setImage(media(4));
         setDesc(str(12));
-        if((getMonth() == 6 || getMonth() == 7) && strawberriesday != gVStatus(daystart))
+        if((getMonth() == 6 || getMonth() == 7) && gVEvent(strawberriesday) != gVStatus(daystart))
         {
             makeActBtn("eatStrawberry", str(13));
         }
@@ -139,7 +139,7 @@ void Gadgarden::actionHandler(QString action)
     }
     if(action == "eatStrawberry")
     {
-        strawberriesday = gVStatus(daystart);
+        sVEvent(strawberriesday,gVStatus(daystart));
         incTime(30);
         uVStatus(mood,10);
         uVStatus(water,10);
@@ -185,7 +185,7 @@ void Gadgarden::actionHandler(QString action)
         int hour = getHour();
         if(month >= 6 && month <= 8 && sunWeather >= 0 && hour > 7 && hour < 13 && getWeekNum() == 7 && gVJob(graze_cow) == 0)
             setDesc(str(19));
-        if(month >= 7 && month <= 9 && fruitday != gVStatus(daystart))
+        if(month >= 7 && month <= 9 && gVEvent(fruitday) != gVStatus(daystart))
             makeActBtn("eatFruits", str(20));
         if(gVJob(fruit_collect) == 1)
             makeActBtn("fruit_collect", str(22));
@@ -193,7 +193,7 @@ void Gadgarden::actionHandler(QString action)
     }
     if(action == "eatFruits")
     {
-        fruitday = gVStatus(daystart);
+        sVEvent(fruitday, gVStatus(daystart));
         incTime(30);
         uVStatus(mood,10);
         uVStatus(water,5);

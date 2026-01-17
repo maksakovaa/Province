@@ -38,6 +38,7 @@ void Gaddvor::actionHandler(QString action)
 {
     if(action == "gaddvor")
     {
+        sVEvent(grandpa_ingaddvor,0);
         setImage(makeImage(media(0), isDay(), getMonth()));
         setDesc(getStr(0));
         if(isDay() && getMonth() >= 4 && getMonth() <= 10)
@@ -46,10 +47,12 @@ void Gaddvor::actionHandler(QString action)
             addText(getStr(2));
         if(getMonth() > 5 && getMonth() < 9 && getSunWeather() >= 0 && gVJob(graze_cow) == 0)
         {
-            if(getHour() > 7 && getHour() < 13  && (getWeekNum() == 2 || getWeekNum() == 4 || getWeekNum() == 6))
+            if((getHour() > 7 && getHour() < 13  && (getWeekNum() == 2 || getWeekNum() == 4 || getWeekNum() == 6)) ||
+                (getHour() > 13 && getHour() < 18 && (getWeekNum() == 3 || getWeekNum() == 5)))
+            {
+                sVEvent(grandpa_ingaddvor,1);
                 addText(getStr(3));
-            if(getHour() > 13 && getHour() < 18 && (getWeekNum() == 3 || getWeekNum() == 5))
-                addText(getStr(3));
+            }
         }
         makeActBtn("go_izba", getStr(4));
         makeActBtn("go_sarai", getStr(5));

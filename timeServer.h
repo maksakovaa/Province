@@ -16,10 +16,15 @@ struct TimeCounters {
     int division;
 };
 
+class SaveForm;
+class LoadForm;
+
 class TimeServer: public QObject
 {
     Q_OBJECT
+    friend SaveForm; friend LoadForm;
 public:
+    TimeServer(QWidget* ptr);
     TimeServer(QWidget* ptr,int year, int month, int day, int hour, int minutes);
     ~TimeServer() = default;
     QString getTime();

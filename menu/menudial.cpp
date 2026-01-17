@@ -16,6 +16,7 @@ MenuDial::MenuDial(QWidget *parent)
     ui->verticalLayout_5->addWidget(videoWidg);
     ui->verticalLayout_5->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     this->setStyleSheet("background-color: #ffffff; color: #464646; font-size: 16px; font-family: 'Serif';");
+    connect(ui->page_3_load, &LoadForm::load, this, &MenuDial::slotLoadGame);
 }
 
 MenuDial::~MenuDial()
@@ -53,6 +54,11 @@ int MenuDial::getStartDay()
     return day;
 }
 
+QString MenuDial::getSave()
+{
+    return save;
+}
+
 void MenuDial::on_pbExitGame_clicked()
 {
     reject();
@@ -62,6 +68,7 @@ void MenuDial::on_pbExitGame_clicked()
 void MenuDial::on_pbLoadGame_clicked()
 {
     ui->stackedWidget->setCurrentIndex(2);
+    ui->page_3_load->viewSaves();
 }
 
 
@@ -227,3 +234,8 @@ void MenuDial::slotStart(const QString &link)
     accept();
 }
 
+void MenuDial::slotLoadGame(QString fileName)
+{
+    save = fileName;
+    done(2);
+}

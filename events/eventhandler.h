@@ -12,9 +12,11 @@
 #include "../nav/location.h"
 
 class LocationHandler;
+class SaveForm; class LoadForm;
 
 class EventHandler
 {
+    friend SaveForm; friend LoadForm;
 public:
     EventHandler(LocationHandler* ptr);
     void eventStart(QString event, QString args = 0);

@@ -6,7 +6,7 @@ Pregnancy::Pregnancy(QWidget *ptr): root(ptr) {}
 
 bool Pregnancy::isEstrus()
 {
-    return m_estrus >= m_vag_estrus;
+    return estrus >= m_vag_estrus;
 }
 
 bool Pregnancy::isMesec()
@@ -26,61 +26,61 @@ int Pregnancy::getPregValue()
 
 void Pregnancy::chanceOfPregnancy()
 {
-    m_pregOdds = getRandInt(1, 100);
+    vPreg(pregOdds) = getRandInt(1, 100);
 
-    if (m_againstPregOdds == 0)
+    if (vPreg(againstPregOdds) == 0)
     {
-        m_againstPregOdds = getRandInt(1, 3);
+        vPreg(againstPregOdds) = getRandInt(1, 3);
     }
-    if (m_mesecPregOdds == 0)
+    if (vPreg(mesecPregOdds) == 0)
     {
-        m_mesecPregOdds = 1;
+        vPreg(mesecPregOdds) = 1;
     }
-    if (m_withoutPregOdds == 0)
+    if (vPreg(withoutPregOdds) == 0)
     {
-        m_withoutPregOdds = 35;
+        vPreg(withoutPregOdds) = 35;
     }
 
-    if (getVStatus(mesec) == 0 && m_birthCtrlPills == 0 && getVStatus(pregnancy) == 0)
+    if (getVStatus(mesec) == 0 && vPreg(birthCtrlPills) == 0 && getVStatus(pregnancy) == 0)
     {//нет месячных и нет таблеток
-        if (m_pregOdds >= 1 && m_pregOdds <= m_withoutPregOdds)
+        if (vPreg(pregOdds) >= 1 && vPreg(pregOdds) <= vPreg(withoutPregOdds))
         {
-            if (m_barrenness != 100)
+            if (vPreg(barrenness) != 100)
             {
                 /* $father = $boy*/
                 setVStatus(pregnancy,1);
             }
         }
     }
-    else if (getVStatus(mesec) == 0 && m_birthCtrlPills > 0 && getVStatus(pregnancy) == 0)
+    else if (getVStatus(mesec) == 0 && vPreg(birthCtrlPills) > 0 && getVStatus(pregnancy) == 0)
     {//нет месячных с таблетками
-        if (m_pregOdds >= 1 && m_pregOdds <= m_againstPregOdds)
+        if (vPreg(pregOdds) >= 1 && vPreg(pregOdds) <= vPreg(againstPregOdds))
         {
-            if (m_barrenness != 100)
+            if (vPreg(barrenness) != 100)
             {
                 /* code */
                 setVStatus(pregnancy,1);
             }
-            m_pregRisc = getRandInt(150,240);
+            vPreg(pregRisc) = getRandInt(150,240);
         }
     }
-    else if (getVStatus(mesec) > 0 && m_birthCtrlPills > 0 && getVStatus(pregnancy) == 0)
+    else if (getVStatus(mesec) > 0 && vPreg(birthCtrlPills) > 0 && getVStatus(pregnancy) == 0)
     {//месячные с таблетками
-        if (m_pregOdds >= 1 && m_pregOdds <= m_mesecPregOdds && m_pregOdds <= m_againstPregOdds)
+        if (vPreg(pregOdds) >= 1 && vPreg(pregOdds) <= vPreg(mesecPregOdds) && vPreg(pregOdds) <= vPreg(againstPregOdds))
         {
-            if (m_barrenness != 100)
+            if (vPreg(barrenness) != 100)
             {
                 /* $father = $boy */
                 setVStatus(pregnancy,1);
             }
-            m_pregRisc = getRandInt(150,250);
+            vPreg(pregRisc) = getRandInt(150,250);
         }
     }
-    else if (getVStatus(mesec) > 0 && m_birthCtrlPills == 0 && getVStatus(pregnancy) == 0)
+    else if (getVStatus(mesec) > 0 && vPreg(birthCtrlPills) == 0 && getVStatus(pregnancy) == 0)
     {//месячные без таблеток
-        if (m_pregOdds >= 1 && m_pregOdds <= m_mesecPregOdds)
+        if (vPreg(pregOdds) >= 1 && vPreg(pregOdds) <= vPreg(mesecPregOdds))
         {
-            if(m_barrenness != 100)
+            if(vPreg(barrenness) != 100)
             {
                 /* $father = $boy*/
                 setVStatus(pregnancy,1);
@@ -119,8 +119,8 @@ bool Pregnancy::PregVisibility()
 
 void Pregnancy::slotPregRecalc()
 {
-    m_pregWeeks = getVStatus(pregnancy) / 7;
-    if (m_pregWeeks <= 6)
+    vPreg(pregWeeks) = getVStatus(pregnancy) / 7;
+    if (vPreg(pregWeeks) <= 6)
     {
         updVStatus(Status::horny, 10);
         updVStatus(Status::lust, 10*getRandInt(0,1));
@@ -133,7 +133,7 @@ void Pregnancy::slotPregRecalc()
         
         slotRiscsUpdate(); //0
     }
-    if (m_pregWeeks <= 16)
+    if (vPreg(pregWeeks) <= 16)
     {
         updVStatus(Status::mood, getRandInt(-1,1) * 10);
         updVStatus(Status::horny, 15);
@@ -151,7 +151,7 @@ void Pregnancy::slotPregRecalc()
         }
         slotRiscsUpdate(); //1
     }
-    if (m_pregWeeks <= 24)
+    if (vPreg(pregWeeks) <= 24)
     {
         updVStatus(Status::horny, 7);
         updVStatus(Status::lust, 7*getRandInt(0,1));
@@ -167,7 +167,7 @@ void Pregnancy::slotPregRecalc()
         }
         slotRiscsUpdate(); //2
     }
-    if (m_pregWeeks <= 33)
+    if (vPreg(pregWeeks) <= 33)
     {
         updVStatus(Status::mood, getRandInt(-1,1) * 12);
         updVStatus(Status::horny, 7);
@@ -184,7 +184,7 @@ void Pregnancy::slotPregRecalc()
         }
         slotRiscsUpdate(); //3
     }
-    if (m_pregWeeks <= 40)
+    if (vPreg(pregWeeks) <= 40)
     {
         updVStatus(Status::horny, 7);
         updVStatus(Status::lust, 7*getRandInt(0,1));
@@ -235,12 +235,12 @@ void Pregnancy::slotMenstruus()
         }
         if (getVStatus(mesec) == 0)
         {
-            m_cikl++;
+            vPreg(cikl) += 1;
         }
-        if (m_cikl >= 23 && getVStatus(pregnancy) == 0)
+        if (vPreg(cikl) >= 23 && getVStatus(pregnancy) == 0)
         {
             setVStatus(mesec, 4);
-            m_cikl = 0;
+            vPreg(cikl) = 0;
         }
         if (getVStatus(mesec) > 0 && ((MainWindow*)root)->m_player->isAutoTampon() && getQuantityof(iTampon) > 0)
         {
@@ -287,10 +287,10 @@ void Pregnancy::slotMenstruus()
 
     if (getVStatus(pregnancy) > 0)
     {
-        if (m_pregWeeks <= 6) { setVStatus(Status::inc_preg_weight, 3); }
-        if (m_pregWeeks > 6 && m_pregWeeks <= 24) { setVStatus(Status::inc_preg_weight, 2); }
-        if (m_pregWeeks > 24 && m_pregWeeks <= 33) { setVStatus(Status::inc_preg_weight, getRandInt(1,2)); }
-        if (m_pregWeeks > 33) { setVStatus(Status::inc_preg_weight, getRandInt(1,2)); }
+        if (vPreg(pregWeeks) <= 6) { setVStatus(Status::inc_preg_weight, 3); }
+        if (vPreg(pregWeeks) > 6 && vPreg(pregWeeks) <= 24) { setVStatus(Status::inc_preg_weight, 2); }
+        if (vPreg(pregWeeks) > 24 && vPreg(pregWeeks) <= 33) { setVStatus(Status::inc_preg_weight, getRandInt(1,2)); }
+        if (vPreg(pregWeeks) > 33) { setVStatus(Status::inc_preg_weight, getRandInt(1,2)); }
     }
     else
     {
@@ -387,18 +387,18 @@ void Pregnancy::slotMenstruus()
 
 void Pregnancy::slotEstrus()
 {
-    if (m_cikl > 14)
+    if (vPreg(cikl) > 14)
     {
-        m_estrus = 28 - m_cikl;
+        vPreg(estrus) = 28 - vPreg(cikl);
     }
     else
     {
-        m_estrus = m_cikl;
+        vPreg(estrus) = vPreg(cikl);
     }
 
     if (getVStatus(pregnancy) == 0 && getVStatus(mesec) == 0)
     {
-        status_mc_vagina = m_estrus / 3;
+        vPreg(status_mc_vagina) = vPreg(estrus) / 3;
     }
 
     if (getVStatus(pregnancy) > 0)
@@ -409,9 +409,9 @@ void Pregnancy::slotEstrus()
     }
     else if (getVStatus(mesec) > 0)
     {
-        m_mesecPregOdds = 1;
-        m_withoutPregOdds = m_mesecPregOdds;
-        m_againstPregOdds = getRandInt(1, 2);
+        vPreg(mesecPregOdds) = 1;
+        vPreg(withoutPregOdds) = vPreg(mesecPregOdds);
+        vPreg(againstPregOdds) = getRandInt(1, 2);
         setVStatus(sexyAppeal, -3);
         setVStatus(addHorny, -3);
         setVStatus(inc_vag_grease, 1);
@@ -420,29 +420,29 @@ void Pregnancy::slotEstrus()
     {
         initPregData();
         int tmp_rand = getRandInt(1, 5);
-        int _tmp = m_Arr_Estrus[m_estrus] + getRandInt(-tmp_rand, tmp_rand);
+        int _tmp = m_Arr_Estrus[vPreg(estrus)] + getRandInt(-tmp_rand, tmp_rand);
         if (_tmp > 100)
         {
             _tmp = 100;
         }
-        m_withoutPregOdds = _tmp;
-        m_againstPregOdds = getRandInt(1, 2);
+        vPreg(withoutPregOdds) = _tmp;
+        vPreg(againstPregOdds) = getRandInt(1, 2);
         setVStatus(inc_vag_grease, _tmp / 10 - ((MainWindow*)root)->m_player->getVSexVar(level_v_rubbing));
         if (getVStatus(inc_vag_grease) < 0)
         {
             setVStatus(inc_vag_grease, 0);
         }
         setVStatus(sexyAppeal, -1);
-        setVStatus(addHorny, m_estrus/3);
-        if (m_estrus > 2)
+        setVStatus(addHorny, vPreg(estrus)/3);
+        if (vPreg(estrus) > 2)
         {
             setVStatus(sexyAppeal, 0);
         }
-        if (m_estrus > 6)
+        if (vPreg(estrus) > 6)
         {
             setVStatus(sexyAppeal, 1);
         }
-        if (m_estrus > 11)
+        if (vPreg(estrus) > 11)
         {
             setVStatus(sexyAppeal, 2);
         }
@@ -451,7 +451,7 @@ void Pregnancy::slotEstrus()
 
 void Pregnancy::slotIncreaseRiscs(int value)
 {
-    m_pregRisc += value;
+    vPreg(pregRisc) += value;
 }
 
 void Pregnancy::slotRiscsUpdate()
@@ -462,17 +462,17 @@ void Pregnancy::slotRiscsUpdate()
 
     if (alkoVal == 0)
     {
-        m_pregAlko = 0;
+        vPreg(pregAlko) = 0;
     }
     else
     {
-        m_pregAlko = 1;
+        vPreg(pregAlko) = 1;
     }   
-    if (m_pregAlko == 1)
+    if (vPreg(pregAlko) == 1)
     {
-        if(alkoVal < max_alko) { m_pregRisc += 1; }
-        else { m_pregRisc += 5; }
-        m_pregRisc += 1;
+        if(alkoVal < max_alko) { vPreg(pregRisc) += 1; }
+        else { vPreg(pregRisc) += 5; }
+        vPreg(pregRisc) += 1;
     }
 }
 
@@ -528,6 +528,11 @@ void Pregnancy::initPregData()
     m_Arr_Estrus[12]  =	56;
     m_Arr_Estrus[13]  =	80;
     m_Arr_Estrus[14]  = 95;
+}
+
+int &Pregnancy::vPreg(PregVar param)
+{
+    return ((MainWindow*)root)->m_player->vPreg(param);
 }
 
 int Pregnancy::getQuantityof(Items id)

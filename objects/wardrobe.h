@@ -27,10 +27,13 @@ private slots:
     void handleButtonClick() { emit sigAction(m_action); }
 };
 
+class SaveForm; class LoadForm;
+
 class Wardrobe: public GameObj
 {
     Q_OBJECT
     friend void ObjectHandler::slotInitWardrobe();
+    friend SaveForm; friend LoadForm;
 public:
     Wardrobe(ObjectHandler* ptr);
     ~Wardrobe() = default;

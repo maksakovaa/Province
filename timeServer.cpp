@@ -3,7 +3,19 @@
 #include "Functions.h"
 #include "menu/mainwindow.h"
 
-TimeServer::TimeServer(QWidget* ptr, int year, int month, int day, int hour, int minutes): root(ptr)
+TimeServer::TimeServer(QWidget *ptr): root(ptr)
+{
+    counters.division = 0;
+    counters.min_05 = 0;
+    counters.min_10 = 0;
+    counters.min_15 = 0;
+    counters.min_20 = 0;
+    counters.min_30 = 0;
+    counters.min_60 = 0;
+    nul = intQStr(0);
+}
+
+TimeServer::TimeServer(QWidget *ptr, int year, int month, int day, int hour, int minutes) : root(ptr)
 {
     counters.division = 0;
     counters.min_05 = 0;
@@ -110,13 +122,6 @@ int TimeServer::getWeekNum()
 void TimeServer::firstStart()
 {
     statNoTime();
-    // Elapsed5minutes();
-    // Elapsed10minutes();
-    // Elapsed15minutes();
-    // Elapsed20minutes();
-    // Elapsed30minutes();
-    // Elapsed60minutes();
-    // ElapsedDay();
     ElapsedTime();
     calcEnding();
     slotUpdParams();

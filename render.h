@@ -7,8 +7,12 @@
 #include <QMediaPlayer>
 #include <QVideoWidget>
 
+class SaveForm;
+class LoadForm;
+
 class Render
 {
+    friend SaveForm; friend LoadForm;
 public:
     Render(QWidget* parent = nullptr);
     void rendVideoPage(QObject* ptr);
@@ -35,6 +39,7 @@ private:
     QMediaPlayer* m_vplayer = nullptr;
     QVideoWidget* m_video = nullptr;
     QObject* handler;
+    int curpage; /* 0 - image 1 - video */
 };
 
 #endif // RENDER_H

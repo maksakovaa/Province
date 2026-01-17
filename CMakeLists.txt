@@ -134,6 +134,8 @@ qt_add_executable(Game
     events/gad_events/mitkabuh.h events/gad_events/mitkabuh.cpp
     events/gad_events/mitkabuhgroup.h events/gad_events/mitkabuhgroup.cpp
     events/gad_events/sergeihanter.h events/gad_events/sergeihanter.cpp
+    menu/saveform.h menu/saveform.cpp menu/saveform.ui
+    menu/loadform.h menu/loadform.cpp menu/loadform.ui
 
 )
 

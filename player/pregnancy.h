@@ -32,21 +32,10 @@ private:
     void updVSkill(Skills skil, int value);
     void setVStatus(Status param,int val);
     void initPregData();
+    int& vPreg(PregVar param);
     int getQuantityof(Items id);
     void useItem(Items id,int count);
 
-    int status_mc_vagina;
-    int m_mesecPregOdds;
-    int m_withoutPregOdds;
-    int m_againstPregOdds;
-    int m_pregOdds;
-    int m_pregRisc;
-    int m_pregWeeks;
-    int m_birthCtrlPills;
-    int m_barrenness;
-    int m_cikl{0};
-    int m_pregAlko{0};
-    int m_estrus;
     int m_vag_estrus{13};
     int m_Arr_Estrus[15];
 };

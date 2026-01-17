@@ -10,11 +10,12 @@
 
 class MainWindow;
 class Wardrobe;
-
+class SaveForm;
+class LoadForm;
 class Player: public QObject
 {
     Q_OBJECT
-    friend MainWindow;
+    friend MainWindow; friend SaveForm; friend LoadForm;
 public:
     Player(QWidget* ptr);
     void newPlayer(CharacterType history);
@@ -71,7 +72,7 @@ public:
     int getVSick(Sickness param);
     int getVAddict(Addiction param);
     int getVJob(JobStatus param);
-
+    int& vPreg(PregVar param);
     QString getName();
     QString getPFName();
     QString getBoyName();
@@ -161,6 +162,7 @@ private: //members
     std::unordered_map<Body, int> m_body;
     std::unordered_map<Status, int> m_status;
     std::unordered_map<SexVar, int> m_sex;
+    std::unordered_map<PregVar, int> m_preg;
     std::unordered_map<SC, int> m_statistic;
     std::unordered_map<Const, int> m_const;
     std::unordered_map<budilnik, int> m_budilnik;

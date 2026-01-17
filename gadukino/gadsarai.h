@@ -23,8 +23,6 @@ private:
     QString str(int id);
     QString act(int id);
     QString media(int id);
-private:
-    int know_no_pirat{0};
 };
 
 #endif

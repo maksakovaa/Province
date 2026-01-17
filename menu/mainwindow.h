@@ -12,6 +12,8 @@
 #include "overlaystatus.h"
 #include "notificationqueue.h"
 #include "bagform.h"
+#include "saveform.h"
+#include "loadform.h"
 
 #include "../render.h"
 #include "../nav/locationhandler.h"
@@ -28,11 +30,13 @@ QT_END_NAMESPACE
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+    friend LoadForm;
     friend Render; friend LocationHandler; friend ObjectHandler; friend SexHandler;
     friend Player; friend TimeServer; friend OverlayStatus; friend CC_Alko;
-    friend Weather; friend Pregnancy; friend CCSex;
+    friend Weather; friend Pregnancy; friend CCSex; friend SaveForm;
 public:
     MainWindow(SettingsForm* settingsForm, int year, int month, int day, QWidget *parent = nullptr);
+    MainWindow(SettingsForm* settingsForm, QWidget *parent = nullptr);
     ~MainWindow();
     static MainWindow* createMenu();
     void start(QString loc, CharacterType charType);
@@ -53,6 +57,10 @@ private slots:
     void on_labelDate_linkActivated(const QString& link);
     void on_labelMoney_linkActivated(const QString &link);
     void slotUpdPlayerIcon();
+    void on_pushButtonSave_clicked();
+
+    void on_pushButtonLoad_clicked();
+
 private: //methods
     void setupMainWindow(SettingsForm* settingsForm);
     void connections();
@@ -84,5 +92,7 @@ private: //members
     LocationHandler* locHandler;
     ObjectHandler* objHandler;
     SexHandler* sexHandler;
+    SaveForm savePage;
+    LoadForm loadPage;
 };
 #endif // MAINWINDOW_H

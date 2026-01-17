@@ -11,10 +11,12 @@ namespace Ui {
 class BagForm;
 }
 
+class SaveForm; class LoadForm;
+
 class BagForm : public QWidget
 {
     Q_OBJECT
-
+    friend SaveForm; friend LoadForm;
 public:
     explicit BagForm(QWidget *parent = nullptr);
     ~BagForm();

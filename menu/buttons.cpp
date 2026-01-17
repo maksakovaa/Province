@@ -30,3 +30,14 @@ void ObjButton::slotClick()
 {
     emit sigViewObject(m_objName);
 }
+
+SaveBtn::SaveBtn(QString file)
+{
+    m_file = file;
+    connect(this, &SaveBtn::clicked, this, &SaveBtn::slotClick);
+}
+
+void SaveBtn::slotClick()
+{
+    emit sigSaveClick(m_file);
+}

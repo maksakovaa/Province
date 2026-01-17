@@ -23,6 +23,7 @@ public:
     int getStartYear();
     int getStartMonth();
     int getStartDay();
+    QString getSave();
 private slots:
     void on_pbExitGame_clicked();
     void on_pbLoadGame_clicked();
@@ -32,6 +33,7 @@ private slots:
     void on_labelPersons_linkActivated(const QString &link);
     void on_pbSettings_clicked();
     void slotStart(const QString& link);
+    void slotLoadGame(QString fileName);
 private:
     void fillLegend();
     QString getStr(int id);
@@ -42,5 +44,6 @@ private:
     int month;
     int day;
     QString m_loc;
+    QString save;
 };
 #endif // MENUDIAL_H

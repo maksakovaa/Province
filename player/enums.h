@@ -73,7 +73,6 @@ enum Status
 
     isprok,
     mesec,
-    barrenness,
     pregnancy,
     pregnancyKnow,
     sexyAppeal,
@@ -189,6 +188,22 @@ enum SexVar
     spanked
 };
 
+enum PregVar
+{
+    status_mc_vagina,
+    mesecPregOdds,
+    withoutPregOdds,
+    againstPregOdds,
+    pregOdds,
+    pregRisc,
+    pregWeeks,
+    birthCtrlPills,
+    barrenness,
+    cikl,
+    pregAlko,
+    estrus
+};
+
 enum ToolType
 {
     tDick,
@@ -214,7 +229,7 @@ enum Sickness
     Sifilis,
     Gerpes,
     Triper,
-    Kandidoz,
+    Kandidoz
 };
 
 enum Addiction

@@ -138,6 +138,7 @@ void Settings::loadFromFile()
     if(!file.open(QIODevice::ReadOnly))
     {
         qDebug() << "Error opening file! " + file.fileName();
+        saveToFile();
     }
     else
     {
