@@ -228,14 +228,14 @@ QString MiroslavaHome::media(int id)
     med[0] = "data/locations/gadukino/gaddvor/meadow.jpg";
     med[1] = "data/locations/gadukino/mira_home/MiraHome.jpg";
     med[2] = "data/npc/gadukino/MiraFather.jpg";
-    med[3] = "data/qwest/mira/MiraQW7.jpg";
-    med[4] = "data/qwest/mira/Mira.jpg";
-    med[5] = "data/qwest/mira/Mira3.jpg";
-    med[6] = "data/qwest/mira/mira0." + intQStr(getRandInt(0,5)) + ".jpg";
-    med[7] = "data/qwest/mira/mira1." + intQStr(getRandInt(0,2)) + ".jpg";
-    med[8] = "data/qwest/mira/mira2." + intQStr(getRandInt(0,5)) + ".jpg";
-    med[9] = "data/qwest/mira/mira3." + intQStr(getRandInt(0,3)) + ".jpg";
-    med[10] = "data/qwest/mira/Mirawish2.jpg";
-    med[11] = "data/qwest/mira/Mirawish2_1.jpg";
+    med[3] = "data/sex/mira/MiraQW7.jpg";
+    med[4] = "data/sex/mira/Mira.jpg";
+    med[5] = "data/sex/mira/Mira3.jpg";
+    med[6] = "data/sex/mira/mira0." + intQStr(getRandInt(0,5)) + ".jpg";
+    med[7] = "data/sex/mira/mira1." + intQStr(getRandInt(0,2)) + ".jpg";
+    med[8] = "data/sex/mira/mira2." + intQStr(getRandInt(0,5)) + ".jpg";
+    med[9] = "data/sex/mira/mira3." + intQStr(getRandInt(0,3)) + ".jpg";
+    med[10] = "data/qwest/mira_wish/Mirawish2.jpg";
+    med[11] = "data/qwest/mira_wish/Mirawish2_1.jpg";
     return med[id];
 }

@@ -477,16 +477,16 @@ QString GrandparentsEvents::media(int id)
     med[9] = "data/actions/gad_animals/feed_horse.jpg";
     med[10] = "data/npc/horse/lead.jpg";
     med[11] = "data/actions/gad_animals/comb_horse.jpg";
-    med[12] = "data/qwest/mira/Mira_kennel2.jpg";
-    med[13] = "data/qwest/mira/Mira_kennel3.jpg";
+    med[12] = "data/qwest/mira_wish/Mira_kennel2.jpg";
+    med[13] = "data/qwest/mira_wish/Mira_kennel3.jpg";
     med[14] = "data/qwest/gadukino_nude/gaddvor_nude.jpg";
     med[15] = "data/qwest/gadukino_nude/gadukino_back_night.jpg";
     med[16] = "data/qwest/gadukino_nude/gadgarden_nude.jpg";
     med[17] = "data/qwest/gadukino_nude/gadukino_back_night.jpg";
-    med[18] = "data/qwest/gadukino/grandma.jpg";
+    med[18] = "data/npc/gadukino/grandma/grandma.jpg";
     med[19] = "data/npc/gadukino/cat/cat.jpg";
     med[20] = "data/npc/gadukino/cat/pat.jpg";
     med[21] = "data/npc/gadukino/grandma/grandmahelp.jpg";
-    med[22] = "data/qwest/gadukino/grandpa1.jpg";
+    med[22] = "data/npc/gadukino/grandpa/grandpa1.jpg";
     return med[id];
 }

@@ -91,8 +91,8 @@ QString Gadsarai::media(int id)
     QString med[6];
     med[0] = "data/locations/gadukino/gaddvor/sarai.jpg";
     med[1] = "data/qwest/gadukino/know_no_pirat.jpg";
-    med[2] = "data/qwest/gadukino/grandma.jpg";
-    med[3] = "data/qwest/gadukino/grandpa.jpg";
+    med[2] = "data/npc/gadukino/grandma/grandma.jpg";
+    med[3] = "data/npc/gadukino/grandpa/grandpa.jpg";
     med[4] = "data/actions/transport/bicycle/findvel.jpg";
     med[5] = "data/qwest/card/Cor.jpg";
     return med[id];

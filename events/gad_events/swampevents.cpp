@@ -103,7 +103,7 @@ QString SwampEvents::act(int id)
 QString SwampEvents::media(int id)
 {
     QString med[20];
-    med[0] = "data/qwest/hantersex/backwaterrelax.jpg";
+    med[0] = "data/sex/hantersex/backwaterrelax.jpg";
     med[1] = "data/locations/gadukino/swamp/hunter_looks.jpg";
     med[2] = "data/locations/gadukino/swamp/swampbackwaternude1.jpg";
     med[3] = "data/locations/gadukino/swamp/swampbackwaternude2.jpg";

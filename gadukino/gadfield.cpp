@@ -470,6 +470,6 @@ QString Gadfield::media(int id)
     if(gVEvent(mira) == 1)
         med[18] += "_mira";
     med[18] += ".jpg";
-    med[19] = "data/qwest/mira/Mira2.jpg";
+    med[19] = "data/sex/mira/Mira2.jpg";
     return med[id];
 }

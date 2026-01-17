@@ -204,7 +204,7 @@ void Gadbana::actionHandler(QString action)
         }
         else
         {
-            setImage("data/actions/analplug/no_anus.jpg");
+            setImage("data/sex/toys/no_anus.jpg");
             setDesc(sextToysBlock(2));
         }
         makeActBtn("bana", act(6));
@@ -386,14 +386,14 @@ QString Gadbana::media(int id)
     media[4] = "data/actions/gadbana/tampon.jpg";
     media[5] = "data/actions/bathroom/facesp.jpg";
     media[6] = "data/actions/bathroom/frotsp.jpg";
-    media[7] = "data/actions/shave/legs.webm";
-    media[8] = "data/actions/shave/pubic.webm";
-    media[9] = "data/actions/analplug/analplug.jpg";
-    media[10] = "data/actions/vibrator/vibrator" + intQStr(getRandInt(0,1)) + ".jpg";
-    media[11] = "data/actions/vibrator/no_pussy.jpg";
-    media[12] = "data/qwest/mira/MiraBan.jpg";
-    media[13] = "data/qwest/mira/MiraBan1.jpg";
-    media[14] = "data/qwest/mira/MiraBan2.jpg";
+    media[7] = "data/actions/bathroom/legs.webm";
+    media[8] = "data/actions/bathroom/pubic.webm";
+    media[9] = "data/sex/toys/analplug.jpg";
+    media[10] = "data/sex/toys/vibrator" + intQStr(getRandInt(0,1)) + ".jpg";
+    media[11] = "data/sex/toys/no_pussy.jpg";
+    media[12] = "data/sex/mira/MiraBan.jpg";
+    media[13] = "data/sex/mira/MiraBan1.jpg";
+    media[14] = "data/sex/mira/MiraBan2.jpg";
     return media[id];
 }
 

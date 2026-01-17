@@ -383,56 +383,56 @@ QString MeadowEvent::media(int id)
     QString med[44];
     if(id < 21)
     {
-        med[0] = "data/qwest/mira/MiraMeadowSex.jpg";
-        med[1] = "data/qwest/mira/MiraMeadowSex1.jpg";
-        med[2] = "data/qwest/mira/MiraMeadowSex2.jpg";
-        med[3] = "data/qwest/mira/MiraMeadowBJ.jpg";
-        med[4] = "data/qwest/mira/MiraMeadowBJ1.jpg";
-        med[5] = "data/qwest/mira/MiraMeadowBJ2.jpg";
-        med[6] = "data/qwest/mira/MiraMeadowBJ3.jpg";
-        med[7] = "data/qwest/mira/MiraMeadowBJ4.jpg";
-        med[8] = "data/qwest/mira/MiraMeadowBJ5.jpg";
-        med[9] = "data/qwest/mira/MiraMeadowBJ6.jpg";
-        med[10] = "data/qwest/mira/MiraMeadowBJ7.jpg";
-        med[11] = "data/qwest/mira/MiraMeadowBJ8.jpg";
-        med[12] = "data/qwest/mira/MiraMeadowBJ9.jpg";
-        med[13] = "data/qwest/mira/MiraMeadowBJ10.jpg";
-        med[14] = "data/qwest/mira/MiraMeadowBJ11.jpg";
-        med[15] = "data/qwest/mira/MiraMeadowBJ12.jpg";
-        med[16] = "data/qwest/mira/mirakiss1.jpg";
-        med[17] = "data/qwest/mira/mirakiss2.jpg";
-        med[18] = "data/qwest/mira/mirakiss3.jpg";
-        med[19] = "data/qwest/mira/mirakiss4.jpg";
-        med[20] = "data/qwest/mira/mira_lesb_talk.jpg";
+        med[0] = "data/sex/mira/MiraMeadowSex.jpg";
+        med[1] = "data/sex/mira/MiraMeadowSex1.jpg";
+        med[2] = "data/sex/mira/MiraMeadowSex2.jpg";
+        med[3] = "data/sex/mira/MiraMeadowBJ.jpg";
+        med[4] = "data/sex/mira/MiraMeadowBJ1.jpg";
+        med[5] = "data/sex/mira/MiraMeadowBJ2.jpg";
+        med[6] = "data/sex/mira/MiraMeadowBJ3.jpg";
+        med[7] = "data/sex/mira/MiraMeadowBJ4.jpg";
+        med[8] = "data/sex/mira/MiraMeadowBJ5.jpg";
+        med[9] = "data/sex/mira/MiraMeadowBJ6.jpg";
+        med[10] = "data/sex/mira/MiraMeadowBJ7.jpg";
+        med[11] = "data/sex/mira/MiraMeadowBJ8.jpg";
+        med[12] = "data/sex/mira/MiraMeadowBJ9.jpg";
+        med[13] = "data/sex/mira/MiraMeadowBJ10.jpg";
+        med[14] = "data/sex/mira/MiraMeadowBJ11.jpg";
+        med[15] = "data/sex/mira/MiraMeadowBJ12.jpg";
+        med[16] = "data/sex/mira/mirakiss1.jpg";
+        med[17] = "data/sex/mira/mirakiss2.jpg";
+        med[18] = "data/sex/mira/mirakiss3.jpg";
+        med[19] = "data/sex/mira/mirakiss4.jpg";
+        med[20] = "data/sex/mira/mira_lesb_talk.jpg";
     }
     if(id > 20 && id < 41)
     {
-        med[21] = "data/qwest/mira/mira_lesb_talk2.jpg";
-        med[22] = "data/qwest/mira/mira_lesb_talk3.jpg";
-        med[23] = "data/qwest/mira/MiraMeadowMastr.jpg";
-        med[24] = "data/qwest/mira/MiraMeadowMastr1.jpg";
-        med[25] = "data/qwest/mira/MiraMeadowMastr2.jpg";
-        med[26] = "data/qwest/mira/MiraMeadowMastr3.jpg";
-        med[27] = "data/qwest/mira/MiraMeadowMastr4.jpg";
-        med[28] = "data/qwest/mira/MiraMeadowMastr5.jpg";
-        med[29] = "data/qwest/mira/MiraMeadowMastr6.jpg";
-        med[30] = "data/qwest/mira/MiraMeadowMastr7.jpg";
-        med[31] = "data/qwest/mira/MiraMeadowMastr8.jpg";
-        med[32] = "data/qwest/mira/MiraMeadowMastr9.jpg";
-        med[33] = "data/qwest/mira/MiraMeadowMastr10.jpg";
-        med[34] = "data/qwest/mira/MiraMeadowMastr11.jpg";
-        med[35] = "data/qwest/mira/MiraMeadowMastr12.jpg";
-        med[36] = "data/qwest/mira/MiraMeadowMastr13.jpg";
-        med[37] = "data/qwest/mira/MiraMeadowMastr14.jpg";
-        med[38] = "data/qwest/mira/MiraMeadowMastr15.jpg";
-        med[39] = "data/qwest/mira/MiraMeadowMastr16.jpg";
-        med[40] = "data/qwest/mira/MiraMeadowAnal.jpg";
+        med[21] = "data/sex/mira/mira_lesb_talk2.jpg";
+        med[22] = "data/sex/mira/mira_lesb_talk3.jpg";
+        med[23] = "data/sex/mira/MiraMeadowMastr.jpg";
+        med[24] = "data/sex/mira/MiraMeadowMastr1.jpg";
+        med[25] = "data/sex/mira/MiraMeadowMastr2.jpg";
+        med[26] = "data/sex/mira/MiraMeadowMastr3.jpg";
+        med[27] = "data/sex/mira/MiraMeadowMastr4.jpg";
+        med[28] = "data/sex/mira/MiraMeadowMastr5.jpg";
+        med[29] = "data/sex/mira/MiraMeadowMastr6.jpg";
+        med[30] = "data/sex/mira/MiraMeadowMastr7.jpg";
+        med[31] = "data/sex/mira/MiraMeadowMastr8.jpg";
+        med[32] = "data/sex/mira/MiraMeadowMastr9.jpg";
+        med[33] = "data/sex/mira/MiraMeadowMastr10.jpg";
+        med[34] = "data/sex/mira/MiraMeadowMastr11.jpg";
+        med[35] = "data/sex/mira/MiraMeadowMastr12.jpg";
+        med[36] = "data/sex/mira/MiraMeadowMastr13.jpg";
+        med[37] = "data/sex/mira/MiraMeadowMastr14.jpg";
+        med[38] = "data/sex/mira/MiraMeadowMastr15.jpg";
+        med[39] = "data/sex/mira/MiraMeadowMastr16.jpg";
+        med[40] = "data/sex/mira/MiraMeadowAnal.jpg";
     }
     if(id > 40)
     {
-        med[41] = "data/qwest/mira/MiraMeadowAnal1.jpg";
-        med[42] = "data/qwest/mira/MiraMeadowAnal2.jpg";
-        med[43] = "data/qwest/mira/MiraMeadowS.jpg";
+        med[41] = "data/sex/mira/MiraMeadowAnal1.jpg";
+        med[42] = "data/sex/mira/MiraMeadowAnal2.jpg";
+        med[43] = "data/sex/mira/MiraMeadowS.jpg";
     }
     return med[id];
 }

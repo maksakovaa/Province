@@ -752,12 +752,12 @@ QString MitkaBuhGroup::media(int id)
     med[53] = "data/sex/mitkabuh_group/MitkaSexPublic0.1.jpg";
     med[54] = "data/sex/mitkabuh_group/MitkaSexPublic0.2.jpg";
     med[55] = "data/sex/mitkabuh_group/mitkabuhshow1.jpg";
-    med[56] = "data/qwest/mira/MiraQW11_4.jpg";
+    med[56] = "data/sex/mira/MiraQW11_4.jpg";
     med[57] = "data/sex/mitkabuh_group/MitkaGroup.jpg";
     med[58] = "data/sex/mitkabuh_group/MitkaGroupCum.jpg";
     med[59] = "data/sex/mitkabuh_group/MitkaGroupCum1.jpg";
     med[60] = "data/sex/mitkabuh_group/MitkaGroupCum2.jpg";
-    med[61] = "data/qwest/mira/MiraQW15.jpg";
+    med[61] = "data/sex/mira/MiraQW15.jpg";
     med[62] = "data/sex/mitkabuh_group/mitkabuhshow2.jpg";
     med[63] = "data/sex/mitkabuh_group/mitkabuhshow2.gif";
     med[64] = "data/sex/mitkabuh_group/mitkabuhdance0.0.jpg";

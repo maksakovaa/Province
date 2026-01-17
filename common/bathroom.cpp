@@ -380,7 +380,7 @@ void BathRoom::slotBathActionHandler(bathActs action)
         updateParams();
         rendVideoPage();
         setDesc(bathStr(33));
-        setVideo("data/actions/shave/legs.webm",900,508);
+        setVideo("data/actions/bathroom/legs.webm",900,508);
         makeActBtn(actBath12);
     }
     break;
@@ -399,7 +399,7 @@ void BathRoom::slotBathActionHandler(bathActs action)
         useItem(iRazor, 1);
         updateParams();
         rendVideoPage();
-        setVideo("data/actions/shave/pubic.webm",900,448);
+        setVideo("data/actions/bathroom/pubic.webm",900,448);
         setDesc(bathStr(34));
         makeActBtn(actBath12);
     }
@@ -409,7 +409,7 @@ void BathRoom::slotBathActionHandler(bathActs action)
     {
         incTime(1);
         sVSex(analplugIN,0);
-        setImage("data/actions/analplug/analplug.jpg");
+        setImage("data/sex/toys/analplug.jpg");
         if (gVBody(anus) >= 5)
         {
             setDesc(bathStr(35));
@@ -433,7 +433,7 @@ void BathRoom::slotBathActionHandler(bathActs action)
             {
                 uVBody(anus, 1);
             }
-            setImage("data/actions/analplug/analplug.jpg");
+            setImage("data/sex/toys/analplug.jpg");
             if (gVBody(anus) >= 5)
             {
                 setDesc(bathStr(37));
@@ -445,7 +445,7 @@ void BathRoom::slotBathActionHandler(bathActs action)
         }
         else
         {
-            setImage("data/actions/analplug/no_anus.jpg");
+            setImage("data/sex/toys/no_anus.jpg");
             setDesc(sextToysBlock(2));
         }
         makeActBtn(actBath1);
@@ -478,12 +478,12 @@ void BathRoom::slotBathActionHandler(bathActs action)
             {
                 uVBody(vagina, 1);
             }
-            setImage("data/actions/vibrator/vibrator" + intQStr(getRandInt(0, 1)) + ".jpg");
+            setImage("data/sex/toys/vibrator" + intQStr(getRandInt(0, 1)) + ".jpg");
             setDesc(bathStr(41));
         }
         else
         {
-            setImage("data/actions/vibrator/no_pussy.jpg");
+            setImage("data/sex/toys/no_pussy.jpg");
             setDesc(sextToysBlock(1));
         }
         makeActBtn(actBath1);
@@ -494,7 +494,7 @@ void BathRoom::slotBathActionHandler(bathActs action)
     {
         incTime(2);
         sVSex(vibratorIN, 0);
-        setImage("data/actions/vibrator/vibrator" + intQStr(getRandInt(0, 1)) + ".jpg");
+        setImage("data/sex/toys/vibrator" + intQStr(getRandInt(0, 1)) + ".jpg");
         setDesc(bathStr(42));
         makeActBtn(actBath1);
     }

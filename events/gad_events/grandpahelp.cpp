@@ -243,7 +243,7 @@ QString GrandpaHelp::act(int id)
 QString GrandpaHelp::media(int id)
 {
     QString med[7];
-    med[0] = "data/qwest/gadukino/grandpa1.jpg";
+    med[0] = "data/npc/gadukino/grandpa/grandpa1.jpg";
     med[1] = "data/actions/clean_yard1.jpg";
     med[2] = "data/actions/clean_yard2.jpg";
     med[3] = "data/locations/gadukino/go_yard.jpg";

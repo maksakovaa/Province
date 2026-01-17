@@ -324,9 +324,9 @@ QString SwampHouse::media(int id)
     med[41] = "data/locations/gadukino/swamp/hantersmoker1.jpg";
     med[42] = "data/locations/gadukino/swamp/swamphousedrunkgirl.jpg";
     med[43] = "data/locations/gadukino/swamp/swamphousedrunkgirl1.jpg";
-    med[44] = "data/actions/swamphouse/hanterstable2.jpg";
-    med[45] = "data/actions/swamphouse/hanterstableBJ1." + intQStr(getRandInt(1,5))+ ".jpg";
-    med[46] = "data/actions/swamphouse/hanterstableCum1." + intQStr(getRandInt(1,5))+ ".jpg";
+    med[44] = "data/sex/hantersex/hanterstable2.jpg";
+    med[45] = "data/sex/hantersex/hanterstableBJ1." + intQStr(getRandInt(1,5))+ ".jpg";
+    med[46] = "data/sex/hantersex/hanterstableCum1." + intQStr(getRandInt(1,5))+ ".jpg";
     med[47] = "data/locations/gadukino/swamp/hantersmoker2.jpg";
     med[48] = "data/actions/backwater/thinks" + intQStr(getRandInt(1,2)) + ".jpg";
     med[49] = "data/actions/swamphouse/snack1." + intQStr(getRandInt(1,2)) + ".jpg";
@@ -349,8 +349,8 @@ QString SwampHouse::media(int id)
     med[66] = "data/actions/drunk_ev/pohmel3.jpg";
     med[67] = "data/actions/swamphouse/dance5.jpg";
     med[68] = "data/locations/gadukino/swamp/hantersrelax1." + intQStr(getRandInt(1,8)) + ".jpg";
-    med[69] = "data/actions/swamphouse/hantersmokBJ1." + intQStr(getRandInt(1,3)) + ".jpg";
-    med[70] = "data/actions/swamphouse/hantersmokCUM.jpg";
+    med[69] = "data/sex/hantersex/hantersmokBJ1." + intQStr(getRandInt(1,3)) + ".jpg";
+    med[70] = "data/sex/hantersex/hantersmokCUM.jpg";
     return med[id];
 }
 

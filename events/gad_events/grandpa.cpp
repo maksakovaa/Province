@@ -220,10 +220,10 @@ QString Grandpa::media(int id)
     med[0] = "data/npc/gadukino/grandpa/grandpa_gadgarden.jpg";
     med[1] = "data/npc/gadukino/grandpa/grandpa_fruit_garden.jpg";
     med[2] = "data/npc/gadukino/grandpa/grandpa_gaddvor.jpg";
-    med[3] = "data/qwest/gadukino/grandpa1.jpg";
+    med[3] = "data/npc/gadukino/grandpa/grandpa1.jpg";
     med[4] = "data/npc/gadukino/grandpa/grandpa_gadsarai.jpg";
     med[5] = "data/npc/gadukino/grandpa/grandpa_gadukino1.jpg";
     med[6] = "data/npc/gadukino/grandpa/grandpa_gadukino2.jpg";
-    med[7] = "data/qwest/gadukino/grandpa.jpg";
+    med[7] = "data/npc/gadukino/grandpa/grandpa.jpg";
     return med[id];
 }

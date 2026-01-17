@@ -1079,15 +1079,15 @@ QString RiverEvents::act(int id)
 QString RiverEvents::media(int id)
 {
     QString med[33];
-    med[0] = "data/locations/gadukino/river/guys/" + intQStr(g) + ".gif";
-    med[1] = "data/locations/gadukino/river/guys/25.gif";
-    med[2] = "data/locations/gadukino/river/guys/8.gif";
-    med[3] = "data/locations/gadukino/river/guys/9.gif";
-    med[4] = "data/locations/gadukino/river/guys/26.gif";
-    med[5] = "data/locations/gadukino/river/guys/13.gif";
-    med[6] = "data/locations/gadukino/river/guys/27.gif";
-    med[7] = "data/locations/gadukino/river/guys/14.gif";
-    med[8] = "data/locations/gadukino/river/guys/12.gif";
+    med[0] = "data/sex/gadriver/" + intQStr(g) + ".gif";
+    med[1] = "data/sex/gadriver/25.gif";
+    med[2] = "data/sex/gadriver/8.gif";
+    med[3] = "data/sex/gadriver/9.gif";
+    med[4] = "data/sex/gadriver/26.gif";
+    med[5] = "data/sex/gadriver/13.gif";
+    med[6] = "data/sex/gadriver/27.gif";
+    med[7] = "data/sex/gadriver/14.gif";
+    med[8] = "data/sex/gadriver/12.gif";
     med[9] = "data/npc/horse/wash.jpg";
     QString add;
     if(root->gVEvent(mirainriver) == 1)
@@ -1120,8 +1120,8 @@ QString RiverEvents::media(int id)
     med[21] = "data/locations/gadukino/river/events/mira_go_river" + add + ".jpg";
     med[22] = "data/locations/gadukino/river/events/mira_in_river.jpg";
     med[23] = "data/locations/gadukino/river/events/mira_punish.jpg";
-    med[24] = "data/locations/gadukino/river/guys/" + intQStr(getRandInt(1,3)) + ".jpg";
-    med[25] = "data/locations/gadukino/river/guys/" + intQStr(getRandInt(15,16)) + ".jpg";
+    med[24] = "data/sex/gadriver/" + intQStr(getRandInt(1,3)) + ".jpg";
+    med[25] = "data/sex/gadriver/" + intQStr(getRandInt(15,16)) + ".jpg";
     med[26] = "data/npc/gadukino/mitka/mitka.jpg";
     med[27] = "data/npc/gadukino/mitka/kolyamba.jpg";
     med[28] = "data/npc/gadukino/mitka/vasyan.jpg";

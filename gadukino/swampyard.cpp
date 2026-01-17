@@ -1219,7 +1219,7 @@ QString SwampYard::media(int id)
     med[26] = "data/actions/backwater/hanterlove2.jpg";
     med[27] = "data/actions/backwater/hanterhands.jpg";
     med[28] = "data/actions/backwater/hanterswork1.7.jpg";
-    med[29] = "data/qwest/hantersex/fuck.jpg";
+    med[29] = "data/sex/hantersex/fuck.jpg";
     med[30] = "data/locations/gadukino/swamp/doublehanterlove.jpg";
     return med[id];
 }

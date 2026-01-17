@@ -31,9 +31,9 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
             }
 
             if(root->getCurLoc() == lbathroom)
-                root->m_render->setImage("data/qwest/selfplay/startvann.jpg");
+                root->m_render->setImage("data/sex/selfplay/startvann.jpg");
             else
-                root->m_render->setImage("data/qwest/selfplay/start.jpg");
+                root->m_render->setImage("data/sex/selfplay/start.jpg");
 
             if(root->getCurLoc() == lbedrpar)
             {
@@ -92,7 +92,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
             root->updVSexVar(selfplaytime, 2);
             if(root->getVBody(vagina) == 0 && root->getVStatus(mesec) <= 0)
             {
-                root->m_render->setImage("data/qwest/selfplay/finger.jpg");
+                root->m_render->setImage("data/sex/selfplay/finger.jpg");
                 root->m_render->setText(getActDesc(descSP1));
             }
             else if (root->getVBody(vagina) > 0)
@@ -134,7 +134,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
             root->updVSexVar(selfplaytime, 5);
             root->updVStatus(mood, -100);
             root->incTime(5);
-            root->m_render->setImage("data/qwest/selfplay/finger.jpg");
+            root->m_render->setImage("data/sex/selfplay/finger.jpg");
             root->m_render->setText(getActDesc(descSP2));
             makeButtons();
         }
@@ -152,7 +152,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
             {
                 root->updVStatus(horny, getRandInt(2,5));
             }
-            root->m_render->setImage("data/qwest/selfplay/finger.jpg");
+            root->m_render->setImage("data/sex/selfplay/finger.jpg");
             root->m_render->setText(getActDesc(descSP7));
             if (root->getVBody(vagina) <= 10)
             {
@@ -183,7 +183,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
             emit root->setGape(vagina, root->getVStatus(horny), 15, 1);
             root->incTime(2);
             root->updVSexVar(selfplaytime, 2);
-            root->m_render->setImage("data/qwest/selfplay/hand.jpg");
+            root->m_render->setImage("data/sex/selfplay/hand.jpg");
             if (root->getVBody(vagina) > 0)
             {
                 root->m_render->setText(getActDesc(descSP10));
@@ -226,7 +226,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
                 root->updVStatus(horny, -10);
                 root->updVStatus(mood, -10);
             }
-            root->m_render->setImage("data/qwest/selfplay/hand.jpg");
+            root->m_render->setImage("data/sex/selfplay/hand.jpg");
             root->m_render->setText(getActDesc(descSP15));
             if (root->getVBody(vagina) <= 15)
             {
@@ -273,11 +273,11 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
             root->updVSexVar(selfplaytime, 5);
             if(root->getCurLoc() == lbathroom)
             {
-                root->m_render->setImage("data/qwest/selfplay/klitvann.jpg");
+                root->m_render->setImage("data/sex/selfplay/klitvann.jpg");
             }
             else
             {
-                root->m_render->setImage("data/qwest/selfplay/klit.jpg");
+                root->m_render->setImage("data/sex/selfplay/klit.jpg");
             }
             if(root->getVStatus(mood) >= 50)
             {
@@ -305,7 +305,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
         {
             root->incTime(5);
             root->updVSexVar(selfplaytime, 5);
-            root->m_render->setImage("data/qwest/selfplay/1.jpg");
+            root->m_render->setImage("data/sex/selfplay/1.jpg");
             if(root->getVBody(anus) >= 3)
             {
                 root->updVStatus(horny,1);
@@ -334,7 +334,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
         {
             root->incTime(5);
             root->updVSexVar(selfplaytime,5);
-            root->m_render->setImage("data/qwest/selfplay/2.jpg");
+            root->m_render->setImage("data/sex/selfplay/2.jpg");
             if(root->getVBody(anus) >= 5)
             {
                 root->updVStatus(horny, 1);
@@ -386,7 +386,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
         {
             root->incTime(5);
             root->updVSexVar(selfplaytime,5);
-            root->m_render->setImage("data/qwest/selfplay/3.jpg");
+            root->m_render->setImage("data/sex/selfplay/3.jpg");
             if(root->getVBody(anus) >= 10)
             {
                 root->updVStatus(horny, 1);
@@ -439,7 +439,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
         {
             root->incTime(5);
             root->updVSexVar(selfplaytime,5);
-            root->m_render->setImage("data/qwest/selfplay/4.jpg");
+            root->m_render->setImage("data/sex/selfplay/4.jpg");
             if(root->getVBody(anus) >= 15)
             {
                 root->m_render->setText(getActDesc(descSP35));
@@ -493,7 +493,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
             root->updVSexVar(SelfFisting, 1);
             root->incTime(5);
             root->updVSexVar(selfplaytime, 5);
-            root->m_render->setImage("data/qwest/selfplay/5.jpg");
+            root->m_render->setImage("data/sex/selfplay/5.jpg");
             if(root->getVBody(anus) >= 20)
             {
                 root->updVStatus(horny, getRandInt(5,10));
@@ -548,9 +548,9 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
             root->setVSexVar(dick, m_dildohand);
             //protect = 1;
             if(root->getPrevLoc() == lkorrpar)
-                root->m_render->setImage("data/qwest/selfplay/dildovann.jpg");
+                root->m_render->setImage("data/sex/selfplay/dildovann.jpg");
             else
-                root->m_render->setImage("data/qwest/selfplay/dildo.jpg");
+                root->m_render->setImage("data/sex/selfplay/dildo.jpg");
             root->setVSexVar(protect,1);
             root->m_sex->sexStart();
             root->m_sex->vaginal(tDildo);
@@ -566,9 +566,9 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
             root->updVSexVar(selfplaytime,15);
             root->setVSexVar(dick, m_dildohand);
             if(root->getPrevLoc() == lkorrpar)
-                root->m_render->setImage("data/qwest/selfplay/dildovann.jpg");
+                root->m_render->setImage("data/sex/selfplay/dildovann.jpg");
             else
-                root->m_render->setImage("data/qwest/selfplay/dildo.jpg");
+                root->m_render->setImage("data/sex/selfplay/dildo.jpg");
             root->m_sex->analStart(tDildo);
             root->m_sex->anal(tDildo);
             makeButtons();

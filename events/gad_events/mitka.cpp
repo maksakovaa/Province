@@ -219,15 +219,15 @@ QString Mitka::media(int id)
 {
     QString med[11];
     med[0] = "data/npc/gadukino/mitka/mitka.jpg";
-    med[1] = "data/qwest/mitka/mitkafirst.jpg";
-    med[2] = "data/qwest/mitka/mitkasex2.jpg";
-    med[3] = "data/qwest/mitka/MitkaBjHome.jpg";
-    med[4] = "data/qwest/mitka/MitkaBjHomeCum1.jpg";
-    med[5] = "data/qwest/mitka/MitkaBjHomeCum2.jpg";
-    med[6] = "data/qwest/mitka/MitkaBjHomeCum3.jpg";
-    med[7] = "data/qwest/mitka/MitkaBjHomeCum4.jpg";
-    med[8] = "data/qwest/mitka/MitkaAnalHome.jpg";
-    med[9] = "data/qwest/mitka/MitkaAnalHome2.jpg";
-    med[10] = "data/qwest/mitka/MitkaAnalHome3.jpg";
+    med[1] = "data/sex/mitkasex2/mitkafirst.jpg";
+    med[2] = "data/sex/mitkasex2/mitkasex2.jpg";
+    med[3] = "data/sex/mitkasex2/MitkaBjHome.jpg";
+    med[4] = "data/sex/mitkasex2/MitkaBjHomeCum1.jpg";
+    med[5] = "data/sex/mitkasex2/MitkaBjHomeCum2.jpg";
+    med[6] = "data/sex/mitkasex2/MitkaBjHomeCum3.jpg";
+    med[7] = "data/sex/mitkasex2/MitkaBjHomeCum4.jpg";
+    med[8] = "data/sex/mitkasex2/MitkaAnalHome.jpg";
+    med[9] = "data/sex/mitkasex2/MitkaAnalHome2.jpg";
+    med[10] = "data/sex/mitkasex2/MitkaAnalHome3.jpg";
     return med[id];
 }
