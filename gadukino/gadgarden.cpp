@@ -62,7 +62,7 @@ void Gadgarden::actionHandler(QString action)
         }
         if(grandma_ingadgarden == 1 && gVEvent(grandmaknowsick) == 1)
         {
-            startEvent("grandma");
+            startEvent(eGrandMa);
         }
         if(gVJob(workGarden) == 1)
             makeActBtn("work_garden", str(4));
@@ -73,7 +73,7 @@ void Gadgarden::actionHandler(QString action)
         makeActBtn("gaddvor", str(11));
         if(getCloth(ClothType::Main) == nullptr)
         {
-            startEvent("grandparents_events","garden_nude");
+            startEvent(eGrandParentEvents,"garden_nude");
         }
         connect(getTextPtr(), &QLabel::linkActivated, this, &Gadgarden::actionHandler);
     }
@@ -224,11 +224,11 @@ void Gadgarden::actionHandler(QString action)
     }
     if(action == "grandma")
     {
-        startEvent("grandma");
+        startEvent(eGrandMa);
     }
     if(action == "grandpa")
     {
-        startEvent("grandpa");
+        startEvent(eGrandPa);
     }
 }
 
@@ -300,7 +300,7 @@ QString Gadgarden::media(int id)
 
 void Gadgarden::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action, "gadgarden");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Gadgarden::actionHandler);
     addActBtn(btn);

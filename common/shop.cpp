@@ -96,6 +96,10 @@ void Shop::actionHandler(const QString link)
     {
         shop_sport();
     }
+    else if(link == "back_to_loc")
+    {
+        changeLoc(getLocId(),1);
+    }
 }
 
 void Shop::slotBuyItem(Items id)
@@ -125,14 +129,12 @@ void Shop::makeShop()
     m_layouts.clear();
     clearActions();
     addLayoutInObjPage(layoutMain);
-    LocButton* btn = new LocButton(getLocId(),1);
-    btn->setText("Назад");
-    addLocBtn(btn);
+    makeActBtn("back_to_loc","Назад");
 }
 
 void Shop::makeActBtn(QString act, QString actName)
 {
-    QActButton* btn = new QActButton(act);
+    QActButton* btn = new QActButton(act, "shop");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Shop::actionHandler);
     addActBtn(btn);

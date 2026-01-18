@@ -606,7 +606,7 @@ void Common::select_coffee(QString coffee)
 
 void Common::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action,"common");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Common::actionHandler);
     root->m_actions->addWidget(btn);

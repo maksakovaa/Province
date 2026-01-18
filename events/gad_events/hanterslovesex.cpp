@@ -2536,7 +2536,7 @@ void HantersLoveSex::resetCounters()
 
 void HantersLoveSex::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action,"HantersLoveSex");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &HantersLoveSex::actionHandler);
     root->addActBtn(btn);

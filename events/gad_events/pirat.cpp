@@ -1651,7 +1651,7 @@ void Pirat::pirPirat()
 
 void Pirat::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action,"pirat");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Pirat::actionHandler);
     root->addActBtn(btn);

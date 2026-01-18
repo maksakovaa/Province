@@ -10,7 +10,7 @@
 #include "../events/questenums.h"
 #include "../npc/npc.h"
 #include "loc_enums.h"
-
+#include "../events/event_enums.h"
 class LocationHandler;
 class LocButton;
 
@@ -36,7 +36,6 @@ protected:
     void setDesc(QString text);
     void addText(QString text);
     void addActBtn(QPushButton* btn);
-    void addLocBtn(LocButton* btn);
     void clearActions();
     void updateParams();
     void sendNotif(QString message);
@@ -133,7 +132,7 @@ protected:
     int gVSchool(SchoolVar param);
     void uVSchool(SchoolVar param, int val);
     void sVSchool(SchoolVar param, int val);
-    void startEvent(QString event, QString arg = "");
+    void startEvent(Events event, QString arg = "");
     int gVEvent(EventParams param);
     void sVEvent(EventParams param, int val);
     bool isHanters();
@@ -154,7 +153,7 @@ protected:
     QLabel* getTextPtr();
 
     NPC gNPC(int id);
-private:
+private slots:
     virtual void actionHandler(QString action) = 0;
 private:
     LocationHandler* root;

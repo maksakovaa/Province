@@ -9,10 +9,10 @@ class MeadowEvent: public Event
 public:
     MeadowEvent(EventHandler* ptr);
     void start(QString arg = "") override;
+    void makeActBtn(QString action, QString actName);
 private slots:
     void actionHandler(QString action);
 private:
-    void makeActBtn(QString action, QString actName);
     QString str(int id);
     QString act(int id);
     QString media(int id);

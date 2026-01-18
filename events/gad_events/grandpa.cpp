@@ -115,7 +115,7 @@ void Grandpa::actionHandler(QString action)
     if(action == "give_help")
     {
         root->sVEvent(grandpahelpday,root->vStatus(daystart));
-        root->eventStart("grandpahelp");
+        root->startEvent(eGrandPaHelp);
     }
     if(action == "back_to_loc")
     {
@@ -163,7 +163,7 @@ void Grandpa::actionHandler(QString action)
 
 void Grandpa::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action,"grandpa");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Grandpa::actionHandler);
     root->addActBtn(btn);

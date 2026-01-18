@@ -10,6 +10,7 @@ class RiverEvents: public Event
 public:
     RiverEvents(EventHandler* ptr);
     void start(QString arg = "") override;
+    void makeActBtn(QString action, QString actName);
 private slots:
     void actionHandler(QString action);
 private:
@@ -23,7 +24,6 @@ private:
     void fishers();
     void fishing();
     void fishing_end();
-    void makeActBtn(QString action, QString actName);
     QString str(int id);
     QString act(int id);
     QString media(int id);

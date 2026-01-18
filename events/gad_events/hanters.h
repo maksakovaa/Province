@@ -9,10 +9,10 @@ class Hanters: public Event
 public:
     Hanters(EventHandler* ptr);
     void start(QString arg = "") override;
+    void makeActBtn(QString action, QString actName);
 private slots:
     void actionHandler(QString action);
 private:
-    void makeActBtn(QString action, QString actName);
     void groupfaint();
     void groupORALend1();
     void groupORALs();

@@ -179,7 +179,7 @@ void AndreiHanter::actionHandler(QString action)
     }
     if(action == "HanterLoveSex")
     {
-        root->eventStart("HanterLoveSex");
+        root->startEvent(eHantersLoveSex);
     }
     if(action == "go_with_a")
     {
@@ -211,7 +211,7 @@ void AndreiHanter::actionHandler(QString action)
 
 void AndreiHanter::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action,"AndreiHanter");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &AndreiHanter::actionHandler);
     root->addActBtn(btn);

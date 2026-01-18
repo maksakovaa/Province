@@ -248,23 +248,23 @@ void Miroslava::actionHandler(QString action)
     }
     if(action == "miragopqw11")
     {
-        root->eventStart("Meadow_event","miragopqw11");
+        root->startEvent(eMeadowEvent,"miragopqw11");
     }
     if(action == "lesb_talk_mira1")
     {
-        root->eventStart("Meadow_event","lesb_talk_mira1");
+        root->startEvent(eMeadowEvent,"lesb_talk_mira1");
     }
     if(action == "lesb_talk_mira2")
     {
-        root->eventStart("Meadow_event","lesb_talk_mira2");
+        root->startEvent(eMeadowEvent,"lesb_talk_mira2");
     }
     if(action == "lesb_talk_mira3")
     {
-        root->eventStart("Meadow_event","lesb_talk_mira3");
+        root->startEvent(eMeadowEvent,"lesb_talk_mira3");
     }
     if(action == "lesb_mira")
     {
-        root->eventStart("Meadow_event","lesb_mira");
+        root->startEvent(eMeadowEvent,"lesb_mira");
     }
     if(action == "miratalk")
         miratalk();
@@ -299,15 +299,15 @@ void Miroslava::actionHandler(QString action)
                 {
                     int mitkarand = getRandInt(1,20);
                     if(mitkarand == 1 && root->getHour() >= 7 && root->getHour() <= 16 && root->getWeekNum() != 0 && root->getWeekNum() <= 5 && root->gVEvent(mitkaday) != root->vStatus(daystart))
-                        root->eventStart("gadukino_event","mira_mitka");
+                        root->startEvent(eGadukinoEvents,"mira_mitka");
                     else if(mitkarand == 2 && root->getHour() >= 7 && root->getHour() <= 16 && root->getWeekNum() != 0 && root->getWeekNum() <= 5 && root->gVEvent(kolyambaday) != root->vStatus(daystart))
-                        root->eventStart("gadukino_event","mira_kolyamba");
+                        root->startEvent(eGadukinoEvents,"mira_kolyamba");
                     else if(mitkarand == 3 && root->getHour() >= 7 && root->getHour() <= 16 && root->getWeekNum() != 0 && root->getWeekNum() <= 5 && root->gVEvent(vasyanday) != root->vStatus(daystart))
-                        root->eventStart("gadukino_event","mira_vasyan");
+                        root->startEvent(eGadukinoEvents,"mira_vasyan");
                     else if(mitkarand == 4 && root->getHour() >= 17 && root->getHour() <= 19 && root->gVEvent(gadboyday) != root->vStatus(daystart) && root->getWeekNum() != 0 && root->getWeekNum() <= 5)
-                        root->eventStart("gadukino_event","mira_2boys");
+                        root->startEvent(eGadukinoEvents,"mira_2boys");
                     else if(mitkarand <= 5 && root->getHour() >= 7 && root->getHour() <= 19 && root->gVEvent(gadboyday) != root->vStatus(daystart) && (root->getWeekNum() == 0 || root->getWeekNum() > 5))
-                        root->eventStart("gadukino_event","mira_3boys");
+                        root->startEvent(eGadukinoEvents,"mira_3boys");
                     else
                         makeActBtn("exit",act(5));
                 }
@@ -425,7 +425,7 @@ void Miroslava::actionHandler(QString action)
         root->sVEvent(mira_guest,0);
         root->incTime(15);
         root->sVEvent(miralko,0);
-        root->eventStart("mitkabuh");
+        root->startEvent(eMitkaBuh);
     }
     if(action == "meet_gadguys")
     {
@@ -462,9 +462,9 @@ void Miroslava::actionHandler(QString action)
     if(action == "go_buh")
     {
         if(root->gVQuest(miragopQW) > 15 && root->gVEvent(mitkasextimes) > 15 && root->gVEvent(gadriver_gang) < 3)
-            root->eventStart("mitkabuh_group");
+            root->startEvent(eMitkaBuhGroup);
         else
-            root->eventStart("mitkabuh");
+            root->startEvent(eMitkaBuh);
     }
     if(action == "go_bana")
     {
@@ -951,7 +951,7 @@ void Miroslava::actionHandler(QString action)
         root->sVStatus(inriver,0);
         root->sVEvent(miralko,0);
         root->incTime(15);
-        root->eventStart("mitkabuh_group");
+        root->startEvent(eMitkaBuhGroup);
     }
     if(action == "accept_go_buh")
     {
@@ -961,7 +961,7 @@ void Miroslava::actionHandler(QString action)
         root->sVStatus(inriver,0);
         root->sVEvent(miralko,0);
         root->incTime(15);
-        root->eventStart("mitkabuh");
+        root->startEvent(eMitkaBuh);
     }
     if(action == "decline_go_buh")
     {
@@ -1079,7 +1079,7 @@ void Miroslava::actionHandler(QString action)
 
 void Miroslava::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action,"miroslava");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Miroslava::actionHandler);
     root->addActBtn(btn);

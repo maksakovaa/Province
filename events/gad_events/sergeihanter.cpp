@@ -7,7 +7,7 @@ SergeiHanter::SergeiHanter(EventHandler* ptr): root(ptr) {}
 
 void SergeiHanter::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action,"SergeiHanter");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &SergeiHanter::actionHandler);
     root->addActBtn(btn);
@@ -291,7 +291,7 @@ void SergeiHanter::actionHandler(QString action)
 
     ///////////////////////
     if(action == "HanterLoveSex")
-        root->eventStart("HanterLoveSex");
+        root->startEvent(eHantersLoveSex);
     if(action == "back_to_loc")
         root->changeLoc(root->getCurLoc());
 }

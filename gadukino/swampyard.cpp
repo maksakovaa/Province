@@ -636,17 +636,17 @@ void SwampYard::actionHandler(QString action)
     if(action == "hantersSexNude")
     {
         sVEvent(hantersexnude,1);
-        startEvent("hanters");
+        startEvent(eHanters);
     }
     if(action == "agree")
     {
         sVEvent(hantdanceslut,2);
-        startEvent("hanters");
+        startEvent(eHanters);
     }
     if(action == "disagree")
     {
         sVEvent(hantdanceslut,3);
-        startEvent("hanters");
+        startEvent(eHanters);
     }
 
     if(action == "igor_agree_sex")
@@ -924,29 +924,29 @@ void SwampYard::actionHandler(QString action)
     }
     if(action == "bicycle")
     {
-        startEvent("bicycle", "swamp");
+        startEvent(eBicycle, "swamp");
     }
     if(action == "hanters")
     {
-        startEvent("hanters");
+        startEvent(eHanters);
     }
     if(action == "IgorHanter")
     {
-        startEvent("IgorHanter");
+        startEvent(eIgorHanter);
     }
     if(action == "HanterLoveSex")
     {
-        startEvent("HanterLoveSex");
+        startEvent(eHantersLoveSex);
     }
     if(action == "hantersex")
     {
-        startEvent("hantersex");
+        startEvent(eHanterSex);
     }
 }
 
 void SwampYard::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action, "swampyard");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &SwampYard::actionHandler);
     addActBtn(btn);

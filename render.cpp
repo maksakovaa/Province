@@ -47,6 +47,7 @@ void Render::rendImagePage(QObject* ptr)
 
 void Render::rendObjPage(QObject* ptr)
 {
+    curpage = 2;
     handler = ptr;
     resetCurrent();
 }

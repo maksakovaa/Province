@@ -77,17 +77,17 @@ void Meadow::actionHandler(QString action)
         makeActBtn("to_gaddvor",act(0));
         int miratemp = getRandInt(1,5);
         if(gVEvent(meadow) == 3 && gVEvent(mirainmeadow) == 0 && gVQuest(miragopQW) == 2 && getTemp() >= 15 && getSunWeather() >= 0)
-            startEvent("Meadow_event","mira_mitka");
+            startEvent(eMeadowEvent,"mira_mitka");
         if(gVEvent(meadow) == 3 && gVEvent(Mira_no) == 0 && gVEvent(mirainmeadow) == 0 && gVQuest(miragopQW) == 33 && getTemp() >= 15 && getSunWeather() >= 0)
-            startEvent("Meadow_event", "mira_gang");
+            startEvent(eMeadowEvent, "mira_gang");
         if(gVEvent(mitkasextimes) > 13 && gVEvent(mirasex) == 0 && gVQuest(miragopQW) < 11)
-            startEvent("Meadow_event", "mira_lesb_talk1");
+            startEvent(eMeadowEvent, "mira_lesb_talk1");
         if(gVEvent(mitkasextimes) > 13 && gVEvent(mirasex) == 1 && gVQuest(miragopQW) < 11 && miratemp == 1 && gVEvent(miraday) != getDay())
-            startEvent("Meadow_event", "mira_lesb_talk3");
+            startEvent(eMeadowEvent, "mira_lesb_talk3");
         if(gVEvent(mitkasextimes) > 13 && gVEvent(mirasex) == 1 && gVQuest(miragopQW) > 11 && gVEvent(lickmira) == 0)
-            startEvent("Meadow_event", "mira_lesb_talk2");
+            startEvent(eMeadowEvent, "mira_lesb_talk2");
         if(gVEvent(mirasex) == 2 && miratemp > 3 && gVEvent(miraday) != getDay() && gVQuest(miraQW) >= 15)
-            startEvent("Meadow_event", "mira_lesb");
+            startEvent(eMeadowEvent, "mira_lesb");
     }
     if(action == "to_gaddvor")
     {
@@ -96,17 +96,17 @@ void Meadow::actionHandler(QString action)
     }
     if(action == "mirameadow")
     {
-        startEvent("Meadow_event","mirameadow");
+        startEvent(eMeadowEvent,"mirameadow");
     }
     if(action == "Miroslava")
     {
-        startEvent("Miroslava");
+        startEvent(eMiroslava);
     }
 }
 
 void Meadow::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action, "meadow");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Meadow::actionHandler);
     addActBtn(btn);

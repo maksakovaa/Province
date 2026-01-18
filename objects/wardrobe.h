@@ -3,29 +3,9 @@
 
 #include "../items/cloth.h"
 #include "GameObj.h"
-#include <QPushButton>
 #include <QHBoxLayout>
 #include "objecthandler.h"
-
-enum WardrActs
-{
-    actWardr0, actWardr1, actWardr2, actWardr3, actWardr4, actWardr5, actWardr6, actWardr7, actWardr8,actWardr9,actWardr10,actWardr11,actWardr12
-};
-
-class WardrActionButton: public QPushButton
-{
-    Q_OBJECT
-public:
-    WardrActionButton(QString actName, WardrActs act): m_action(act) 
-    { this->setText(actName); this->setCursor(Qt::PointingHandCursor);
-    connect(this, &WardrActionButton::clicked, this, &WardrActionButton::handleButtonClick); }
-signals:
-    void sigAction(WardrActs act);
-private:
-    WardrActs m_action;
-private slots:
-    void handleButtonClick() { emit sigAction(m_action); }
-};
+#include "objenums.h"
 
 class SaveForm; class LoadForm;
 

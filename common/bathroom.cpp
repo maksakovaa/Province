@@ -1,19 +1,7 @@
 #include "bathroom.h"
 #include "../Functions.h"
 #include "locationhandler.h"
-
-BathActBtn::BathActBtn(bathActs act, QString actName)
-{
-    this->setCursor(Qt::PointingHandCursor);
-    connect(this, &BathActBtn::clicked, this, &BathActBtn::handleButtonClick);
-    this->setText(actName);
-    m_action = act;
-}
-
-void BathActBtn::handleButtonClick()
-{
-    emit sigAction(m_action);
-}
+#include "../menu/buttons.h"
 
 BathRoom::BathRoom(LocationHandler* ptr): Location(ptr)
 {

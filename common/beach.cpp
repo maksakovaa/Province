@@ -408,7 +408,7 @@ void Beach::actionHandler(QString action)
     {
         if(root->getCurLoc() == lgadbeach)
         {
-            root->m_events->eventStart("river_events","swim_guys");
+            root->m_events->startEvent(eRiverEvents,"swim_guys");
         }
         root->slotChangeLoc(root->getCurLoc(),0);
     }
@@ -429,7 +429,7 @@ void Beach::actionHandler(QString action)
         }
         if(loc == lgadbeach)
         {
-            root->m_events->eventStart("river_events","sunbathe_guys");
+            root->m_events->startEvent(eRiverEvents,"sunbathe_guys");
         }
         actionHandler("back_to_loc");
     }
@@ -452,7 +452,7 @@ void Beach::storeClothes()
 
 void Beach::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action, "beach");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Beach::actionHandler);
     root->m_actions->addWidget(btn);

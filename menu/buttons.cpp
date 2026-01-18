@@ -1,34 +1,15 @@
 #include "buttons.h"
 
-QActButton::QActButton(QString action)
+QActButton::QActButton(QString action,QString handler)
 {
     m_action = action;
+    m_handler = handler;
     connect(this, &QActButton::clicked, this, &QActButton::clickHandle);
 }
 
 void QActButton::clickHandle()
 {
     emit sigAct(m_action);
-}
-
-LocButton::LocButton(LocId locId, int min): m_locId(locId), m_time(min)
-{
-    connect(this, &LocButton::clicked, this, &LocButton::slotClick);
-}
-
-void LocButton::slotClick()
-{
-    emit sigChangeLoc(m_locId, m_time);
-}
-
-ObjButton::ObjButton(QString objectName): m_objName(objectName)
-{
-    connect(this, &ObjButton::clicked, this, &ObjButton::slotClick);
-}
-
-void ObjButton::slotClick()
-{
-    emit sigViewObject(m_objName);
 }
 
 SaveBtn::SaveBtn(QString file)
@@ -40,4 +21,50 @@ SaveBtn::SaveBtn(QString file)
 void SaveBtn::slotClick()
 {
     emit sigSaveClick(m_file);
+}
+
+BedActionButton::BedActionButton(QString actName, BedActs act): m_action(act)
+{
+    this->setText(actName); this->setCursor(Qt::PointingHandCursor);
+    connect(this, &BedActionButton::clicked, this, &BedActionButton::handleButtonClick);
+}
+
+void BedActionButton::handleButtonClick()
+{
+    emit sigAction(m_action);
+}
+
+MirrActionButton::MirrActionButton(QString actName, MirrorActs act): m_action(act)
+{
+    this->setText(actName); this->setCursor(Qt::PointingHandCursor);
+    connect(this, &MirrActionButton::clicked, this, &MirrActionButton::handleButtonClick);
+}
+
+void MirrActionButton::handleButtonClick()
+{
+    emit sigAction(m_action);
+}
+
+WardrActionButton::WardrActionButton(QString actName, WardrActs act): m_action(act)
+{
+    this->setText(actName); this->setCursor(Qt::PointingHandCursor);
+    connect(this, &WardrActionButton::clicked, this, &WardrActionButton::handleButtonClick);
+}
+
+void WardrActionButton::handleButtonClick()
+{
+    emit sigAction(m_action);
+}
+
+BathActBtn::BathActBtn(bathActs act, QString actName)
+{
+    this->setCursor(Qt::PointingHandCursor);
+    connect(this, &BathActBtn::clicked, this, &BathActBtn::handleButtonClick);
+    this->setText(actName);
+    m_action = act;
+}
+
+void BathActBtn::handleButtonClick()
+{
+    emit sigAction(m_action);
 }

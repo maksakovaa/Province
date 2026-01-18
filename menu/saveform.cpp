@@ -291,6 +291,10 @@ void SaveForm::saveGame(QString savefile)
         out << "}\n";
         //save window state: current page, image/video, text, action buttons
         out << "{\n";
+        out << "    currentpage:" << ((MainWindow*)root)->pageRender->curpage << "\n";
+        out << "}\n";
+
+        out << "{\n";
         if(((MainWindow*)root)->pageRender->curpage == 1)
         {
             out << "    video:" << ((MainWindow*)root)->pageRender->m_vplayer->source().toString() << "\n";
@@ -298,13 +302,52 @@ void SaveForm::saveGame(QString savefile)
             out << "    width:" << vidSize.width() << "\n";
             out << "    height:" << vidSize.height() << "\n";
         }
-        else
+        else if(((MainWindow*)root)->pageRender->curpage == 0)
         {
             out << "    image:" << ((MainWindow*)root)->pageRender->imageLbl->text() << "\n";
         }
         out << "}\n";
+        if(((MainWindow*)root)->pageRender->curpage == 1 || ((MainWindow*)root)->pageRender->curpage == 0)
+        {
+            out << "{\n";
+            out << "    text|" << ((MainWindow*)root)->pageRender->textLbl->text() << "\n"; 
+            out << "}\n";
+        }
+        //Save buttons!
         out << "{\n";
-        out << "    text|" << ((MainWindow*)root)->pageRender->textLbl->text() << "\n"; 
+        for (int i = 0; i < ((MainWindow*)root)->Layoutitems.size(); ++i)
+        {
+            QWidget* widget = ((MainWindow*)root)->Layoutitems[i]->widget();
+            if(widget && widget->inherits("QPushButton"))
+            {
+                QActButton* type1 = qobject_cast<QActButton*>(widget);
+                BedActionButton* type4 = qobject_cast<BedActionButton*>(widget);
+                MirrActionButton* type5 = qobject_cast<MirrActionButton*>(widget);
+                WardrActionButton* type6 = qobject_cast<WardrActionButton*>(widget);
+                if(type1)
+                {
+                    qDebug() << "found QActButton!" << type1->text();
+                    out << "    {\n";
+                    out << "        buttonType:" << 1 << "\n";
+                    out << "        buttonText:" << type1->text() << "\n";
+                    out << "        action:" << type1->m_action << "\n";
+                    out << "        handler:" << type1->m_handler << "\n";
+                    out << "    }\n";
+                }
+                else if(type4)
+                {
+                    qDebug() << "found BedActionButton";
+                }
+                else if(type5)
+                {
+                    qDebug() << "found MirrActButton!";
+                }
+                else if(type6)
+                {
+                    qDebug() << "found WardrActButton!";
+                }
+            }
+        }
         out << "}\n";
     }
     file.close();

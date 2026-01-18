@@ -180,12 +180,6 @@ void Location::addActBtn(QPushButton *btn)
     root->m_actions->addWidget(btn);
 }
 
-void Location::addLocBtn(LocButton *btn)
-{
-    root->m_actions->addWidget(btn);
-    connect(btn, SIGNAL(sigChangeLoc), root, SLOT(slotChangeLoc));
-}
-
 void Location::clearActions()
 {
     ClearLayout(root->m_actions);
@@ -326,9 +320,9 @@ void Location::decrease_condition(int val)
     root->decreaseCondition(val);
 }
 
-void Location::startEvent(QString event, QString arg)
+void Location::startEvent(Events event, QString arg)
 {
-    root->m_events->eventStart(event, arg);
+    root->m_events->startEvent(event, arg);
 }
 
 int Location::gVQuest(QuestParams param)

@@ -49,7 +49,7 @@ void Gadmarket::actionHandler(QString action)
         makeActBtn("exit", act(3));
         if(gVQuest(grandmaQW) >= 60 && getItemCount(iCookies) == 0 && getHour() == 14 && (getWeekNum() == 6 || getWeekNum() == 0))
         {
-            startEvent("grandparents_events","market");
+            startEvent(eGrandParentEvents,"market");
         }
     }
     if(action == "buy_cookies")
@@ -76,13 +76,13 @@ void Gadmarket::actionHandler(QString action)
     }
     if(action == "grandma")
     {
-        startEvent("grandma");
+        startEvent(eGrandMa);
     }
 }
 
 void Gadmarket::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action,"gadmarket");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Gadmarket::actionHandler);
     addActBtn(btn);

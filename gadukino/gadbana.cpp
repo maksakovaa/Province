@@ -294,7 +294,7 @@ void Gadbana::actionHandler(QString action)
 
 void Gadbana::makeActBtn(QString act, QString actName)
 {
-    QActButton* btn = new QActButton(act);
+    QActButton* btn = new QActButton(act, "gadbana");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Gadbana::actionHandler);
     addActBtn(btn);

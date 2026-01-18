@@ -49,6 +49,18 @@ void LocationHandler::sVSchool(SchoolVar param, int val)
     m_events->sVSchool(param,val);
 }
 
+void LocationHandler::checkMapAwailable()
+{
+    if (m_current->isParent() || m_current->getLocId() == lgadukino)
+    {
+        ((MainWindow*)m_root)->ui->pushButtonMap->setEnabled(false);
+    }
+    else
+    {
+        ((MainWindow*)m_root)->ui->pushButtonMap->setEnabled(true);
+    }
+}
+
 void LocationHandler::slotChangeLoc(LocId id, int time, QString arg)
 {
     m_prev = m_current;
@@ -62,14 +74,7 @@ void LocationHandler::slotChangeLoc(LocId id, int time, QString arg)
     m_render->rendImagePage(this);
     m_current->show(arg);
     connect(m_render->getTextPtr(), &QLabel::linkActivated, m_current, &Location::actionHandler);
-    if (m_current->isParent() || m_current->getLocId() == lgadukino)
-    {
-        ((MainWindow*)m_root)->ui->pushButtonMap->setEnabled(false);
-    }
-    else
-    {
-        ((MainWindow*)m_root)->ui->pushButtonMap->setEnabled(true);
-    }
+    checkMapAwailable();
 }
 
 LocId LocationHandler::getCurLoc()

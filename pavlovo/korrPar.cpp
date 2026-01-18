@@ -141,7 +141,7 @@ void korrPar::actionHandler(QString action)
 
 void korrPar::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action, "korrparr");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &korrPar::actionHandler);
     addActBtn(btn);

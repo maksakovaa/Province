@@ -2,29 +2,8 @@
 #define BED_H
 
 #include "GameObj.h"
-#include <QPushButton>
-#include "../items/cloth.h"
 #include "objecthandler.h"
-
-enum BedActs
-{
-    actBed0, actBed1, actBed2, actBed3, actBed4, actBed5, actBed6, actBed7, actBed8, actBed9, actBed10, actBed11
-};
-
-class BedActionButton: public QPushButton
-{
-    Q_OBJECT
-public:
-    BedActionButton(QString actName, BedActs act): m_action(act) 
-    { this->setText(actName); this->setCursor(Qt::PointingHandCursor);
-    connect(this, &BedActionButton::clicked, this, &BedActionButton::handleButtonClick); }
-signals:
-    void sigAction(BedActs act);
-private:
-    BedActs m_action;
-private slots:
-    void handleButtonClick() { emit sigAction(m_action); }
-};
+#include "objenums.h"
 
 class Bed: public GameObj
 {

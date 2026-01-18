@@ -94,31 +94,31 @@ void Gadforest::actionHandler(QString action)
         if(gVEvent(goforest) < 20)
             addText(str(8));
         if(getTemp() >= 20 && getSunWeather() >= 0 && getHour() >= 6 && getHour() <= 20 && gVEvent(miratalkforest) == 1)
-            startEvent("gadforest_event", "nude_event");
+            startEvent(eGadForestEvent, "nude_event");
         if(gVEvent(foresteventrand) < 3 && getMonth() >= 6 && getMonth() <= 9 && gVEvent(mushroom_pickersday) != gVStatus(daystart))
         {
             sVEvent(mushroom_pickers,1);
-            startEvent("gadforest_event","mushroom_pickers1");
+            startEvent(eGadForestEvent,"mushroom_pickers1");
         }
         if(gVEvent(foresteventrand) == 3 && getMonth() >= 5 && getMonth() <= 9 && getTemp() >= 20 && getSunWeather() >= 0 && (getWeekNum() == 0 || getWeekNum() > 5) && gVEvent(forestpicnic) == 0)
         {
             sVEvent(forestpicnic,1);
-            startEvent("gadforest_event","picnic");
+            startEvent(eGadForestEvent,"picnic");
         }
         if(gVEvent(foresteventrand) == 4 && getMonth() >= 6 && getMonth() <= 9)
-            startEvent("gadforest_event","mushroom_pickers2");
+            startEvent(eGadForestEvent,"mushroom_pickers2");
         if(getMonth() >= 4 && getMonth() <= 10 && gVEvent(gadboyday) != gVStatus(daystart))
         {
             if(gVEvent(foresteventrand) == 5 && getHour() >= 8 && getHour() <= 15 && getWeekNum() > 0 && getWeekNum() <= 5)
-                startEvent("gadforest_event", "gopforest_mitka");
+                startEvent(eGadForestEvent, "gopforest_mitka");
             if(gVEvent(foresteventrand) == 6 && getHour() >= 8 && getHour() <= 18 && getWeekNum() > 0 && getWeekNum() <= 5)
-                startEvent("gadforest_event","gopforest_kolyamba");
+                startEvent(eGadForestEvent,"gopforest_kolyamba");
             if(gVEvent(foresteventrand) == 7 && getHour() >= 8 && getHour() <= 18 && getWeekNum() > 0 && getWeekNum() <= 5)
-                startEvent("gadforest_event","gopforest_vasyan");
+                startEvent(eGadForestEvent,"gopforest_vasyan");
             if(gVEvent(foresteventrand) == 8 && getHour() >= 8 && getHour() <= 15 && (getWeekNum() == 0 || getWeekNum() > 5))
-                startEvent("gadforest_event","gopforest_2boys");
+                startEvent(eGadForestEvent,"gopforest_2boys");
             if(gVEvent(foresteventrand) == 9 && getHour() >= 8 && getHour() <= 15 && (getWeekNum() == 0 || getWeekNum() > 5))
-                startEvent("gadforest_event","gopforest_3boys");
+                startEvent(eGadForestEvent,"gopforest_3boys");
         }
         if(gVStatus(clothesforest) == 1 && isNude())
             makeActBtn("wear_clothes",act(0));
@@ -189,7 +189,7 @@ void Gadforest::actionHandler(QString action)
         if(isDay())
             changeLoc(lswamp,75);
         else
-            startEvent("gadforest_event","swamp_road");
+            startEvent(eGadForestEvent,"swamp_road");
         sVEvent(edge_forestday_current,1);
     }
     if(action == "gadroad")
@@ -256,7 +256,7 @@ void Gadforest::actionHandler(QString action)
         }
         else
         {
-            startEvent("gadforest_event", "gadforest_lost_start");
+            startEvent(eGadForestEvent, "gadforest_lost_start");
         }
         
     }
@@ -300,14 +300,14 @@ void Gadforest::actionHandler(QString action)
         if(gVEvent(foresteventrand) == 1 && getMonth() >= 6 && getMonth() <= 9 && gVEvent(mushroom_pickersday) != gVStatus(daystart))
         {
             sVEvent(mushroom_pickers,2);
-            startEvent("gadforest_event", "mushroom_pickers1");
+            startEvent(eGadForestEvent, "mushroom_pickers1");
         }
         if(gVEvent(foresteventrand) == 2 && getHour() > 8 && getHour() < 20 && gVEvent(foresteventday) != gVStatus(daystart))
-            startEvent("gadforest_event", "forest_hanters");
+            startEvent(eGadForestEvent, "forest_hanters");
         if(gVEvent(foresteventrand) > 7 && getMonth() >= 6 && getMonth() <= 9 && gVEvent(foresteventday) != gVStatus(daystart))
         {
             sVEvent(mushroom_pickers,2);
-            startEvent("gadforest_event","mushroom_pickers3");
+            startEvent(eGadForestEvent,"mushroom_pickers3");
         }
         makeActBtn("go_back",act(10));
         if(getHour() >= getSunrise() && getHour() < getSunset())
@@ -329,12 +329,12 @@ void Gadforest::actionHandler(QString action)
         else
         {
             sVEvent(lost, 1);
-            startEvent("gadforest_event", "gadforest_lost_start");
+            startEvent(eGadForestEvent, "gadforest_lost_start");
         }
     }
     if(action == "search_bb")
     {
-        startEvent("gadforest_event", "search");
+        startEvent(eGadForestEvent, "search");
     }
     if(action == "deep_in_forest2")
     {
@@ -345,7 +345,7 @@ void Gadforest::actionHandler(QString action)
         }
         else
         {
-            startEvent("gadforest_event", "gadforest_lost_start");
+            startEvent(eGadForestEvent, "gadforest_lost_start");
         }
     }
     if(action == "3")
@@ -386,13 +386,13 @@ void Gadforest::actionHandler(QString action)
         if(gVEvent(goforest) < 60)
             addText(str(21));
         if(gVEvent(foresteventrand) == 1 && getMonth() >= 6 && getMonth() <= 9 && gVEvent(foresteventday) != gVStatus(daystart))
-            startEvent("gadforest_event", "basket");
+            startEvent(eGadForestEvent, "basket");
         if(gVEvent(foresteventrand) == 2 && getMonth() >= 6 && getMonth() <= 9 && gVEvent(foresteventday) != gVStatus(daystart))
-            startEvent("gadforest_event","billberry");
+            startEvent(eGadForestEvent,"billberry");
         if(gVEvent(foresteventrand) == 3 && gVEvent(foresteventday) != gVStatus(daystart))
-            startEvent("gadforest_event", "mushroom");
+            startEvent(eGadForestEvent, "mushroom");
         if(gVEvent(foresteventrand) == 4 && getHour() > 8 && getHour() < 20 && gVEvent(foresteventday) != gVStatus(daystart))
-            startEvent("gadforest_event", "forest_hanters");
+            startEvent(eGadForestEvent, "forest_hanters");
         makeActBtn("go_back2",act(10));
         if(getHour() >= getSunrise() && getHour() < getSunset())
         {
@@ -411,7 +411,7 @@ void Gadforest::actionHandler(QString action)
         else
         {
             sVEvent(lost, 2);
-            startEvent("gadforest_event", "gadforest_lost_start");
+            startEvent(eGadForestEvent, "gadforest_lost_start");
         }
     }
     if(action == "deep_in_forest3")
@@ -423,7 +423,7 @@ void Gadforest::actionHandler(QString action)
         }
         else
         {
-            startEvent("gadforest_event", "gadforest_lost_start");
+            startEvent(eGadForestEvent, "gadforest_lost_start");
         }
     }
     if(action == "4")
@@ -466,11 +466,11 @@ void Gadforest::actionHandler(QString action)
         if(gVEvent(goforest) < 80)
             addText(str(21));
         if(gVEvent(foresteventrand) < 2 && getMonth() >= 6 && getMonth() <= 9 && gVEvent(foresteventday) != gVStatus(daystart))
-            startEvent("gadforest_event", "billberry");
+            startEvent(eGadForestEvent, "billberry");
         if(gVEvent(foresteventrand) > 7 && getMonth() >= 6 && getMonth() <= 9 && gVEvent(foresteventday) != gVStatus(daystart))
-            startEvent("gadforest_event", "mushroom");
+            startEvent(eGadForestEvent, "mushroom");
         if(gVEvent(foresteventrand) == 5 && getHour() > 8 && getHour() < 20 && gVEvent(foresteventday) != gVStatus(daystart))
-            startEvent("gadforest_event", "forest_hanters");
+            startEvent(eGadForestEvent, "forest_hanters");
         makeActBtn("go_back3",act(10));
         if(getHour() >= getSunrise() && getHour() < getSunset())
         {
@@ -489,7 +489,7 @@ void Gadforest::actionHandler(QString action)
         else
         {
             sVEvent(lost, 3);
-            startEvent("gadforest_event", "gadforest_lost_start");
+            startEvent(eGadForestEvent, "gadforest_lost_start");
         }
     }
     if(action == "deep_in_forest4")
@@ -504,26 +504,26 @@ void Gadforest::actionHandler(QString action)
         }
         else
         {
-            startEvent("gadforest_event", "gadforest_lost_start");
+            startEvent(eGadForestEvent, "gadforest_lost_start");
         }
     }
     if(action == "picnic")
     {
-        startEvent("gadforest_event","picnic");
+        startEvent(eGadForestEvent,"picnic");
     }
     if(action == "Miroslava")
     {
-        startEvent("Miroslava");
+        startEvent(eMiroslava);
     }
     if(action == "bicycle")
     {
-        startEvent("bicycle","forest");
+        startEvent(eBicycle,"forest");
     }
 }
 
 void Gadforest::makeActBtn(QString act, QString actName)
 {
-    QActButton* btn = new QActButton(act);
+    QActButton* btn = new QActButton(act, "gadforest");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Gadforest::actionHandler);
     addActBtn(btn);

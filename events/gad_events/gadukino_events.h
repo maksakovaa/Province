@@ -9,6 +9,7 @@ class GadukinoEvent: public Event
 public:
     GadukinoEvent(EventHandler* parent): root(parent){}
     void start(QString arg = "") override;
+    void makeActBtn(QString action, QString actName);
 private slots:
     void actionHandler(QString action);
 private:
@@ -49,7 +50,6 @@ private:
     QString str(int id);
     QString act(int id);
     QString media(int id);
-    void makeActBtn(QString action, QString actName);
 private:
     EventHandler* root;
     int i;

@@ -101,7 +101,7 @@ void Gadroad::actionHandler(QString action)
     }
     if(action == "backdoors")
     {
-        startEvent("gadukino_event", "gadukino_back");
+        startEvent(eGadukinoEvents, "gadukino_back");
     }
     if(action == "gadukino")
     {
@@ -111,7 +111,7 @@ void Gadroad::actionHandler(QString action)
 
 void Gadroad::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action,"gadroad");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Gadroad::actionHandler);
     addActBtn(btn);

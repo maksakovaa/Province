@@ -36,7 +36,7 @@ bool Swamp::isParent()
 
 void Swamp::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action,"swamp");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Swamp::actionHandler);
     addActBtn(btn);
@@ -68,7 +68,7 @@ void Swamp::actionHandler(QString action)
         }
         else
         {
-            startEvent("gadforest_event","gadforest_lost_start");
+            startEvent(eGadForestEvent,"gadforest_lost_start");
         }
     }
     if(action == "gadforest")
@@ -87,7 +87,7 @@ void Swamp::actionHandler(QString action)
         new_bilbery = getRandInt(4,5);
         uVStatus(bilberry,new_bilbery);
         uVStatus(mood,5);
-        startEvent("gadforest_event","clothes1");
+        startEvent(eGadForestEvent,"clothes1");
         setDesc(str(1));
         makeActBtn("swamp",act(3));
     }
@@ -95,7 +95,7 @@ void Swamp::actionHandler(QString action)
     {
         sVStatus(swamp_clothes, 0);
         sVEvent(hanters,0);
-        startEvent("gadforest_event","forest_road");
+        startEvent(eGadForestEvent,"forest_road");
     }
     if(action == "swamp_yard")
     {

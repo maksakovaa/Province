@@ -9,10 +9,10 @@ class Miroslava: public Event
 public:
     Miroslava(EventHandler* ptr);
     void start(QString arg = "") override;
+    void makeActBtn(QString action, QString actName);
 private slots:
     void actionHandler(QString action);
 private:
-    void makeActBtn(QString action, QString actName);
     void miraclothes();
     void mira_river();
     void miratalk();

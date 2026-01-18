@@ -177,7 +177,7 @@ void Mitka::actionHandler(QString action)
 
 void Mitka::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action,"mitka");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Mitka::actionHandler);
     root->addActBtn(btn);

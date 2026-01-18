@@ -592,7 +592,7 @@ void RiverEvents::actionHandler(QString action)
         root->setImage(media(14));
         root->setDesc(str(45));
         if(root->vStatus(fish) > 0)
-            root->eventStart("river_events","fishing_end");
+            root->startEvent(eRiverEvents,"fishing_end");
         else
             makeActBtn("gadriver",act(6));
     }
@@ -926,7 +926,7 @@ void RiverEvents::fishing()
         root->setImage(media(14));
         root->setDesc(str(39));
         if(root->vStatus(fish) > 0)
-            root->eventStart("river_events","fishing_end");
+            root->startEvent(eRiverEvents,"fishing_end");
         else
             makeActBtn("gadriver",act(6));
     }
@@ -942,7 +942,7 @@ void RiverEvents::fishing_end()
 
 void RiverEvents::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action,"riverevents");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &RiverEvents::actionHandler);
     root->addActBtn(btn);

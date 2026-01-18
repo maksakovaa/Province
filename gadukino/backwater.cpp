@@ -63,16 +63,16 @@ void Backwater::actionHandler(QString action)
         makeActBtn("exit",act(11));
         if(gVEvent(hantersRape) == 2)
         {
-            startEvent("swamp_events","backwater_ralax");
+            startEvent(eSwampEvents,"backwater_ralax");
         }
         if(ptr == nullptr && gVEvent(hantersKnowSlut) == 0 && gVEvent(hanters) == 1 && getHour() > 8 && getHour() < 20 && gVEvent(hantersday) != getDay())
         {
-            startEvent("swamp_events","hunter_looks");
+            startEvent(eSwampEvents,"hunter_looks");
         }
     }
     if(action == "dress_after_backwater")
     {
-        startEvent("swamp_events","dress_after_backwater");
+        startEvent(eSwampEvents,"dress_after_backwater");
     }
     if(action == "undress")
     {
@@ -175,13 +175,13 @@ void Backwater::actionHandler(QString action)
     if(action == "dress_after_backwater")
     {
         redressOld();
-        startEvent("swamp_events", "dress_after_backwater");
+        startEvent(eSwampEvents, "dress_after_backwater");
     }
 }
 
 void Backwater::makeActBtn(QString act, QString actName)
 {
-    QActButton* btn = new QActButton(act);
+    QActButton* btn = new QActButton(act, "backwater");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Backwater::actionHandler);
     addActBtn(btn);

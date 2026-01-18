@@ -22,4 +22,5 @@
 #include "../gadukino/swampspring.h"
 #include "../gadukino/swampyard.h"
 
+#include "../pavlovo/korrPar.h"
 #endif // LOCATION_HEADERS_H

@@ -71,12 +71,12 @@ void Gadukino::actionHandler(QString action)
         if(gVEvent(onlooker) == 1)
         {
             sVEvent(onlooker,0);
-            startEvent("gadukino_event","gadukino_onlooker");
+            startEvent(eGadukinoEvents,"gadukino_onlooker");
         }
 
         if(getCloth(ClothType::Main) == nullptr)
         {
-            startEvent("gadukino_event", "gadukino_nude");
+            startEvent(eGadukinoEvents, "gadukino_nude");
         }
 
         if((gVEvent(mitka) == 0 && hour >= 7 && hour < 20) || (gVEvent(mitka) == 1 && hour >= 17 && hour < 20 && getRandInt(1,3) == 1 && gVEvent(mitkaday) != gVStatus(daystart) && gVEvent(mitkasextimes) < 13))
@@ -94,41 +94,41 @@ void Gadukino::actionHandler(QString action)
             {
                 if(mitkarand == 1 && gVEvent(mitkaday) != gVStatus(daystart))
                 {
-                    startEvent("gadukino_event", "gadukino_mitka");
+                    startEvent(eGadukinoEvents, "gadukino_mitka");
                 }
                 if(mitkarand == 2 && gVEvent(kolyambaday) != gVStatus(daystart))
                 {
-                    startEvent("gadukino_event", "gadukino_kolyamba");
+                    startEvent(eGadukinoEvents, "gadukino_kolyamba");
                 }
                 if(mitkarand == 3 && gVEvent(vasyanday) != gVStatus(daystart))
                 {
-                    startEvent("gadukino_event", "gadukino_vasyan");
+                    startEvent(eGadukinoEvents, "gadukino_vasyan");
                 }
             }
             if(mitkarand == 4 && gVEvent(mitkasextimes) > 15 && hour >= 17 && hour <= 19 && gVEvent(gadboyday) != gVStatus(daystart) && week > 0 && week <= 5)
             {
-                startEvent("gadukino_event", "gadukino_2boys");
+                startEvent(eGadukinoEvents, "gadukino_2boys");
             }
             if(mitkarand <= 5 && gVEvent(mitkasextimes) > 15 && hour >= 7 && hour <= 19 && gVEvent(gadboyday) != gVStatus(daystart) && (week == 0 || week == 6))
             {
-                startEvent("gadukino_event", "gadukino_2boys");
+                startEvent(eGadukinoEvents, "gadukino_2boys");
             }
         }
         if(gVEvent(gadriver_gang) == 1 && hour >= 6 && hour <= 21 && gVEvent(gadboyday) != gVStatus(daystart))
         {
-            startEvent("gadukino_event", "gang_apologise");
+            startEvent(eGadukinoEvents, "gang_apologise");
         }
         if(gVEvent(gadriver_gang) == 3 && hour >= 6 && hour <= 21 && gVEvent(gadboyday) != gVStatus(daystart))
         {
-            startEvent("gadukino_event", "mitka_apologise");
+            startEvent(eGadukinoEvents, "mitka_apologise");
         }
         if(gVEvent(gadriver_gang) == 4 && gVEvent(mirasex) == 1 && gVEvent(miralick) == 0 && hour >= 8 && hour <= 20 && gVEvent(gadboyday) != gVStatus(daystart))
         {
-            startEvent("gadukino_event", "mira_apologise");
+            startEvent(eGadukinoEvents, "mira_apologise");
         }
         if(gVEvent(mitkasextimes) > 13 && gVEvent(mirasex) == 1 && gVQuest(miragopQW) < 11 && mitkarand >= 15 && gVEvent(miraday) != getDay())
         {
-            startEvent("Meadow_event", "mira_lesb_talk4");
+            startEvent(eMeadowEvent, "mira_lesb_talk4");
         }
 
         //Логистика
@@ -144,24 +144,24 @@ void Gadukino::actionHandler(QString action)
     }
     if(action == "gadevent_collection_point")
     {
-        startEvent("gadukino_event", "collection_point");
+        startEvent(eGadukinoEvents, "collection_point");
     }
     if(action == "mitka")
     {
-        startEvent("Mitka");
+        startEvent(eMitka);
     }
     if(action == "mitkabuh")
     {
         sVEvent(miraingop,0);
-        startEvent("mitkabuh");
+        startEvent(eMitkaBuh);
     }
     if(action == "grandma")
     {
-        startEvent("grandma");
+        startEvent(eGrandMa);
     }
     if(action == "grandpa")
     {
-        startEvent("grandpa");
+        startEvent(eGrandPa);
     }
     if(action == "gadmarket")
     {
@@ -169,7 +169,7 @@ void Gadukino::actionHandler(QString action)
     }
     if(action == "gadevent_walk")
     {
-        startEvent("gadukino_event", "walk");
+        startEvent(eGadukinoEvents, "walk");
     }
     if(action == "Gadriver")
     {
@@ -187,7 +187,7 @@ void Gadukino::actionHandler(QString action)
 
 void Gadukino::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action, "gadukino");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Gadukino::actionHandler);
     addActBtn(btn);

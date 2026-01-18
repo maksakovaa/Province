@@ -3,6 +3,7 @@
 #include "../Functions.h"
 #include <QDebug>
 #include "../player/enums.h"
+#include "../menu/buttons.h"
 
 Bed::Bed(ObjectHandler* ptr): root(ptr)
 {

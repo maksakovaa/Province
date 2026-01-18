@@ -306,7 +306,7 @@ void KitchenActs::actionHandler(QString action)
 
 void KitchenActs::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action, "kitchActs");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &KitchenActs::actionHandler);
     root->m_actions->addWidget(btn);

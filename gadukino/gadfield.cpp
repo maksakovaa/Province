@@ -239,7 +239,7 @@ void Gadfield::actionHandler(QString action)
     }
     if(action == "Miroslava")
     {
-        startEvent("Miroslava");
+        startEvent(eMiroslava);
     }
     if(action == "take_cow_home")
     {
@@ -352,7 +352,7 @@ void Gadfield::actionHandler(QString action)
 
 void Gadfield::makeActBtn(QString act, QString actName)
 {
-    QActButton* btn = new QActButton(act);
+    QActButton* btn = new QActButton(act, "gadfield");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Gadfield::actionHandler);
     addActBtn(btn);

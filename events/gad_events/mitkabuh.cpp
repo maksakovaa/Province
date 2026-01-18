@@ -532,7 +532,7 @@ void MitkaBuh::actionHandler(QString action)
 
 
     if(action == "mitkabuh")
-        root->eventStart("mitkabuh");
+        root->startEvent(eMitkaBuh);
     if(action == "back_to_loc")
         root->changeLoc(root->getCurLoc());
     if(action == "gadukino")
@@ -564,7 +564,7 @@ void MitkaBuh::actionHandler(QString action)
 
 void MitkaBuh::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action,"MitkaBuh");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &MitkaBuh::actionHandler);
     root->addActBtn(btn);

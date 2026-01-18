@@ -25,6 +25,7 @@ public:
     int gVSchool(SchoolVar param);
     void uVSchool(SchoolVar param, int val);
     void sVSchool(SchoolVar param, int val);
+    void checkMapAwailable();
 public slots:
     void slotChangeLoc(LocId id, int time, QString arg = "");
 signals:

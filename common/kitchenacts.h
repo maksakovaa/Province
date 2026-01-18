@@ -22,10 +22,10 @@ public:
     void fatdel();
     void cookie();
     void all(int arg);
+    void makeActBtn(QString action, QString actName);
 private slots:
     void actionHandler(QString action);
 private:
-    void makeActBtn(QString action, QString actName);
     QString str(int id);
     QString act(int id);
     int vitaminday{0};

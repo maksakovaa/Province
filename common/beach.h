@@ -21,11 +21,11 @@ public:
     void swim();
     void sunbathe(int isCream = 0);
     void cream();
+    void makeActBtn(QString action,QString actName);
 private slots:
     void actionHandler(QString action);
 private:
     void storeClothes();
-    void makeActBtn(QString action,QString actName);
     QString str(int id);
     QString act(int id);
     LocationHandler* root;

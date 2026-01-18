@@ -173,7 +173,7 @@ void GrandpaHelp::actionHandler(QString action)
 
 void GrandpaHelp::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action,"GrandpaHelp");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &GrandpaHelp::actionHandler);
     root->addActBtn(btn);

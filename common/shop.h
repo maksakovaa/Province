@@ -21,12 +21,12 @@ public:
     LocId getLocIn() override;
     QString getLocName() override;
     bool isParent() override;
+    void makeActBtn(QString act, QString actName);
 private slots:
     void actionHandler(const QString link) override;
     void slotBuyItem(Items id);
     void slotBuyCloth(int id, ClothGroup group);
 private:
-    void makeActBtn(QString act, QString actName);
     QString getStr(int id);
     void shop_food();
     void shop_cosmetics();

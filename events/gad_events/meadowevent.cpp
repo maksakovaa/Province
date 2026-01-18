@@ -230,20 +230,20 @@ void MeadowEvent::actionHandler(QString action)
     if(action == "back_to_loc")
         root->changeLoc(root->getCurLoc());
     if(action == "mirakiss")
-        root->eventStart("mirasex","mirakiss");
+        root->startEvent(eMiraSex,"mirakiss");
     if(action == "foreplay")
-        root->eventStart("mirasex","foreplay");
+        root->startEvent(eMiraSex,"foreplay");
     if(action == "miralick_first")
-        root->eventStart("mirasex","miralick_first");
+        root->startEvent(eMiraSex,"miralick_first");
     if(action == "lickmira_first")
-        root->eventStart("mirasex","lickmira_first");
+        root->startEvent(eMiraSex,"lickmira_first");
     if(action == "lickmira_start")
-        root->eventStart("mirasex","lickmira_start");
+        root->startEvent(eMiraSex,"lickmira_start");
 }
 
 void MeadowEvent::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action,"MeadowEvent");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &MeadowEvent::actionHandler);
     root->addActBtn(btn);
@@ -464,7 +464,7 @@ void MeadowEvent::miragopQW11()
     root->incTime(5);
     root->uVStatus(horny,10);
     root->sVQuest(miragopQW,12);
-    root->eventStart("Miroslava","miraclothes");
+    root->startEvent(eMiroslava,"miraclothes");
     root->setDesc(str(4));
     makeActBtn("back_to_loc",act(1));
 }
@@ -502,7 +502,7 @@ void MeadowEvent::lesb_talk_mira1()
     else
         root->uVStatus(horny,5);
     root->uVSkill(domination,1);
-    root->eventStart("Miroslava","miraclothes");
+    root->startEvent(eMiroslava,"miraclothes");
     root->setDesc(str(8));
     makeActBtn("miralick_first",act(2));
 }
@@ -512,7 +512,7 @@ void MeadowEvent::lesb_talk_mira2()
     root->incTime(5);
     root->uVStatus(horny,5);
     root->sVEvent(mirasex,2);
-    root->eventStart("Miroslava","miraclothes");
+    root->startEvent(eMiroslava,"miraclothes");
     root->addDesc(str(9));
     makeActBtn("miralick_first",act(2));
 }
@@ -522,7 +522,7 @@ void MeadowEvent::lesb_talk_mira3()
     root->incTime(5);
     root->uVStatus(horny,5);
     root->uVSkill(domination,1);
-    root->eventStart("Miroslava","miraclothes");
+    root->startEvent(eMiroslava,"miraclothes");
     root->setDesc(str(10));
     makeActBtn("miralick_first",act(2));
 }
@@ -585,7 +585,7 @@ void MeadowEvent::mira_lesb_talk4()
     root->sVEvent(mirahorny,getRandInt(40,80));
     root->sVEvent(miraday,root->getDay());
     root->uVSkill(domination,-1);
-    root->eventStart("Miroslava","miraclothes");
+    root->startEvent(eMiroslava,"miraclothes");
     root->setDesc(str(22));
     makeActBtn("lickmira_first",act(2));
 }

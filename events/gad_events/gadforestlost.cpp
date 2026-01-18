@@ -45,11 +45,11 @@ void GadforestLost::actionHandler(QString action)
             }
         }
         if(root->gVEvent(lost) >= getRandInt(1,5) && !root->isDay())
-            root->eventStart("gadforest_event","lost");
+            root->startEvent(eGadForestEvent,"lost");
         if(root->gVEvent(lost) > 1 && getRandInt(1,10) == 1 && root->isDay())
         {
             root->sVEvent(forest_lost,1);
-            root->eventStart("gadforest_event","forest_hanters");
+            root->startEvent(eGadForestEvent,"forest_hanters");
         }
         makeActBtn("search_path",act(0));
 
@@ -90,7 +90,7 @@ void GadforestLost::actionHandler(QString action)
     }
     if(action == "relax")
     {
-        root->eventStart("gadforestrelax");
+        root->startEvent(eGadForestRelax);
     }
     if(action == "get_out")
     {
@@ -124,7 +124,7 @@ void GadforestLost::actionHandler(QString action)
 
 void GadforestLost::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action,"GadforestLost");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &GadforestLost::actionHandler);
     root->addActBtn(btn);

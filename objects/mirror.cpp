@@ -1,7 +1,7 @@
 #include "mirror.h"
 #include "objecthandler.h"
 #include "../Functions.h"
-
+#include "../menu/buttons.h"
 
 Mirror::Mirror(ObjectHandler* ptr): root(ptr)
 {

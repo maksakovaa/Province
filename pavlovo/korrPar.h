@@ -14,10 +14,10 @@ public:
     LocId getLocIn() override;
     QString getLocName() override;
     bool isParent() override;
+    void makeActBtn(QString action, QString actName);
 private slots:
     void actionHandler(QString action) override;
 private:
-    void makeActBtn(QString action, QString actName);
     QString str(int id);
     QString act(int id);
 };

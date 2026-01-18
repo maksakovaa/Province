@@ -2366,7 +2366,7 @@ void HanterSex::hantersexfaint()
 
 void HanterSex::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action,"HanterSex");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &HanterSex::actionHandler);
     root->addActBtn(btn);

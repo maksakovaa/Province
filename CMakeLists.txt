@@ -136,6 +136,9 @@ qt_add_executable(Game
     events/gad_events/sergeihanter.h events/gad_events/sergeihanter.cpp
     menu/saveform.h menu/saveform.cpp menu/saveform.ui
     menu/loadform.h menu/loadform.cpp menu/loadform.ui
+    objects/objenums.h
+    events/event_enums.h
+    common/bathenums.h
 
 )
 

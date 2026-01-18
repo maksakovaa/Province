@@ -57,7 +57,7 @@ void Gadbeach::actionHandler(QString action)
         {
             if(gVEvent(mirainriver) == 0 && gVEvent(mitkasextimes) >= 13 && i == 0 && getSunWeather() >= 0 && gVEvent(guysriver) != getDay())
             {
-                startEvent("river_events", "guys_beach");
+                startEvent(eRiverEvents, "guys_beach");
             }
             ClothMain* ptr = (ClothMain*)getCloth(ClothType::Main);
             if(ptr != nullptr && ptr->getClothGroup() != swimsuit)
@@ -80,11 +80,11 @@ void Gadbeach::actionHandler(QString action)
         if(ptr == nullptr || ptr->getClothGroup() <= swimsuit)
             makeActBtn("wearClothes",act(5));
         makeActBtn("exit",act(6));
-        startEvent("river_events","mira_in_river");
+        startEvent(eRiverEvents,"mira_in_river");
     }
     if(action == "Miroslava")
     {
-        startEvent("Miroslava");
+        startEvent(eMiroslava);
     }
     if(action == "wear_swimsuit")
     {
@@ -132,12 +132,12 @@ void Gadbeach::actionHandler(QString action)
         }
     }
     if(action == "horse_river")
-        startEvent("river_event","horse_river");
+        startEvent(eRiverEvents,"horse_river");
 }
 
 void Gadbeach::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action, "gadbeach");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Gadbeach::actionHandler);
     addActBtn(btn);

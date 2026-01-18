@@ -16,12 +16,13 @@ public:
     LocId getLocIn() override;
     QString getLocName() override;
     bool isParent() override;
+    void makeActBtn(QString action, QString actName);
 private slots:
     void actionHandler(QString action) override;
 private:
     QString str(int id);
     QString media(int id);
-    void makeActBtn(QString action, QString actName);
+
 };
 
 #endif // GADHOUSE_H

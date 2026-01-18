@@ -64,7 +64,7 @@ void GadForestSwamp::actionHandler(QString action)
     }
     if(action == "gadforestlost")
     {
-        startEvent("gadforestlost","main");
+        startEvent(eGadForestLost,"main");
     }
     if(action == "go_swamp")
     {
@@ -91,7 +91,7 @@ void GadForestSwamp::actionHandler(QString action)
         }
         else if(gVSkill(strenght) + gVSkill(agility) < i)
         {
-            startEvent("gameover","10");
+            startEvent(eGameOver,"10");
         }
         else
         {
@@ -154,7 +154,7 @@ void GadForestSwamp::actionHandler(QString action)
         }
         else if(gVSkill(strenght) + gVSkill(agility) < i)
         {
-            startEvent("gameover","10");
+            startEvent(eGameOver,"10");
         }
         else
         {
@@ -181,7 +181,7 @@ void GadForestSwamp::actionHandler(QString action)
         }
         else if(gVSkill(strenght) + gVSkill(agility) < i && i <= 30)
         {
-            startEvent("gameover","10");
+            startEvent(eGameOver,"10");
         }
         else
         {
@@ -192,7 +192,7 @@ void GadForestSwamp::actionHandler(QString action)
 
 void GadForestSwamp::makeActBtn(QString act, QString actName)
 {
-    QActButton* btn = new QActButton(act);
+    QActButton* btn = new QActButton(act, "gadforestswamp");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &GadForestSwamp::actionHandler);
     addActBtn(btn);

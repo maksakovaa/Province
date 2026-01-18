@@ -587,14 +587,14 @@ void MitkaBuhGroup::actionHandler(QString action)
     }
 
     if(action == "mitkabuhgroup")
-        root->eventStart("mitkabuh_group");
+        root->startEvent(eMitkaBuhGroup);
     if(action == "gadukino")
         root->changeLoc(lgadukino);
 }
 
 void MitkaBuhGroup::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action,"MitkaBuhGroup");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &MitkaBuhGroup::actionHandler);
     root->addActBtn(btn);

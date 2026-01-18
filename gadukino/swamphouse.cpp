@@ -39,7 +39,7 @@ LocId SwampHouse::getParId()
 
 void SwampHouse::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action,"swamphouse");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &SwampHouse::actionHandler);
     addActBtn(btn);
@@ -769,11 +769,11 @@ void SwampHouse::actionHandler(QString action)
 
     if(action == "HantersLoveSex")
     {
-        startEvent("HantersLoveSex");
+        startEvent(eHantersLoveSex);
     }
     if(action == "hantersex")
     {
-        startEvent("hantersex");
+        startEvent(eHanterSex);
     }
     if(action == "hantersexnude")
     {

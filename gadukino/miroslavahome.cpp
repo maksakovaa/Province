@@ -105,7 +105,7 @@ void MiroslavaHome::actionHandler(QString action)
             sVEvent(mira_guest,0);
             sVEvent(mirainmeadow,0);
             sVEvent(mirainforest,0);
-            startEvent("Miroslava");
+            startEvent(eMiroslava);
         }
     }
     if(action == "get_close_mira")
@@ -147,17 +147,17 @@ void MiroslavaHome::actionHandler(QString action)
     //HREF LINKS
     if(action == "mirafather")
     {
-        startEvent("mirafather");
+        startEvent(eMiraFather);
     }
     if(action == "grandpa")
     {
-        startEvent("grandpa");
+        startEvent(eGrandPa);
     }
 }
 
 void MiroslavaHome::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action, "mirahome");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &MiroslavaHome::actionHandler);
     addActBtn(btn);

@@ -6,6 +6,7 @@
 #include "../player/enums.h"
 #include "event.h"
 #include "eventenums.h"
+#include "event_enums.h"
 #include "items/cloth.h"
 #include <QLabel>
 #include <QPushButton>
@@ -19,7 +20,7 @@ class EventHandler
     friend SaveForm; friend LoadForm;
 public:
     EventHandler(LocationHandler* ptr);
-    void eventStart(QString event, QString args = 0);
+    void startEvent(Events event, QString args = 0);
     void rendImagePage();
     void rendVideoPage();
     void setImage(QString path);
@@ -124,7 +125,7 @@ private:
     void initEvents();
 private:
     LocationHandler* root;
-    std::unordered_map<QString,Event*> m_events;
+    std::unordered_map<Events,Event*> m_events;
     std::unordered_map<EventParams,int> m_eventval;
     std::unordered_map<QuestParams, int> m_questval;
     std::unordered_map<SchoolVar,int> m_schoolVal;

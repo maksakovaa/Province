@@ -1696,7 +1696,7 @@ QString GadforestEvent::media(int id)
 
 void GadforestEvent::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action,"gadforestevent");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &GadforestEvent::actionHandler);
     root->addActBtn(btn);
@@ -1710,7 +1710,7 @@ void GadforestEvent::actionHandler(QString action)
     }
     if(action == "gadforestlostmain")
     {
-        root->eventStart("gadforestlost", "main");
+        root->startEvent(eGadForestLost, "main");
     }
     if(action == "gadforest")
     {
@@ -1720,53 +1720,53 @@ void GadforestEvent::actionHandler(QString action)
     {
         root->sVEvent(forest_gopsex,1);
         root->sVEvent(temphant,4);
-        root->eventStart("hanters");
+        root->startEvent(eHanters);
     }
     if(action == "mitksasex2")
     {
         root->sVEvent(mirainforest,0);
         root->sVEvent(forest_gopsex,1);
         root->sVEvent(temphant,4);
-        root->eventStart("hanters");
+        root->startEvent(eHanters);
     }
     if(action == "mitkasex3")
     {
         root->sVEvent(mitboyrand,1);
-        root->eventStart("mitkasex");
+        root->startEvent(eMitkaSex);
     }
     if(action == "kolyambasex")
     {
         root->sVEvent(forest_gopsex,1);
         root->sVEvent(temphant,5);
-        root->eventStart("hanters");
+        root->startEvent(eHanters);
     }
     if(action == "kolyambasex2")
     {
-        root->eventStart("mitkasex");
+        root->startEvent(eMitkaSex);
     }
     if(action == "kolyambasex3")
     {
         root->sVEvent(mirainforest,0);
         root->sVEvent(forest_gopsex,1);
         root->sVEvent(temphant,5);
-        root->eventStart("hanters");
+        root->startEvent(eHanters);
     }
     if(action == "vasyansex")
     {
         root->sVEvent(forest_gopsex,1);
         root->sVEvent(temphant,6);
-        root->eventStart("hanters");
+        root->startEvent(eHanters);
     }
     if(action == "vasyansex2")
     {
-        root->eventStart("mitkasex");
+        root->startEvent(eMitkaSex);
     }
     if(action == "vasyansex3")
     {
         root->sVEvent(mirainforest,0);
         root->sVEvent(forest_gopsex,1);
         root->sVEvent(temphant,6);
-        root->eventStart("hanters");
+        root->startEvent(eHanters);
     }
     if(action == "watch_miramitka0")
     {
@@ -2074,18 +2074,18 @@ void GadforestEvent::actionHandler(QString action)
     if(action == "2boyssex")
     {
         root->sVEvent(forest_gopsex,2);
-        root->eventStart("hantersex");
+        root->startEvent(eHanterSex);
     }
     if(action == "2boyssex2")
     {
         root->sVEvent(mitkaforestsex, 2);
-        root->eventStart("mitkasex");
+        root->startEvent(eMitkaSex);
     }
     if(action == "2boyssex3")
     {
         root->sVEvent(mirainforest,0);
         root->sVEvent(forest_gopsex,2);
-        root->eventStart("hantersex");
+        root->startEvent(eHanterSex);
     }
     if(action == "watch_mira2boys")
     {
@@ -2113,18 +2113,18 @@ void GadforestEvent::actionHandler(QString action)
     if(action == "3boyssex")
     {
         root->sVEvent(forest_gopsex,3);
-        root->eventStart("hanters");
+        root->startEvent(eHanters);
     }
     if(action == "3boyssex2")
     {
         root->sVEvent(mitkaforestsex,3);
-        root->eventStart("mitkasex");
+        root->startEvent(eMitkaSex);
     }
     if(action == "3boyssex3")
     {
         root->sVEvent(mirainforest,0);
         root->sVEvent(forest_gopsex,3);
-        root->eventStart("hanters");
+        root->startEvent(eHanters);
     }
     if(action == "watch_mira3boys")
     {
@@ -2351,17 +2351,17 @@ void GadforestEvent::actionHandler(QString action)
         if(tmp == 1)
         {
             root->sVEvent(forest_hantersex,1);
-            root->eventStart("hanters");
+            root->startEvent(eHanters);
         }
         if(tmp == 2)
         {
             root->sVEvent(forest_hantersex,2);
-            root->eventStart("hantersex");
+            root->startEvent(eHanterSex);
         }
         if(tmp == 3)
         {
             root->sVEvent(forest_hantersex,3);
-            root->eventStart("hanters");
+            root->startEvent(eHanters);
         }
     }
     if(action == "hide_hanters")
@@ -2394,7 +2394,7 @@ void GadforestEvent::actionHandler(QString action)
     }
     if(action == "finish_in_forest")
     {
-        root->eventStart("gameover", "8");
+        root->startEvent(eGameOver, "8");
     }
     if(action == "run_from_wolf")
     {
@@ -2439,7 +2439,7 @@ void GadforestEvent::actionHandler(QString action)
     }
     if(action == "wolf_end")
     {
-        root->eventStart("gameover","9");
+        root->startEvent(eGameOver,"9");
     }
     if(action == "swamp_road2")
     {

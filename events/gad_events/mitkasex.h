@@ -9,6 +9,7 @@ class MitkaSex: public Event
 public:
     MitkaSex(EventHandler* ptr);
     void start(QString arg = "") override;
+    void makeActBtn(QString action, QString actName);
 private slots:
     void actionHandler(QString action);
 private:
@@ -110,7 +111,6 @@ private:
     void setMitka();
     void setVasyan();
     void setKolyamba();
-    void makeActBtn(QString action, QString actName);
 private:
     EventHandler* root;
     int boyAsex;

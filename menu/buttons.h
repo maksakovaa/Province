@@ -3,44 +3,74 @@
 
 #include <QPushButton>
 #include "../nav/loc_enums.h"
+#include "../objects/objenums.h"
+#include "../common/bathenums.h"
 
+class SaveForm;
 class QActButton: public QPushButton
 {
     Q_OBJECT
+    friend SaveForm;
 public:
-    QActButton(QString action);
+    QActButton(QString action,QString handler);
 signals:
     void sigAct(QString act);
 private:
     void clickHandle();
     QString m_action;
+    QString m_handler;
 };
 
-class LocButton: public QPushButton
+class BedActionButton: public QPushButton
 {
     Q_OBJECT
 public:
-    LocButton(LocId locId, int min = 1);
+    BedActionButton(QString actName, BedActs act);
 signals:
-    void sigChangeLoc(LocId locId, int time);
-private slots:
-    void slotClick();
+    void sigAction(BedActs act);
 private:
-    LocId m_locId;
-    int m_time;
+    BedActs m_action;
+private slots:
+    void handleButtonClick();
 };
 
-class ObjButton: public QPushButton
+class MirrActionButton: public QPushButton
 {
     Q_OBJECT
 public:
-    ObjButton(QString objectName);
+    MirrActionButton(QString actName, MirrorActs act);
 signals:
-    void sigViewObject(QString obj);
-private slots:
-    void slotClick();
+    void sigAction(MirrorActs act);
 private:
-    QString m_objName;
+    MirrorActs m_action;
+private slots:
+    void handleButtonClick();
+};
+
+class WardrActionButton: public QPushButton
+{
+    Q_OBJECT
+public:
+    WardrActionButton(QString actName, WardrActs act);
+signals:
+    void sigAction(WardrActs act);
+private:
+    WardrActs m_action;
+private slots:
+    void handleButtonClick();
+};
+
+class BathActBtn: public QPushButton
+{
+    Q_OBJECT
+public:
+    BathActBtn(bathActs act, QString actName);
+signals:
+    void sigAction(bathActs act);
+private:
+    bathActs m_action;
+private slots:
+    void handleButtonClick();
 };
 
 class SaveBtn: public QPushButton

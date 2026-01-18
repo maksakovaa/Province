@@ -148,7 +148,7 @@ void GadukinoEvent::actionHandler(QString action)
     if(action == "mira_apologise_next")
     {
         root->incTime(5);
-        root->eventStart("Miroslava", "miraclothes");
+        root->startEvent(eMiroslava, "miraclothes");
         root->setDesc(str(37));
         makeActBtn("agree_mira_apologize",act(9));
         makeActBtn("disagree_mira_apologize",act(10));
@@ -158,19 +158,19 @@ void GadukinoEvent::actionHandler(QString action)
         root->incTime(5);
         root->uVStatus(horny,5);
         root->sVEvent(mirasex,2);
-        root->eventStart("Miroslava", "miraclothes");
+        root->startEvent(eMiroslava, "miraclothes");
         root->setDesc(str(29));
         makeActBtn("mirasex_lick",act(8));
     }
     if(action == "mirasex_lick")
     {
-        root->eventStart("mirasex","miralick_first");
+        root->startEvent(eMiraSex,"miralick_first");
     }
     if(action == "disagree_mira_apologize")
     {
         root->incTime(30);
         root->sVEvent(mirasex,3);
-        root->eventStart("Miroslava", "miraclothes");
+        root->startEvent(eMiroslava, "miraclothes");
         root->setDesc(str(30));
         makeActBtn("gadukino",act(5));
     }
@@ -664,52 +664,52 @@ void GadukinoEvent::actionHandler(QString action)
     {
         root->sVEvent(mitkagadsex,1);
         root->sVEvent(mitboyrand,1);
-        root->eventStart("mitkasex");
+        root->startEvent(eMitkaSex);
     }
     if(action == "mitkagadsex12")
     {
         root->sVEvent(mitkagadsex,1);
         root->sVEvent(mitboyrand,2);
-        root->eventStart("mitkasex");
+        root->startEvent(eMitkaSex);
     }
     if(action == "mitkagadsex13")
     {
         root->sVEvent(mitkagadsex,1);
         root->sVEvent(mitboyrand,3);
-        root->eventStart("mitkasex");
+        root->startEvent(eMitkaSex);
     }
     if(action == "mitkagadsex2")
     {
         root->sVEvent(mitkagadsex,2);
-        root->eventStart("mitkasex");
+        root->startEvent(eMitkaSex);
     }
     if(action == "mitkaforestsex11")
     {
         root->sVEvent(mitkaforestsex,1);
         root->sVEvent(mitboyrand,1);
-        root->eventStart("mitkasex");
+        root->startEvent(eMitkaSex);
     }
     if(action == "mitkaforestsex12")
     {
         root->sVEvent(mitkaforestsex,1);
         root->sVEvent(mitboyrand,2);
-        root->eventStart("mitkasex");
+        root->startEvent(eMitkaSex);
     }
     if(action == "mitkaforestsex13")
     {
         root->sVEvent(mitkaforestsex,1);
         root->sVEvent(mitboyrand,3);
-        root->eventStart("mitkasex");
+        root->startEvent(eMitkaSex);
     }
     if(action == "mitkaforestsex2")
     {
         root->sVEvent(mitkaforestsex,2);
-        root->eventStart("mitkasex");
+        root->startEvent(eMitkaSex);
     }
     if(action == "mitkaforestsex3")
     {
         root->sVEvent(mitkaforestsex,3);
-        root->eventStart("mitkasex");
+        root->startEvent(eMitkaSex);
     }
     if(action == "to_gadhouse")
     {
@@ -2135,7 +2135,7 @@ QString GadukinoEvent::media(int id)
 
 void GadukinoEvent::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action, "gadukinoevents");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &GadukinoEvent::actionHandler);
     root->addActBtn(btn);

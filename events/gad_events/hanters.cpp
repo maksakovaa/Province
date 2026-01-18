@@ -759,18 +759,18 @@ void Hanters::actionHandler(QString action)
     if(action == "swamphouse")
         root->changeLoc(lswamphouse);
     if(action == "hanters")
-        root->eventStart("hanters");
+        root->startEvent(eHanters);
     if(action == "AndreiHanter")
-        root->eventStart("AndreiHanter");
+        root->startEvent(eAndreiHanter);
     if(action == "SergeiHanter")
-        root->eventStart("SergeiHanter");
+        root->startEvent(eSergeiHanter);
     if(action == "IgorHanter")
-        root->eventStart("IgorHanter");
+        root->startEvent(eIgorHanter);
 }
 
 void Hanters::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action,"Hanters");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Hanters::actionHandler);
     root->addActBtn(btn);

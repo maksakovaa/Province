@@ -261,12 +261,12 @@ void IgorHanter::actionHandler(QString action)
     if(action == "back_to_loc")
         root->changeLoc(root->getCurLoc());
     if(action == "HanterLoveSex")
-        root->eventStart("HanterLoveSex");
+        root->startEvent(eHantersLoveSex);
 }
 
 void IgorHanter::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action,"IgorHanter");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &IgorHanter::actionHandler);
     root->addActBtn(btn);

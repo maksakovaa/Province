@@ -180,7 +180,7 @@ void GrandparentsEvents::actionHandler(QString action)
         root->sVEvent(mira_guestday,root->vStatus(daystart));
         root->incTime(5);
         root->sVEvent(mira_guest,1);
-        root->eventStart("Miroslava","miraclothes");
+        root->startEvent(eMiroslava,"miraclothes");
         root->setDesc(str(16));
         makeActBtn("gaddvor",act(7));
     }
@@ -189,7 +189,7 @@ void GrandparentsEvents::actionHandler(QString action)
         root->sVEvent(mira_guestday,root->vStatus(daystart));
         root->incTime(5);
         root->sVEvent(mira_guest,1);
-        root->eventStart("Miroslava","miraclothes");
+        root->startEvent(eMiroslava,"miraclothes");
         root->setDesc(str(17));
         makeActBtn("gadhouse",act(7));
     }
@@ -213,7 +213,7 @@ void GrandparentsEvents::actionHandler(QString action)
     }
     if(action == "grandpa")
     {
-        root->eventStart(action);
+        root->startEvent(eGrandPa);
     }
     if(action == "garden_nude")
     {
@@ -240,7 +240,7 @@ void GrandparentsEvents::actionHandler(QString action)
     }
     if(action == "grandma")
     {
-        root->eventStart(action);
+        root->startEvent(eGrandMa);
     }
     if(action == "market")
     {
@@ -366,7 +366,7 @@ void GrandparentsEvents::actionHandler(QString action)
 
 void GrandparentsEvents::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action,"GrandparentsEvents");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &GrandparentsEvents::actionHandler);
     root->addActBtn(btn);

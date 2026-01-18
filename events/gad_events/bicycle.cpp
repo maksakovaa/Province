@@ -124,7 +124,7 @@ void Bicycle::actionHandler(QString action)
     }
     if(action == "gameover")
     {
-        root->eventStart("gameover", "9");
+        root->startEvent(eGameOver, "9");
     }
     if(action == "forest")
     {
@@ -223,7 +223,7 @@ void Bicycle::actionHandler(QString action)
 
 void Bicycle::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action, "bicycle");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Bicycle::actionHandler);
     root->addActBtn(btn);

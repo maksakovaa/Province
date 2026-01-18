@@ -35,7 +35,7 @@ bool Gadsarai::isParent()
 
 void Gadsarai::makeActBtn(QString act, QString actName)
 {
-    QActButton* btn = new QActButton(act);
+    QActButton* btn = new QActButton(act, "gadsarai");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Gadsarai::actionHandler);
     addActBtn(btn);
@@ -103,15 +103,15 @@ void Gadsarai::actionHandler(QString action)
     clearActions();
     if (action == "grandma")
     {
-        startEvent("grandma");
+        startEvent(eGrandMa);
     }
     if (action == "grandpa")
     {
-        startEvent("grandpa");
+        startEvent(eGrandPa);
     }
     if (action == "sarai")
     {
-        startEvent("gadukino_event", "gadsarai_check");
+        startEvent(eGadukinoEvents, "gadsarai_check");
 
         setImage(makeImage(media(0),isDay(), getMonth()));
         setDesc(str(0));
@@ -157,7 +157,7 @@ void Gadsarai::actionHandler(QString action)
         int month = getMonth(), SunWeather = getSunWeather(), hour = getHour(), week = getWeekNum();
         if (month >= 5 && month <= 9 && SunWeather >= 0 && hour > 13 && hour < 18 && week > 1 && week < 7 && gVEvent(grandmaknowsick) == 1)
         {
-            startEvent("grandma");
+            startEvent(eGrandMa);
         }
         if (gVEvent(know_no_pirat) == 0)
         {
@@ -186,7 +186,7 @@ void Gadsarai::actionHandler(QString action)
             }
             makeActBtn("run", act(6));
         }
-        startEvent("Pirat");
+        startEvent(ePirat);
     }
     if (action == "go_dvor")
     {
@@ -236,23 +236,23 @@ void Gadsarai::actionHandler(QString action)
     }
     if (action == "mira_dog")
     {
-        startEvent("grandparents_events","mira_dog");
+        startEvent(eGrandParentEvents,"mira_dog");
     }
     if (action == "cow")
     {
-        startEvent("grandparents_events","cow");
+        startEvent(eGrandParentEvents,"cow");
     }
     if(action == "horse")
     {
-        startEvent("grandparents_events","horse");
+        startEvent(eGrandParentEvents,"horse");
     }
     if(action == "boar")
     {
-        startEvent("grandparents_events","boar");
+        startEvent(eGrandParentEvents,"boar");
     }
     if(action == "bicycle")
     {
-        startEvent("bicycle","sarai");
+        startEvent(eBicycle,"sarai");
     }
     updateParams();
 }

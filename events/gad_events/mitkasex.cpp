@@ -40,7 +40,7 @@ void MitkaSex::start(QString arg)
         mitboysexrand = getRandInt(1,5);
         hantsexa = getRandInt(1,3);
         if(root->getCurLoc() == lgadukino)
-            root->eventStart("gadukino_event", "onlooker");
+            root->startEvent(eGadukinoEvents, "onlooker");
         root->setImage(media(2));
         root->setDesc(str(0));
         if(hantsexa == 1)
@@ -86,7 +86,7 @@ void MitkaSex::start(QString arg)
         boyAhorny = getRandInt(0,90);
         boyBhorny = getRandInt(0,90);
         if(root->getCurLoc() == lgadukino)
-            root->eventStart("gadukino_event","onlooker");
+            root->startEvent(eGadukinoEvents,"onlooker");
         root->setImage(media(1));
         root->setDesc(str(0));
         makeActBtn("forestSexOral2_1",act(0));
@@ -108,7 +108,7 @@ void MitkaSex::start(QString arg)
             setVasyan();
         boyAhorny = getRandInt(0,90);
         if(root->getCurLoc() == lgadukino)
-            root->eventStart("gadukino_event","onlooker");
+            root->startEvent(eGadukinoEvents,"onlooker");
         root->setImage(media(0));
         root->setDesc(str(89));
         hantsexa = getRandInt(1,3);
@@ -137,7 +137,7 @@ void MitkaSex::start(QString arg)
             setVasyan();
         boyAhorny = getRandInt(0,90);
         if (root->getCurLoc() == lgadukino)
-            root->eventStart("gadukino_event", "onlooker");
+            root->startEvent(eGadukinoEvents, "onlooker");
         if(root->vStatus(horny) < 60)
             root->setImage(media(3));
         if(root->vStatus(horny) >= 60)
@@ -184,7 +184,7 @@ void MitkaSex::start(QString arg)
         boyAhorny = getRandInt(0,90);
 
         if(root->getCurLoc() == lgadukino)
-            root->eventStart("gadukino_event", "onlooker");
+            root->startEvent(eGadukinoEvents, "onlooker");
         if(root->vStatus(horny) < 60)
             root->setImage(media(5));
         if(root->vStatus(horny) >= 60)
@@ -3465,7 +3465,7 @@ void MitkaSex::setKolyamba()
 
 void MitkaSex::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action,"mitkasex");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &MitkaSex::actionHandler);
     root->addActBtn(btn);

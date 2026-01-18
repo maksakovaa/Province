@@ -5,6 +5,7 @@
 #include "../menu/customshadoweffect.h"
 #include "../items/clothform.h"
 #include "../items/clothformTrash.h"
+#include "../menu/buttons.h"
 
 Wardrobe::Wardrobe(ObjectHandler* ptr): m_size(0), root(ptr){}
 

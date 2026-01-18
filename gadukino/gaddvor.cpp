@@ -64,29 +64,29 @@ void Gaddvor::actionHandler(QString action)
             makeActBtn("go_village", getStr(9));
         if((gVEvent(fishers_nude) == 8 && getHour() >= 18 && getHour() <= 21) || (gVEvent(gadukino_nude) > 8 && getHour() >= 6 && getHour() <= 21))
         {
-            startEvent("gadukino_event", "gadriver_nude_end");
+            startEvent(eGadukinoEvents, "gadriver_nude_end");
         }
         if(gVEvent(onlooker_man) == 1 && getHour() >= 6 && getHour() <= 21)
         {
-            startEvent("gadukino_event", "gadukino_onlooker_man");
+            startEvent(eGadukinoEvents, "gadukino_onlooker_man");
         }
         mira_temp = getRandInt(1,5);
         if(mira_temp == 3 && getHour() >= 9 && getHour() <= 19 && gVQuest(miraQW) >= 15 && gVEvent(Mira_no) == 0 && gVEvent(mira_guest) == 0 && getSunWeather() >= 0 && gVEvent(mira_guestday) != gVStatus(daystart) && (gVEvent(mitkasextimes) < 13 || gVQuest(miragopQW) >= 10 || gVEvent(mirasex) > 1))
         {
-            startEvent("grandparents_events","mira_courtyard");
+            startEvent(eGrandParentEvents,"mira_courtyard");
         }
         if(getCloth(ClothType::Main) == nullptr)
         {
-            startEvent("grandparents_events","courtyard_nude");
+            startEvent(eGrandParentEvents,"courtyard_nude");
         }
     }
     if(action == "chickens")
     {
-        startEvent("grandparents_events","chickens");
+        startEvent(eGrandParentEvents,"chickens");
     }
     if(action == "Miroslava")
     {
-        startEvent("Miroslava");
+        startEvent(eMiroslava);
     }
     if(action == "go_izba")
     {
@@ -116,7 +116,7 @@ void Gaddvor::actionHandler(QString action)
 
 void Gaddvor::makeActBtn(QString act, QString actName)
 {
-    QActButton* btn = new QActButton(act);
+    QActButton* btn = new QActButton(act, "gaddvor");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Gaddvor::actionHandler);
     addActBtn(btn);

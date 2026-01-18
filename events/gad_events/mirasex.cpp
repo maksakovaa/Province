@@ -42,7 +42,7 @@ void MiraSex::actionHandler(QString action)
 
 void MiraSex::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action,"MiraSex");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &MiraSex::actionHandler);
     root->addActBtn(btn);

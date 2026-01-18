@@ -19,6 +19,20 @@ signals:
 public slots:
     void loadSave(QString file);
 private:
+    void loadTimeServer(QTextStream& in);
+    void loadlocPointers(QTextStream& in);
+    void loadWeather(QTextStream& in);
+    void loadPlayer(QTextStream& in);
+    void loadEventVal(QTextStream& in);
+    void loadQuestVal(QTextStream& in);
+    void loadItems(QTextStream& in);
+    void loadClothOnPlayer(QTextStream& in);
+    void loadClothPrev(QTextStream& in);
+    void loadClothWardr(QTextStream& in);
+    void loadCurScreen(QTextStream& in);
+    void loadButtons(QTextStream& in);
+    void makeButton(std::unordered_map<QString,QString>& params);
+private:
     int saveCounter;
     QWidget* root;
     Ui::LoadForm *ui;

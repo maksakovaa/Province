@@ -148,7 +148,7 @@ void Grandma::actionHandler(QString action)
     if(action == "help_grandma")
     {
         root->sVEvent(grandmahelpday,root->vStatus(daystart));
-        root->eventStart("grandmahelp");
+        root->startEvent(eGrandMaHelp);
     }
     if(action == "talk_gadukino")
     {
@@ -269,7 +269,7 @@ void Grandma::actionHandler(QString action)
 
 void Grandma::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action,"grandma");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Grandma::actionHandler);
     root->addActBtn(btn);

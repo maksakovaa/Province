@@ -88,7 +88,7 @@ void Gadhouse::actionHandler(QString action)
 
         // if $father['location'] = $curloc:
         // gs 'zz_render', '', '', 'В комнате отдыхают родители.'
-        startEvent("gadukino_event","go_home");
+        startEvent(eGadukinoEvents,"go_home");
         // end
 
         connect(getTextPtr(), &QLabel::linkActivated, this, &Gadhouse::actionHandler);
@@ -121,11 +121,11 @@ void Gadhouse::actionHandler(QString action)
     }
     if(action == "grandma")
     {
-        startEvent("grandma");
+        startEvent(eGrandMa);
     }
     if(action == "grandpa")
     {
-        startEvent("grandpa");
+        startEvent(eGrandPa);
     }
     if(action == "loker")
     {
@@ -141,7 +141,7 @@ void Gadhouse::actionHandler(QString action)
     }
     if(action == "villagecat")
     {
-        startEvent("grandparents_events","villagecat");
+        startEvent(eGrandParentEvents,"villagecat");
     }
     if(action == "zz_books_custom_shelf_0_9")
     {
@@ -149,11 +149,11 @@ void Gadhouse::actionHandler(QString action)
     }
     if(action == "Miroslava")
     {
-        startEvent("Miroslava");
+        startEvent(eMiroslava);
     }
     if(action == "HR_Nina")
     {
-        startEvent("logist_events","HR_Nina");
+        startEvent(eLogistEvents,"HR_Nina");
     }
 }
 
@@ -203,7 +203,7 @@ QString Gadhouse::media(int id)
 
 void Gadhouse::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action, "gadhouse");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Gadhouse::actionHandler);
     addActBtn(btn);

@@ -45,7 +45,7 @@ void GadforestRelax::actionHandler(QString action)
         int hour = root->getHour();
         if(root->gVEvent(lost) >= getRandInt(1,5) && root->gVEvent(bonfire) == 0 && (hour < root->getSunrise() || hour > root->getSunset()))
         {
-            root->eventStart("gadforest_event","relax");
+            root->startEvent(eGadForestEvent,"relax");
         }
         if(root->isCloth() && root->gVEvent(bonfire) == 0)
             makeActBtn("light_bonfire",act(0));
@@ -202,13 +202,13 @@ void GadforestRelax::actionHandler(QString action)
     }
     if(action == "search_road")
     {
-        root->eventStart("gadforestlost","main");
+        root->startEvent(eGadForestLost,"main");
     }
 }
 
 void GadforestRelax::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action,"GadforestRelax");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &GadforestRelax::actionHandler);
     root->addActBtn(btn);

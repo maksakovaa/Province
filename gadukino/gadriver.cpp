@@ -51,11 +51,11 @@ void Gadriver::actionHandler(QString action)
         if(i <= 5 && getHour() <= 8 && month <= 9 && gVQuest(miragopQW) >= 20)
             addText(str(2));
         if(getCloth(ClothType::Main) == nullptr)
-            startEvent("gadukino_event", "gadriver_nude");
+            startEvent(eGadukinoEvents, "gadriver_nude");
         if(gVEvent(mitkasextimes) == 20 && isDay() && month >=5 && month <= 9 && sunWeather >= 0 && getTemp() >= 20)
-            startEvent("gadukino_event", "gadriver_gang");
+            startEvent(eGadukinoEvents, "gadriver_gang");
         if(i < 5 && gVEvent(mirainriver) == 0 && gVEvent(mitkasextimes) >= 13 && getHour() > 8 && getHour() < 20 && gVSkill(domination) < 0 && gVEvent(guysriver) != getDay())
-            startEvent("river_events", "guys_river");
+            startEvent(eRiverEvents, "guys_river");
         makeActBtn("gadbeach",act(0));
         makeActBtn("gadukino",act(1));
     }
@@ -70,17 +70,17 @@ void Gadriver::actionHandler(QString action)
     }
     if(action == "mira_punish")
     {
-        startEvent("river_events","mira_punish");
+        startEvent(eRiverEvents,"mira_punish");
     }
     if(action == "fishers")
     {
-        startEvent("river_events","fishers");
+        startEvent(eRiverEvents,"fishers");
     }
 }
 
 void Gadriver::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action, "gadriver");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Gadriver::actionHandler);
     addActBtn(btn);

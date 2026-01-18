@@ -8,7 +8,7 @@ EventHandler::EventHandler(LocationHandler* ptr): root(ptr)
     initEvents();
 }
 
-void EventHandler::eventStart(QString event, QString arg)
+void EventHandler::startEvent(Events event, QString arg)
 {
     m_events[event]->start(arg);
 }
@@ -79,35 +79,35 @@ void EventHandler::initEvents()
         m_questval[static_cast<QuestParams>(i)] = 0;
     }
     m_eventval[know_no_pirat] = 1;
-    m_events["AndreiHanter"] = new AndreiHanter(this);
-    m_events["bicycle"] = new Bicycle(this);
-    m_events["gadforest_event"] = new GadforestEvent(this);
-    m_events["gadforestlost"] = new GadforestLost(this);
-    m_events["gadforestrelax"] = new GadforestRelax(this);
-    m_events["gadukino_event"] = new GadukinoEvent(this);
-    m_events["grandma"] = new Grandma(this);
-    m_events["grandmahelp"] = new GrandmaHelp(this);
-    m_events["grandpa"] = new Grandpa(this);
-    m_events["grandpahelp"] = new GrandpaHelp(this);
-    m_events["grandparents_events"] = new GrandparentsEvents(this);
-    m_events["hantersex"] = new HanterSex(this);
-    m_events["hanters"] = new Hanters(this);
-    m_events["HanterLoveSex"] = new HantersLoveSex(this);
-    m_events["IgorHanter"] = new IgorHanter(this);
-    m_events["Meadow_event"] = new MeadowEvent(this);
-    m_events["Mirafather"] = new MiraFather(this);
-    m_events["mirasex"] = new MiraSex(this);
-    m_events["Miroslava"] = new Miroslava(this);
-    m_events["mitkabuh_group"] = new MitkaBuhGroup(this);
-    m_events["mitkabuh"] = new MitkaBuh(this);
-    m_events["Mitka"] = new Mitka(this);
-    m_events["mitkasex"] = new MitkaSex(this);
-    m_events["Pirat"] = new Pirat(this);
-    m_events["river_events"] = new RiverEvents(this);
-    m_events["SergeiHanter"] = new SergeiHanter(this);
-    m_events["swamp_events"] = new SwampEvents(this);
+    m_events[eAndreiHanter] = new AndreiHanter(this);
+    m_events[eBicycle] = new Bicycle(this);
+    m_events[eGadForestEvent] = new GadforestEvent(this);
+    m_events[eGadForestLost] = new GadforestLost(this);
+    m_events[eGadForestRelax] = new GadforestRelax(this);
+    m_events[eGadukinoEvents] = new GadukinoEvent(this);
+    m_events[eGrandMa] = new Grandma(this);
+    m_events[eGrandMaHelp] = new GrandmaHelp(this);
+    m_events[eGrandPa] = new Grandpa(this);
+    m_events[eGrandPaHelp] = new GrandpaHelp(this);
+    m_events[eGrandParentEvents] = new GrandparentsEvents(this);
+    m_events[eHanterSex] = new HanterSex(this);
+    m_events[eHanters] = new Hanters(this);
+    m_events[eHantersLoveSex] = new HantersLoveSex(this);
+    m_events[eIgorHanter] = new IgorHanter(this);
+    m_events[eMeadowEvent] = new MeadowEvent(this);
+    m_events[eMiraFather] = new MiraFather(this);
+    m_events[eMiraSex] = new MiraSex(this);
+    m_events[eMiroslava] = new Miroslava(this);
+    m_events[eMitkaBuhGroup] = new MitkaBuhGroup(this);
+    m_events[eMitkaBuh] = new MitkaBuh(this);
+    m_events[eMitka] = new Mitka(this);
+    m_events[eMitkaSex] = new MitkaSex(this);
+    m_events[ePirat] = new Pirat(this);
+    m_events[eRiverEvents] = new RiverEvents(this);
+    m_events[eSergeiHanter] = new SergeiHanter(this);
+    m_events[eSwampEvents] = new SwampEvents(this);
 
-    m_events["family"] = new Family(this);
+    m_events[eFamily] = new Family(this);
 }
 
 int EventHandler::getMonth()

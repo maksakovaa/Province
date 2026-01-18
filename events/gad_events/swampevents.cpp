@@ -24,7 +24,7 @@ void SwampEvents::actionHandler(QString action)
         root->sVEvent(hantersRape, 3);
         root->setImage(media(0));
         root->setDesc(str(0));
-        root->eventStart("hanters");
+        root->startEvent(eHanters);
     }
     if(action == "hunter_looks")
     {
@@ -73,7 +73,7 @@ void SwampEvents::actionHandler(QString action)
 
 void SwampEvents::makeActBtn(QString action, QString actName)
 {
-    QActButton* btn = new QActButton(action);
+    QActButton* btn = new QActButton(action, "swampevents");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &SwampEvents::actionHandler);
     root->addActBtn(btn);
