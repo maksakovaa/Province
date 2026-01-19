@@ -1,6 +1,6 @@
 #include "selfplay.h"
-#include "player/enums.h"
-#include "Functions.h"
+#include "../player/enums.h"
+#include "../Functions.h"
 #include "sexhandler.h"
 
 SelfPlay::SelfPlay(SexHandler* parent): root(parent)

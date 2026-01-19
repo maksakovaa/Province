@@ -1,6 +1,6 @@
 #include "pregnancy.h"
 #include "../Functions.h"
-#include "mainwindow.h"
+#include "../menu/mainwindow.h"
 
 Pregnancy::Pregnancy(QWidget *ptr): root(ptr) {}
 

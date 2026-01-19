@@ -1,7 +1,7 @@
 #include "swampevents.h"
 #include "../../menu/buttons.h"
 #include "../eventhandler.h"
-#include "../../gadukino/backwater.h"
+#include "../../locations/gadukino/backwater.h"
 
 SwampEvents::SwampEvents(EventHandler *ptr): root(ptr){}
 

@@ -1,7 +1,0 @@
-#include "atm.h"
-#include "bathroom.h"
-#include "card.h"
-#include "shop.h"
-#include "kitchenacts.h"
-#include "common.h"
-#include "beach.h"

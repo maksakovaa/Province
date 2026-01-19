@@ -8,7 +8,7 @@
 #include <QDialog>
 #include "../objects/wardrobe.h"
 #include "ui_mainwindow.h"
-#include "../nav/location_headers.h"
+#include "../locations/location_headers.h"
 #include "../events/EventHeaders.h"
 
 LoadForm::LoadForm(QWidget *parent)

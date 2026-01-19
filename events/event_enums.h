@@ -35,6 +35,12 @@ enum Events
     eSwampEvents,
     //Family events
     eFamily,
+    eDinSister,
+    eSisterQW,
+    //Reks
+    eReks,
+    //Tsarev
+    eTsarevEvents,
     //Job
     eLogistEvents
 };

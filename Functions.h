@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QString>
-#include "nav/loc_enums.h"
+#include "locations/loc_enums.h"
 
 int getRandInt(int min, int max);
 int getItemArr(int arr[], int arr_size, int id);

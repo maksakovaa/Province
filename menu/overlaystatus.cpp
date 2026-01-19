@@ -2,7 +2,7 @@
 #include "mainwindow.h"
 #include "../items/cloth.h"
 #include <QLabel>
-#include "Functions.h"
+#include "../Functions.h"
 
 OverlayStatus::OverlayStatus(QWidget* main, QWidget* parent)
 {

@@ -4,7 +4,7 @@
 #include <QVBoxLayout>
 #include <QObject>
 #include <QLabel>
-#include "player/enums.h"
+#include "../player/enums.h"
 
 enum statusNotif {
     ind_makeup,

@@ -1,6 +1,6 @@
 #include "eventhandler.h"
 #include "EventHeaders.h"
-#include "../nav/locationhandler.h"
+#include "../locations/locationhandler.h"
 #include "../Functions.h"
 
 EventHandler::EventHandler(LocationHandler* ptr): root(ptr) 

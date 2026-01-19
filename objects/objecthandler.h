@@ -6,7 +6,7 @@
 #include "../render.h"
 #include "../player/player.h"
 #include "../items/cloth.h"
-#include "../nav/location.h"
+#include "../locations/location.h"
 
 class Mirror;
 class Bed;

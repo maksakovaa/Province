@@ -214,11 +214,23 @@ enum EventParams
     mother_punishment,
     mother_spanking,
     momslut,
-
+    //Sister
+    sister_show,
+    //brother
+    turnirWin,
+    //incest flags
+    incest_event9_flag,
+    incest_event10_flag,
+    //Rex
+    rexCarCount,
+    rexSmsDay,
+    smsForRex,
     //COMMON
     library_day,
     daybegskver,
     begPrize,
+    have_bicycle,
+    msg_bicycle,
     lastEventParam
 };
 

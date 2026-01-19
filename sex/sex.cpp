@@ -1,5 +1,5 @@
 #include "sex.h"
-#include "Functions.h"
+#include "../Functions.h"
 #include "sexhandler.h"
 
 Sex::Sex(SexHandler* parent): root(parent)

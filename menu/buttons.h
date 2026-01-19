@@ -2,9 +2,9 @@
 #define BUTTONS_H
 
 #include <QPushButton>
-#include "../nav/loc_enums.h"
+#include "../locations/loc_enums.h"
 #include "../objects/objenums.h"
-#include "../common/bathenums.h"
+#include "../locations/common/bathenums.h"
 
 class SaveForm;
 class QActButton: public QPushButton

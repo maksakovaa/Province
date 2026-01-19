@@ -5,7 +5,7 @@
 #include "../items/item.h"
 #include "../items/itemform.h"
 #include <unordered_map>
-#include "enums.h"
+#include "../player/enums.h"
 
 namespace Ui {
 class BagForm;

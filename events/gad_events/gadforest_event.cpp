@@ -2,7 +2,7 @@
 #include "../../menu/buttons.h"
 #include "../eventhandler.h"
 #include "../../Functions.h"
-#include "../../gadukino/gadforest.h"
+#include "../../locations/gadukino/gadforest.h"
 
 void GadforestEvent::start(QString arg)
 {

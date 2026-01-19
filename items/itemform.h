@@ -2,7 +2,7 @@
 #define ITEMFORM_H
 
 #include "cloth.h"
-#include "enums.h"
+#include "../player/enums.h"
 #include <QFrame>
 #include <QVBoxLayout>
 

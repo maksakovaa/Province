@@ -1,7 +1,7 @@
 #ifndef MAPFORM_H
 #define MAPFORM_H
 
-#include "../nav/loc_enums.h"
+#include "../locations/loc_enums.h"
 #include <QWidget>
 #include <QGraphicsScene>
 namespace Ui {

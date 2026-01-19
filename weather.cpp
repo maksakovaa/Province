@@ -1,6 +1,6 @@
 #include "weather.h"
 #include "Functions.h"
-#include "mainwindow.h"
+#include "menu/mainwindow.h"
 
 Weather::Weather(QWidget* ptr): root(ptr)
 {

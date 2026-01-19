@@ -7,10 +7,10 @@
 #include "event.h"
 #include "eventenums.h"
 #include "event_enums.h"
-#include "items/cloth.h"
+#include "../items/cloth.h"
 #include <QLabel>
 #include <QPushButton>
-#include "../nav/location.h"
+#include "../locations/location.h"
 
 class LocationHandler;
 class SaveForm; class LoadForm;

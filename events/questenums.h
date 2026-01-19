@@ -40,6 +40,9 @@ enum QuestParams
     qwPornoFootball,        //Квест по просмотру порно с братцем вместо футбола
     qwKolkaPrince,          //Квест по Кольке-принцу brother['KolkaPrince']
     qwBrotherNude,          //Квест по показу голого тела Кольке
+    qwKolka,
+    qwShopping,
+    qwMisha,
     qwArtur,                //Квест по устройству на работу к Артуру
     qwDyadyaMisha,          //Квест по сексу с Мишей с 3 этажа в Павлово
     qwIrina,                //Квест развитие лесбиянства с Ириной из Сити кафе с Гиви
@@ -68,6 +71,10 @@ enum QuestParams
     grandmaQW,
     //Отношения с дедушкой
     grandpaQW,
+    //Велосипед
+    gets_bicycleQW,
+    TsarevMainQWday,
+    TsarevMainQW,
     lastQW
 };
 

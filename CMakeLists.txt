@@ -29,50 +29,56 @@ qt_add_executable(Game
     menu/overlaystatus.h menu/overlaystatus.cpp
     menu/bagform.h menu/bagform.cpp menu/bagform.ui
     menu/buttons.h menu/buttons.cpp
+    menu/saveform.h menu/saveform.cpp menu/saveform.ui
+    menu/loadform.h menu/loadform.cpp menu/loadform.ui
 
     map/scenemarker.h map/scenemarker.cpp
     map/sceneviewer.h map/sceneviewer.cpp
     map/mapform.h map/mapform.cpp map/mapform.ui
 
-    nav/location.h nav/location.cpp
-    nav/locationhandler.h nav/locationhandler.cpp
+    locations/location.h locations/location.cpp
+    locations/locationhandler.h locations/locationhandler.cpp
+    locations/location_headers.h
+    locations/loc_enums.h
 #Common locations
-    common/common_headers.h
-    common/card.h common/card.cpp
-    common/bathroom.h common/bathroom.cpp
-    common/shop.h common/shop.cpp
-    common/atm.h common/atm.cpp
-    common/kitchenacts.h common/kitchenacts.cpp
-    common/common.h common/common.cpp
-    common/beach.h common/beach.cpp
+    locations/common/common_headers.h locations/common/bathenums.h
+    locations/common/bathroom.h locations/common/bathroom.cpp
+    locations/common/shop.h locations/common/shop.cpp
+    locations/common/atm.h locations/common/atm.cpp
+    locations/common/kitchenacts.h locations/common/kitchenacts.cpp
+    locations/common/common.h locations/common/common.cpp
+    locations/common/beach.h locations/common/beach.cpp
 #Gadukino locations
-    gadukino/gadbana.h gadukino/gadbana.cpp
-    gadukino/gaddvor.h gadukino/gaddvor.cpp
-    gadukino/gadsarai.h gadukino/gadsarai.cpp
-    gadukino/gadgarden.h gadukino/gadgarden.cpp
-    gadukino/gadhouse.h gadukino/gadhouse.cpp
-    gadukino/gadriver.h gadukino/gadriver.cpp
-    gadukino/gadmarket.h gadukino/gadmarket.cpp
-    gadukino/gadroad.h gadukino/gadroad.cpp
-    gadukino/gadukino.h gadukino/gadukino.cpp
-    gadukino/gadbeach.h gadukino/gadbeach.cpp
-    gadukino/backwater.h gadukino/backwater.cpp
-    gadukino/gadfield.h gadukino/gadfield.cpp
-    gadukino/gadforest.h gadukino/gadforest.cpp
-    gadukino/gadforestswamp.h gadukino/gadforestswamp.cpp
-    gadukino/meadow.h gadukino/meadow.cpp
-    gadukino/miroslavahome.h gadukino/miroslavahome.cpp
-    gadukino/swamp.h gadukino/swamp.cpp
-    gadukino/swampyard.h gadukino/swampyard.cpp
-    gadukino/swamphouse.h gadukino/swamphouse.cpp
-    gadukino/swampspring.h gadukino/swampspring.cpp
+    locations/gadukino/gadbana.h locations/gadukino/gadbana.cpp
+    locations/gadukino/gaddvor.h locations/gadukino/gaddvor.cpp
+    locations/gadukino/gadsarai.h locations/gadukino/gadsarai.cpp
+    locations/gadukino/gadgarden.h locations/gadukino/gadgarden.cpp
+    locations/gadukino/gadhouse.h locations/gadukino/gadhouse.cpp
+    locations/gadukino/gadriver.h locations/gadukino/gadriver.cpp
+    locations/gadukino/gadmarket.h locations/gadukino/gadmarket.cpp
+    locations/gadukino/gadroad.h locations/gadukino/gadroad.cpp
+    locations/gadukino/gadukino.h locations/gadukino/gadukino.cpp
+    locations/gadukino/gadbeach.h locations/gadukino/gadbeach.cpp
+    locations/gadukino/backwater.h locations/gadukino/backwater.cpp
+    locations/gadukino/gadfield.h locations/gadukino/gadfield.cpp
+    locations/gadukino/gadforest.h locations/gadukino/gadforest.cpp
+    locations/gadukino/gadforestswamp.h locations/gadukino/gadforestswamp.cpp
+    locations/gadukino/meadow.h locations/gadukino/meadow.cpp
+    locations/gadukino/miroslavahome.h locations/gadukino/miroslavahome.cpp
+    locations/gadukino/swamp.h locations/gadukino/swamp.cpp
+    locations/gadukino/swampyard.h locations/gadukino/swampyard.cpp
+    locations/gadukino/swamphouse.h locations/gadukino/swamphouse.cpp
+    locations/gadukino/swampspring.h locations/gadukino/swampspring.cpp
 #Pavlovo locations
-    pavlovo/korrPar.h pavlovo/korrPar.cpp
+#parent locations
+    locations/parents/korrPar.h locations/parents/korrPar.cpp
+    locations/parents/bedrpar.h locations/parents/bedrpar.cpp
 #Location events
     events/event.h
     events/questenums.h
     events/eventhandler.h events/eventhandler.cpp
     events/eventenums.h events/EventHeaders.h
+    events/event_enums.h
 #Gadukino events
     events/gad_events/gadukino_events.h events/gad_events/gadukino_events.cpp
     events/gad_events/gadforest_event.h events/gad_events/gadforest_event.cpp
@@ -90,9 +96,21 @@ qt_add_executable(Game
     events/gad_events/grandmahelp.h events/gad_events/grandmahelp.cpp
     events/gad_events/grandpa.h events/gad_events/grandpa.cpp
     events/gad_events/grandpahelp.h events/gad_events/grandpahelp.cpp
+    events/gad_events/grandparentsevents.h events/gad_events/grandparentsevents.cpp
+    events/gad_events/hanterslovesex.h events/gad_events/hanterslovesex.cpp
+    events/gad_events/hanters.h events/gad_events/hanters.cpp
+    events/gad_events/hantersex.h events/gad_events/hantersex.cpp
+    events/gad_events/igorhanter.h events/gad_events/igorhanter.cpp
+    events/gad_events/meadowevent.h events/gad_events/meadowevent.cpp
+    events/gad_events/mirafather.h events/gad_events/mirafather.cpp
+    events/gad_events/mirasex.h events/gad_events/mirasex.cpp
+    events/gad_events/mitkabuh.h events/gad_events/mitkabuh.cpp
+    events/gad_events/mitkabuhgroup.h events/gad_events/mitkabuhgroup.cpp
+    events/gad_events/sergeihanter.h events/gad_events/sergeihanter.cpp
 #Parent events
     events/parent_events/family.h events/parent_events/family.cpp
 #Location objects
+    objects/objenums.h
     objects/mirror.h objects/mirror.cpp objects/wardrobe.h objects/wardrobe.cpp
     objects/bed.h objects/bed.cpp objects/GameObj.h
     objects/objecthandler.h objects/objecthandler.cpp
@@ -101,6 +119,7 @@ qt_add_executable(Game
     items/itemform.h items/itemform.cpp items/itemform.ui
     items/clothform.h items/clothform.cpp items/clothform.ui
     items/clothformTrash.ui items/clothformTrash.h items/clothformTrash.cpp
+    items/card.h items/card.cpp
 
     player/player.h player/player.cpp
     player/ccalko.h player/ccalko.cpp
@@ -121,28 +140,10 @@ qt_add_executable(Game
 
     npc/npc.h
     render.h render.cpp
-    nav/location_headers.h
-    nav/loc_enums.h
-    events/gad_events/grandparentsevents.h events/gad_events/grandparentsevents.cpp
-    events/gad_events/hanterslovesex.h events/gad_events/hanterslovesex.cpp
-    events/gad_events/hanters.h events/gad_events/hanters.cpp
-    events/gad_events/hantersex.h events/gad_events/hantersex.cpp
-    events/gad_events/igorhanter.h events/gad_events/igorhanter.cpp
-    events/gad_events/meadowevent.h events/gad_events/meadowevent.cpp
-    events/gad_events/mirafather.h events/gad_events/mirafather.cpp
-    events/gad_events/mirasex.h events/gad_events/mirasex.cpp
-    events/gad_events/mitkabuh.h events/gad_events/mitkabuh.cpp
-    events/gad_events/mitkabuhgroup.h events/gad_events/mitkabuhgroup.cpp
-    events/gad_events/sergeihanter.h events/gad_events/sergeihanter.cpp
-    menu/saveform.h menu/saveform.cpp menu/saveform.ui
-    menu/loadform.h menu/loadform.cpp menu/loadform.ui
-    objects/objenums.h
-    events/event_enums.h
-    common/bathenums.h
-
+    npc/npc_enum.h
 )
 
-target_include_directories(Game BEFORE PRIVATE "." "./nav" "./player" "./menu" "./map")
+#target_include_directories(Game BEFORE PRIVATE )
 
 target_link_libraries(Game
     PRIVATE

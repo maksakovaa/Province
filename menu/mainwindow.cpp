@@ -4,7 +4,7 @@
 #include <QProcess>
 #include "../map/mapform.h"
 #include <QDebug>
-#include "Functions.h"
+#include "../Functions.h"
 
 
 MainWindow::MainWindow(SettingsForm* settingsForm, int year, int month, int day, QWidget *parent)

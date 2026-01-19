@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <QLabel>
-#include "enums.h"
+#include "../player/enums.h"
 
 class SexHandler;
 

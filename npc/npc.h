@@ -2,6 +2,7 @@
 #define NPC_H
 
 #include <QString>
+#include "../locations/loc_enums.h"
 
 enum BoyType { tgopnik, tnormal, tmazor };
 enum BoyChar { csoft, cnormal, cimpudent };
@@ -18,6 +19,7 @@ struct NPC
     int silavag;
     int know;
     int talk_count = 0;
+    LocId location;
 };
 
 struct NPCboyfriend

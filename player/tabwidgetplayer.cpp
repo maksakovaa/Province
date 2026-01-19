@@ -2,7 +2,7 @@
 #include "ui_tabwidgetplayer.h"
 #include "../Functions.h"
 #include <QLayoutItem>
-#include "../nav/locationhandler.h"
+#include "../locations/locationhandler.h"
 
 TabWidgetPlayer::TabWidgetPlayer(QWidget* parent)
     : QTabWidget(parent)

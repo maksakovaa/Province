@@ -358,6 +358,7 @@ enum JobStatus
     graze_cow_exp,
     horse_river,
     haying_time,
+    tovarL,
     last_job
 };
 

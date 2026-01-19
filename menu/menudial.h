@@ -2,9 +2,9 @@
 #define MENUDIAL_H
 
 #include <QDialog>
-#include "player/enums.h"
+#include "../player/enums.h"
 #include "settingsform.h"
-#include "video.h"
+#include "../video.h"
 
 namespace Ui {
 class MenuDial;

@@ -2,13 +2,13 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "player/player.h"
-#include "player/pregnancy.h"
-#include "sex/ccsex.h"
-#include "player/ccalko.h"
+#include "../player/player.h"
+#include "../player/pregnancy.h"
+#include "../sex/ccsex.h"
+#include "../player/ccalko.h"
 #include "settingsform.h"
-#include "timeServer.h"
-#include "weather.h"
+#include "../timeServer.h"
+#include "../weather.h"
 #include "overlaystatus.h"
 #include "notificationqueue.h"
 #include "bagform.h"
@@ -16,7 +16,7 @@
 #include "loadform.h"
 
 #include "../render.h"
-#include "../nav/locationhandler.h"
+#include "../locations/locationhandler.h"
 #include "../objects/objecthandler.h"
 #include "../sex/sexhandler.h"
 #include "../npc/npc.h"

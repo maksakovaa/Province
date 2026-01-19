@@ -1,5 +1,5 @@
 #include "item.h"
-#include "Functions.h"
+#include "../Functions.h"
 
 Item::Item(Items id)
 {

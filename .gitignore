@@ -2,3 +2,5 @@ build/*
 .cache/*
 data/*
 CMakeLists.txt.user
+poses.txt
+1

@@ -1,6 +1,6 @@
 #include "menudial.h"
 #include "ui_menudial.h"
-#include "Functions.h"
+#include "../Functions.h"
 #include <QMediaFormat>
 
 MenuDial::MenuDial(QWidget *parent)

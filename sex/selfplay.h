@@ -2,8 +2,8 @@
 #define SELFPLAY_H
 
 #include <QPushButton>
-#include "enums.h"
-#include "location.h"
+#include "../player/enums.h"
+#include "../locations/location.h"
 
 class SexHandler;
 

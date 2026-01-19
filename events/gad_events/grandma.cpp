@@ -2,7 +2,7 @@
 #include "../eventhandler.h"
 #include "../../menu/buttons.h"
 #include "../../Functions.h"
-#include "../../common/bathroom.h"
+#include "../../locations/common/bathroom.h"
 
 Grandma::Grandma(EventHandler* ptr): root(ptr) {}
 

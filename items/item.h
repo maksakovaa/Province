@@ -1,7 +1,7 @@
 #ifndef ITEM_H
 #define ITEM_H
 
-#include "enums.h"
+#include "../player/enums.h"
 #include <QString>
 
 class Item

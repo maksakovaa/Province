@@ -2,7 +2,7 @@
 #include "../../Functions.h"
 #include "../eventhandler.h"
 #include "../../menu/buttons.h"
-#include "../../common/bathroom.h"
+#include "../../locations/common/bathroom.h"
 
 Miroslava::Miroslava(EventHandler *ptr): root(ptr) {}
 
