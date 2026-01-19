@@ -4,3 +4,5 @@ data/*
 CMakeLists.txt.user
 poses.txt
 1
+.qtcreator/*
+.vscode/*
