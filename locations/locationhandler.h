@@ -25,6 +25,11 @@ public:
     int gVSchool(SchoolVar param);
     void uVSchool(SchoolVar param, int val);
     void sVSchool(SchoolVar param, int val);
+    int gVEvent(EventParams param);
+    int gVQuest(QuestParams param);
+    void uVEvent(EventParams param,int val);
+    void sVEvent(EventParams param, int val);
+    void sVQuest(QuestParams param,int val);
     void checkMapAwailable();
 public slots:
     void slotChangeLoc(LocId id, int time, QString arg = "");
@@ -77,7 +82,7 @@ private: //Access methods
     int getVSick(Sickness param);
     int getVJob(JobStatus param);
     int getVAddict(Addiction param);
-
+    int alkoBlock();
     QString getLipTalk();
     QString getLipTalk3();
     QString getAnusTipe2();
@@ -128,6 +133,10 @@ private: //Access methods
     QString sextToysBlock(int val);
     Location* getLocPtr(LocId locId);
 
+    QString getBookName(int id);
+    void readOnWalk();
+    int eroReaded();
+    void eroBlock();
     NPC &gNPC(int id);
 private: //Members
     Location* m_current;

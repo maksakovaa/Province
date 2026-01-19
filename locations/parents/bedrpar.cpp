@@ -67,7 +67,8 @@ void BedrPar::show(QString arg)
     //gs 'zz_family', 'brother_sheduler'
     //gs 'zz_family', 'sister_sheduler'
     fancywork();
-    //if reading['erotic_enable'] = 1 and hour >= 18 and hour < 21 and func('zz_books','ero_readed') > 0: gt 'zz_books', 'erotic_block'
+    if(gVEvent(reading_erotic_enable) == 1 && hour >= 18 && hour < 21 && eroReaded() > 0)
+        eroBlock();
     if(gVStatus(horny) >= 50 && gNPC(AnyaLebedeva).location != getLocId())
         makeActBtn("selfplay",act(5));
 
@@ -179,6 +180,11 @@ void BedrPar::actionHandler(QString action)
         incTime(getCardTime());
         makeActBtn("takeCards", act(13));
     }
+    if (action == "books")
+    {
+        viewObj("books");
+    }
+    
 }
 
 QString BedrPar::str(int id)

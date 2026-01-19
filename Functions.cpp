@@ -297,11 +297,6 @@ int upSportSkill(int val)
     return result;
 }
 
-QString getLocName(LocId id)
-{
-
-}
-
 QString getLocIdStr(LocId id)
 {
     //common

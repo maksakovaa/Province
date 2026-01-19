@@ -216,6 +216,9 @@ enum EventParams
     momslut,
     //Sister
     sister_show,
+    sister_book,
+    sisterKnowSlut,
+    sisterKnowMastr,
     //brother
     turnirWin,
     //incest flags
@@ -231,6 +234,11 @@ enum EventParams
     begPrize,
     have_bicycle,
     msg_bicycle,
+    //Books
+    book_in_bag,
+    read_per_day,
+    pornmarkonce,
+    reading_erotic_enable,
     lastEventParam
 };
 

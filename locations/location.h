@@ -119,6 +119,10 @@ protected:
     QString sextToysBlock(int val);
     QString getItemName(Items id);
 
+    QString getBookName(int id);
+    void readOnWalk();
+    int eroReaded();
+    void eroBlock();
     //beach acts
     void walk();
     void undress(int arg = 0);

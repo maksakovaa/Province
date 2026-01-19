@@ -12,12 +12,12 @@ public:
     void anti_hangover();
     void alkoAbstain();
     void fnAlko(int val);
+    int alkoBlock();
 signals:
     void sigIncreaseRiscs(int value);
 public slots:
     void slotDataInitAlko();
     void slotHangOver();
-    void slotCheckAlkoBlock(int& value);
     void slotAlkoholism();
 private:
     int getVAlco(Addiction param);

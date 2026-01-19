@@ -81,11 +81,11 @@ void MainWindow::start(QString loc, CharacterType charType)
     m_reproductSys.slotEstrus();
     m_time.firstStart();
     slotUpdParams();
+    m_ccalko.slotDataInitAlko();
     if(loc == "gaddvor")
         locHandler->slotChangeLoc(lgaddvor,0);
     else if(loc == "parents_home")
-        locHandler->slotChangeLoc(lbedrpar2,0);
-    initNpc();
+        locHandler->slotChangeLoc(lbedrpar,0);
 }
 
 void MainWindow::setupMainWindow(SettingsForm* settingsForm)
@@ -109,12 +109,12 @@ void MainWindow::setupMainWindow(SettingsForm* settingsForm)
     objHandler = new ObjectHandler(pageRender,this,ui->actionsLayout);
     connect(m_player, &Player::sigInitWardrobe, objHandler, &ObjectHandler::slotInitWardrobe);
     sexHandler = new SexHandler(pageRender,this,ui->actionsLayout);
-    
     connections();
     setupActionButtons();;
     loadStrings();
     ui->stackedWidget->addWidget(&savePage);
     ui->stackedWidget->addWidget(&loadPage);
+    initNpc();
     this->adjustSize();
 }
 

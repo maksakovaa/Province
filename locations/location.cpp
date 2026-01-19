@@ -485,6 +485,26 @@ QString Location::getItemName(Items id)
     return root->getItemName(id);
 }
 
+QString Location::getBookName(int id)
+{
+    return root->getBookName(id);
+}
+
+void Location::readOnWalk()
+{
+    root->readOnWalk();
+}
+
+int Location::eroReaded()
+{
+    return root->eroReaded();
+}
+
+void Location::eroBlock()
+{
+    root->eroBlock();
+}
+
 void Location::walk()
 {
     root->m_beach->walk();

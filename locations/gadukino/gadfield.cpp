@@ -149,7 +149,8 @@ void Gadfield::actionHandler(QString action)
                     if(gVStatus(son) < 17)
                         makeActBtn("sleep",act(10));
                     makeActBtn("flowers",act(11));
-                    //if reading['in_bag'] >= 0: act 'Читать '+func('zz_books','get_name',reading['in_bag']): gt 'zz_books', 'read_on_walk'
+                    if(gVEvent(book_in_bag) >= 0)
+                        makeActBtn("read_book",act(13) + getBookName(gVEvent(book_in_bag)));
                     if(gVQuest(miraQW) >= 15 && gVEvent(mira) == 0 && getRandInt(1,5)==1 && gVEvent(Mira_no)==0 && (gVEvent(mitkasextimes) < 13 || gVQuest(miragopQW) >= 10 || gVEvent(mirasex) > 1) && gVEvent(miraday) != getDay())
                         gadfield_mira();
                 }
@@ -185,7 +186,8 @@ void Gadfield::actionHandler(QString action)
                     makeActBtn("sunbathe",act(9));
                     if(gVStatus(son) < 17)
                         makeActBtn("sleep",act(10));
-                    //if reading['in_bag'] >= 0: act 'Читать '+func('zz_books','get_name',reading['in_bag']): gt 'zz_books', 'read_on_walk'
+                    if(gVEvent(book_in_bag) >= 0)
+                        makeActBtn("read_book",act(13) + getBookName(gVEvent(book_in_bag)));
                 }
             }
             else
@@ -218,8 +220,9 @@ void Gadfield::actionHandler(QString action)
                         if(gVStatus(son) < 17)
                             makeActBtn("sleep",act(10));
                         makeActBtn("flowers",act(11));
-                        //if reading['in_bag'] >= 0: act 'Читать '+func('zz_books','get_name',reading['in_bag']): gt 'zz_books', 'read_on_walk'
-                        if(gVQuest(miraQW) >= 15 && gVEvent(mira) == 0 && getRandInt(1,5)==1 && gVEvent(Mira_no)==0 && (gVEvent(mitkasextimes) < 13 || gVQuest(miragopQW) >= 10 || gVEvent(mirasex) > 1) && gVEvent(miraday) != getDay())
+                        if(gVEvent(book_in_bag) >= 0)
+                            makeActBtn("read_book",act(13) + getBookName(gVEvent(book_in_bag)));
+                    if(gVQuest(miraQW) >= 15 && gVEvent(mira) == 0 && getRandInt(1,5)==1 && gVEvent(Mira_no)==0 && (gVEvent(mitkasextimes) < 13 || gVQuest(miragopQW) >= 10 || gVEvent(mirasex) > 1) && gVEvent(miraday) != getDay())
                             gadfield_mira();
                     }
                 }
@@ -348,6 +351,10 @@ void Gadfield::actionHandler(QString action)
     {
         actionHandler(metka);
     }
+    if(action == "read_book")
+    {
+        readOnWalk();
+    }
 }
 
 void Gadfield::makeActBtn(QString act, QString actName)
@@ -422,7 +429,7 @@ QString Gadfield::str(int id)
 
 QString Gadfield::act(int id)
 {
-    QString str[13];
+    QString str[14];
     str[0] = "Отправиться на сенокос";
     str[1] = "Уйти";
     str[2] = "Далее";
@@ -436,6 +443,7 @@ QString Gadfield::act(int id)
     str[10] = "Вздремнуть на траве";
     str[11] = "Собирать цветы";
     str[12] = "Купаться";
+    str[13] = "Читать ";
     return str[id];
 }
 

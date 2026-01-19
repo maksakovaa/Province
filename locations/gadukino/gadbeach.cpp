@@ -74,13 +74,18 @@ void Gadbeach::actionHandler(QString action)
                     else
                         makeActBtn("useSunscreen",act(4));
                 }
-                //if reading['in_bag'] >= 0: act 'Читать '+func('zz_books','get_name',reading['in_bag']): gt 'zz_books','read_on_walk'
+                if(gVEvent(book_in_bag) >= 0)
+                    makeActBtn("read_book", act(8) + getBookName(gVEvent(book_in_bag)));
             }
         }
         if(ptr == nullptr || ptr->getClothGroup() <= swimsuit)
             makeActBtn("wearClothes",act(5));
         makeActBtn("exit",act(6));
         startEvent(eRiverEvents,"mira_in_river");
+    }
+    if(action == "read_book")
+    {
+        readOnWalk();
     }
     if(action == "Miroslava")
     {
@@ -166,6 +171,7 @@ QString Gadbeach::act(int id)
     act[5] = "Одетсься";
     act[6] = "Уйти";
     act[7] = "Назад";
+    act[8] = "Читать ";
     return act[id];
 }
 

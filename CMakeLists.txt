@@ -141,9 +141,11 @@ qt_add_executable(Game
     npc/npc.h
     render.h render.cpp
     npc/npc_enum.h
+    objects/books.h objects/books.cpp
+    objects/bookform.h objects/bookform.cpp objects/bookform.ui
 )
 
-#target_include_directories(Game BEFORE PRIVATE )
+target_include_directories(Game BEFORE PRIVATE ./map ./menu ./player)
 
 target_link_libraries(Game
     PRIVATE

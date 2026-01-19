@@ -4,26 +4,6 @@
 
 CC_Alko::CC_Alko(QWidget *ptr): root(ptr){}
 
-void CC_Alko::slotCheckAlkoBlock(int& value)
-{
-    if (getVAlco(alko) >= getVAlco(maxAlko))
-    {
-        value = 1;
-    }
-    else if (getVAlco(hangoverDay) != 0)
-    {
-        value = 2;
-    }
-    else if (getVAlco(alkoholism) > 15)
-    {
-        value = 3;
-    }
-    else
-    {
-        value = 0;
-    }
-}
-
 void CC_Alko::anti_hangover()
 {
     setVAlco(hangoverDay,0);
@@ -228,4 +208,25 @@ void CC_Alko::fnAlko(int val)
         updSkin('-',1);
     if(getVAlco(alko) >= 6)
         updVStatus(vidageday,-1);
+}
+
+int CC_Alko::alkoBlock()
+{
+    qDebug() << "alko :" << getVAlco(alko) << getVAlco(maxAlko); 
+    if (getVAlco(alko) >= getVAlco(maxAlko))
+    {
+        return 1;
+    }
+    else if (getVAlco(hangoverDay) != 0)
+    {
+        return 2;
+    }
+    else if (getVAlco(alkoholism) > 15)
+    {
+        return 3;
+    }
+    else
+    {
+        return 0;
+    }
 }

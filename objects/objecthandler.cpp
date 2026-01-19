@@ -2,6 +2,7 @@
 #include "bed.h"
 #include "mirror.h"
 #include "wardrobe.h"
+#include "books.h"
 #include "../menu/mainwindow.h"
 
 ObjectHandler::ObjectHandler(Render* ptr, QWidget* parent, QVBoxLayout* actions):
@@ -12,6 +13,7 @@ ObjectHandler::ObjectHandler(Render* ptr, QWidget* parent, QVBoxLayout* actions)
     m_bed = new Bed(this);
     m_mirror = new Mirror(this);
     m_wardrobe = new Wardrobe(this);
+    m_books = new Books(this);
 }
 
 Cloth *ObjectHandler::wearCloth(Cloth *thing)
@@ -29,6 +31,26 @@ void ObjectHandler::sleep()
     m_bed->sleepInBed();
 }
 
+QString ObjectHandler::getBookName(int id)
+{
+    return m_books->getBookName(id);
+}
+
+void ObjectHandler::readOnWalk()
+{
+    m_books->readOnWalk();
+}
+
+int ObjectHandler::eroReaded()
+{
+    return m_books->ero_readed();
+}
+
+void ObjectHandler::eroBlock()
+{
+    m_books->erotic_block();
+}
+
 void ObjectHandler::slotViewObj(QString objName)
 {
     if (objName == "wardrobe")
@@ -43,11 +65,30 @@ void ObjectHandler::slotViewObj(QString objName)
     {
         m_mirror->viewMirror();
     }
+    else if(objName == "books")
+    {
+        m_books->viewBooks();
+    }
 }
 
 void ObjectHandler::slotInitWardrobe()
 {
     m_wardrobe->initWarDrobe();
+}
+
+int ObjectHandler::getTemp()
+{
+    return ((MainWindow*)root)->m_weather->getTemp();
+}
+
+int ObjectHandler::getSunWeather()
+{
+    return ((MainWindow*)root)->m_weather->getSunWeather();
+}
+
+bool ObjectHandler::isNude()
+{
+    return ((MainWindow*)root)->m_player->isNude();
 }
 
 int ObjectHandler::getVStatus(Status param)
@@ -85,6 +126,11 @@ int ObjectHandler::getMin()
     return ((MainWindow*)root)->m_time.getMin();
 }
 
+int ObjectHandler::getMonth()
+{
+    return ((MainWindow*)root)->m_time.getMonth();
+}
+
 int ObjectHandler::getVSC(SC param)
 {
     return ((MainWindow*)root)->m_player->getStatisticsValue(param);
@@ -98,6 +144,41 @@ int ObjectHandler::getVsexVar(SexVar param)
 int ObjectHandler::getItmCount(Items id)
 {
     return ((MainWindow*)root)->m_bag->getQuantityof(id);
+}
+
+int ObjectHandler::alkoBlock()
+{
+    return ((MainWindow*)root)->m_ccalko.alkoBlock();
+}
+
+int ObjectHandler::gVQuest(QuestParams param)
+{
+    return ((MainWindow*)root)->locHandler->gVQuest(param);
+}
+
+int ObjectHandler::gVEvent(EventParams param)
+{
+    return ((MainWindow*)root)->locHandler->gVEvent(param);
+}
+
+void ObjectHandler::uVEvent(EventParams param, int val)
+{
+    ((MainWindow*)root)->locHandler->uVEvent(param,val);
+}
+
+void ObjectHandler::sVEvent(EventParams param, int val)
+{
+    ((MainWindow*)root)->locHandler->sVEvent(param,val);
+}
+
+void ObjectHandler::sVQuest(QuestParams param, int val)
+{
+    ((MainWindow*)root)->locHandler->sVQuest(param,val);
+}
+
+void ObjectHandler::sendNotif(QString text)
+{
+    ((MainWindow*)root)->showNotif(text);
 }
 
 void ObjectHandler::updateParams()
@@ -123,6 +204,11 @@ void ObjectHandler::setVBody(Body param, int val)
 void ObjectHandler::updVStatus(Status param, int val)
 {
     ((MainWindow*)root)->m_player->updVStatus(param,val);
+}
+
+void ObjectHandler::updVSkill(Skills param, int val)
+{
+    ((MainWindow*)root)->m_player->updVSkill(param,val);
 }
 
 void ObjectHandler::updVBody(Body param, int value)
@@ -198,4 +284,9 @@ Location *ObjectHandler::getCurLoc()
 Player *ObjectHandler::player()
 {
     return ((MainWindow*)root)->m_player;
+}
+
+NPC& ObjectHandler::gNPC(int id)
+{
+    return ((MainWindow*)root)->npcs[id];
 }

@@ -19,34 +19,40 @@ LocationHandler::LocationHandler(Render *ptr, QWidget *parent, QVBoxLayout *acti
     m_beach = new Beach(this);
 }
 
-LocId LocationHandler::getMainLoc()
+void LocationHandler::genLocations()
 {
-    return m_current->getLocIn();
-}
-
-LocId LocationHandler::getPrevLoc()
-{
-    return m_prev->getLocId();
-}
-
-Location *LocationHandler::getCurPtr()
-{
-    return m_current;
-}
-
-int LocationHandler::gVSchool(SchoolVar param)
-{
-    return m_events->gVSchool(param);
-}
-
-void LocationHandler::uVSchool(SchoolVar param, int val)
-{
-    m_events->uVSchool(param,val);
-}
-
-void LocationHandler::sVSchool(SchoolVar param, int val)
-{
-    m_events->sVSchool(param,val);
+    std::vector<Location*> locs;
+    //////////////  Common
+    locs.push_back(new BathRoom(this));
+    locs.push_back(new Shop(this));
+    //////////////  Gadukino
+    locs.push_back(new Backwater(this));
+    locs.push_back(new Gadbana(this));
+    locs.push_back(new Gadbeach(this));
+    locs.push_back(new Gaddvor(this));
+    locs.push_back(new Gadfield(this));
+    locs.push_back(new Gadforest(this));
+    locs.push_back(new GadForestSwamp(this));
+    locs.push_back(new Gadgarden(this));
+    locs.push_back(new Gadhouse(this));
+    locs.push_back(new Gadmarket(this));
+    locs.push_back(new Gadriver(this));
+    locs.push_back(new Gadroad(this));
+    locs.push_back(new Gadsarai(this));
+    locs.push_back(new Gadukino(this));
+    locs.push_back(new Meadow(this));
+    locs.push_back(new MiroslavaHome(this));
+    locs.push_back(new Swamp(this));
+    locs.push_back(new SwampHouse(this));
+    locs.push_back(new SwampSpring(this));
+    locs.push_back(new SwampYard(this));
+    /////////////   Pavlovo
+    locs.push_back(new korrPar(this));
+    locs.push_back(new BedrPar(this));
+    for(auto i: locs)
+    {
+        m_locations[i->getLocId()] = i;
+    }
 }
 
 void LocationHandler::checkMapAwailable()
@@ -77,45 +83,66 @@ void LocationHandler::slotChangeLoc(LocId id, int time, QString arg)
     checkMapAwailable();
 }
 
+LocId LocationHandler::getMainLoc()
+{
+    return m_current->getLocIn();
+}
+
+LocId LocationHandler::getPrevLoc()
+{
+    return m_prev->getLocId();
+}
+
+Location *LocationHandler::getCurPtr()
+{
+    return m_current;
+}
+
+int LocationHandler::gVSchool(SchoolVar param)
+{
+    return m_events->gVSchool(param);
+}
+
+void LocationHandler::uVSchool(SchoolVar param, int val)
+{
+    m_events->uVSchool(param,val);
+}
+
+void LocationHandler::sVSchool(SchoolVar param, int val)
+{
+    m_events->sVSchool(param,val);
+}
+
+int LocationHandler::gVEvent(EventParams param)
+{
+    return m_events->gVEvent(param);
+}
+
+int LocationHandler::gVQuest(QuestParams param)
+{
+    return m_events->gVQuest(param);
+}
+
+void LocationHandler::uVEvent(EventParams param, int val)
+{
+    m_events->uVEvent(param,val);
+}
+
+void LocationHandler::sVEvent(EventParams param, int val)
+{
+    m_events->sVEvent(param,val);
+}
+
+void LocationHandler::sVQuest(QuestParams param, int val)
+{
+    m_events->sVQuest(param,val);
+}
+
 LocId LocationHandler::getCurLoc()
 {
     return m_current->getLocId();
 }
 
-void LocationHandler::genLocations()
-{
-    std::vector<Location*> locs;
-//////////////  Common
-    locs.push_back(new BathRoom(this));
-    locs.push_back(new Shop(this));
-//////////////  Gadukino
-    locs.push_back(new Backwater(this));
-    locs.push_back(new Gadbana(this));
-    locs.push_back(new Gadbeach(this));
-    locs.push_back(new Gaddvor(this));
-    locs.push_back(new Gadfield(this));
-    locs.push_back(new Gadforest(this));
-    locs.push_back(new GadForestSwamp(this));
-    locs.push_back(new Gadgarden(this));
-    locs.push_back(new Gadhouse(this));
-    locs.push_back(new Gadmarket(this));
-    locs.push_back(new Gadriver(this));
-    locs.push_back(new Gadroad(this));
-    locs.push_back(new Gadsarai(this));
-    locs.push_back(new Gadukino(this));
-    locs.push_back(new Meadow(this));
-    locs.push_back(new MiroslavaHome(this));
-    locs.push_back(new Swamp(this));
-    locs.push_back(new SwampHouse(this));
-    locs.push_back(new SwampSpring(this));
-    locs.push_back(new SwampYard(this));
-/////////////   Pavlovo
-
-    for(auto i: locs)
-    {
-        m_locations[i->getLocId()] = i;
-    }
-}
 void LocationHandler::updateParams()
 {
     ((MainWindow*)m_root)->slotUpdParams();
@@ -310,6 +337,11 @@ int LocationHandler::getVAddict(Addiction param)
     return ((MainWindow*)m_root)->m_player->getVAddict(param);
 }
 
+int LocationHandler::alkoBlock()
+{
+    return ((MainWindow*)m_root)->m_ccalko.alkoBlock();
+}
+
 QString LocationHandler::getLipTalk()
 {
     return ((MainWindow*)m_root)->m_player->getLipTalk();
@@ -388,6 +420,26 @@ QString LocationHandler::sextToysBlock(int val)
 Location *LocationHandler::getLocPtr(LocId locId)
 {
     return m_locations[locId];
+}
+
+QString LocationHandler::getBookName(int id)
+{
+    return ((MainWindow*)m_root)->objHandler->getBookName(id);
+}
+
+void LocationHandler::readOnWalk()
+{
+    ((MainWindow*)m_root)->objHandler->readOnWalk();
+}
+
+int LocationHandler::eroReaded()
+{
+    return ((MainWindow*)m_root)->objHandler->eroReaded();
+}
+
+void LocationHandler::eroBlock()
+{
+    ((MainWindow*)m_root)->objHandler->eroBlock();
 }
 
 NPC& LocationHandler::gNPC(int id)
