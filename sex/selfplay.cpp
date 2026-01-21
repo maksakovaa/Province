@@ -3,10 +3,7 @@
 #include "../Functions.h"
 #include "sexhandler.h"
 
-SelfPlay::SelfPlay(SexHandler* parent): root(parent)
-{
-    m_dildohand = 0;
-}
+SelfPlay::SelfPlay(SexHandler* parent): root(parent) {}
 
 void SelfPlay::start()
 {
@@ -22,8 +19,6 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
     case actSP4:
         {
             root->m_render->rendImagePage(root);
-//            root->setMainWidgetpage(5);
-
             if(root->getVSexVar(mastrOnce) == 0)
             {
                 root->updVSC(SC::masturbation,1);
@@ -74,9 +69,9 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
                 {
                     if(root->getCurLoc() == lbedrpar2 && root->getVSexVar(selfmomtoyplay) == 1)
                     {
-                        m_dildohand = 10;
+                        root->setVSexVar(dildoHand, 10);
                     }
-                    if(m_dildohand > 0)
+                    if(root->getVSexVar(dildoHand) > 0)
                     {
                         root->m_render->addText(getActDesc(descSP45));
                     }
@@ -545,7 +540,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
         {
             root->incTime(15);
             root->updVSexVar(selfplaytime,15);
-            root->setVSexVar(dick, m_dildohand);
+            root->setVSexVar(dick, root->getVSexVar(dildoHand));
             //protect = 1;
             if(root->getPrevLoc() == lkorrpar)
                 root->m_render->setImage("data/sex/selfplay/dildovann.jpg");
@@ -564,7 +559,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
         {
             root->incTime(15);
             root->updVSexVar(selfplaytime,15);
-            root->setVSexVar(dick, m_dildohand);
+            root->setVSexVar(dick, root->getVSexVar(dildoHand));
             if(root->getPrevLoc() == lkorrpar)
                 root->m_render->setImage("data/sex/selfplay/dildovann.jpg");
             else
@@ -578,49 +573,49 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
         break;
     case actSP17:
         {
-            m_dildohand = 0;
+            root->setVSexVar(dildoHand, 0);
             slotActionHandler(actSP0);
         }
         break;
     case actSP18:
         {
-            m_dildohand = 10;
+            root->setVSexVar(dildoHand, 10);
             slotActionHandler(actSP0);
         }
         break;
     case actSP19:
         {
-            m_dildohand = 15;
+            root->setVSexVar(dildoHand, 15);
             slotActionHandler(actSP0);
         }
         break;
     case actSP20:
         {
-            m_dildohand = 20;
+            root->setVSexVar(dildoHand,20);
             slotActionHandler(actSP0);
         }
         break;
     case actSP21:
         {
-            m_dildohand = 25;
+            root->setVSexVar(dildoHand,25);
             slotActionHandler(actSP0);
         }
         break;
     case actSP22:
         {
-            m_dildohand = 30;
+            root->setVSexVar(dildoHand,30);
             slotActionHandler(actSP0);
         }
         break;
     case actSP23:
         {
-            m_dildohand = 35;
+            root->setVSexVar(dildoHand,35);
             slotActionHandler(actSP0);
         }
         break;
     case actSP24:
         {
-            m_dildohand = 40;
+            root->setVSexVar(dildoHand,40);
             slotActionHandler(actSP0);
         }
         break;
@@ -679,7 +674,7 @@ void SelfPlay::makeButtons()
                 root->getItemCount(Items::iMidDildo) >= 1 ||
                 root->getItemCount(Items::iSuperDildo) >= 1)
             {
-                if (m_dildohand > 0)
+                if (root->getVSexVar(dildoHand) > 0)
                 {
                     if (root->getVSexVar(stat_vgape) <= 0)
                         makeActBtn(actSP14);
@@ -895,7 +890,7 @@ QString SelfPlay::getActDesc(SelfPlayDesc desc)
     strings[descSP42] = "Вы засунули руку в свою попу и ваш анус туго ее обхватил.";
     strings[descSP43] = "У вас уже болит попа и засунув руку вы еще сильнее ее повредили.";
     strings[descSP44] = "Вы засунули руку в свою попу и почувствовали резкую боль в вашем анусе.";
-    strings[descSP45] = "У вас в руках " + intQStr(m_dildohand) + "ти сантиметровый дилдо";
+    strings[descSP45] = "У вас в руках " + intQStr(root->getVSexVar(dildoHand)) + "ти сантиметровый дилдо";
     strings[descSP46] = "У вас нет дилдо в руках";
     strings[descSP47] = "Ваша киска нежно обхватывает ваши пальчики и вы чувствуете приятно тепло разливающееся внизу живота.";
     strings[descSP48] = "Вагина довольно просторная и вам приходится довольно сильно потрудиться, что бы хоть что-то ощущать от своих пальцев.";

@@ -108,6 +108,7 @@ private: //Access methods
     void addDesc(QString str);
 
     bool isAutoTampon();
+    bool whoreState();
     bool isMesec();
     void redress(ClothType type, Cloth* newCloth);
     void redressOld();
@@ -119,10 +120,12 @@ private: //Access methods
     bool isJeans();
     bool isNude();
     bool isCloth();
+
     int getClothGroup();
     void addCloth(Cloth* thing);
     void decreaseCondition(int val = 1);
     int getClothDecreaseLevel();
+    void removeCloth(ClothGroup group);
 
     void viewObj(QString obj);
     void updSkin(char c, int val);
@@ -138,6 +141,7 @@ private: //Access methods
     int eroReaded();
     void eroBlock();
     NPC &gNPC(int id);
+    void rendNpcProfile(NPCId id);
 private: //Members
     Location* m_current;
     Location* m_prev;

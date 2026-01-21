@@ -753,6 +753,13 @@
         </layout>
        </item>
        <item>
+        <widget class="QPushButton" name="pushButton">
+         <property name="text">
+          <string>TestBtn</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QWidget" name="widgetActions" native="true">
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>

@@ -20,6 +20,7 @@
 #include "../objects/objecthandler.h"
 #include "../sex/sexhandler.h"
 #include "../npc/npc.h"
+#include "../npc/npc_editor.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -30,7 +31,7 @@ QT_END_NAMESPACE
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-    friend LoadForm;
+    friend LoadForm; friend NPC_Editor;
     friend Render; friend LocationHandler; friend ObjectHandler; friend SexHandler;
     friend Player; friend TimeServer; friend OverlayStatus; friend CC_Alko;
     friend Weather; friend Pregnancy; friend CCSex; friend SaveForm;
@@ -61,6 +62,8 @@ private slots:
 
     void on_pushButtonLoad_clicked();
 
+    void on_pushButton_clicked();
+
 private: //methods
     void setupMainWindow(SettingsForm* settingsForm);
     void connections();
@@ -71,11 +74,7 @@ private: //methods
     void setupActionButtons();
     void saveActions();
     void reloadActions();
-    void initNpc();
-    NPCboyfriend genRandboyfriend(int i);
 private: //members
-    std::vector<NPC> npcs;
-    std::vector<NPCboyfriend> boyfriends;
     NotificationQueue* m_que;
     SettingsForm* page4;
     Weather* m_weather;
@@ -92,7 +91,8 @@ private: //members
     LocationHandler* locHandler;
     ObjectHandler* objHandler;
     SexHandler* sexHandler;
-    SaveForm savePage;
-    LoadForm loadPage;
+    SaveForm SavePage;
+    LoadForm LoadPage;
+    NPC_Editor* m_npc;
 };
 #endif // MAINWINDOW_H

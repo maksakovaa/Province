@@ -46,6 +46,11 @@ bool SettingsForm::isFullScreen()
     return m_settings->isFullScreen();
 }
 
+bool SettingsForm::whoreState()
+{
+    return m_settings->whoreState();
+}
+
 int SettingsForm::getBodyType()
 {
     return m_settings->getBodyType();

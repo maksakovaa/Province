@@ -23,6 +23,7 @@ public:
     void viewWardrobe();
     void addCloth(Cloth* thing, int count);
     Cloth* wearCloth(Cloth* thing);
+    void removeCloth(ClothGroup group);
 public slots:
     void slotUpdSize(int size);
     void reloadActions();

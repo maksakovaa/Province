@@ -4,6 +4,7 @@
 enum QuestParams
 {
     qwPodezdWhore,          //Счётчик секса как шлюхи в подъезде
+    podWhoreCountQW,
     qwIvanPodstava,         //Квест с подставой Ивана в быстроешке
     qwBistro,               //Квест по быстроешке
     qwNastya,               //Квест с Настей из Сити
@@ -21,6 +22,7 @@ enum QuestParams
     qwKotovLove,            //Квест по отношениям с Котовым
     qwTalkSexJulia,         //Квест с разговорами о сексе
     qwKatya,                //Квест с Катей Мейнольд
+    qwKatyaDisco,
     qwVika,                 //Квест с Викой Мейнольд
     qwNatashaDolg,          //Квест с долгом Беловой
     qwZverevaSlut,          //Квест с побитием Зверевой
@@ -75,6 +77,7 @@ enum QuestParams
     gets_bicycleQW,
     TsarevMainQWday,
     TsarevMainQW,
+    zverRageQW,
     lastQW
 };
 

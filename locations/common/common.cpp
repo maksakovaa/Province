@@ -449,8 +449,55 @@ void Common::fnsport(int arg)
     }
 }
 
+void Common::waiting(int arg)
+{
+    if(arg == 0)
+        makeActBtn("waiting",act(15));
+    if(arg > 0)
+        makeActBtn("waiting1",act(16));
+}
+
 void Common::actionHandler(QString action)
 {
+    if(action == "waiting")
+    {
+        ClearLayout(root->m_actions);
+        makeActBtn("waiting_1m",act(16));
+        makeActBtn("waiting_5m",act(17));
+        makeActBtn("waiting_15m",act(18));
+        makeActBtn("waiting_30m",act(19));
+        makeActBtn("waiting_1h",act(20));
+    }
+    if(action == "waiting1")
+    {
+        ClearLayout(root->m_actions);
+        makeActBtn("waiting1_1m",act(16));
+        makeActBtn("waiting1_5m",act(17));
+        makeActBtn("waiting1_15m",act(18));
+        makeActBtn("waiting1_30m",act(19));
+        makeActBtn("waiting1_1h",act(20));
+    }
+    if(action == "waiting_1m")
+        root->slotChangeLoc(root->getCurLoc(),1);
+    if(action == "waiting_5m")
+        root->slotChangeLoc(root->getCurLoc(),5);
+    if(action == "waiting_15m")
+        root->slotChangeLoc(root->getCurLoc(),15);
+    if(action == "waiting_30m")
+        root->slotChangeLoc(root->getCurLoc(),30);
+    if(action == "waiting_1h")
+        root->slotChangeLoc(root->getCurLoc(),60);
+    if(action == "waiting1_1m")
+        root->slotChangeLoc(root->getCurLoc(),0);
+    if(action == "waiting1_5m")
+        root->slotChangeLoc(root->getCurLoc(),4);
+    if(action == "waiting1_15m")
+        root->slotChangeLoc(root->getCurLoc(),14);
+    if(action == "waiting1_30m")
+        root->slotChangeLoc(root->getCurLoc(),29);
+    if(action == "waiting1_1h")
+        root->slotChangeLoc(root->getCurLoc(),59);
+
     if(action == "go_back")
         go_back();
     if(action == "eat_icecream")
@@ -698,7 +745,7 @@ QString Common::str(int id)
 
 QString Common::act(int id)
 {
-    QString act[14];
+    QString act[21];
     act[0] = "Открыть шкаф";
     act[1] = "Назад";
     act[2] = "Купить мороженое";
@@ -713,6 +760,13 @@ QString Common::act(int id)
     act[11] = "Вышивать гобелен в течение часа.";
     act[12] = "Далее >>";
     act[13] = "Встать";
+    act[14] = "Бездельничать";
+    act[15] = "Ждать";
+    act[16] = "1 минуту";
+    act[17] = "5 минут";
+    act[18] = "15 минут";
+    act[19] = "Полчаса";
+    act[20] = "Час";
     return act[id];
 }
 

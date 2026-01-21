@@ -7,7 +7,7 @@
 enum ClothType {
     Main,                   // главная одежда
     Panties,                // трусики
-    Stockings               // чулки
+    Stockings,              // чулки
 };
 
 enum ClothGroup

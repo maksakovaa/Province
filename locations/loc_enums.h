@@ -85,6 +85,13 @@ enum LocId
     lvolley,
     lalbinaev,
     ldimagohome2,
+    //empty loc
+    l_work,     //father locs
+    l_null,     //father locs
+    lreks_home, // sis locs
+    lroma_home, // sis locs
+    lRoom, //???
+    lKitchen, //???
     //city
     lcasino,
     lcasino2,

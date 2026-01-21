@@ -133,6 +133,19 @@ void Settings::switchSexLevel()
     
 }
 
+void Settings::switchWhore()
+{
+    if(whoreEnabled == true)
+        whoreEnabled = false;
+    else
+        whoreEnabled = true;
+}
+
+bool Settings::whoreState()
+{
+    return whoreEnabled;
+}
+
 void Settings::loadFromFile()
 {
     if(!file.open(QIODevice::ReadOnly))
@@ -158,6 +171,7 @@ void Settings::loadFromFile()
             if(val[0] == "sex_level") sex_level = val[1].toInt();
             if(val[0] == "add_txt_sex") add_txt_sex = val[1].toInt();
             if(val[0] == "lang") lang = val[1].toInt();
+            if(val[0] == "prostitute") whoreEnabled = val[1].toInt();
         }
     }
 }
@@ -180,7 +194,8 @@ void Settings::saveToFile()
         out << "autotampon = " + QString::number(autotampon) + "\n";
         out << "sex_level = " + QString::number(sex_level) + "\n";
         out << "add_txt_sex = " + QString::number(add_txt_sex) + "\n";
-        out << "lang = " + QString::number(lang);
+        out << "lang = " + QString::number(lang) + "\n";
+        out << "prostitute = " + QString::number(whoreEnabled);
     }
 
 }
@@ -197,4 +212,5 @@ void Settings::loadDefault()
     sex_level = 0;
     add_txt_sex = 0;
     lang = 1;
+    whoreEnabled = false;
 }

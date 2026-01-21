@@ -26,6 +26,11 @@ void ObjectHandler::storeCloth(Cloth *thing, int count)
     m_wardrobe->addCloth(thing, count);
 }
 
+void ObjectHandler::removeCloth(ClothGroup group)
+{
+    m_wardrobe->removeCloth(group);
+}
+
 void ObjectHandler::sleep()
 {
     m_bed->sleepInBed();
@@ -288,5 +293,5 @@ Player *ObjectHandler::player()
 
 NPC& ObjectHandler::gNPC(int id)
 {
-    return ((MainWindow*)root)->npcs[id];
+    return ((MainWindow*)root)->m_npc->gNPC(id);
 }

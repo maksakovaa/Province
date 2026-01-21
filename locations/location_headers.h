@@ -1,6 +1,13 @@
 #ifndef LOCATION_HEADERS_H
 #define LOCATION_HEADERS_H
-
+//Common locs
+#include "common/bathroom.h"
+#include "common/beach.h"
+#include "common/common.h"
+#include "common/common_headers.h"
+#include "common/kitchenacts.h"
+#include "common/shop.h"
+//Gadukino locs
 #include "gadukino/backwater.h"
 #include "gadukino/gadbana.h"
 #include "gadukino/gadbeach.h"
@@ -21,7 +28,8 @@
 #include "gadukino/swamphouse.h"
 #include "gadukino/swampspring.h"
 #include "gadukino/swampyard.h"
-
-#include "parents/korrPar.h"
+//Parents locs
+#include "parents/bedrpar2.h"
 #include "parents/bedrpar.h"
-#endif
+#include "parents/korrPar.h"
+#endif // LOCATION_HEADERS_H

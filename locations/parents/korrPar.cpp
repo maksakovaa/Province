@@ -1,5 +1,8 @@
 #include "korrPar.h"
 #include "../../menu/buttons.h"
+#include "../../npc/npc_enum.h"
+#include "../../Functions.h"
+
 korrPar::korrPar(LocationHandler *ptr): Location(ptr){}
 
 void korrPar::show(QString arg)
@@ -39,30 +42,45 @@ void korrPar::actionHandler(QString action)
         //popolaini = 0
         sVStatus(frost, 0);
         incTime(1);
+        int month = getMonth();
+        int week = getWeekNum();
+        int hour = getHour();
+        int sun = getSunWeather();
 
-        //if father['in_garage'] = 0: gs 'zz_family', 'father_sheduler'
-        //gs 'zz_family', 'mother_sheduler'
-        //gs 'zz_family', 'sister_sheduler'
-        //gs 'zz_family', 'brother_sheduler'
-        //if $npc['38,wedding'] >= 2 and month >= 5 and month <= 9 and week = 7 and hour = 10 and sunWeather > 0: gt 'sisterQW','incest_event12sub'
-        // if cloth[0] = 0 and $mother['at_home'] = 1:
-        //  *clr & cla
-        //  gs 'npc_editor','get_npc_profile',37
-        //  $npc['37,relation'] -= 1
-        //  gs 'zz_render', '', '', func('korrPar_strings'+$lang, '16')
-        //  act func('korrPar_strings'+$lang, 'act14'): gt 'bedrPar'
-        //  exit
-        //  end
-        // if week = 7 and hour = 10 and $npc['38,anayslut'] = 1 and $npc['38,incest_event14'] = 0: gt 'sisterQW','incest_event14'
-        //  if hour ! 18 and blockBedrPar = 1: blockBedrPar = 0
-        //  if blockBedrPar = 0 and sisboyday + 1 = daystart and hour = 18 and ($npc['38,qwSisterBoy'] = 3 or $npc['38,qwSisterBoy'] = 5 or $npc['38,qwSisterBoy'] = 7 or ($npc['38,qwSisterBoy'] = 9 and $npc['38,qwSisterTrio'] ! 1)):
-        //   act func('korrPar_strings'+$lang, 'act1'): gt 'sisterQW','sisboyQW_bedroom'
-        //  elseif blockBedrPar = 0 and sisboyday + 1 = daystart and hour = 18 and $npc['38,qwSisterTrio'] = 1:
-        //    act func('korrPar_strings'+$lang, 'act1'): gt 'sisterQW','sisboytrioQW_bedroom'
-        // elseif blockBedrPar = 0:
-        makeActBtn("bedrPar",act(1));
-        //if parentsexday ! day: act func('korrPar_strings'+$lang, 'act2'): gt 'bedrPar2','main'
-        //if isday_bathroom_peek ! day: isday_bathroom_peek = day & rand_bathroom_peek = rand(0,1) & border_bathroom_peek = 1
+        if(gNPC(VladimirSkryabin).location != lgargazel)
+            startEvent(eFamily, "father_sheduler");
+        startEvent(eFamily, "mother_sheduler");
+        startEvent(eFamily, "sister_sheduler");
+        startEvent(eFamily, "brother_sheduler");
+
+        if(gVQuest(wedding) >= 2 && month >= 5 && month <= 9 && week == 0 && hour == 10 && sun > 0)
+            startEvent(eSisterQW,"incest_event12sub");
+        if(isNude() && (gNPC(NatalyaLebedeva).location == lbedrpar2 || gNPC(NatalyaLebedeva).location == lkuhrpar || gNPC(NatalyaLebedeva).location == lsitrpar))
+        {
+            rendNpcProfile(NatalyaLebedeva);
+            gNPC(NatalyaLebedeva).relation -= 1;
+            setDesc(str(0));
+            makeActBtn("bedrPar",act(14));
+            return;
+        }
+        if(week == 0 && hour == 10 && gVQuest(anayslut) == 1 && gVEvent(incest_event14) == 0)
+            startEvent(eSisterQW, "incest_event14");
+        if(hour != 18 && gVEvent(blockBedrPar) == 1)
+            sVEvent(blockBedrPar,0);
+        if(gVEvent(blockBedrPar) == 0 && gVEvent(sisBoyDay) + 1 == gVStatus(daystart) && hour == 18 && gVQuest(qwSisterBoy) == 3  || gVQuest(qwSisterBoy) == 5 || gVQuest(qwSisterBoy) == 7 || (gVQuest(qwSisterBoy) == 9 && gVQuest(qwSisterTrio) != 1))
+            makeActBtn("sisboyQW_bedroom",act(1));
+        else if(gVEvent(blockBedrPar) == 0 && gVEvent(sisBoyDay) + 1 == gVStatus(daystart) && hour == 18 && gVQuest(qwSisterTrio) == 1)
+            makeActBtn("sisboytrioQW_bedroom",act(1));
+        else if(gVEvent(blockBedrPar) == 0)
+            makeActBtn("bedrPar",act(1));
+        if(gVEvent(parentSexDay) != getDay())
+            makeActBtn("bedrPar2",act(2));
+        if(gVEvent(isday_bathroom_peek) != getDay())
+        {
+            sVEvent(isday_bathroom_peek,getDay());
+            sVEvent(rand_bathroom_peek,getRandInt(0,1));
+            sVEvent(border_bathroom_peek,1);
+        }
         makeActBtn("sitrPar",act(3));
         makeActBtn("bathroom",act(4));
         makeActBtn("kuhrPar",act(5));
@@ -71,66 +89,85 @@ void korrPar::actionHandler(QString action)
         rendImagePage();
         setImage("data/locations/pavlovo/parents_home/parents_home.jpg");
         setDesc(str(12));
-        // if cloth[0] = 1 and $brother['location'] = 'sitrPar' and RAND(0,5) = 0 and hour >= 20 and hour < 23 and $npc['39,rand_event_day']!day: gt 'short_random','pol_rand1'
-        // !конец коротких ивентов
+
+        if(getClothGroup() == towel && gNPC(KolyaSkryabin).location == lsitrpar && getRandInt(0,5) == 0 && hour >= 20 && hour < 23 && gVEvent(rand_event_day) != getDay())
+            startEvent(eShortRandom, "pol_rand1");
+
         // if palto > 0: gs 'zz_render', '', '', func('korrPar_strings'+$lang, '13')
-        // if family_trip = 0 and (week < 6 and (hour = 7 or hour >= 18 and hour <= 20) or week >= 6 and hour >= 7 and hour <= 20):
-        // if gad_punishment = 1 and $npc['37,relation'] < 80:gt 'gadukino_event', 'punishment'
-        // if gadukino_blok = 1 and grandmaQW > 40 and grandpaQW > 40: gt 'gadukino_event', 'absolution'
-        // if gadukino_blok = 1 and gad_offense = 1:gt 'gadukino_event', 'offense'
-        // end
-        // if hour >= 17 and hour <= 20 and family_trip = 0:
-        //  if school['block'] < 3:
-        //    if (school['absent'] >= 30 and school['certificate'] = 0) or absent['stage'] = 3:
-        //       *clr & cla
-        //       gs 'npc_editor','get_npc_profile',37
-        //       school['block'] += 1
-        //       $npc['37,relation'] = 0
-        //       dom -= 1
-        //       school['absent'] = 0
-        //       absent['stage'] = 0
-        //       gs 'zz_render', '', '', func('korrPar_strings'+$lang, '<<(4+school[''block''])>>')
-        //       if school['block'] = 3:
-        //          ParHomeBlock = 1
-        //          gs 'zz_clothing2','remove_at',4
-        //          act func('korrPar_strings'+$lang, 'act14'): gt 'gorodok'
-        //          exit
-        //       end
-        //    act func('korrPar_strings'+$lang, 'act15'): gt $curloc
-        //    exit
-        //    end
-        //  end
-        //end
-        //if $npc['37,worry_check'] = 1 and family_trip = 0:gs 'dinmother', 'worry'
-        //if notathomesleep > 7 and hour >= 18 and hour <= 20 and family_trip = 0:
-        //notathomesleep = 0
-        //*clr & cla
-        //act func('korrPar_strings'+$lang, 'act16'): gt 'korrPar'
-        //gs 'zz_render', '', 'images/common/npc/37.jpg', func('korrPar_strings'+$lang, iif($npc['37,relation'] < 40,'8','9'))
-        //end
-        // !---
-        // ! гг слышит странные звуки с комнаты родителей
-        // if hour = 21 and week ! 1 and father['horny'] >= 70 and family_trip = 0:
-        //  gs 'zz_render', '', '', func('korrPar_strings'+$lang, '10')
-        // end
+
+        if(gVEvent(family_trip) == 0 && ((week > 0 && week < 6) && (hour == 7 || (hour >= 18 && hour <=20))) || ((week == 6 || week == 0) && hour >= 7 && hour <= 20))
+        {
+            if(gVEvent(gad_punishment) == 1 && gNPC(NatalyaLebedeva).relation < 80)
+                startEvent(eGadukinoEvents, "punishment");
+            if(gVEvent(gadukino_blok) == 1 && gVQuest(grandmaQW) > 40 && gVQuest(grandpaQW) > 40)
+                startEvent(eGadukinoEvents, "absolution");
+            if(gVEvent(gadukino_blok) == 1 && gVEvent(gad_offense) == 1)
+                startEvent(eGadukinoEvents, "offense");
+        }
+
+        if(hour >= 17 && hour <= 20 && gVEvent(family_trip) == 0)
+        {
+            if(gVSchool(block) < 3)
+            {
+                if((gVSchool(absent) >= 30 && gVSchool(certificate) == 0) || gVSchool(absentStage) == 3)
+                {
+                    rendNpcProfile(NatalyaLebedeva);
+                    uVSchool(block,1);
+                    gNPC(NatalyaLebedeva).relation = 0;
+                    uVSkill(domination,-1);
+                    sVSchool(absent,0);
+                    sVSchool(absentStage,0);
+                    setDesc(str(4+gVSchool(block)));
+                    if(gVSchool(block) == 3)
+                    {
+                        sVEvent(ParHomeBlock,1);
+                        removeCloth(ClothGroup::schoolUniform);
+                        makeActBtn("gorodok",act(14));
+                        return;
+                    }
+                    makeActBtn("korrPar",act(15));
+                    return;
+                }
+            }
+        }
+
+        if(gVEvent(worry_check) == 1 && gVEvent(family_trip) == 0)
+            startEvent(eDinMother,"worry");
+
+        if(gVEvent(NotAtHomeSleep) > 7 && hour >= 18 && hour <= 20 && gVEvent(family_trip) == 0)
+        {
+            sVEvent(NotAtHomeSleep,0);
+            makeActBtn("korrPar",act(16));
+            rendNpcProfile(NatalyaLebedeva);
+            if(gNPC(NatalyaLebedeva).relation < 40)
+                setDesc(str(8));
+            else
+                setDesc(str(9));
+        }
+
+        // гг слышит странные звуки с комнаты родителей
+        if(hour == 21 && week != 1 && gVEvent(father_horny) >= 70 && gVEvent(family_trip) == 0)
+        {
+            addText(str(10));
+        }
+
         // Брат приниает душ
-        // if hour = 17 and minut >= 30 and family_trip = 0 and rand_bathroom_peek = border_bathroom_peek:
-        //  !images\pavlovo\family\apartment\elsa_jean_01.jpg
-        // gs 'zz_render', '', '', func('korrPar_strings'+$lang, '14')
-        // end
-        // !Отчим приниает душ
-        // if hour = 16 and minut >= 30 and family_trip = 0 and week <> 1 and rand_bathroom_peek = border_bathroom_peek:
-        //  gs 'zz_render', '', '', func('korrPar_strings'+$lang, '15')
-        //  end
-        // !------------------------------------------!
-        // !если ГГ шлюха и она отдавалась уже пацанам в подъезде, то клиенты долбят в дверь: !
-        // if set_prostitute = ON_prostitute:
-        // gs 'pod_whore'
-        // $_visit_to_slut = '<p style="margin-left: 20px;"><font size="5">Кто-то трезвонит вам в дверь: <a href="exec: dynamic $pod_client_talk">Открыть</a></font></p>'
-        // if RAND(1,100) <= iif(pod_whore_countQW <= 15,5,20) and hour >= 10 and hour <= 23 and func('zz_reputation','get') >= 4 and $npc['0,qwPodezdWhore'] >=3: $_visit_to_slut
-        // killvar '$_visit_to_slut'
-        // end
-        // !==========================================!
+        if(hour == 17 && getMin() >= 30 && gVEvent(family_trip) == 0 && gVEvent(rand_bathroom_peek) == gVEvent(border_bathroom_peek))
+            addText(str(14));
+        // Отчим приниает душ
+        if(hour == 16 && getMin() >= 30 && gVEvent(family_trip) == 0 && week != 1 && gVEvent(rand_bathroom_peek) == gVEvent(border_bathroom_peek))
+            addText(str(15));
+        // если ГГ шлюха и она отдавалась уже пацанам в подъезде, то клиенты долбят в дверь:
+        if(whoreState() == true)
+        {
+            startEvent(ePodWhore);
+            if(gVQuest(podWhoreCountQW) <= 15)
+            {
+                if(getRandInt(1,100) <= 5 && hour >= 10 && hour <= 23 && /*func('zz_reputation','get') >= 4 && */ gVQuest(qwPodezdWhore) >= 3)
+                    addText(str(16));
+            }
+        }
+
         // !------------ Входящие звонки ------------
         // gs 'zz_phone', 'boyfriend_call_init'
         // if Gcall = 1 : exit
@@ -155,6 +192,7 @@ QString korrPar::str(int id)
     else
         add1 = "Похоже, предыдущая порка тебя ничему не научила.";
     QString str[17];
+    str[0] = "Света, ты чего по дому голяком скачешь? Живо оделась!";
     str[1] = "Мама упёрла руки в боки.<br> - Мне тут подкинули видео с тобой. " + add1 + " Ты понимаешь, что возможно это видео есть не только у меня? Что о тебе теперь будут говорить?! Да что о тебе - о всей нашей семье! Нужно преподать тебе урок. Володя!";
     str[2] = "Вы разревелись:<br> - Мамочка, ну мам! Прости! Это никогда не повторится! Я дура, что допустила это! Я больше никогда, никогда...<br>Вы рыдаете и становитесь на колени. Мать смотрит на вас, качает головой и молча уходит.";
     str[3] = "Вы стоите уставившись в пол. А что тут можно сказать?<br>Мать берёт вас за руку и ведет в комнату:<br> - Снимай трусы и нагнись!<br>Вы отрицательно качаете головой.<br> - Володя – держи ее!<br>Отчим хватает вас и держит. Мать стягивает с вас нижнее белье, берёт ремень, и начинает охаживать им вас по голой заднице. Сжав зубы, вы выдерживаете экзекуцию, не проронив ни звука. Подняв голову, вы видите, как через незакрытую дверь за всем этим наблюдают ваши брат и сестра.";
@@ -170,7 +208,7 @@ QString korrPar::str(int id)
     str[13] = "На крючке висит <<$palto>>";
     str[14] = "Из ванной слышен шум воды: Колька принимает душ после футбола.";
     str[15] = "Из ванной слышен шум воды: отчим принимает душ.";
-    str[16] = "Света, ты чего по дому голяком скачешь? Живо оделась!";
+    str[16] = "<p style=margin-left: 20px;>Кто-то трезвонит вам в дверь: <a href=\"pod_client_talk\">Открыть</a></p>";
     return str[id];
 }
 

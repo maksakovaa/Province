@@ -128,6 +128,11 @@ bool Location::isAutoTampon()
     return root->isAutoTampon();
 }
 
+bool Location::whoreState()
+{
+    return root->whoreState();
+}
+
 bool Location::isDay()
 {
     return root->isDay();
@@ -208,6 +213,11 @@ void Location::home_workout()
 void Location::read_porn()
 {
     root->m_common->read_porn();
+}
+
+void Location::waiting(int arg)
+{
+    root->m_common->waiting(arg);
 }
 
 void Location::drinkAll()
@@ -445,6 +455,11 @@ Cloth *Location::getCloth(ClothType type)
     return root->getCloth(type);
 }
 
+void Location::removeCloth(ClothGroup group)
+{
+    root->removeCloth(group);
+}
+
 bool Location::isSkirt()
 {
     return root->isSkirt();
@@ -575,7 +590,12 @@ QLabel *Location::getTextPtr()
     return root->m_render->getTextPtr();
 }
 
-NPC Location::gNPC(int id)
+NPC& Location::gNPC(int id)
 {
     return root->gNPC(id);
+}
+
+void Location::rendNpcProfile(NPCId id)
+{
+    root->rendNpcProfile(id);
 }

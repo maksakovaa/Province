@@ -40,6 +40,7 @@ public:
     int getDay();
     bool isDay();
     int getHour();
+    int getMin();
     int getWeekNum();
     int getTemp();
     int getSnow();

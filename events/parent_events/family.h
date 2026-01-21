@@ -20,6 +20,8 @@ private:
     void father_act();
     void brother_act();
     void sister_act();
+    QString media(int id);
+    QString str(int id);
     EventHandler* root;
 };
 

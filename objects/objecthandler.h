@@ -21,6 +21,7 @@ public:
     ObjectHandler(Render* ptr, QWidget* parent = nullptr, QVBoxLayout* actions = nullptr);
     Cloth* wearCloth(Cloth* thing);
     void storeCloth(Cloth* thing, int count = 1);
+    void removeCloth(ClothGroup group);
     void sleep();
     QString getBookName(int id);
     void readOnWalk();

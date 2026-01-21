@@ -23,6 +23,7 @@ public:
     bool getPubicHair();
     bool isAutoTampon();
     bool isFullScreen();
+    bool whoreState();
     int getBodyType();
     int getBody_tits();
     int getLanguage();

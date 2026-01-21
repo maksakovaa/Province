@@ -145,6 +145,11 @@ int EventHandler::getHour()
     return root->getHour();
 }
 
+int EventHandler::getMin()
+{
+    return root->getMin();
+}
+
 int EventHandler::getWeekNum()
 {
     return root->getWeekNum();

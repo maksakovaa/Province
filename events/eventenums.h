@@ -205,25 +205,49 @@ enum EventParams
     miralko,
     mirahorny,
     miraorgasm,
-
+    //Meynolds
+    homeward,
+    //NatashaBelova
+    BelovaBlock,
+    //Lariska
+    LariskaProfi,
+    lariskaQwestDay,
+    lariskaHelp,
+    //family
     family_trip_month,
     family_trip,
-
+    blockBedrPar,
+    parentSexDay,
+    isday_bathroom_peek,
+    rand_bathroom_peek,
+    border_bathroom_peek,
+    ParHomeBlock,
+    NotAtHomeSleep,
+    xgb_findalbum,
+    //Father
+    father_horny,
+    //Mother
     motherKnowWhore,
     motherKnowSpravka,
     mother_punishment,
     mother_spanking,
     momslut,
+    worry_check,
+    momActHour,
+    momAction,
     //Sister
     sister_show,
     sister_book,
     sisterKnowSlut,
     sisterKnowMastr,
+    sisBoyDay,
     //brother
     turnirWin,
+    rand_event_day,
     //incest flags
     incest_event9_flag,
     incest_event10_flag,
+    incest_event14,
     //Rex
     rexCarCount,
     rexSmsDay,
@@ -234,6 +258,7 @@ enum EventParams
     begPrize,
     have_bicycle,
     msg_bicycle,
+    numnpc,
     //Books
     book_in_bag,
     read_per_day,
@@ -247,6 +272,7 @@ enum SchoolVar
     lesson_count,
     lesson,
     absent,
+    absentStage,
     certificate,
     block,
     homework,

@@ -65,7 +65,7 @@ private:
     QString getActName(SelfPlayActs act);
     QString getActDesc(SelfPlayDesc desc);
     SexHandler* root;
-    int m_dildohand;
+    // int m_dildohand;
     SelfPlayActs current;
 };
 

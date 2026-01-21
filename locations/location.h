@@ -43,6 +43,7 @@ protected:
     void fancywork();
     void home_workout();
     void read_porn();
+    void waiting(int arg = 0);
 
     void drinkAll();
     void cookies();
@@ -80,6 +81,7 @@ protected:
     int gVJob(JobStatus param);
     int gVAddict(Addiction param);
     bool isAutoTampon();
+    bool whoreState();
     bool isDay();
     void incTime(int min);
     bool isMesec();
@@ -107,6 +109,7 @@ protected:
     void addCloth(Cloth* thing);
     int getClothGroup();
     Cloth* getCloth(ClothType type);
+    void removeCloth(ClothGroup group);
     bool isSkirt();
     bool isPanties();
     bool isGlamour();
@@ -133,8 +136,6 @@ protected:
 
     QString getPFName();
 
-    Location* getLocPtr(LocId locId);
-
     int gVSchool(SchoolVar param);
     void uVSchool(SchoolVar param, int val);
     void sVSchool(SchoolVar param, int val);
@@ -154,11 +155,14 @@ protected:
     void fnCum(QString target);
     void fnSwallow();
     void dp_start();
+
+    Location* getLocPtr(LocId locId);
     LocId getPrevId();
     LocId getPrevIn();
     QLabel* getTextPtr();
 
-    NPC gNPC(int id);
+    NPC &gNPC(int id);
+    void rendNpcProfile(NPCId id);
 private slots:
     virtual void actionHandler(QString action) = 0;
 private:

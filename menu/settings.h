@@ -19,6 +19,7 @@ public:
     int getLanguage();
     int getAddTxtSex();
     int getSexLevel();
+    bool whoreState();
     void switchCheats();
     void switchHapri();
     void switchTits();
@@ -29,6 +30,7 @@ public:
     void switchLang();
     void switchAddTxtSex();
     void switchSexLevel();
+    void switchWhore();
 private:
     QFile file{"settings.ini"};
     void loadFromFile();
@@ -44,6 +46,7 @@ private:
     int sex_level;
     int lang;
     int add_txt_sex;
+    bool whoreEnabled;
 };
 
 #endif

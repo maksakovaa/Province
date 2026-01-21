@@ -14,7 +14,7 @@ MainWindow::MainWindow(SettingsForm* settingsForm, int year, int month, int day,
     m_ccalko(this),
     m_reproductSys(this),
     m_ccsex(this),
-    savePage(this), loadPage(this)
+    SavePage(this), LoadPage(this)
 {
     this->setStyleSheet("background-color: #ffffff; color: #464646; font-size: 16px; font-family: 'Serif';");
     ui->setupUi(this);
@@ -29,7 +29,7 @@ MainWindow::MainWindow(SettingsForm *settingsForm, QWidget *parent)
     m_ccalko(this),
     m_reproductSys(this),
     m_ccsex(this),
-    savePage(this),loadPage(this)
+    SavePage(this),LoadPage(this)
 {
     this->setStyleSheet("background-color: #ffffff; color: #464646; font-size: 16px; font-family: 'Serif';");
     ui->setupUi(this);
@@ -67,7 +67,7 @@ MainWindow *MainWindow::createMenu()
     {
         SettingsForm* settings = m.getSettingsPtr();
         auto w = new MainWindow(settings);
-        w->loadPage.loadSave(m.getSave());
+        w->LoadPage.loadSave(m.getSave());
         w->setAttribute(Qt::WA_DeleteOnClose);
         return w;
     }
@@ -112,9 +112,10 @@ void MainWindow::setupMainWindow(SettingsForm* settingsForm)
     connections();
     setupActionButtons();;
     loadStrings();
-    ui->stackedWidget->addWidget(&savePage);
-    ui->stackedWidget->addWidget(&loadPage);
-    initNpc();
+    ui->stackedWidget->addWidget(&SavePage);
+    ui->stackedWidget->addWidget(&LoadPage);
+    m_npc = new NPC_Editor(this);
+    m_npc->init();
     this->adjustSize();
 }
 
@@ -277,114 +278,6 @@ void MainWindow::reloadActions()
         ui->actionsLayout->addItem(Layoutitems[i]);
     }
     Layoutitems.clear();
-}
-
-void MainWindow::initNpc()
-{
-    npcs.push_back(NPC{"","","",0,-1,0,0,0,0}); //0
-    //1-5
-    npcs.push_back(NPC{"Дима","Носов","",40,3, genDick(),0,1,1});
-    npcs.push_back(NPC{"Артём","Чеботарёв","",40,1,genDick(),0,0,1});
-    npcs.push_back(NPC {"Иван", "Прохоров", "", 40,2,genDick(),0,2,1});
-    npcs.push_back(NPC{"Игорь","Круглов","",40,3,genDick(16),0,0,1});
-    npcs.push_back(NPC{"Фёдор", "Козлов","",40,2,genDick(),0,0,1});
-    //6-10
-    npcs.push_back(NPC{"Петя","Клюев","",40,1,genDick(),0,0,1});
-    npcs.push_back(NPC{"Алексей","Князев","Лошик",40,0,genDick(),0,0,1});
-    npcs.push_back(NPC{"Святослав","Воинов","Свят",40,2,genDick(),0,0,1});
-    npcs.push_back(NPC{"Витёк","Котов","Кот",40,4,genDick(),0,2,1});
-    npcs.push_back(NPC{"Денис","Рыжов","Дэн",40,4,genDick(),0,0,1});
-    //11-15
-    npcs.push_back(NPC{"Вася","Шульгин","Васян",40,4,genDick(),0,0,1});
-    npcs.push_back(NPC{"Юля","Милова","",40,1,0,0,0,1});
-    npcs.push_back(NPC{"Лариска","Груздева","",40,2,0,0,0,1});
-    npcs.push_back(NPC{"Катя","Мейнольд","",40,3,0,0,0,1});
-    npcs.push_back(NPC{"Вика","Мейнольд","Рыжик",40,3,0,0,0,1});
-    //16-20
-    npcs.push_back(NPC{"Наташа","Белова","",40,1,0,0,0,1});
-    npcs.push_back(NPC{"Инна","Девятова","Девятка",40,3,0,0,0,1});
-    npcs.push_back(NPC{"Кристинв","Зверева","",40,2,0,0,0,1});
-    npcs.push_back(NPC{"Лина","Старова","",40,2,0,0,0,1});
-    npcs.push_back(NPC{"Лена","Котова","",40,4,0,0,0,1});
-    //21-25
-    npcs.push_back(NPC{"Лера", "Царева", "",40,4,0,0,0,1});
-    npcs.push_back(NPC{"Бэлла", "Артамонова", "Белка",40,2,0,0,0,1});
-    npcs.push_back(NPC{"Альбина", "Барловская", "",40,3,0,0,1});
-    npcs.push_back(NPC{"Полина", "Себаготулина", "",40,4,0,0,1});
-    npcs.push_back(NPC{"Соня", "Иванько","",40,0,0,0,0,1});
-    //26-30
-    npcs.push_back(NPC{"Анатолий Евгеньевич", "Царёв", "Онотоле",40,6,genDick(),0,1,1});
-    npcs.push_back(NPC{"Александр", "Лобов", "Рекс",40,6,genDick(),0,1,0});
-    npcs.push_back(NPC{"Михаил Николаевич", "Власов", "",40,6,genDick(),0,2,0});
-    npcs.push_back(NPC{"Вера", "Царева", "",40,6,0,0,0,0});
-    npcs.push_back(NPC{"Евгения", "Долина", "Женя",40,8,genDick(),0,1,0});
-    //31-35
-    npcs.push_back(NPC{"Татьяна", "Агузарова", "Таня",40,8,0,0,0,0});
-    npcs.push_back(NPC{"Пётр", "Кироров", "Питер",40,8,0,0,2,0});
-    npcs.push_back(NPC{"Катя", "","\"Кэт\"",40,8,0,0,0,0});
-    npcs.push_back(NPC{"Гиви Карапетович", "", "Карпетыч",40,8,genDick(28),0,2,0});
-    npcs.push_back(NPC{"Владимир", "Скрябин", "Отчим",40,5,genDick(28),0,1,1});
-    //36-40
-    npcs.push_back(NPC{"Сергей", "Шульгин","",40,9,genDick(28),0,2,1});
-    npcs.push_back(NPC{"Наталья", "Лебедева", "Мать",40,5,0,0,0,1});
-    npcs.push_back(NPC{"Аня", "Лебедева", "Сестра",40,5,0,0,0,1});
-    npcs.push_back(NPC{"Николай", "Скрябин", "Колька",40,5,genDick(21),0,0,1});
-    npcs.push_back(NPC{"Артур","","",40,9,30,0,2,0});
-    //41-45
-    npcs.push_back(NPC{"Алексей", "Каталкин", "Катала",40,9,genDick(18),0,1,0});
-    npcs.push_back(NPC{"Михаил Александрович", "Гробов", "дядя Миша",40,9,genDick(26),0,1,1});
-    npcs.push_back(NPC{"","","",0,-1,0,0,0,0}); //EMPTY SLOT
-    npcs.push_back(NPC{"Ирина", "Пугач","",40,8,0,0,0,0});
-    npcs.push_back(NPC{"Тамара Михайловна", "Мейнольд","",40,9,0,0,0,0});
-    //46-50
-    npcs.push_back(NPC{"Ашот", "", "", 40,8,genDick(26),0,2,0});
-    npcs.push_back(NPC{"Демаркус", "" ,"Марки", 40,8,genDick(31),1,0});
-    npcs.push_back(NPC{"Миша", "", "",40,9,genDick(),0,2,0});
-    npcs.push_back(NPC{"Айгуль","","",40,10,0,0,0,0});
-    npcs.push_back(NPC{"Вероника", "" ,"Ника", 40,10,0,0,0,0});
-    //50-53
-    npcs.push_back(NPC{"Наташа","","",50,10,0,0,0,0});
-    npcs.push_back(NPC{"Алексей Николаевич", "Гергин","",5,8,genDick(),0,1,0});
-    npcs.push_back(NPC{"Кристина", "Николаева","",5,8,0,0,0,0});
-
-    for(int i = 0; i <= 199; i++)
-    {
-        boyfriends.push_back(genRandboyfriend(i));
-    }
-}
-
-NPCboyfriend MainWindow::genRandboyfriend(int i)
-{
-    QStringList lst = QString("Саша,Леша,Коля,Петя,Вася,Гоша,Миша,Дэн,Паша,Гена,Дима,Славик,Виталик,Валера,Ваня,Серега,Андрей").split(',');
-    NPCboyfriend boy;
-    boy.name = lst[getRandInt(0,lst.size() - 1)];
-    boy.surname = "";
-    boy.nickname = "";
-    boy.relation = 40;
-    if(i < 100)
-        boy.group = 6;
-    else
-        boy.group = 8;
-    boy.dick = getRandInt(12,18);
-    boy.sex = 0;
-    boy.know = 0;
-    boy.silavag = getRandInt(0,2);
-    boy.meet_day = 0;
-    boy.boyfriend = 0;
-    boy.boy_type = static_cast<BoyType>(getRandInt(0,2));
-    if(boy.boy_type == tgopnik)
-        boy.boy_character = static_cast<BoyChar>(getRandInt(1,2));
-    else
-        boy.boy_character = static_cast<BoyChar>(getRandInt(0,2));
-
-    if(getRandInt(0,100) > 80) boy.izvrat = true;
-    else boy.izvrat = false;
-
-    boy.boy_beauty = getRandInt(40+boy.boy_type*10,60+boy.boy_type*10);
-    boy.boy_haircolor = getRandInt(0,3);
-    boy.boy_tits = getRandInt(0,6);
-    boy.boy_body = getRandInt(0,4);
-    return boy;
 }
 
 void MainWindow::on_pushButtonMap_clicked()
@@ -586,7 +479,7 @@ void MainWindow::on_pushButtonSave_clicked()
         ui->pushButtonMap->setEnabled(false);
         ui->stackedWidget->setCurrentIndex(5);
         ClearLayout(ui->actionsLayout);
-        savePage.viewSaves();
+        SavePage.viewSaves();
     }
     else
     {
@@ -604,12 +497,18 @@ void MainWindow::on_pushButtonLoad_clicked()
         ui->pushButtonMap->setEnabled(false);
         ui->stackedWidget->setCurrentIndex(6);
         ClearLayout(ui->actionsLayout);
-        loadPage.viewSaves();
+        LoadPage.viewSaves();
     }
     else
     {
         ui->stackedWidget->setCurrentIndex(0);
         reloadActions();
     }
+}
+
+
+void MainWindow::on_pushButton_clicked()
+{
+    m_npc->rendNpcProfile(dimaNosov);
 }
 

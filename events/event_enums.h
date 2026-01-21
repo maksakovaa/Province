@@ -33,10 +33,16 @@ enum Events
     eRiverEvents,
     eSergeiHanter,
     eSwampEvents,
+    //Pavlovo events
+    ePodWhore,
     //Family events
     eFamily,
     eDinSister,
     eSisterQW,
+    eShortRandom,
+    eDinMother,
+    eSeeParentSex,
+    eMother,
     //Reks
     eReks,
     //Tsarev

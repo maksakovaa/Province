@@ -29,6 +29,7 @@ public:
     void wet_wipes();
     int getClothDecreaseLevel();
     void fnsport(int arg = 0);
+    void waiting(int arg = 0);
     void makeActBtn(QString action, QString actName);
 private slots:
     void actionHandler(QString action);

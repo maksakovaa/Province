@@ -49,6 +49,7 @@ void LocationHandler::genLocations()
     /////////////   Pavlovo
     locs.push_back(new korrPar(this));
     locs.push_back(new BedrPar(this));
+    locs.push_back(new BedrPar2(this));
     for(auto i: locs)
     {
         m_locations[i->getLocId()] = i;
@@ -444,7 +445,12 @@ void LocationHandler::eroBlock()
 
 NPC& LocationHandler::gNPC(int id)
 {
-    return ((MainWindow*)m_root)->npcs[id];
+    return ((MainWindow*)m_root)->m_npc->gNPC(id);
+}
+
+void LocationHandler::rendNpcProfile(NPCId id)
+{
+    ((MainWindow*)m_root)->m_npc->rendNpcProfile(id);
 }
 
 int LocationHandler::getMonth()
@@ -510,6 +516,11 @@ void LocationHandler::addDesc(QString str)
 bool LocationHandler::isAutoTampon()
 {
     return ((MainWindow*)m_root)->page4->isAutoTampon();
+}
+
+bool LocationHandler::whoreState()
+{
+    return ((MainWindow*)m_root)->page4->whoreState();
 }
 
 bool LocationHandler::isMesec()
@@ -595,6 +606,11 @@ void LocationHandler::decreaseCondition(int val)
 int LocationHandler::getClothDecreaseLevel()
 {
     return m_common->getClothDecreaseLevel();
+}
+
+void LocationHandler::removeCloth(ClothGroup group)
+{
+    ((MainWindow*)m_root)->objHandler->removeCloth(group);
 }
 
 void LocationHandler::addItem(Items id, int count)

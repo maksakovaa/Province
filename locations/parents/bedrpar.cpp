@@ -60,12 +60,14 @@ void BedrPar::show(QString arg)
     if(((((week >= 1 && week <= 4) || week == 0) && hour < 6) || (week == 5 && hour >= 22) || ((week == 6 || week == 0) && hour < 9)) && gVEvent(rexCarCount) >= 9 && gVEvent(rexSmsDay) != gVStatus(daystart) && gVEvent(smsForRex) < 13)
         makeActBtn("takeSisPhone",act(10));
     makeActBtn("korrPar",act(1));
-    //wait button
+    waiting();
     makeActBtn("locker",act(2));
     makeActBtn("bed",act(3));
     makeActBtn("books",act(4));
-    //gs 'zz_family', 'brother_sheduler'
-    //gs 'zz_family', 'sister_sheduler'
+
+    startEvent(eFamily,"brother_sheduler");
+    startEvent(eFamily,"sister_sheduler");
+
     fancywork();
     if(gVEvent(reading_erotic_enable) == 1 && hour >= 18 && hour < 21 && eroReaded() > 0)
         eroBlock();
@@ -154,7 +156,7 @@ void BedrPar::actionHandler(QString action)
     {
         startEvent(eReks, "sms");
     }
-    if(action == "korrParr")
+    if(action == "korrPar")
         changeLoc(lkorrpar,5);
     if(action == "locker")
         viewObj("wardrobe");

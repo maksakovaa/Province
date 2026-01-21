@@ -1,9 +1,24 @@
 #ifndef NPC_ENUM_H
 #define NPC_ENUM_H
 
+enum BoyType { tgopnik, tnormal, tmazor };
+enum BoyChar { csoft, cnormal, cimpudent };
+enum npcGroup
+{
+    singlers,
+    botans,
+    sportsmens,
+    mazors,
+    gopnics,
+    family,
+    npcsPavlovo,
+    npcsGadukino,
+    npcsCity,
+    npcsUnivercity
+};
+
 enum NPCId
 {
-    empty0,
     dimaNosov,
     AtromCheb,
     IvanProhorov,
@@ -46,7 +61,6 @@ enum NPCId
     Artur,
     AlekseiKatalkin,
     MihailGrobov,
-    empty1,
     IrinaPugach,
     TamaraMeinolds,
     Ashot,

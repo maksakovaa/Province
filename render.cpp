@@ -54,7 +54,7 @@ void Render::rendObjPage(QObject* ptr)
 
 void Render::setImage(QString path)
 {
-    qDebug() << "Image: "<< path;
+    // qDebug() << "Image: "<< path;
     imageLbl->setText("<img src='" + path + "'></img>");
 }
 

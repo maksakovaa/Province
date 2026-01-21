@@ -48,6 +48,18 @@ Cloth* Wardrobe::wearCloth(Cloth* thing)
     return thing;
 }
 
+void Wardrobe::removeCloth(ClothGroup group)
+{
+    for(auto& i: m_storage)
+    {
+        if(((ClothMain*)i.first)->getClothGroup() == group)
+        {
+            m_storage.erase(i.first);
+            break;
+        }
+    }
+}
+
 void Wardrobe::reloadActions()
 {
     makeButtons();
