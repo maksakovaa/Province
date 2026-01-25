@@ -4,7 +4,7 @@
 #include "../items/cloth.h"
 #include "../menu/mainwindow.h"
 
-Player::Player(QWidget *ptr): m_main(ptr)
+Player::Player(Game *ptr): root(ptr)
 {
     initDefaultArrays();
     f_name = "Света";
@@ -44,7 +44,7 @@ void Player::newPlayer(CharacterType history)
     m_skills[Skills::endurance] = 10;
     m_skills[Skills::intellect] = 10;
     m_skills[Skills::react] = 10;
-    ((MainWindow*)m_main)->locHandler->m_events->sVSchool(progress,75);
+    root->vSchool(progress) = 75;
 
     if(history == CharacterType::nerd)
     {
@@ -60,7 +60,7 @@ void Player::newPlayer(CharacterType history)
         m_skills[Skills::agility] = 1;
         m_skills[Skills::domination] = 0;
         m_status[Status::nerdism] = 100;
-        ((MainWindow*)m_main)->locHandler->m_events->sVSchool(progress,50);
+        root->vSchool(progress) = 50;
     }
     else if(history == CharacterType::schoolgirl)
     {
@@ -75,7 +75,7 @@ void Player::newPlayer(CharacterType history)
         m_skills[Skills::intellect] = 70;
         m_skills[Skills::domination] = -20;
         m_status[Status::nerdism] = 100;
-        ((MainWindow*)m_main)->locHandler->m_events->sVSchool(progress,100);
+        root->vSchool(progress) = 100;
     }
     else if (history == CharacterType::dancer)
     {
@@ -90,8 +90,7 @@ void Player::newPlayer(CharacterType history)
         m_skills[Skills::vokal] = 80;
         m_skills[Skills::dance] = 90;
         m_skills[Skills::domination] = getRandInt(-10, 10);
-        ((MainWindow*)m_main)->locHandler->m_events->sVSchool(progress,40);
-
+        root->vSchool(progress) = 40;
     }
     else if (history == CharacterType::sportgirl)
     {
@@ -107,7 +106,7 @@ void Player::newPlayer(CharacterType history)
         m_skills[Skills::volleyball] = 70;
         m_skills[Skills::runner] = 40;
         m_skills[Skills::domination] = getRandInt(10,30);
-        ((MainWindow*)m_main)->locHandler->m_events->sVSchool(progress,30);
+        root->vSchool(progress) = 30;
     }
     else if (history == CharacterType::playgirl)
     {
@@ -118,7 +117,7 @@ void Player::newPlayer(CharacterType history)
         m_skills[Skills::agility] = 20;
         m_skills[Skills::endurance] = 20;
         m_skills[Skills::domination] = getRandInt(30,60);
-        ((MainWindow*)m_main)->locHandler->m_events->sVSchool(progress,30);
+        root->vSchool(progress) = 30;
     }
     else if (history == CharacterType::frivolous)
     {
@@ -137,7 +136,7 @@ void Player::newPlayer(CharacterType history)
         m_skills[Skills::agility] = 30;
         m_skills[Skills::dance] = 50;
         m_skills[Skills::domination] = getRandInt(-5,5);
-        ((MainWindow*)m_main)->locHandler->m_events->sVSchool(progress,28);
+        root->vSchool(progress) = 28;
     }
     zz_body();
     calcVneshBonus();
@@ -164,27 +163,7 @@ QString Player::getBoy2Name()
     return boy2;
 }
 
-int Player::getSkillValue(Skills skill_name)
-{
-    return m_skills[skill_name];
-}
-
-int Player::getVBody(Body param)
-{
-    return m_body[param];
-}
-
-int Player::getStatisticsValue(SC stat)
-{
-    return m_statistic[stat];
-}
-
-int Player::getVStatus(Status stat)
-{
-    return m_status[stat];
-}
-
-int Player::getVConst(Const param)
+int Player::vConst(Const param)
 {
     return m_const[param];
 }
@@ -209,66 +188,7 @@ QString Player::getBirthDate()
 
 int Player::getAge()
 {
-    return ((MainWindow*)m_main)->m_time.calcYears(m_birthDate);
-}
-
-void Player::updVSkill(Skills skill_name, int value)
-{
-    m_skills[skill_name] += value;
-}
-
-void Player::updVBody(Body param, int value)
-{
-    m_body[param] += value;
-}
-
-void Player::updVStatus(Status stat, int value)
-{
-    m_status[stat] += value;
-    if(stat == money)
-    {
-        ((MainWindow*)m_main)->slotUpdMoney();
-    }
-}
-
-void Player::setVStatus(Status stat, int value)
-{
-    m_status[stat] = value;
-}
-
-void Player::setVBody(Body param, int value)
-{
-    m_body[param] = value;
-}
-
-void Player::setVSexVar(SexVar param, int value)
-{
-    m_sex[param] = value;
-}
-
-void Player::setVSC(SC param, int value)
-{
-    m_statistic[param] = value;
-}
-
-void Player::setVSkill(Skills param, int val)
-{
-    m_skills[param] += val;
-}
-
-void Player::setVSick(Sickness param, int val)
-{
-    m_sick[param] = val;
-}
-
-void Player::setVAddict(Addiction param, int value)
-{
-    m_addict[param] = value;
-}
-
-void Player::setVJob(JobStatus param, int val)
-{
-    m_job[param] = val;
+    return root->calcYears(m_birthDate);
 }
 
 void Player::setBoyName(QString name)
@@ -280,69 +200,10 @@ void Player::setBoy2Name(QString name)
 {
     boy2 = name;
 }
-
-void Player::updVBuzzer(budilnik type, int value)
-{
-    m_budilnik[type] += value;
-    if(m_budilnik[timerH] > 23) m_budilnik[timerH] = 0;
-    if(m_budilnik[timerM] > 59) m_budilnik[timerM] = 0;
-    if(m_budilnik[budilnikOn] > 1) m_budilnik[budilnikOn] = 0;
-}
-
-void Player::updVSexVar(SexVar param, int value)
-{
-    m_sex[param] += value;
-}
-
-void Player::updVStatistic(SC param, int value)
-{
-    m_statistic[param] += value;
-}
-
-void Player::updVSick(Sickness param, int value)
-{
-    m_sick[param] += value;
-}
-
-void Player::updVAddict(Addiction param, int value)
-{
-    m_addict[param] += value;
-}
-
-void Player::updVJob(JobStatus param, int val)
-{
-    m_job[param] += val;
-}
-
 void Player::updSkin(char c, int value)
 {
     if(c == '+') { skinIncrement(value); }
     else if (c == '-') { skinDecrement(value); }
-}
-
-int Player::getVBuzzer(budilnik param)
-{
-    return m_budilnik[param];
-}
-
-int Player::getVSexVar(SexVar param)
-{
-    return m_sex[param];
-}
-
-int Player::getVSick(Sickness param)
-{
-    return m_sick[param];
-}
-
-int Player::getVAddict(Addiction param)
-{
-    return m_addict[param];
-}
-
-int Player::getVJob(JobStatus param)
-{
-    return m_job[param];
 }
 
 int &Player::vPreg(PregVar param)
@@ -457,10 +318,10 @@ void Player::calcShamelessFlag()
     m_status[Status::shamelessFlag] = shameless_flag;
 }
 
-bool Player::isCheatsOn()
-{
-    return ((MainWindow*)m_main)->page4->settings()->isCheats();
-}
+// bool Player::isCheatsOn()
+// {
+//     return root->isCheats();
+// }
 
 bool Player::isPanties()
 {
@@ -469,7 +330,7 @@ bool Player::isPanties()
 
 bool Player::isAutoTampon()
 {
-    return ((MainWindow*)m_main)->page4->settings()->isAutoTampon();
+    return root->isAutoTampon();
 }
 
 bool Player::isSkirt()
@@ -532,7 +393,52 @@ void Player::updBody()
 
 void Player::wearClothes(Cloth* thing)
 {
-    m_clothSLots[thing->getClothType()] = ((MainWindow*)m_main)->objHandler->wearCloth(thing);
+    m_clothSLots[thing->getClothType()] = root->wearCloth(thing);
+}
+
+int &Player::vSkill(Skills skill)
+{
+    return m_skills[skill];
+}
+
+int &Player::vBody(Body param)
+{
+    return m_body[param];
+}
+
+int &Player::vStatus(Status param)
+{
+    return m_status[param];
+}
+
+int &Player::vBuzzer(budilnik param)
+{
+    return m_budilnik[param];
+}
+
+int &Player::vSex(SexVar param)
+{
+    return m_sex[param];
+}
+
+int &Player::vStatistics(SC param)
+{
+    return m_statistic[param];
+}
+
+int &Player::vSick(Sickness param)
+{
+    return m_sick[param];
+}
+
+int &Player::vAddict(Addiction param)
+{
+    return m_addict[param];
+}
+
+int &Player::vJob(JobStatus param)
+{
+    return m_job[param];
 }
 
 QString Player::getCurClothName()
@@ -554,17 +460,17 @@ void Player::redress(ClothType type, Cloth *newCloth)
                 if(!isNude() && isCloth())
                 {
                     m_prevCloth[ClothType::Main] = m_clothSLots[ClothType::Main];
-                    ((MainWindow*)m_main)->objHandler->storeCloth(m_clothSLots[ClothType::Main]);
+                    root->storeCloth(m_clothSLots[ClothType::Main]);
                 }
                 if(m_clothSLots[ClothType::Panties] != nullptr)
                 {
                     m_prevCloth[ClothType::Panties] = m_clothSLots[ClothType::Panties];
-                    ((MainWindow*)m_main)->objHandler->storeCloth(m_clothSLots[ClothType::Panties]);
+                    root->storeCloth(m_clothSLots[ClothType::Panties]);
                 }
                 if(m_clothSLots[ClothType::Stockings])
                 {
                     m_prevCloth[ClothType::Stockings] = m_clothSLots[ClothType::Stockings];
-                    ((MainWindow*)m_main)->objHandler->storeCloth(m_clothSLots[ClothType::Stockings]);
+                    root->storeCloth(m_clothSLots[ClothType::Stockings]);
                 }
                 m_clothSLots[ClothType::Main] = nullptr;
                 m_clothSLots[ClothType::Panties] = nullptr;
@@ -577,22 +483,22 @@ void Player::redress(ClothType type, Cloth *newCloth)
             if(!isNude() && isCloth())
             {
                 m_prevCloth[ClothType::Main] = m_clothSLots[ClothType::Main];
-                ((MainWindow*)m_main)->objHandler->storeCloth(m_clothSLots[ClothType::Main]);
+                root->storeCloth(m_clothSLots[ClothType::Main]);
             }
-            m_clothSLots[ClothType::Main] = ((MainWindow*)m_main)->objHandler->wearCloth(newCloth);
+            m_clothSLots[ClothType::Main] = root->wearCloth(newCloth);
             ClothGroup newClothGroup = ((ClothMain*)newCloth)->getClothGroup();
             if(newClothGroup <= swimsuit)
             {
                 if(m_clothSLots[ClothType::Panties] != nullptr)
                 {
                     m_prevCloth[ClothType::Panties] = m_clothSLots[ClothType::Panties];
-                    ((MainWindow*)m_main)->objHandler->storeCloth(m_clothSLots[ClothType::Panties]);
+                    root->storeCloth(m_clothSLots[ClothType::Panties]);
                 }
                 m_clothSLots[ClothType::Panties] = nullptr;
                 if(m_clothSLots[ClothType::Stockings] != nullptr)
                 {
                     m_prevCloth[ClothType::Stockings] = m_clothSLots[ClothType::Stockings];
-                    ((MainWindow*)m_main)->objHandler->storeCloth(m_clothSLots[ClothType::Stockings]);
+                    root->storeCloth(m_clothSLots[ClothType::Stockings]);
                 }
                 m_clothSLots[ClothType::Stockings] = nullptr;
             }
@@ -601,7 +507,7 @@ void Player::redress(ClothType type, Cloth *newCloth)
                 if(m_clothSLots[ClothType::Stockings] != nullptr)
                 {
                     m_prevCloth[ClothType::Stockings] = m_clothSLots[ClothType::Stockings];
-                    ((MainWindow*)m_main)->objHandler->storeCloth(m_clothSLots[ClothType::Stockings]);
+                    root->storeCloth(m_clothSLots[ClothType::Stockings]);
                 }
                 m_clothSLots[ClothType::Stockings] = nullptr;
             }
@@ -612,7 +518,7 @@ void Player::redress(ClothType type, Cloth *newCloth)
         if(isPanties())
         {
             m_prevCloth[ClothType::Panties] = m_clothSLots[ClothType::Panties];
-            ((MainWindow*)m_main)->objHandler->storeCloth(m_clothSLots[ClothType::Panties]);
+            root->storeCloth(m_clothSLots[ClothType::Panties]);
         }
         m_clothSLots[ClothType::Panties] = newCloth;
     }
@@ -621,12 +527,12 @@ void Player::redress(ClothType type, Cloth *newCloth)
         if(m_clothSLots[ClothType::Stockings] != nullptr)
         {
             m_prevCloth[ClothType::Stockings] = m_clothSLots[ClothType::Stockings];
-            ((MainWindow*)m_main)->objHandler->storeCloth(m_clothSLots[ClothType::Stockings]);
+            root->storeCloth(m_clothSLots[ClothType::Stockings]);
         }
         m_clothSLots[ClothType::Stockings] = newCloth;
     }
     calcVneshBonus();
-    ((MainWindow*)m_main)->m_time.increaseTime(1);
+    root->incTime(1);
 }
 
 void Player::redressOld()
@@ -645,11 +551,11 @@ void Player::redressOld()
 void Player::storeOldToWardrobe()
 {
     if(m_prevCloth[ClothType::Main] != nullptr)
-        ((MainWindow*)m_main)->objHandler->storeCloth(m_prevCloth[ClothType::Main]);
+        root->storeCloth(m_prevCloth[ClothType::Main]);
     if(m_prevCloth[ClothType::Panties] != nullptr)
-        ((MainWindow*)m_main)->objHandler->storeCloth(m_prevCloth[ClothType::Panties]);
+        root->storeCloth(m_prevCloth[ClothType::Panties]);
     if(m_prevCloth[ClothType::Stockings] != nullptr)
-        ((MainWindow*)m_main)->objHandler->storeCloth(m_prevCloth[ClothType::Stockings]);
+        root->storeCloth(m_prevCloth[ClothType::Stockings]);
     m_prevCloth[ClothType::Main] = nullptr;
     m_prevCloth[ClothType::Panties] = nullptr;
     m_prevCloth[ClothType::Stockings] = nullptr;
@@ -793,11 +699,11 @@ int Player::calcEyeBrowBonus()
 int Player::calcBodyBonus()
 {
     int bodykoef;
-    if (((MainWindow*)m_main)->page4->settings()->getBodyType() == 0)
+    if (root->getBodyType() == 0)
     {
         bodykoef = 15 - m_body[bodyGroup] * 5;
     }
-    else if (((MainWindow*)m_main)->page4->settings()->getBodyType() == 2)
+    else if (root->getBodyType() == 2)
     {
         bodykoef = m_body[bodyGroup] * 5 - 5;
     }
@@ -838,7 +744,7 @@ int Player::calcPubisBonus()
             lobkoef = -20;
         }
 
-        if (((MainWindow*)m_main)->page4->settings()->getPubicHair())
+        if (root->getPubicHair())
         {
             lobkoef = -1 * lobkoef;
         }
@@ -937,11 +843,11 @@ int Player::calcZZTits()
         quot = 3;
     }
     
-    if (((MainWindow*)m_main)->page4->settings()->getBody_tits() == 0)
+    if (root->getBody_tits() == 0)
     {
         zz_tits = 20 - m_body[breastsSize] * 3;
     }
-    else if (((MainWindow*)m_main)->page4->settings()->getBody_tits() == 1)
+    else if (root->getBody_tits() == 1)
     {
         if (m_body[breastsSize] < 3)
         {
@@ -981,7 +887,7 @@ void Player::calcVneshBonus()
     m_status[vnesh] += calcLipAlmstatBonus();
     m_status[vnesh] += calcEyeBrowBonus();
     m_status[vnesh] += calcGlassBonus();
-    if (((MainWindow*)m_main)->page4->settings()->isHapri() && m_body[hairStatus] != 0)
+    if (root->isHapri() && m_body[hairStatus] != 0)
     {
         m_status[vnesh] += 2;
     }
@@ -1051,7 +957,7 @@ void Player::skinIncrement(int value)
 QString Player::getPlayerFace()
 {
     QString path;
-    if(((MainWindow*)m_main)->page4->settings()->isHapri())
+    if(root->isHapri())
     {
         if(m_body[Body::makeup] == 0)
         {

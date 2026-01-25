@@ -1,8 +1,8 @@
 #include "family.h"
-#include "../eventhandler.h"
+#include "../../game.h"
 #include "../../Functions.h"
 
-Family::Family(EventHandler* parent): root(parent) {}
+Family::Family(Game* parent): root(parent) {}
 
 void Family::start(QString arg)
 {
@@ -28,19 +28,19 @@ void Family::start(QString arg)
 
 void Family::checkTrip()
 {
-    int trip_month = root->gVEvent(family_trip_month);
+    int trip_month = root->vEvent(family_trip_month);
     int month = root->getMonth();
-    int week = root->getWeekNum();
+    int week = root->getWeek();
     if(trip_month == month || (trip_month != month && week > 0 && week < 6) || (trip_month != month && week == 6 && root->getHour() < 12))
     {
-        root->sVEvent(family_trip, 0);
+        root->vEvent(family_trip) = 0;
     }
     else
     {
-        if(week == 0 && root->gNPC(NatalyaLebedeva).location == lgadhouse)
+        if(week == 0 && root->gNPC(mother).location == lgadhouse)
         {
-            root->sVEvent(family_trip_month,month);
-            root->sVEvent(family_trip,1);
+            root->vEvent(family_trip_month) = month;
+            root->vEvent(family_trip) = 1;
         }
     }
 }
@@ -48,32 +48,32 @@ void Family::checkTrip()
 void Family::mother_sheduler()
 {
     checkTrip();
-    if(root->gVEvent(family_trip) == 0)
+    if(root->vEvent(family_trip) == 0)
     {
         int hour = root->getHour();
-        int week = root->getWeekNum();
+        int week = root->getWeek();
 
         if(hour < 6 || hour >= 21)
-            root->gNPC(NatalyaLebedeva).location = lbedrpar2;
+            root->gNPC(mother).location = lbedrpar2;
         if(hour == 6 || hour == 7 || hour == 18 || hour == 19)
-            root->gNPC(NatalyaLebedeva).location = lkuhrpar;
+            root->gNPC(mother).location = lkuhrpar;
         if(week > 0 && week < 6)
         {
             if(hour >= 8 && hour <= 17)
-                root->gNPC(NatalyaLebedeva).location = lgkafe;
+                root->gNPC(mother).location = lgkafe;
         }
         else
         {
-            if(hour == 8) root->gNPC(NatalyaLebedeva).location = lbedrpar2;
+            if(hour == 8) root->gNPC(mother).location = lbedrpar2;
             if(hour == 9 || hour == 10)
             {
                 if(root->getSunWeather() < 0)
-                    root->gNPC(NatalyaLebedeva).location = lshop;
+                    root->gNPC(mother).location = lshop;
                 else
-                    root->gNPC(NatalyaLebedeva).location = lgrinok;
+                    root->gNPC(mother).location = lgrinok;
             }
             if(hour == 11 || hour == 12)
-                root->gNPC(NatalyaLebedeva).location = lsitrpar;
+                root->gNPC(mother).location = lsitrpar;
             if(hour >= 13 && hour <= 15)
             {
                 if(root->getMonth() >= 5 && root->getMonth() <= 9)
@@ -81,109 +81,109 @@ void Family::mother_sheduler()
                     if(root->getSunWeather() >= 0)
                     {
                         if(root->getTemp() >= 20)
-                            root->gNPC(NatalyaLebedeva).location = lglake;
+                            root->gNPC(mother).location = lglake;
                         else
-                            root->gNPC(NatalyaLebedeva).location = lpark;
+                            root->gNPC(mother).location = lpark;
                     }
                     else
-                        root->gNPC(NatalyaLebedeva).location = lsitrpar;
+                        root->gNPC(mother).location = lsitrpar;
                 }
                 else
                 {
                     if(root->getSunWeather() >= 0 && (root->getMonth() == 4 || root->getMonth() == 10))
-                        root->gNPC(NatalyaLebedeva).location = lpark;
+                        root->gNPC(mother).location = lpark;
                     else
-                        root->gNPC(NatalyaLebedeva).location = lsitrpar;
+                        root->gNPC(mother).location = lsitrpar;
                 }
             }
         }
         if(hour == 20)
-            root->gNPC(NatalyaLebedeva).location = lsitrpar;
+            root->gNPC(mother).location = lsitrpar;
     }
     else
-        root->gNPC(NatalyaLebedeva).location = lgadhouse;
+        root->gNPC(mother).location = lgadhouse;
     //$mother['at_home'] = iif($mother['location'] = 'bedrPar2' or $mother['location'] = 'kuhrPar' or $mother['location'] = 'sitrPar',1,0)
-    if(root->gNPC(NatalyaLebedeva).location == root->getCurLoc())
+    if(root->gNPC(mother).location == root->getCurLoc())
         mother_act();
 }
 
 void Family::father_sheduler()
 {
     checkTrip();
-    int week = root->getWeekNum();
+    int week = root->getWeek();
     int hour = root->getHour();
-    if(root->gVEvent(family_trip) == 0)
+    if(root->vEvent(family_trip) == 0)
     {
-        if(hour < 7 || hour >= 21) root->gNPC(VladimirSkryabin).location = lbedrpar2;
-        if(hour == 7) root->gNPC(VladimirSkryabin).location = lkuhrpar;
+        if(hour < 7 || hour >= 21) root->gNPC(father).location = lbedrpar2;
+        if(hour == 7) root->gNPC(father).location = lkuhrpar;
         if(week < 6 && week > 0)
         {
             if(hour >= 8 && hour <= 16)
-                root->gNPC(VladimirSkryabin).location = l_work;
+                root->gNPC(father).location = l_work;
             if(hour >= 18 && hour <= 20)
             {
                 if(week == 1)
-                    root->gNPC(VladimirSkryabin).location = l_null;
+                    root->gNPC(father).location = l_null;
                 else
                 {
-                    if(root->gVEvent(father_horny) >= 70)
-                        root->gNPC(VladimirSkryabin).location = lsitrpar;
+                    if(root->vEvent(father_horny) >= 70)
+                        root->gNPC(father).location = lsitrpar;
                     else
-                        root->gNPC(VladimirSkryabin).location = lgargazel;
+                        root->gNPC(father).location = lgargazel;
                 }
             }
         }
         else
         {
             if(hour >= 8 && hour <= 15)
-                root->gNPC(VladimirSkryabin).location = lsitrpar;
+                root->gNPC(father).location = lsitrpar;
             if(hour >= 18 && hour <= 20)
             {
                 if(week == 6)
                 {
-                    if(root->gVEvent(father_horny) >= 70)
-                        root->gNPC(VladimirSkryabin).location = lsitrpar;
+                    if(root->vEvent(father_horny) >= 70)
+                        root->gNPC(father).location = lsitrpar;
                     else
-                        root->gNPC(VladimirSkryabin).location = lgargazel;
+                        root->gNPC(father).location = lgargazel;
                 }
                 if(week == 0)
-                    root->gNPC(VladimirSkryabin).location = lsitrpar;
+                    root->gNPC(father).location = lsitrpar;
             }
         }
         if(hour == 17)
         {
             if(week == 1)
-                root->gNPC(VladimirSkryabin).location = l_null;
+                root->gNPC(father).location = l_null;
             else
-                root->gNPC(VladimirSkryabin).location = lsitrpar;
+                root->gNPC(father).location = lsitrpar;
         }
     }
     else
     {
-        root->gNPC(VladimirSkryabin).location = lgadhouse;
+        root->gNPC(father).location = lgadhouse;
     }
     //	if $father['location'] = 'gargazel': father['in_garage'] = 1
     //	$father['at_home'] = iif($father['location'] = 'bedrPar2' or $father['location'] = 'kuhrPar' or $father['location'] = 'sitrPar',1,0)
-    if(root->gNPC(VladimirSkryabin).location == root->getCurLoc())
+    if(root->gNPC(father).location == root->getCurLoc())
         father_act();
 }
 
 void Family::sister_sheduler()
 {
     int hour = root->getHour();
-    int week = root->getWeekNum();
+    int week = root->getWeek();
     int month = root->getMonth();
     checkTrip();
-    if(root->gVEvent(family_trip) == 0)
+    if(root->vEvent(family_trip) == 0)
     {
         if(hour < 7 || hour >= 22)
-            root->gNPC(AnyaLebedeva).location = lbedrpar;
+            root->gNPC(sister).location = lbedrpar;
         if(week < 6 && week > 0)
         {
             if(hour == 7)
-                root->gNPC(AnyaLebedeva).location = lkuhrpar;
+                root->gNPC(sister).location = lkuhrpar;
             if(hour >= 8 && hour < 16)
-                root->gNPC(AnyaLebedeva).location = lshop;
+                root->gNPC(sister).location = lshop;
             if(hour == 16)
             {
                 if(month >= 5 && month <= 9)
@@ -191,26 +191,26 @@ void Family::sister_sheduler()
                     if(root->getSunWeather() >= 0)
                     {
                         if(root->getTemp() >= 20)
-                            root->gNPC(AnyaLebedeva).location = lglake;
+                            root->gNPC(sister).location = lglake;
                         else
-                            root->gNPC(AnyaLebedeva).location = lgdk;
+                            root->gNPC(sister).location = lgdk;
                     }
                     else
-                        root->gNPC(AnyaLebedeva).location = lcafeparco;
+                        root->gNPC(sister).location = lcafeparco;
                 }
                 else
                 {
                     if(root->getSunWeather() >= 0 && (month == 4 || month == 10))
-                        root->gNPC(AnyaLebedeva).location = lgdk;
+                        root->gNPC(sister).location = lgdk;
                     else
-                        root->gNPC(AnyaLebedeva).location = lcafeparco;
+                        root->gNPC(sister).location = lcafeparco;
                 }
             }
         }
         else
         {
             if(hour >= 8 && hour <= 11)
-                root->gNPC(AnyaLebedeva).location = lbedrpar;
+                root->gNPC(sister).location = lbedrpar;
             if(hour >= 12 && hour <= 16)
             {
                 if(month >= 5 && month <= 9)
@@ -218,252 +218,252 @@ void Family::sister_sheduler()
                     if(root->getSunWeather() >= 0)
                     {
                         if(root->getTemp() >= 20)
-                            root->gNPC(AnyaLebedeva).location = lglake;
+                            root->gNPC(sister).location = lglake;
                         else
-                            root->gNPC(AnyaLebedeva).location = lgdk;
+                            root->gNPC(sister).location = lgdk;
                     }
                     else
-                        root->gNPC(AnyaLebedeva).location = lcafeparco;
+                        root->gNPC(sister).location = lcafeparco;
                 }
                 else
                 {
                     if(root->getSunWeather() >= 0 && (month == 4 || month == 10))
-                        root->gNPC(AnyaLebedeva).location = lgdk;
+                        root->gNPC(sister).location = lgdk;
                     else
-                        root->gNPC(AnyaLebedeva).location = lcafeparco;
+                        root->gNPC(sister).location = lcafeparco;
                 }
             }
         }
         if(hour >= 17 && hour <= 21)
         {
             if(week == 5)
-                root->gNPC(AnyaLebedeva).location = lreks_home;
+                root->gNPC(sister).location = lreks_home;
             else
-                root->gNPC(AnyaLebedeva).location = lroma_home;
+                root->gNPC(sister).location = lroma_home;
         }
     }
     else
-        root->gNPC(AnyaLebedeva).location = lgadhouse;
+        root->gNPC(sister).location = lgadhouse;
     //	$sister['at_home'] = iif($sister['location'] = 'bedrPar' or $sister['location'] = 'kuhrPar' or $sister['location'] = 'sitrPar',1,0)
-    if(root->gNPC(AnyaLebedeva).location == root->getCurLoc())
+    if(root->gNPC(sister).location == root->getCurLoc())
         sister_act();
 }
 
 void Family::brother_sheduler()
 {
     int hour = root->getHour();
-    int week = root->getWeekNum();
+    int week = root->getWeek();
     int month = root->getMonth();
     int min = root->getMin();
     checkTrip();
-    if(root->gVEvent(family_trip) == 0)
+    if(root->vEvent(family_trip) == 0)
     {
-        if(root->gVQuest(qwKolkaPrince) < 4 || root->gVSchool(vacation) == 0)
+        if(root->vQuest(qwKolkaPrince) < 4 || root->vSchool(vacation) == 0)
         {
             if(hour < 7)
-                root->gNPC(KolyaSkryabin).location = lsitrpar;
+                root->gNPC(brother).location = lsitrpar;
             if(hour == 17)
             {
                 if(root->getSunWeather() >= 0)
-                    root->gNPC(KolyaSkryabin).location = lgschool;
+                    root->gNPC(brother).location = lgschool;
                 else
-                    root->gNPC(KolyaSkryabin).location = lmishahome;
+                    root->gNPC(brother).location = lmishahome;
             }
             if(hour >= 18)
-                root->gNPC(KolyaSkryabin).location = lsitrpar;
+                root->gNPC(brother).location = lsitrpar;
         }
         else
         {
             if(hour < 6 || (hour == 6 && min < 30))
-                root->gNPC(KolyaSkryabin).location = lsitrpar;
+                root->gNPC(brother).location = lsitrpar;
             if(hour == 6 && min >= 30)
-                root->gNPC(KolyaSkryabin).location = lbedrpar;
+                root->gNPC(brother).location = lbedrpar;
             if(hour >= 17 && hour <= 20)
-                root->gNPC(KolyaSkryabin).location = lbedrpar;
+                root->gNPC(brother).location = lbedrpar;
             if(hour > 20)
-                root->gNPC(KolyaSkryabin).location = lsitrpar;
+                root->gNPC(brother).location = lsitrpar;
         }
         if(hour == 7)
-            root->gNPC(KolyaSkryabin).location = lkuhrpar;
-        if(week > 0 && week < 6 && root->gVSchool(vacation) == 0)
+            root->gNPC(brother).location = lkuhrpar;
+        if(week > 0 && week < 6 && root->vSchool(vacation) == 0)
         {
             if(hour >= 8 && hour < 16)
-                root->gNPC(KolyaSkryabin).location = lgschool;
+                root->gNPC(brother).location = lgschool;
         }
         else
         {
             if(hour >= 8 && hour < 11)
-                root->gNPC(KolyaSkryabin).location = lsitrpar;
+                root->gNPC(brother).location = lsitrpar;
             if(hour >= 11 && hour < 16)
             {
                 if(root->getSunWeather() >= 0 && month > 2 && month < 12)
-                    root->gNPC(KolyaSkryabin).location = lgschool;
+                    root->gNPC(brother).location = lgschool;
                 else
-                    root->gNPC(KolyaSkryabin).location = lmishahome;
+                    root->gNPC(brother).location = lmishahome;
             }
         }
         if(hour == 15 || hour == 16)
-            root->gNPC(KolyaSkryabin).location = lgschool;
+            root->gNPC(brother).location = lgschool;
     }
     else
     {
-        root->gNPC(KolyaSkryabin).location = lgadhouse;
+        root->gNPC(brother).location = lgadhouse;
     }
     //	$brother['at_home'] = iif($brother['location'] = 'kuhrPar' or $brother['location'] = 'sitrPar',1,0)
-    if(root->gNPC(KolyaSkryabin).location == root->getCurLoc())
+    if(root->gNPC(brother).location == root->getCurLoc())
         brother_act();
 
 }
 
 void Family::mother_act()
 {
-    if(root->gNPC(NatalyaLebedeva).location == lkuhrpar && root->getHour() > 7)
+    if(root->gNPC(mother).location == lkuhrpar && root->getHour() > 7)
     {
         QString img[5] {media(getRandInt(0,2)), media(3), media(4),media(getRandInt(5,15)), media(getRandInt(16,18))};
         QString txt[5] {str(0),str(1),str(2),str(3),str(4)};
-        if(root->gVEvent(momActHour) != root->getHour())
+        if(root->vEvent(momActHour) != root->getHour())
         {
-            if(root->gVEvent(momAction) < 4)
-                root->uVEvent(momAction,1);
+            if(root->vEvent(momAction) < 4)
+                root->vEvent(momAction) +=1;
             else
-                root->sVEvent(momAction,0);
-            root->sVEvent(momActHour,root->getHour());
+                root->vEvent(momAction) += 0;
+            root->vEvent(momActHour) = root->getHour();
         }
-        root->setImage(img[root->gVEvent(momAction)]);
-        root->setDesc(txt[root->gVEvent(momAction)]);
+        root->setImage(img[root->vEvent(momAction)]);
+        root->setText(txt[root->vEvent(momAction)]);
     }
-    if(root->gNPC(NatalyaLebedeva).location == lbedrpar2)
+    if(root->gNPC(mother).location == lbedrpar2)
     {
-        if(root->getHour() == 8 && (root->getWeekNum() == 6 || root->getWeekNum() == 0))
-            root->addDesc(str(5));
+        if(root->getHour() == 8 && (root->getWeek() == 6 || root->getWeek() == 0))
+            root->addText(str(5));
     }
-    if(root->gNPC(NatalyaLebedeva).location == lsitrpar)
+    if(root->gNPC(mother).location == lsitrpar)
     {
-        root->addDesc(str(6));
+        root->addText(str(6));
     }
-    if(root->gNPC(NatalyaLebedeva).location == lpark)
+    if(root->gNPC(mother).location == lpark)
     {
-        root->addDesc(str(7));
+        root->addText(str(7));
     }
-    if(root->gNPC(NatalyaLebedeva).location == lglake)
+    if(root->gNPC(mother).location == lglake)
     {
-        root->addDesc(str(8));
+        root->addText(str(8));
     }
-    if(root->gNPC(NatalyaLebedeva).location == lshop || root->gNPC(NatalyaLebedeva).location == lgrinok)
+    if(root->gNPC(mother).location == lshop || root->gNPC(mother).location == lgrinok)
     {
-        root->addDesc(str(9));
+        root->addText(str(9));
     }
 }
 
 void Family::father_act()
 {
-    if(root->gNPC(VladimirSkryabin).location == lsitrpar)
-        root->addDesc(str(10));
+    if(root->gNPC(father).location == lsitrpar)
+        root->addText(str(10));
 }
 
 void Family::brother_act()
 {
     int hour = root->getHour();
     int month = root->getMonth();
-    int week = root->getWeekNum();
+    int week = root->getWeek();
     int min = root->getMin();
 
-    if(root->gNPC(KolyaSkryabin).location == lgschool)
+    if(root->gNPC(brother).location == lgschool)
     {
         if(root->getSunWeather() >= 0 && month > 2 && month < 12)
         {
-            root->setDesc(str(11));
+            root->setText(str(11));
         }
         else
         {
-            root->setDesc(str(12));
+            root->setText(str(12));
         }
     }
-    if(root->gNPC(KolyaSkryabin).location == lsitrpar)
+    if(root->gNPC(brother).location == lsitrpar)
     {
         if(hour >= 18 && hour <= 20)
         {
-            if(week < 6 && root->gVSchool(vacation) == 0)
-                root->addDesc(str(13));
+            if(week < 6 && root->vSchool(vacation) == 0)
+                root->addText(str(13));
             else
-                root->addDesc(str(14));
+                root->addText(str(14));
         }
         if(hour == 21 || hour == 22 || (hour > 7 && hour < 11))
-            root->addDesc(str(14));
+            root->addText(str(14));
         if(hour == 23 || hour < 7)
-            root->addDesc(str(15));
+            root->addText(str(15));
     }
-    if(root->gNPC(KolyaSkryabin).location == lbedrpar)
+    if(root->gNPC(brother).location == lbedrpar)
     {
         if(hour == 6 && min >= 30)
-            root->addDesc(str(16));
+            root->addText(str(16));
         if(hour >= 17 && hour <= 20)
-            root->addDesc(str(17));
+            root->addText(str(17));
     }
 }
 
 void Family::sister_act()
 {
     int hour = root->getHour();
-    int week = root->getWeekNum();
+    int week = root->getWeek();
     int min = root->getMin();
 
-    if(root->gVQuest(wedding) < 3)
+    if(root->vQuest(wedding) < 3)
     {
-        if(root->gNPC(AnyaLebedeva).location == lbedrpar)
+        if(root->gNPC(sister).location == lbedrpar)
         {
             if(hour >= 22)
             {
                 if(week == 5)
-                    root->addDesc(str(18));
+                    root->addText(str(18));
                 else
-                    root->addDesc(str(19));
+                    root->addText(str(19));
             }
             if((hour < 7 && week < 6) || (hour < 10 && week >= 6))
-                root->addDesc(str(20));
+                root->addText(str(20));
             if((hour == 10 || hour == 11) && week >= 6)
-                root->addDesc(str(21));
+                root->addText(str(21));
         }
-        if(root->gNPC(AnyaLebedeva).location == lgdk)
-            root->addDesc(str(22));
-        if(root->gNPC(AnyaLebedeva).location == lcafeparco)
-            root->addDesc(str(22));
-        if(root->gNPC(AnyaLebedeva).location == lglake)
-            root->addDesc(str(23));
+        if(root->gNPC(sister).location == lgdk)
+            root->addText(str(22));
+        if(root->gNPC(sister).location == lcafeparco)
+            root->addText(str(22));
+        if(root->gNPC(sister).location == lglake)
+            root->addText(str(23));
     }
     else
     {
-        if(root->gNPC(AnyaLebedeva).location == lRoom)
+        if(root->gNPC(sister).location == lRoom)
         {
             if(hour >= 0 && hour <= 7)
-                root->addDesc(str(24));
+                root->addText(str(24));
             if(week <= 5)
             {
                 if(hour >= 18 && hour < 0)
-                    root->addDesc(str(25));
+                    root->addText(str(25));
             }
             else
             {
                 if((hour >= 9 && hour <= 15) || (hour >= 20 && hour < 0))
-                    root->addDesc(str(26));
+                    root->addText(str(26));
             }
         }
-        if(root->gNPC(AnyaLebedeva).location == lKitchen)
+        if(root->gNPC(sister).location == lKitchen)
         {
             if(hour == 8 && min <= 30)
-                root->addDesc(str(27));
+                root->addText(str(27));
             if((week <= 5 && hour >= 16 && hour <= 18) || (week > 5 && hour == 19))
-                root->addDesc(str(28));
+                root->addText(str(28));
         }
-        if(root->gNPC(AnyaLebedeva).location == lbathroom)
+        if(root->gNPC(sister).location == lbathroom)
         {
             if(hour == 8 && min <= 30)
-                root->addDesc(str(29));
+                root->addText(str(29));
         }
-        if(root->gNPC(AnyaLebedeva).location == lcafeparco)
+        if(root->gNPC(sister).location == lcafeparco)
         {
             if(week > 5 && hour > 15 && hour <= 18)
-                root->addDesc(str(30));
+                root->addText(str(30));
         }
     }
 }

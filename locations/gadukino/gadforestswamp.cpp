@@ -1,8 +1,8 @@
 #include "gadforestswamp.h"
 #include "../../menu/buttons.h"
 #include "../../Functions.h"
-
-GadForestSwamp::GadForestSwamp(LocationHandler *ptr): Location(ptr) {}
+#include "../../game.h"
+GadForestSwamp::GadForestSwamp(Game *ptr): root(ptr) {}
 
 void GadForestSwamp::show(QString arg)
 {
@@ -38,60 +38,60 @@ void GadForestSwamp::actionHandler(QString action)
 {
     if(action == "1")
     {
-        makeImage(media(0),isDay(),getMonth());
-        setDesc(str(0));
+        makeImage(media(0),root->isDay(),root->getMonth());
+        root->setText(str(0));
         makeActBtn("gadforestlost",act(0));
         makeActBtn("go_swamp",act(1));
     }
     if(action == "2")
     {
-        sVBody(hairStatus,0);
-        if(gVBody(makeup) > 1)
+        root->vBody(hairStatus) = 0;
+        if(root->vBody(makeup) > 1)
         {
-            sVBody(makeup,0);
-            uVStatus(vidageday,-1);
+            root->vBody(makeup) = 0;
+            root->vStatus(vidageday)-=1;
         }
-        if(gVStatus(dirtyClothes) == 0 && isCloth())
+        if(root->vStatus(dirtyClothes) == 0 && root->isCloth())
         {
-            decrease_condition(10);
-            sVStatus(dirtyClothes,1);
+            root->decreaseClothCond(10);
+            root->vStatus(dirtyClothes) = 1;
         }
-        setImage(media(1));
-        setDesc(str(2));
+        root->setImage(media(1));
+        root->setText(str(2));
         makeActBtn("call_help",act(3));
         makeActBtn("try_to_forest",act(6));
         makeActBtn("try_to_swamp",act(8));
     }
     if(action == "gadforestlost")
     {
-        startEvent(eGadForestLost,"main");
+        root->startEvent(eGadForestLost,"main");
     }
     if(action == "go_swamp")
     {
-        incTime(10);
-        uVStatus(sweat,1);
-        if(isCloth())
+        root->incTime(10);
+        root->vStatus(sweat) += 1;
+        if(root->isCloth())
         {
-            if(!isSkirt())
-                setImage(media(2));
+            if(!root->isSkirt())
+                root->setImage(media(2));
             else
-                setImage(media(3));
+                root->setImage(media(3));
         }
         else
-            setImage(media(4));
-        setDesc(str(1));
+            root->setImage(media(4));
+        root->setText(str(1));
         makeActBtn("go_swamp2",act(2));
     }
     if(action == "go_swamp2")
     {
         int i = getRandInt(1,100);
-        if(gVSkill(strenght) + gVSkill(agility) > i)
+        if(root->vSkill(strenght) + root->vSkill(agility) > i)
         {
-            changeLoc(lswampyard,0);
+            root->changeLoc(lswampyard,0);
         }
-        else if(gVSkill(strenght) + gVSkill(agility) < i)
+        else if(root->vSkill(strenght) + root->vSkill(agility) < i)
         {
-            startEvent(eGameOver,"10");
+            root->startEvent(eGameOver,"10");
         }
         else
         {
@@ -100,61 +100,61 @@ void GadForestSwamp::actionHandler(QString action)
     }
     if(action == "call_help")
     {
-        incTime(10);
-        if(gVStatus(sweat) < 10)
-            uVStatus(sweat,1);
-        setImage(media(5));
-        setDesc(str(3));
+        root->incTime(10);
+        if(root->vStatus(sweat) < 10)
+            root->vStatus(sweat) += 1;
+        root->setImage(media(5));
+        root->setText(str(3));
         makeActBtn("wait",act(4));
     }
     if(action == "wait")
     {
-        incTime(10);
+        root->incTime(10);
         int y = 0;
-        if(getWeekNum() > 5 || getWeekNum() == 0)
+        if(root->getWeek() > 5 || root->getWeek() == 0)
             y = 3;
         else
             y = 5;
         if(getRandInt(1, y) == 1)
         {
-            sVEvent(hanters,1);
-            sVEvent(hantershelp,1);
-            setImage(media(6));
-            setDesc(str(4));
+            root->vEvent(hanters) =1;
+            root->vEvent(hantershelp) = 1;
+            root->setImage(media(6));
+            root->setText(str(4));
             makeActBtn("swamp_yard",act(5));
         }
         else
         {
-            setImage(media(1));
-            setDesc(str(5));
+            root->setImage(media(1));
+            root->setText(str(5));
             makeActBtn("2",act(5));
         }
     }
     if(action == "swamp_yard")
     {
-        changeLoc(lswampyard,0);
+        root->changeLoc(lswampyard,0);
     }
     if(action == "try_to_forest")
     {
-        incTime(10);
-        uVSkill(strenght,1);
-        uVSkill(agility,1);
-        if(gVStatus(sweat) < 10)
-            uVStatus(sweat,3);
+        root->incTime(10);
+        root->vSkill(strenght) += 1;
+        root->vSkill(agility) += 1;
+        if(root->vStatus(sweat) < 10)
+            root->vStatus(sweat) += 3;
         swampClothes();
-        setDesc(str(6));
+        root->setText(str(6));
         makeActBtn("walk",act(7));
     }
     if(action == "walk")
     {
         int i = getRandInt(1,100);
-        if(gVSkill(strenght) + gVSkill(agility) > i)
+        if(root->vSkill(strenght) + root->vSkill(agility) > i)
         {
             actionHandler("1");
         }
-        else if(gVSkill(strenght) + gVSkill(agility) < i)
+        else if(root->vSkill(strenght) + root->vSkill(agility) < i)
         {
-            startEvent(eGameOver,"10");
+            root->startEvent(eGameOver,"10");
         }
         else
         {
@@ -163,25 +163,25 @@ void GadForestSwamp::actionHandler(QString action)
     }
     if(action == "try_to_swamp")
     {
-        incTime(10);
-        uVSkill(strenght,1);
-        uVSkill(agility,1);
-        if(gVStatus(sweat) < 10)
-            uVStatus(sweat,3);
+        root->incTime(10);
+        root->vSkill(strenght) += 1;
+        root->vSkill(agility) += 1;
+        if(root->vStatus(sweat) < 10)
+            root->vStatus(sweat) += 3;
         swampClothes();
-        setDesc(str(7));
+        root->setText(str(7));
         makeActBtn("walk2",act(7));
     }
     if(action == "walk2")
     {
         int i = getRandInt(1,100);
-        if(gVSkill(strenght) + gVSkill(agility) > i)
+        if(root->vSkill(strenght) + root->vSkill(agility) > i)
         {
-            changeLoc(lswampyard,0);
+            root->changeLoc(lswampyard,0);
         }
-        else if(gVSkill(strenght) + gVSkill(agility) < i && i <= 30)
+        else if(root->vSkill(strenght) + root->vSkill(agility) < i && i <= 30)
         {
-            startEvent(eGameOver,"10");
+            root->startEvent(eGameOver,"10");
         }
         else
         {
@@ -195,7 +195,7 @@ void GadForestSwamp::makeActBtn(QString act, QString actName)
     QActButton* btn = new QActButton(act, "gadforestswamp");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &GadForestSwamp::actionHandler);
-    addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString GadForestSwamp::str(int id)
@@ -246,14 +246,14 @@ QString GadForestSwamp::media(int id)
 
 void GadForestSwamp::swampClothes()
 {
-    if(isCloth())
+    if(root->isCloth())
     {
-        if(!isSkirt())
-            setImage(media(7));
+        if(!root->isSkirt())
+            root->setImage(media(7));
         else
-            setImage(media(8));
+            root->setImage(media(8));
     }
     else
-        setImage(media(9));
+        root->setImage(media(9));
 }
 

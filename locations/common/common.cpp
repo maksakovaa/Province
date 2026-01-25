@@ -1,17 +1,17 @@
 #include "common.h"
-#include "../locationhandler.h"
+#include "../../game.h"
 #include "../../Functions.h"
 #include "../../menu/buttons.h"
 
-Common::Common(LocationHandler* ptr): root(ptr) {}
+Common::Common(Game* ptr): root(ptr) {}
 
 void Common::icecream()
 {
-    root->m_render->rendImagePage(root);
-    root->m_render->setImage(media(1));
-    root->m_render->setText(str(1));
+    root->rendImagePage(this);
+    root->setImage(media(1));
+    root->setText(str(1));
     makeActBtn("go_back", act(1));
-    if(root->getVStatus(money) >= 50)
+    if(root->vStatus(money) >= 50)
     {
         makeActBtn("eat_icecream", act(2));
     }
@@ -19,7 +19,7 @@ void Common::icecream()
 
 void Common::coffee()
 {
-    root->m_render->rendImagePage(root);
+    root->rendImagePage(this);
     makeActBtn("go_back",act(1));
     root->setImage(media(2));
     QString table = "<table>";
@@ -31,14 +31,14 @@ void Common::coffee()
     table += "<tr><td>" + str(7) + "</td><td><a href='coffee4'>" + intQStr(50) + "</a></td>";
     table += "<tr><td>" + str(8) + "</td><td><a href='coffee5'>" + intQStr(50) + "</a></td>";
     table += "</table>";
-    root->setDesc(table);
-    connect(root->m_render->getTextPtr(), &QLabel::linkActivated, this, &Common::select_coffee);
+    root->setText(table);
+    connect(root->getTextPtr(), &QLabel::linkActivated, this, &Common::select_coffee);
 }
 
 void Common::go_back()
 {
     watch_tv_count = 0;
-    root->slotChangeLoc(root->getCurLoc(),0);
+    root->changeLoc(root->getCurLoc(),0);
 }
 
 void Common::read_porn()
@@ -48,38 +48,46 @@ void Common::read_porn()
 
 void Common::crossing(int arg)
 {
-    root->m_render->rendImagePage(root);
-    if(root->getVJob(workout) > 1)
+    root->rendImagePage(this);
+    if(root->vJob(workout) > 1)
     {
         root->setImage(media(3));
-        root->setDesc(str(66));
+        root->setText(str(66));
         return;
     }
 
     //! ограничения по наркоте
-    //if func('zz_drugs','block') = 1: gs 'zz_render','','', func('zz_common_strings'+$lang, 'txt_15') & exit
+    if(root->drugBlock() == true)
+    {
+        root->addText(str(15));
+        return;
+    }
     //! ограничения по алкоголю
-    //if func('cc_alco','alkoblock') ! 0: gs 'zz_render','','', func('zz_common_strings'+$lang, 'txt_6' + func('cc_alco','alkoblock')) & exit
+    if(root->alkoBlock() != 0)
+    {
+        root->addText(str(60 + root->alkoBlock()));
+        return;
+    }
 
     if(arg == 1)
-        root->updVJob(workout,1);
+        root->vJob(workout) += 1;
     else
-        root->updVStatus(sport,1);
-    root->updVStatus(day_weight,-1);
-    root->updVSkill(runner, getRandInt(2,5)*arg);
-    root->updVSkill(speed, getRandInt(1,2)*arg);
+        root->vStatus(sport) += 1;
+    root->vStatus(day_weight) -= 1;
+    root->vSkill(runner) += getRandInt(2,5)*arg;
+    root->vSkill(speed) += getRandInt(1,2)*arg;
     root->incTime(30);
 
     fnsport(arg*4);
 
-    root->decreaseCondition(getClothDecreaseLevel());
+    root->decreaseClothCond(getClothDecreaseLevel());
     if(arg == 1)
     {
         if(root->getSnow() <= 0)
             root->setImage(media(4));
         else
             root->setImage(media(5));
-        root->setDesc(str(16));
+        root->setText(str(16));
     }
     else
     {
@@ -87,18 +95,25 @@ void Common::crossing(int arg)
             root->setImage(media(6));
         else
             root->setImage(media(7));
-        root->setDesc(str(17));
+        root->setText(str(17));
     }
 }
 
 void Common::home_workout()
 {
-    connect(root->m_render->getTextPtr(), &QLabel::linkActivated, this, &Common::actionHandler);
-
-    // ! ограничения по наркоте
-    //     if func('zz_drugs','block') = 1: gs 'zz_render','','',func('zz_common_strings'+$lang, 'txt_15') & exit
-    // ! ограничения по алкоголю
-    //     if func('cc_alco','alkoblock') ! 0: gs 'zz_render','','', func('zz_common_strings'+$lang, 'txt_6' + func('cc_alco','alkoblock')) & exit
+    connect(root->getTextPtr(), &QLabel::linkActivated, this, &Common::actionHandler);
+    //! ограничения по наркоте
+    if(root->drugBlock() == true)
+    {
+        root->addText(str(15));
+        return;
+    }
+    //! ограничения по алкоголю
+    if(root->alkoBlock() != 0)
+    {
+        root->addText(str(60 + root->alkoBlock()));
+        return;
+    }
 
     QString res;
     if(root->getItmCount(iHoop) > 0)
@@ -107,15 +122,15 @@ void Common::home_workout()
         res += "<a href='sitrskakd'>" + str(19) + "<a>";
     res += "<a href='sitrpressd'>" + str(20) + "</a>";
     res += "<a href='sitrpushd'>" + str(21) + "</a>";
-    if(root->getVJob(workout) < 2)
-        root->addDesc(str(22) + res);
+    if(root->vJob(workout) < 2)
+        root->addText(str(22) + res);
 }
 
 void Common::lokerchoice()
 {
-    root->m_render->rendImagePage(root);
+    root->rendImagePage(this);
     root->setImage(media(8));
-    root->setDesc(str(23));
+    root->setText(str(23));
     root->incTime(5);
     makeActBtn("wardrobe_start", act(0));
 }
@@ -123,111 +138,112 @@ void Common::lokerchoice()
 void Common::sitrobrd()
 {
     check_sport_suit();
-    root->m_render->rendVideoPage(root);
+    root->rendVideoPage(this);
     root->incTime(15);
-    root->updVJob(workout,1);
-    int tmp = upSportSkill(root->getVSkill(agility));
+    root->vJob(workout) += 1;
+    int tmp = upSportSkill(root->vSkill(agility));
     if(tmp == 0)
     {
         root->sendNotif("<p style='color: red'>" + str(0) + "</p>");
     }
     else
     {
-        root->updVSkill(agility, tmp);
+        root->vSkill(agility) += tmp;
     }
     fnsport();
-    root->m_render->setVideo(media(9),960,540);
-    root->setDesc(str(24));
+    root->setVideo(media(9),960,540);
+    root->setText(str(24));
     makeActBtn("go_back", act(4));
 }
 
 void Common::sitrskakd()
 {
     check_sport_suit();
-    root->m_render->rendImagePage(root);
+    root->rendImagePage(this);
     root->incTime(15);
-    root->updVJob(workout,1);
-    int tmp = upSportSkill(root->getVSkill(speed));
+    root->vJob(workout) += 1;
+    int tmp = upSportSkill(root->vSkill(speed));
     if(tmp == 0)
     {
         root->sendNotif("<p style='color: red'>" + str(0) + "</p>");
     }
     else
     {
-        root->updVSkill(speed, tmp);
+        root->vSkill(speed) += tmp;
     }
 
     fnsport();
     root->setImage(media(10));
-    root->setDesc(str(25));
+    root->setText(str(25));
     makeActBtn("go_back", act(4));
 }
 
 void Common::sitrpressd()
 {
     check_sport_suit();
-    root->m_render->rendImagePage(root);
+    root->rendImagePage(this);
     root->incTime(15);
-    root->updVJob(workout,1);
-    int tmp = upSportSkill(root->getVSkill(endurance));
+    root->vJob(workout) += 1;
+    int tmp = upSportSkill(root->vSkill(endurance));
     if(tmp == 0)
     {
         root->sendNotif("<p style='color: red'>" + str(0) + "</p>");
     }
     else
     {
-        root->updVSkill(endurance, tmp);
+        root->vSkill(endurance) += tmp;
     }
     fnsport();
     root->setImage(media(11));
-    root->setDesc(str(26));
+    root->setText(str(26));
     makeActBtn("go_back",act(4));
 }
 
 void Common::sitrpushd()
 {
     check_sport_suit();
-    root->m_render->rendImagePage(root);
+    root->rendImagePage(this);
     root->incTime(15);
-    root->updVJob(workout,1);
-    int tmp = upSportSkill(root->getVSkill(strenght));
+    root->vJob(workout) += 1;
+    int tmp = upSportSkill(root->vSkill(strenght));
     if(tmp == 0)
     {
         root->sendNotif("<p style='color: red'>" + str(0) + "</p>");
     }
     else
     {
-        root->updVSkill(strenght, tmp);
+        root->vSkill(strenght) += tmp;
     }
     fnsport();
     root->setImage(media(12));
-    root->setDesc(str(27));
+    root->setText(str(27));
     makeActBtn("go_back",act(4));
 }
 
 void Common::watch_tv_on_sofa()
 {
-    root->m_render->rendImagePage(root);
+    root->rendImagePage(this);
     if(watch_tv_count == 0)
     {
         root->setImage(media(13));
-        root->setDesc(str(28));
+        root->setText(str(28));
         makeActBtn("watch_tv", act(5));
     }
     else
     {
-        if(root->getVStatus(son) < 8 && root->getHour() < 5 && getRandInt(0,100) < root->getVStatus(mood))
+        if(root->vStatus(son) < 8 && root->getHour() < 5 && getRandInt(0,100) < root->vStatus(mood))
         {
             makeActBtn("go_back",act(13));
             root->setImage(media(13));
-            root->setDesc(str(29));
+            root->setText(str(29));
             root->incTime(getRandInt(60,120));
-            root->updVStatus(son,4);
+            root->vStatus(son) += 4;
             return;
         }
         root->setImage(media(14));
-        root->setDesc(str(30));
-        //if(root->getCurLoc() == "sitrPar" && root->getHour() == 23)
+        root->setText(str(30));
+        if(root->getCurLoc() == lsitrpar && root->getHour() == 23 && root->vEvent(brother_tv_enable) == 0 && root->vEvent(family_trip) == 0)
+            root->startEvent(eBrotherEvents, "go_away");
         makeActBtn("switch_channel", act(6));
     }
     makeActBtn("go_back", act(7));
@@ -235,9 +251,9 @@ void Common::watch_tv_on_sofa()
 
 void Common::run_competition(QString arg)
 {
-    root->m_render->rendImagePage(root);
+    root->rendImagePage(this);
     root->setImage(media(15));
-    root->setDesc(str(31));
+    root->setText(str(31));
     int base = 0;
     int step = 10;
     int i = 0;
@@ -245,14 +261,14 @@ void Common::run_competition(QString arg)
     QString wins[6], result[8];
     if(arg == "school") { base = 0; wins[0] = ""; }
     else if(arg == "city") { base = 70; wins[0] = ""; }
-    else if(arg == "run0") { base = 0; root->m_events->sVEvent(begPrize, 300); wins[0] = str(32); }
-    else if(arg == "run1") { base = 70; root->m_events->sVEvent(begPrize, 600); wins[0] = str(33); }
-    else if(arg == "run2") { base = 130; root->m_events->sVEvent(begPrize, 1000); wins[0] = str(34); }
-    else if(arg == "run3") { base = 200; root->m_events->sVEvent(begPrize, 1500); wins[0] = str(35); }
-    else if(arg == "run4") { base = 270; root->m_events->sVEvent(begPrize, 2000); wins[0] = str(36); }
-    else if(arg == "run5") { base = 330; root->m_events->sVEvent(begPrize, 3000); wins[0] = str(37); }
-    else if(arg == "run6") { base = 450; step = 50; root->m_events->sVEvent(begPrize, 5000); wins[0] = ""; }
-    else if(arg == "run7") { base = 450; step = 340; root->m_events->sVEvent(begPrize, 6000); wins[0] = str(38); }
+    else if(arg == "run0") { base = 0; root->vEvent(begPrize) = 300; wins[0] = str(32); }
+    else if(arg == "run1") { base = 70; root->vEvent(begPrize) = 600; wins[0] = str(33); }
+    else if(arg == "run2") { base = 130; root->vEvent(begPrize) = 1000; wins[0] = str(34); }
+    else if(arg == "run3") { base = 200; root->vEvent(begPrize) = 1500; wins[0] = str(35); }
+    else if(arg == "run4") { base = 270; root->vEvent(begPrize) = 2000; wins[0] = str(36); }
+    else if(arg == "run5") { base = 330; root->vEvent(begPrize) = 3000; wins[0] = str(37); }
+    else if(arg == "run6") { base = 450; step = 50; root->vEvent(begPrize) = 5000; wins[0] = ""; }
+    else if(arg == "run7") { base = 450; step = 340; root->vEvent(begPrize) = 6000; wins[0] = str(38); }
     for(int i = 0; i < 8; i++)
     {
         result[i] = str(39 + i);
@@ -261,34 +277,34 @@ void Common::run_competition(QString arg)
     {
         result[i] = str(46 + i);
     }
-    root->updVSkill(runner,1);
-    root->updVStatus(day_weight,-1);
-    int begres = root->getVSkill(runner) + root->getVSkill(speed)*5 + root->getVSkill(endurance) *5 + getRandInt(-100,100) - root->getVBody(bodyGroup)*100;
+    root->vSkill(runner) += 1;
+    root->vStatus(day_weight) -= 1;
+    int begres = root->vSkill(runner) + root->vSkill(speed)*5 + root->vSkill(endurance) *5 + getRandInt(-100,100) - root->vBody(bodyGroup)*100;
     if(begres < base)
     {
-        root->setDesc(result[0]);
+        root->setText(result[0]);
         makeActBtn("go_back",act(8));
     }
     else if(begres >= base + step*7)
     {
         if(arg == "school" || arg == "city")
         {
-            root->setDesc(result[7] + wins[2]);
+            root->setText(result[7] + wins[2]);
             if(arg == "school")
-                root->updVStatistic(sWinBeg,1);
+                root->vStatistics(sWinBeg) += 1;
             if(arg == "city")
-                root->updVStatistic(sWinBegGor,1);
+                root->vStatistics(sWinBegGor) += 1;
         }
         else
         {
-            root->updVStatistic(goldBeg,1);
-            root->updVStatus(money,prize*3);
-            root->updVStatistic(razradBeg,1);
-            if(root->getVStatistic(razradBeg) >= 6 && root->getVStatistic(razradBeg) < 16)
-                root->updVStatistic(razradBegK,1);
+            root->vStatistics(goldBeg) += 1;
+            root->vStatus(money) += prize*3;
+            root->vStatistics(razradBeg) += 1;
+            if(root->vStatistics(razradBeg) >= 6 && root->vStatistics(razradBeg) < 16)
+                root->vStatistics(razradBegK) += 1;
             if(arg == "run7")
-                root->updVStatistic(razradBegEG,1);
-            root->setDesc(result[7] + wins[5] + wins[0]);
+                root->vStatistics(razradBegEG) += 1;
+            root->setText(result[7] + wins[5] + wins[0]);
         }
         makeActBtn("go_back",act(8));
     }
@@ -298,30 +314,30 @@ void Common::run_competition(QString arg)
         {
             if(begres >= base + step * i && begres < base + step * (i + 1))
             {
-                root->setDesc(result[i]);
+                root->setText(result[i]);
                 if(arg == "school" || arg == "city")
-                    root->setDesc(wins[0]);
+                    root->setText(wins[0]);
                 else
                 {
                     if(i == 5)
                     {
-                        root->setDesc(wins[3]);
-                        root->updVStatus(money,prize);
-                        root->updVStatistic(bronzBeg,1);
-                        if(root->getVStatistic(razradBeg) >= 6 && root->getVStatistic(razradBeg) < 16)
-                            root->updVStatistic(razradBegK,1);
+                        root->setText(wins[3]);
+                        root->vStatus(money) += prize;
+                        root->vStatistics(bronzBeg) += 1;
+                        if(root->vStatistics(razradBeg) >= 6 && root->vStatistics(razradBeg) < 16)
+                            root->vStatistics(razradBegK) += 1;
                         if(arg == "run7")
-                            root->updVStatistic(razradBegEB,1);
+                            root->vStatistics(razradBegEB) += 1;
                     }
                     if(i == 6)
                     {
-                        root->setDesc(wins[4]);
-                        root->updVStatus(money,prize*2);
-                        root->updVStatistic(silverBeg,1);
-                        if(root->getVStatistic(razradBeg) >= 6 && root->getVStatistic(razradBeg) < 16)
-                            root->updVStatistic(razradBegK,1);
+                        root->setText(wins[4]);
+                        root->vStatus(money) += prize*2;
+                        root->vStatistics(silverBeg) +=1;
+                        if(root->vStatistics(razradBeg) >= 6 && root->vStatistics(razradBeg) < 16)
+                            root->vStatistics(razradBegK) += 1;
                         if(arg == "run7")
-                            root->updVStatistic(razradBegES,1);
+                            root->vStatistics(razradBegES) += 1;
                     }
                 }
                 makeActBtn("go_back",act(8));
@@ -337,68 +353,69 @@ void Common::run_competition(QString arg)
 
 void Common::fancywork()
 {
-    if(root->getVStatistic(gobelen) > 0)
-        root->setDesc(str(52));
-    if(root->getVSkill(posSkill) >= 50)
+    if(root->vStatistics(gobelen) > 0)
+        root->setText(str(52));
+    if(root->vSkill(posSkill) >= 50)
     {
         if(root->getItmCount(iFabric) > 0)
-            root->addDesc(str(53));
+            root->addText(str(53));
         else
-            root->addDesc(str(54));
+            root->addText(str(54));
     }
-    if(root->getVSkill(posSkill) >= 200)
+    if(root->vSkill(posSkill) >= 200)
     {
-        if(root->getVStatistic(newGobelen) == 0 && root->getItmCount(iFabric) > 0)
+        if(root->vStatistics(newGobelen) == 0 && root->getItmCount(iFabric) > 0)
             makeActBtn("new_gobelen",act(9));
-        if(root->getVStatistic(newGobelen) >= 1)
+        if(root->vStatistics(newGobelen) >= 1)
         {
-            root->addDesc(str(56));
+            root->addText(str(56));
             makeActBtn("cont_gobelen",act(11));
         }
     }
 }
 
-void Common::check_inhome()
+bool Common::check_inhome()
 {
-
+    return ((root->vSchool(vacation) > 0 || root->getWeek() == 6 || root->getWeek() == 0) && root->getHour() > 10 && root->getHour() < 20) ||
+           (root->getWeek() > 0 && root->getWeek() <= 5 && root->getHour() >= 15 && root->getHour() < 20);
 }
 
 void Common::wet_wipes()
 {
     if(root->getItmCount(iWetWipes) == 0)
         return;
-    else if(root->getVStatus(cumFace) > 0 && root->getItmCount(iWetWipes) > 0)
+    else if(root->vStatus(cumFace) > 0 && root->getItmCount(iWetWipes) > 0)
     {
-        root->setVStatus(cumFace,0);
+        root->vStatus(cumFace) = 0;
         root->useItem(iWetWipes,1);
     }
-    if(root->getVStatus(cumFrot) > 0 && root->getItmCount(iWetWipes) > 0)
+    if(root->vStatus(cumFrot) > 0 && root->getItmCount(iWetWipes) > 0)
     {
-        root->setVStatus(cumFrot,0);
+        root->vStatus(cumFrot) = 0;
         root->useItem(iWetWipes,1);
     }
-    if(root->getVStatus(cumBelly) > 0 && root->getItmCount(iWetWipes) > 0)
+    if(root->vStatus(cumBelly) > 0 && root->getItmCount(iWetWipes) > 0)
     {
-        root->setVStatus(cumBelly,0);
+        root->vStatus(cumBelly) = 0;
         root->useItem(iWetWipes,1);
     }
-    if(root->getVStatus(cumAss) > 0 && root->getItmCount(iWetWipes) > 0)
+    if(root->vStatus(cumAss) > 0 && root->getItmCount(iWetWipes) > 0)
     {
-        root->setVStatus(cumAss,0);
+        root->vStatus(cumAss) = 0;
         root->useItem(iWetWipes,1);
     }
-    if(root->getVStatus(cumPussy) > 0 && root->getItmCount(iWetWipes) > 0)
+    if(root->vStatus(cumPussy) > 0 && root->getItmCount(iWetWipes) > 0)
     {
-        root->setVStatus(cumPussy,0);
+        root->vStatus(cumPussy) = 0;
         root->useItem(iWetWipes,1);
     }
-    if(root->getVStatus(cumAnus) > 0 && root->getItmCount(iWetWipes) > 0)
+    if(root->vStatus(cumAnus) > 0 && root->getItmCount(iWetWipes) > 0)
     {
-        root->setVStatus(cumAnus,0);
+        root->vStatus(cumAnus) = 0;
         root->useItem(iWetWipes,1);
     }
     root->incTime(getRandInt(5,10));
-    root->addDesc(str(59));
+    root->addText(str(59));
 }
 
 int Common::getClothDecreaseLevel()
@@ -432,20 +449,20 @@ int Common::getClothDecreaseLevel()
 
 void Common::fnsport(int arg)
 {
-    root->setVStatus(frost,0);
+    root->vStatus(frost) = 0;
     if(arg == 0)
     {
-        root->updVStatus(energy, - 1);
-        root->updVStatus(water, -2);
-        root->updVStatus(son, -1);
-        root->updVStatus(sweat, 1);
+        root->vStatus(energy) -= 1;
+        root->vStatus(water) -= 2;
+        root->vStatus(son) -= 1;
+        root->vStatus(sweat) += 1;
     }
     else
     {
-        root->updVStatus(energy, -arg);
-        root->updVStatus(water, -arg*2);
-        root->updVStatus(son, -arg/2);
-        root->updVStatus(sweat, arg);
+        root->vStatus(energy) -= arg;
+        root->vStatus(water) -= arg*2;
+        root->vStatus(son) -= arg/2;
+        root->vStatus(sweat) += arg;
     }
 }
 
@@ -461,7 +478,7 @@ void Common::actionHandler(QString action)
 {
     if(action == "waiting")
     {
-        ClearLayout(root->m_actions);
+        root->clearActions();
         makeActBtn("waiting_1m",act(16));
         makeActBtn("waiting_5m",act(17));
         makeActBtn("waiting_15m",act(18));
@@ -470,7 +487,7 @@ void Common::actionHandler(QString action)
     }
     if(action == "waiting1")
     {
-        ClearLayout(root->m_actions);
+        root->clearActions();
         makeActBtn("waiting1_1m",act(16));
         makeActBtn("waiting1_5m",act(17));
         makeActBtn("waiting1_15m",act(18));
@@ -478,51 +495,51 @@ void Common::actionHandler(QString action)
         makeActBtn("waiting1_1h",act(20));
     }
     if(action == "waiting_1m")
-        root->slotChangeLoc(root->getCurLoc(),1);
+        root->changeLoc(root->getCurLoc(),1);
     if(action == "waiting_5m")
-        root->slotChangeLoc(root->getCurLoc(),5);
+        root->changeLoc(root->getCurLoc(),5);
     if(action == "waiting_15m")
-        root->slotChangeLoc(root->getCurLoc(),15);
+        root->changeLoc(root->getCurLoc(),15);
     if(action == "waiting_30m")
-        root->slotChangeLoc(root->getCurLoc(),30);
+        root->changeLoc(root->getCurLoc(),30);
     if(action == "waiting_1h")
-        root->slotChangeLoc(root->getCurLoc(),60);
+        root->changeLoc(root->getCurLoc(),60);
     if(action == "waiting1_1m")
-        root->slotChangeLoc(root->getCurLoc(),0);
+        root->changeLoc(root->getCurLoc(),0);
     if(action == "waiting1_5m")
-        root->slotChangeLoc(root->getCurLoc(),4);
+        root->changeLoc(root->getCurLoc(),4);
     if(action == "waiting1_15m")
-        root->slotChangeLoc(root->getCurLoc(),14);
+        root->changeLoc(root->getCurLoc(),14);
     if(action == "waiting1_30m")
-        root->slotChangeLoc(root->getCurLoc(),29);
+        root->changeLoc(root->getCurLoc(),29);
     if(action == "waiting1_1h")
-        root->slotChangeLoc(root->getCurLoc(),59);
+        root->changeLoc(root->getCurLoc(),59);
 
     if(action == "go_back")
         go_back();
     if(action == "eat_icecream")
     {
         root->incTime(10);
-        root->updVStatus(money,-50);
-        root->updVStatus(day_weight,1);
-        root->updVStatus(mood,10);
-        root->updVStatus(water,3);
-        root->updVStatus(energy,3);
-        root->m_render->setImage(media(16));
-        root->m_render->setText(str(2));
+        root->vStatus(money) -= 50;
+        root->vStatus(day_weight) += 1;
+        root->vStatus(mood) += 10;
+        root->vStatus(water) += 3;
+        root->vStatus(energy) += 3;
+        root->setImage(media(16));
+        root->setText(str(2));
         makeActBtn("go_back", act(1));
     }
     if(action == "read_porn")
     {
         root->setImage(media(17));
         if(root->getItmCount(iPornMagazine) == 1)
-            root->setDesc(str(13));
+            root->setText(str(13));
         else
         {
             root->useItem(iPornMagazine,1);
-            root->updVStatus(horny, getRandInt(5,10));
+            root->vStatus(horny) += getRandInt(5,10);
             root->incTime(5);
-            root->setDesc(str(14));
+            root->setText(str(14));
         }
         makeActBtn("go_back", act(4));
     }
@@ -547,42 +564,42 @@ void Common::actionHandler(QString action)
     if(action == "switch_channel")
     {
         root->incTime(60);
-        root->updVStatus(mood, getRandInt(10,50));
+        root->vStatus(mood) += getRandInt(10,50);
         watch_tv_on_sofa();
     }
     if(action == "watch_tv")
     {
         root->incTime(60);
-        root->updVStatus(mood, getRandInt(10,50));
+        root->vStatus(mood) += getRandInt(10,50);
         watch_tv_count =1;
         watch_tv_on_sofa();
     }
     if(action == "new_gobelen")
     {
         root->useItem(iFabric,1);
-        root->setVSC(newGobelen,1);
+        root->vStatistics(newGobelen) = 1;
         root->incTime(15);
         root->setImage(media(0));
-        root->setDesc(str(55));
+        root->setText(str(55));
         makeActBtn("go_back",act(10));
     }
     if(action == "cont_gobelen")
     {
         root->incTime(60);
-        root->updVSkill(posSkill,getRandInt(root->getVSkill(intellect) / 20, root->getVSkill(intellect) / 10));
-        root->updVStatistic(newGobelen, root->getVSkill(agility)/20 + root->getVSkill(posSkill)/200);
-        if(root->getVSkill(intellect) < 50)
-            root->updVSkill(intellect,getRandInt(0,1));
-        if(root->getVSkill(agility) < 50)
-            root->updVSkill(agility,getRandInt(0,1));
+        root->vSkill(posSkill) += getRandInt(root->vSkill(intellect) / 20, root->vSkill(intellect) / 10);
+        root->vStatistics(newGobelen) += root->vSkill(agility)/20 + root->vSkill(posSkill)/200;
+        if(root->vSkill(intellect) < 50)
+            root->vSkill(intellect) += getRandInt(0,1);
+        if(root->vSkill(agility) < 50)
+            root->vSkill(agility) += getRandInt(0,1);
         root->setImage(media(20));
-        if(root->getVStatistic(newGobelen) < 100)
-            root->setDesc(str(57));
+        if(root->vStatistics(newGobelen) < 100)
+            root->setText(str(57));
         else
         {
-            root->setVSC(newGobelen,0);
-            root->setVSC(gobelen,1);
-            root->setDesc(str(58));
+            root->vStatistics(newGobelen) = 0;
+            root->vStatistics(gobelen) =1;
+            root->setText(str(58));
         }
         makeActBtn("go_back",act(10));
     }
@@ -594,59 +611,59 @@ void Common::select_coffee(QString coffee)
     if(coffee == "coffee0")
     {
         name = str(3);
-        root->updVStatus(money,-30);
-        root->updVStatus(water,1);
-        root->updVStatus(mood,5);
+        root->vStatus(money) -= 30;
+        root->vStatus(water) += 1;
+        root->vStatus(mood) += 5;
     }
     if(coffee == "coffee1")
     {
         name = str(4);
-        root->updVStatus(money,-30);
-        root->updVStatus(water,1);
-        root->updVStatus(mood,5);
+        root->vStatus(money) -= 30;
+        root->vStatus(water) += 1;
+        root->vStatus(mood) += 5;
     }
     if(coffee == "coffee2")
     {
         name = str(5);
-        root->updVStatus(money,-30);
-        root->updVStatus(water,3);
-        root->updVStatus(mood,5);
+        root->vStatus(money) -= 30;
+        root->vStatus(water) += 3;
+        root->vStatus(mood) += 5;
     }
     if(coffee == "coffee3")
     {
         name = str(6);
-        root->updVStatus(money,-40);
-        root->updVStatus(water,3);
-        root->updVStatus(mood,10);
+        root->vStatus(money) -= 40;
+        root->vStatus(water) += 3;
+        root->vStatus(mood) += 10;
     }
     if(coffee == "coffee4")
     {
         name = str(7);
-        root->updVStatus(money,-50);
-        root->updVStatus(water,3);
-        root->updVStatus(mood,15);
+        root->vStatus(money) -= 50;
+        root->vStatus(water) += 3;
+        root->vStatus(mood) += 15;
     }
     if(coffee == "coffee5")
     {
         name = str(8);
-        root->updVStatus(money,-50);
-        root->updVStatus(water,3);
-        root->updVStatus(mood,15);
+        root->vStatus(money) -= 50;
+        root->vStatus(water) += 3;
+        root->vStatus(mood) += 15;
     }
     root->incTime(15);
-    root->updVStatus(son,3);
-    root->updVStatus(coffee_drink,1);
-    if(root->getVStatus(coffee_drink) == 3)
+    root->vStatus(son) += 3;
+    root->vStatus(coffee_drink) += 1;
+    if(root->vStatus(coffee_drink) == 3)
     {
-        root->updVStatus(mood, - getRandInt(15,30));
-        root->updVStatus(health, -5);
+        root->vStatus(mood) -= getRandInt(15,30);
+        root->vStatus(health) -=5;
         root->setImage(media(18));
-        root->m_render->setText(str(10));
+        root->setText(str(10));
     }
     else
     {
         root->setImage(media(19));
-        root->setDesc(str(11) + name + str(12));
+        root->setText(str(11) + name + str(12));
     }
     makeActBtn("go_back", act(1));
 }
@@ -656,7 +673,7 @@ void Common::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action,"common");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Common::actionHandler);
-    root->m_actions->addWidget(btn);
+    root->addActions(btn);
 }
 
 void Common::check_sport_suit()
@@ -700,7 +717,7 @@ QString Common::str(int id)
     str[24] = "Вы крутите обруч в течение пятнадцати минут, развивая ловкость.";
     str[25] = "Вы в течение пятнадцати минут прыгаете на скакалке, развивая скорость.";
     str[26] = "Вы делаете упражнения на пресс в течение пятнадцати минут, развивая выносливость.";
-    str[27] = "Вы отжимаетесь от пола в течение пятнадцати минут, развивая силу.<br>Вам удалось чисто отжаться " + intQStr(getRandInt(root->getVSkill(strenght) / 10, root->getVSkill(strenght) / 5)) + " раз.";
+    str[27] = "Вы отжимаетесь от пола в течение пятнадцати минут, развивая силу.<br>Вам удалось чисто отжаться " + intQStr(getRandInt(root->vSkill(strenght) / 10, root->vSkill(strenght) / 5)) + " раз.";
     str[28] = "Вы садитесь рядом с выключенным телевизором";
     str[29] = "Вы задремали под монотонное бубнение телевизора и проспали некоторое время.";
     str[30] = "Вы смотрите телевизор, лёжа на диване. Смотреть почти нечего - сплошная реклама, идиотские телешоу и унылые сериалы.";
@@ -722,10 +739,10 @@ QString Common::str(int id)
     str[46] = "Вы упорно боролись, и сумели занять 1 место.";
     str[47] = " Физрук поздравляет вас с успехом.";
     str[48] = " Физрук поздравляет вас с победой на соревнованиях.";
-    str[49] = " Вы получаете бронзовую медаль и приз " + intQStr(root->m_events->gVEvent(begPrize)) + " рублей";
-    str[50] = " Вы получаете серебряную медаль и приз " + intQStr(root->m_events->gVEvent(begPrize) * 2) + " рублей";
-    str[51] = " Вы получаете золотую медаль, приз " + intQStr(root->m_events->gVEvent(begPrize) * 3) + " рублей";
-    str[52] = "Готовых гобеленов " + intQStr(root->getVStatistic(gobelen)) + " шт";
+    str[49] = " Вы получаете бронзовую медаль и приз " + intQStr(root->vEvent(begPrize)) + " рублей";
+    str[50] = " Вы получаете серебряную медаль и приз " + intQStr(root->vEvent(begPrize) * 2) + " рублей";
+    str[51] = " Вы получаете золотую медаль, приз " + intQStr(root->vEvent(begPrize) * 3) + " рублей";
+    str[52] = "Готовых гобеленов " + intQStr(root->vStatistics(gobelen)) + " шт";
     str[53] = "Вашей ткани хватит ещё на " + intQStr(root->getItmCount(iFabric)) + " уроков";
     str[54] = "У вас нет ткани. Её можно купить в хозяйственном отделе супермаркета.";
     str[55] = "Вы в течение 15 минут приготовили ткань, на которой будете вышивать узор, и в общих чертах разметили контуры узора.";

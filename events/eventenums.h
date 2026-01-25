@@ -224,8 +224,10 @@ enum EventParams
     ParHomeBlock,
     NotAtHomeSleep,
     xgb_findalbum,
+    familyTvDay,
     //Father
     father_horny,
+    fatherCleanDay,
     //Mother
     motherKnowWhore,
     motherKnowSpravka,
@@ -244,6 +246,7 @@ enum EventParams
     //brother
     turnirWin,
     rand_event_day,
+    brother_tv_enable,
     //incest flags
     incest_event9_flag,
     incest_event10_flag,

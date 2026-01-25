@@ -5,12 +5,12 @@
 #include <QLabel>
 #include "../player/enums.h"
 
-class SexHandler;
+class Game;
 
 class Sex
 {
 public:
-    Sex(SexHandler* parent);
+    Sex(Game* parent);
     void sexStart();
     void analStart(ToolType type = tDick);
     void vaginal(ToolType type, QString pos = "");
@@ -23,7 +23,7 @@ public:
     void dp_start();
     void double_penetration();
 private:
-    SexHandler* root;
+    Game* root;
     int m_protect;
     int m_cc_sex_usecondom;
 };

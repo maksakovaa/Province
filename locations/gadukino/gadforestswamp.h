@@ -4,12 +4,12 @@
 
 #include "../location.h"
 
-class LocationHandler;
+class Game;
 
 class GadForestSwamp: public Location
 {
 public:
-    GadForestSwamp(LocationHandler* ptr);
+    GadForestSwamp(Game* ptr);
     void show(QString arg = "") override;
     LocId getLocId() override;
     LocId getParId() override;
@@ -24,6 +24,8 @@ private:
     QString act(int id);
     QString media(int id);
     void swampClothes();
+private:
+    Game* root;
 };
 
 #endif // GADFORESTSWAMP_H

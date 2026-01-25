@@ -2,12 +2,12 @@
 #define MITKABUHGROUP_H
 
 #include "../event.h"
-class EventHandler;
+class Game;
 
 class MitkaBuhGroup: public Event
 {
 public:
-    MitkaBuhGroup(EventHandler* ptr);
+    MitkaBuhGroup(Game* ptr);
     void start(QString arg = "") override;
     void makeActBtn(QString action, QString actName);
 private slots:
@@ -21,7 +21,7 @@ private:
     void setKolyamba();
     void sexDepOnMesec();
 private:
-    EventHandler* root;
+    Game* root;
     int order{0};
     int mirapiss;
 };

@@ -1,16 +1,16 @@
 #include "sergeihanter.h"
 #include "../../menu/buttons.h"
-#include "../eventhandler.h"
+#include "../../game.h"
 #include "../../Functions.h"
 
-SergeiHanter::SergeiHanter(EventHandler* ptr): root(ptr) {}
+SergeiHanter::SergeiHanter(Game* ptr): root(ptr) {}
 
 void SergeiHanter::makeActBtn(QString action, QString actName)
 {
     QActButton* btn = new QActButton(action,"SergeiHanter");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &SergeiHanter::actionHandler);
-    root->addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString SergeiHanter::str(int id)
@@ -106,17 +106,17 @@ void SergeiHanter::start(QString arg)
     harakBoy = 1;
     boyAge = root->getAge() + 15;
     root->setImage(media(0));
-    root->setDesc(str(1));
-    int rel = root->gVQuest(hantersSergeiQW);
-    int love = root->gVEvent(hantersSergeiLove);
-    if(rel < 0) root->addDesc(str(2));
-    if(rel >= 0 && rel < 10) root->addDesc(str(3));
-    if(rel >= 10 && rel < 20) root->addDesc(str(4));
-    if(rel >= 20 && rel < 25) root->addDesc(str(5));
-    if(rel >= 25 && rel < 30) root->addDesc(str(6));
-    if(rel >= 30 && rel < 35) root->addDesc(str(7));
-    if(rel >= 35) root->addDesc(str(8));
-    if(love == 1) root->addDesc(str(9));
+    root->setText(str(1));
+    int rel = root->vQuest(hantersSergeiQW);
+    int love = root->vEvent(hantersSergeiLove);
+    if(rel < 0) root->addText(str(2));
+    if(rel >= 0 && rel < 10) root->addText(str(3));
+    if(rel >= 10 && rel < 20) root->addText(str(4));
+    if(rel >= 20 && rel < 25) root->addText(str(5));
+    if(rel >= 25 && rel < 30) root->addText(str(6));
+    if(rel >= 30 && rel < 35) root->addText(str(7));
+    if(rel >= 35) root->addText(str(8));
+    if(love == 1) root->addText(str(9));
     makeActBtn("talk",act(1));
     if(rel >= 10)
     {
@@ -127,13 +127,13 @@ void SergeiHanter::start(QString arg)
     }
     if(love > 0 && root->vStatus(horny) >= 60)
         makeActBtn("harras",act(9));
-    if(love > 0 && root->vStatus(horny) <= 60 && rel >= 10 && root->gVEvent(hantersSergeisex) == 0)
+    if(love > 0 && root->vStatus(horny) <= 60 && rel >= 10 && root->vEvent(hantersSergeisex) == 0)
     {
         root->incTime(5);
-        root->uVStatus(horny,5);
-        root->uVEvent(hantersSergeisex,getRandInt(9,30));
+        root->vStatus(horny) += 5;
+        root->vEvent(hantersSergeisex) += getRandInt(9,30);
         root->setImage(media(14));
-        root->setDesc(str(20));
+        root->setText(str(20));
         makeActBtn("acceptSex",act(10));
         makeActBtn("declineSex",act(11));
     }
@@ -143,19 +143,19 @@ void SergeiHanter::start(QString arg)
     if(rel < 10 && love > 0)
     {
         root->incTime(5);
-        root->sVEvent(hantersSergeiLove,0);
-        root->uVQuest(hantersSergeiQW,-10);
+        root->vEvent(hantersSergeiLove) = 0;
+        root->vQuest(hantersSergeiQW) -= 10;
         root->setImage(media(21));
-        root->setDesc(str(24));
+        root->setText(str(24));
         makeActBtn("back_to_loc",act(6));
     }
     if(rel > 50 && love > 0)
     {
         root->incTime(5);
-        root->sVEvent(hantersSergeiLove,0);
-        root->uVQuest(hantersSergeiQW,-50);
+        root->vEvent(hantersSergeiLove) = 0;
+        root->vQuest(hantersSergeiQW) -= 50;
         root->setImage(media(21));
-        root->setDesc(str(25));
+        root->setText(str(25));
         makeActBtn("back_to_loc",act(6));
     }
 }
@@ -165,44 +165,44 @@ void SergeiHanter::actionHandler(QString action)
     if(action == "dropGuy")
     {
         root->incTime(5);
-        root->sVEvent(hantersSergeiLove,0);
-        root->uVQuest(hantersSergeiQW,-100);
+        root->vEvent(hantersSergeiLove) = 0;
+        root->vQuest(hantersSergeiQW) -= 100;
         root->setImage(media(22));
-        root->setDesc(str(23));
+        root->setText(str(23));
         makeActBtn("back_to_loc",act(6));
     }
 
     if(action == "talk")
     {
         root->incTime(60);
-        if(root->gVQuest(hantersSergeiQW) < 10)
-            root->uVQuest(hantersSergeiQW,1);
+        if(root->vQuest(hantersSergeiQW) < 10)
+            root->vQuest(hantersSergeiQW) += 1;
         root->setImage(media(getRandInt(1,3)));
-        if(root->gVQuest(hantersIgorQW) >= 0) root->setDesc(str(10));
-        else root->setDesc(str(11));
+        if(root->vQuest(hantersIgorQW) >= 0) root->setText(str(10));
+        else root->setText(str(11));
         makeActBtn("back_to_loc",act(0));
     }
     if(action == "flirt")
     {
         root->incTime(120);
-        root->uVStatus(horny,10);
-        if(root->gVEvent(hantersKnowSlut) == 0)
+        root->vStatus(horny) += 10;
+        if(root->vEvent(hantersKnowSlut) == 0)
         {
-            if(root->gVQuest(hantersSergeiQW) <= 35)
-                root->uVQuest(hantersSergeiQW,1);
-            if(root->gVQuest(hantersIgorQW) >= 10)
-                root->uVQuest(hantersIgorQW,-1);
-            if(root->gVQuest(hantersAndreiQW) >= 10)
-                root->uVQuest(hantersAndreiQW,-1);
+            if(root->vQuest(hantersSergeiQW) <= 35)
+                root->vQuest(hantersSergeiQW) += 1;
+            if(root->vQuest(hantersIgorQW) >= 10)
+                root->vQuest(hantersIgorQW)-=1;
+            if(root->vQuest(hantersAndreiQW) >= 10)
+                root->vQuest(hantersAndreiQW)-=1;
         }
         root->setImage(media(getRandInt(4,6)));
-        root->setDesc(str(12));
-        if(root->gVEvent(hantersSergeiLove) == 0 && root->gVQuest(hantersSergeiQW) >= 30 && root->gVEvent(hantersKnowSlut) == 0 && root->vStatus(vnesh) >= 40)
+        root->setText(str(12));
+        if(root->vEvent(hantersSergeiLove) == 0 && root->vQuest(hantersSergeiQW) >= 30 && root->vEvent(hantersKnowSlut) == 0 && root->vStatus(vnesh) >= 40)
         {
             root->incTime(5);
-            root->uVStatus(horny,5);
+            root->vStatus(horny) += 5;
             root->setImage(media(7));
-            root->setDesc(str(13));
+            root->setText(str(13));
             makeActBtn("acceptKiss",act(4));
             makeActBtn("declineKiss",act(5));
         }
@@ -213,12 +213,12 @@ void SergeiHanter::actionHandler(QString action)
     if(action == "acceptKiss")
     {
         root->incTime(5);
-        root->uVStatus(horny,5);
-        root->sVEvent(hantersSergeiLove,1);
-        root->uVQuest(hantersSergeiQW,1);
-        root->sVStatus(mood,100);
+        root->vStatus(horny) += 5;
+        root->vEvent(hantersSergeiLove) = 1;
+        root->vQuest(hantersSergeiQW) += 1;
+        root->vStatus(mood) = 100;
         root->setImage(media(8));
-        root->setDesc(str(14));
+        root->setText(str(14));
         if(root->vStatus(horny) >= 40)
             makeActBtn("kiss1",act(0));
         else
@@ -228,64 +228,64 @@ void SergeiHanter::actionHandler(QString action)
     {
         root->incTime(5);
         root->setImage(media(9));
-        root->setDesc(str(15));
+        root->setText(str(15));
         makeActBtn("HanterLoveSex",act(6));
     }
     if(action == "kiss2")
     {
         root->incTime(5);
         root->setImage(media(9));
-        root->setDesc(str(16));
+        root->setText(str(16));
         makeActBtn("back_to_loc",act(0));
     }
     if(action == "declineKiss")
     {
         root->incTime(5);
-        root->uVQuest(hantersSergeiQW,-50);
+        root->vQuest(hantersSergeiQW) -= 50;
         root->setImage(media(10));
-        root->setDesc(str(17));
+        root->setText(str(17));
         makeActBtn("back_to_loc",act(7));
     }
 
     if(action == "takeTime")
     {
         root->incTime(120);
-        root->uVStatus(horny,10);
-        root->uVQuest(hantersSergeiQW,1);
-        if(root->gVEvent(hantersIgorLove) > 0 || root->gVEvent(hantersAndreiLove) > 0)
-            root->uVEvent(hanterslut,1);
-        if(root->gVEvent(hantersIgorLove) == 0 && root->gVEvent(hantersAndreiLove) == 0)
-            root->uVEvent(hanterslut,-1);
-        root->sVStatus(mood,100);
+        root->vStatus(horny) += 10;
+        root->vQuest(hantersSergeiQW) += 1;
+        if(root->vEvent(hantersIgorLove) > 0 || root->vEvent(hantersAndreiLove) > 0)
+            root->vEvent(hanterslut) += 1;
+        if(root->vEvent(hantersIgorLove) == 0 && root->vEvent(hantersAndreiLove) == 0)
+            root->vEvent(hanterslut) -= 1;
+        root->vStatus(mood) = 100;
         root->setImage(media(getRandInt(11,14)));
-        root->setDesc(str(18));
+        root->setText(str(18));
         makeActBtn("back_to_loc",act(8));
     }
     if(action == "harras")
     {
         root->incTime(10);
-        root->uVStatus(horny,5);
-        root->uVQuest(hantersSergeiQW,1);
-        root->uVEvent(hantersSergeisex,getRandInt(9,30));
+        root->vStatus(horny) += 5;
+        root->vQuest(hantersSergeiQW) += 1;
+        root->vEvent(hantersSergeisex) += getRandInt(9,30);
         root->setImage(media(getRandInt(15,20)));
-        root->setDesc(str(19));
+        root->setText(str(19));
         makeActBtn("HanterLoveSex",act(6));
     }
 
     if(action == "acceptSex")
     {
         root->incTime(5);
-        root->uVQuest(hantersSergeiQW,1);
+        root->vQuest(hantersSergeiQW) += 1;
         root->setImage(media(getRandInt(18,20)));
-        root->setDesc(str(21));
+        root->setText(str(21));
         makeActBtn("HanterLoveSex",act(6));
     }
     if(action == "declineSex")
     {
         root->incTime(5);
-        root->uVQuest(hantersSergeiQW,-1);
+        root->vQuest(hantersSergeiQW) -= 1;
         root->setImage(media(10));
-        root->setDesc(str(22));
+        root->setText(str(22));
         makeActBtn("back_to_loc",act(6));
     }
 

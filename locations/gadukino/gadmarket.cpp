@@ -1,7 +1,8 @@
 #include "gadmarket.h"
 #include "../../menu/buttons.h"
+#include "../../game.h"
 
-Gadmarket::Gadmarket(LocationHandler *ptr): Location(ptr) {}
+Gadmarket::Gadmarket(Game *ptr): root(ptr) {}
 
 void Gadmarket::show(QString arg)
 {
@@ -37,46 +38,46 @@ void Gadmarket::actionHandler(QString action)
 {
     if(action == "gadmarket")
     {
-        setImage(media(0));
-        if(getHour() == 14 && getWeekNum() == 0)
-            setDesc(str(0));
-        if(gVStatus(money) >= 500)
+        root->setImage(media(0));
+        if(root->getHour() == 14 && root->getWeek() == 0)
+            root->setText(str(0));
+        if(root->vStatus(money) >= 500)
             makeActBtn("buy_cookies", act(0));
-        if(gVStatus(money) >= 75)
+        if(root->vStatus(money) >= 75)
             makeActBtn("buy_water",act(1));
-        if(gVStatus(money) >= 300)
+        if(root->vStatus(money) >= 300)
             makeActBtn("buy_tampon", act(2));
         makeActBtn("exit", act(3));
-        if(gVQuest(grandmaQW) >= 60 && getItemCount(iCookies) == 0 && getHour() == 14 && (getWeekNum() == 6 || getWeekNum() == 0))
+        if(root->vQuest(grandmaQW) >= 60 && root->getItmCount(iCookies) == 0 && root->getHour() == 14 && (root->getWeek() == 6 || root->getWeek() == 0))
         {
-            startEvent(eGrandParentEvents,"market");
+            root->startEvent(eGrandParentEvents,"market");
         }
     }
     if(action == "buy_cookies")
     {
-        uVStatus(money,-500);
-        addItem(iCookies,10);
-        addText(str(1));
+        root->vStatus(money) -= 500;
+        root->addItem(iCookies,10);
+        root->addText(str(1));
     }
     if(action == "buy_water")
     {
-        uVStatus(money,-75);
-        addItem(iBottledWater,1);
-        addText(str(2));
+        root->vStatus(money) -= 75;
+        root->addItem(iBottledWater,1);
+        root->addText(str(2));
     }
     if(action == "buy_tampon")
     {
-        uVStatus(money,-300);
-        addItem(iTampon,20);
-        addText(str(3));
+        root->vStatus(money) -= 300;
+        root->addItem(iTampon,20);
+        root->addText(str(3));
     }
     if(action == "exit")
     {
-        changeLoc(lgadukino,5);
+        root->changeLoc(lgadukino,5);
     }
     if(action == "grandma")
     {
-        startEvent(eGrandMa);
+        root->startEvent(eGrandMa);
     }
 }
 
@@ -85,7 +86,7 @@ void Gadmarket::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action,"gadmarket");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Gadmarket::actionHandler);
-    addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString Gadmarket::str(int id)

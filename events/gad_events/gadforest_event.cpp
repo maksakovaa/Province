@@ -1,6 +1,6 @@
 #include "gadforest_event.h"
 #include "../../menu/buttons.h"
-#include "../eventhandler.h"
+#include "../../game.h"
 #include "../../Functions.h"
 #include "../../locations/gadukino/gadforest.h"
 
@@ -55,84 +55,84 @@ void GadforestEvent::start(QString arg)
 void GadforestEvent::search()
 {
     root->incTime(30);
-    switch (root->gVEvent(edge_forestday_current))
+    switch (root->vEvent(edge_forestday_current))
     {
     case 1:
-    root->sVEvent(edge_forestday1,root->vStatus(daystart));
+    root->vEvent(edge_forestday1) = root->vStatus(daystart);
         break;
     case 2:
-    root->sVEvent(edge_forestday2,root->vStatus(daystart));
+    root->vEvent(edge_forestday2) = root->vStatus(daystart);
         break;
     case 3:
-    root->sVEvent(edge_forestday3,root->vStatus(daystart));
+    root->vEvent(edge_forestday3) = root->vStatus(daystart);
         break;
     case 4:
-    root->sVEvent(edge_forestday4,root->vStatus(daystart));
+    root->vEvent(edge_forestday4) = root->vStatus(daystart);
         break;
     }
-    if(root->gVEvent(goforest) < 20 * root->gVEvent(edge_forestday_current))
-        root->uVEvent(goforest, getRandInt(0,1));
-    if(root->gVEvent(edge_forestday_current) == 1)
+    if(root->vEvent(goforest) < 20 * root->vEvent(edge_forestday_current))
+        root->vEvent(goforest) += getRandInt(0,1);
+    if(root->vEvent(edge_forestday_current) == 1)
     {
-        if(root->gVEvent(mushroom_pickers) == 0 || root->gVEvent(mushroom_pickers) == 2)
+        if(root->vEvent(mushroom_pickers) == 0 || root->vEvent(mushroom_pickers) == 2)
         {
-            root->sVEvent(new_boletus, getRandInt(0,1));
-            root->sVEvent(new_bilberry, 1);
+            root->vEvent(new_boletus) = getRandInt(0,1);
+            root->vEvent(new_bilberry) = 1;
         }
         else
         {
-            root->sVEvent(new_bilberry, 0);
-            root->sVEvent(new_boletus,getRandInt(0,1));
+            root->vEvent(new_bilberry) = 0;
+            root->vEvent(new_boletus) = getRandInt(0,1);
         }
     }
-    if(root->gVEvent(edge_forestday_current) == 2)
+    if(root->vEvent(edge_forestday_current) == 2)
     {
-        if(root->gVEvent(mushroom_pickers) < 2)
+        if(root->vEvent(mushroom_pickers) < 2)
         {
-            root->sVEvent(new_boletus, 1);
-            root->sVEvent(new_bilberry, getRandInt(1,2));
+            root->vEvent(new_boletus) = 1;
+            root->vEvent(new_bilberry) = getRandInt(1,2);
         }
         else
         {
-            root->sVEvent(new_bilberry, getRandInt(0,1));
-            root->sVEvent(new_boletus,1);
+            root->vEvent(new_bilberry) = getRandInt(0,1);
+            root->vEvent(new_boletus) =1;
         }
     }
     else
     {
-        root->sVEvent(new_boletus, getRandInt(1,2));
-        if(root->gVEvent(edge_forestday_current) == 3)
-            root->sVEvent(new_bilberry, getRandInt(1,2));
+        root->vEvent(new_boletus) = getRandInt(1,2);
+        if(root->vEvent(edge_forestday_current) == 3)
+            root->vEvent(new_bilberry) = getRandInt(1,2);
         else
-            root->sVEvent(new_bilberry, getRandInt(2,3));
+            root->vEvent(new_bilberry) = getRandInt(2,3);
     }
-    root->uVStatus(boletus, root->gVEvent(new_boletus));
-    root->uVStatus(bilberry, root->gVEvent(new_bilberry));
-    root->uVStatus(mood,5);
-    if(root->gVEvent(new_bilberry) > 0 && root->gVEvent(new_boletus) > 0)
+    root->vStatus(boletus) += root->vEvent(new_boletus);
+    root->vStatus(bilberry) += root->vEvent(new_bilberry);
+    root->vStatus(mood) +=5;
+    if(root->vEvent(new_bilberry) > 0 && root->vEvent(new_boletus) > 0)
     {
-        root->uVStatus(mood,10);
+        root->vStatus(mood) +=10;
         clothes1();
-        root->setDesc(str(0));
+        root->setText(str(0));
     }
-    else if(root->gVEvent(new_boletus) == 0 && root->gVEvent(new_bilberry) > 0)
+    else if(root->vEvent(new_boletus) == 0 && root->vEvent(new_bilberry) > 0)
     {
-        root->uVStatus(mood,5);
+        root->vStatus(mood) +=5;
         clothes1();
-        root->setDesc(str(1));
+        root->setText(str(1));
     }
     else
     {
-        root->uVStatus(mood,-5);
+        root->vStatus(mood) +=-5;
         clothes2();
-        root->setDesc(str(2));
+        root->setText(str(2));
     }
     makeActBtn("back_to_loc",act(0));
 }
 
 void GadforestEvent::clothes1()
 {
-    if(root->gVEvent(mirainforest) == 0)
+    if(root->vEvent(mirainforest) == 0)
     {
         if(!root->isNude())
         {
@@ -150,7 +150,7 @@ void GadforestEvent::clothes1()
 
 void GadforestEvent::clothes2()
 {
-    if(root->gVEvent(mirainforest) == 0)
+    if(root->vEvent(mirainforest) == 0)
     {
         if(!root->isSkirt())
             root->setImage(media(5));
@@ -176,7 +176,7 @@ void GadforestEvent::clothes2()
 void GadforestEvent::gadforest_lost_start()
 {
     root->setImage(media(11));
-    root->setDesc(str(3));
+    root->setText(str(3));
     makeActBtn("gadforestlostmain",act(0));
 }
 
@@ -184,85 +184,85 @@ void GadforestEvent::gopforest_mitka()
 {
     if(!root->isNude())
     {
-        if(root->gVEvent(mirainforest) == 0)
+        if(root->vEvent(mirainforest) == 0)
         {
-            if(root->gVEvent(mitkasextimes) == 0 || root->gVEvent(gadriver_gang) >= 3)
+            if(root->vEvent(mitkasextimes) == 0 || root->vEvent(gadriver_gang) >= 3)
             {
                 root->incTime(15);
-                root->sVEvent(gadboyday,root->vStatus(daystart));
+                root->vEvent(gadboyday) =root->vStatus(daystart);
                 root->setImage(media(0));
-                root->setDesc(str(4));
+                root->setText(str(4));
                 makeActBtn("gadforest",act(0));
             }
             else
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday,root->vStatus(daystart));
+                root->vEvent(gadboyday) = root->vStatus(daystart);
                 root->setImage(media(0));
-                root->setDesc(str(5));
+                root->setText(str(5));
                 makeActBtn("mitksasex",act(1));
-                if(root->gVEvent(mitkasextimes) < 11 && root->vAddict(alko) < 6 && root->vStatus(horny) < 70)
+                if(root->vEvent(mitkasextimes) < 11 && root->vAddict(alko) < 6 && root->vStatus(horny) < 70)
                     makeActBtn("gadforest",act(2));
             }
         }
         else
         {
-            if(root->gVEvent(mitkasextimes) == 0 || root->gVEvent(gadriver_gang) >= 3)
+            if(root->vEvent(mitkasextimes) == 0 || root->vEvent(gadriver_gang) >= 3)
             {
-                if(root->gVQuest(miragopQW) >= 2 && root->gVQuest(miragopQW) < 11)
+                if(root->vQuest(miragopQW) >= 2 && root->vQuest(miragopQW) < 11)
                 {
                     root->incTime(15);
-                    root->sVEvent(gadboyday,root->vStatus(daystart));
-                    root->sVEvent(mirainforest,0);
+                    root->vEvent(gadboyday) = root->vStatus(daystart);
+                    root->vEvent(mirainforest) =0;
                     root->setImage(media(0));
-                    root->setDesc(str(6));
+                    root->setText(str(6));
                     makeActBtn("gadforest",act(3));
                     makeActBtn("watch_miramitka0",act(4));
                 }
-                else if(root->gVQuest(miragopQW) >= 11)
+                else if(root->vQuest(miragopQW) >= 11)
                 {
                     root->incTime(5);
-                    root->sVEvent(gadboyday,root->vStatus(daystart));
-                    root->sVEvent(mirainforest,0);
+                    root->vEvent(gadboyday) =root->vStatus(daystart);
+                    root->vEvent(mirainforest) =0;
                     root->setImage(media(0));
-                    root->setDesc(str(13));
+                    root->setText(str(13));
                     makeActBtn("gadforest",act(3));
                     makeActBtn("watch_miramitka2",act(4));
                 }
                 else
                 {
                     root->incTime(15);
-                    root->sVEvent(gadboyday,root->vStatus(daystart));
+                    root->vEvent(gadboyday) =root->vStatus(daystart);
                     root->setImage(media(0));
-                    root->setDesc(str(17));
+                    root->setText(str(17));
                     makeActBtn("gadforest",act(0));
                 }
             }
-            else if((root->gVEvent(mitkasextimes) > 0 && root->gVEvent(mitkasextimes) < 13 && root->gVEvent(gadriver_gang) < 3)|| (root->gVEvent(mitkasextimes) >= 13 && root->gVQuest(miragopQW) < 11 && root->gVEvent(gadriver_gang) < 3))
+            else if((root->vEvent(mitkasextimes) > 0 && root->vEvent(mitkasextimes) < 13 && root->vEvent(gadriver_gang) < 3)|| (root->vEvent(mitkasextimes) >= 13 && root->vQuest(miragopQW) < 11 && root->vEvent(gadriver_gang) < 3))
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday,root->vStatus(daystart));
+                root->vEvent(gadboyday) =root->vStatus(daystart);
                 root->setImage(media(0));
-                root->setDesc(str(18));
+                root->setText(str(18));
                 makeActBtn("mitksasex2",act(1));
-                if(root->gVEvent(mitkasextimes) < 11 && root->vAddict(alko) < 6 && root->vStatus(horny) < 70)
+                if(root->vEvent(mitkasextimes) < 11 && root->vAddict(alko) < 6 && root->vStatus(horny) < 70)
                     makeActBtn("gadforest",act(2));
             }
-            else if(root->gVEvent(mitkasextimes) >= 13 && root->gVQuest(miragopQW) >= 11 && root->gVEvent(gadriver_gang) < 3)
+            else if(root->vEvent(mitkasextimes) >= 13 && root->vQuest(miragopQW) >= 11 && root->vEvent(gadriver_gang) < 3)
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday,root->vStatus(daystart));
-                root->uVEvent(mitkasextimes,1);
+                root->vEvent(gadboyday) =root->vStatus(daystart);
+                root->vEvent(mitkasextimes) +=1;
                 root->setImage(media(0));
-                root->setDesc(str(19));
+                root->setText(str(19));
                 makeActBtn("mitkasex3",act(0));
             }
             else
             {
                 root->incTime(15);
-                root->sVEvent(gadboyday,root->vStatus(daystart));
+                root->vEvent(gadboyday) =root->vStatus(daystart);
                 root->setImage(media(0));
-                root->setDesc(str(20));
+                root->setText(str(20));
                 makeActBtn("gadforest",act(0));
             }
 
@@ -270,19 +270,19 @@ void GadforestEvent::gopforest_mitka()
     }
     else
     {
-        if(root->gVEvent(mirainforest) == 0 || root->gVEvent(gadriver_gang) >= 3)
+        if(root->vEvent(mirainforest) == 0 || root->vEvent(gadriver_gang) >= 3)
         {
-            if(root->gVEvent(mitkasextimes) == 0 && root->gVEvent(gadriver_gang) < 3)
+            if(root->vEvent(mitkasextimes) == 0 && root->vEvent(gadriver_gang) < 3)
             {
                 root->incTime(5);
                 int temp = getRandInt(1,2);
                 if(temp == 1)
-                    root->sVEvent(gadboyday, root->vStatus(daystart));
+                    root->vEvent(gadboyday) = root->vStatus(daystart);
                 root->setImage(media(0));
                 if(temp == 1)
-                    root->setDesc(str(21));
+                    root->setText(str(21));
                 if(temp == 2)
-                    root->setDesc(str(22));
+                    root->setText(str(22));
                 if(temp == 1)
                     makeActBtn("run_and_dress",act(6));
                 else
@@ -292,26 +292,26 @@ void GadforestEvent::gopforest_mitka()
             else
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
+                root->vEvent(gadboyday) = root->vStatus(daystart);
                 root->setImage(media(0));
-                root->setDesc(str(26));
+                root->setText(str(26));
                 makeActBtn("mitkasex",act(0));
             }
         }
         else
         {
-            if(root->gVEvent(mitkasextimes) == 0 || root->gVEvent(gadriver_gang) >= 3)
+            if(root->vEvent(mitkasextimes) == 0 || root->vEvent(gadriver_gang) >= 3)
             {
-                if(root->gVQuest(miragopQW) < 11)
+                if(root->vQuest(miragopQW) < 11)
                 {
                     root->incTime(15);
-                    root->sVEvent(gadboyday, root->vStatus(daystart));
+                    root->vEvent(gadboyday) = root->vStatus(daystart);
                     int temp = getRandInt(1,2);
                     root->setImage(media(0));
                     if(temp == 1)
-                        root->setDesc(str(27));
+                        root->setText(str(27));
                     else
-                        root->setDesc(str(22));
+                        root->setText(str(22));
                     if(temp == 1)
                     {
                         makeActBtn("run_and_dress2",act(6));
@@ -322,16 +322,16 @@ void GadforestEvent::gopforest_mitka()
                     }
                 }
             }
-            else if((root->gVEvent(mitkasextimes) > 0 && root->gVEvent(mitkasextimes) < 13 && root->gVEvent(gadriver_gang) < 3) || (root->gVEvent(mitkasextimes) >= 13 && root->gVQuest(miragopQW) < 11 && root->gVEvent(gadriver_gang) < 3))
+            else if((root->vEvent(mitkasextimes) > 0 && root->vEvent(mitkasextimes) < 13 && root->vEvent(gadriver_gang) < 3) || (root->vEvent(mitkasextimes) >= 13 && root->vQuest(miragopQW) < 11 && root->vEvent(gadriver_gang) < 3))
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
+                root->vEvent(gadboyday) = root->vStatus(daystart);
                 int temp = getRandInt(1,2);
                 root->setImage(media(0));
                 if(temp == 1)
-                    root->setDesc(str(30));
+                    root->setText(str(30));
                 else
-                    root->setDesc(str(22));
+                    root->setText(str(22));
                 if(temp == 1)
                     makeActBtn("mitksasex2",act(0));
                 if(temp == 2)
@@ -339,21 +339,21 @@ void GadforestEvent::gopforest_mitka()
                     makeActBtn("hide2",act(7));
                 }
             }
-            else if(root->gVEvent(mitkasextimes) >= 13 && root->gVQuest(miragopQW) >= 11 && root->gVEvent(gadriver_gang) < 3)
+            else if(root->vEvent(mitkasextimes) >= 13 && root->vQuest(miragopQW) >= 11 && root->vEvent(gadriver_gang) < 3)
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday,root->vStatus(daystart));
-                root->sVEvent(mitboyrand,1);
-                root->sVEvent(mitkaforestsex,1);
+                root->vEvent(gadboyday) =root->vStatus(daystart);
+                root->vEvent(mitboyrand) =1;
+                root->vEvent(mitkaforestsex) =1;
                 root->setImage(media(0));
-                root->setDesc(str(31));
+                root->setText(str(31));
                 makeActBtn("mitkasex3",act(0));
             }
             else
             {
                 root->incTime(15);
                 root->setImage(media(0));
-                root->setDesc(str(22));
+                root->setText(str(22));
                 makeActBtn("hide2",act(7));
             }
         }
@@ -364,92 +364,92 @@ void GadforestEvent::gopforest_kolyamba()
 {
     if(!root->isNude())
     {
-        if(root->gVEvent(mirainforest) == 0)
+        if(root->vEvent(mirainforest) == 0)
         {
-            if(root->gVEvent(mitkasextimes) < 13 || root->gVEvent(gadriver_gang) >= 3)
+            if(root->vEvent(mitkasextimes) < 13 || root->vEvent(gadriver_gang) >= 3)
             {
                 root->incTime(15);
-                root->sVEvent(gadboyday,root->vStatus(daystart));
+                root->vEvent(gadboyday) =root->vStatus(daystart);
                 root->setImage(media(12));
-                root->setDesc(str(32));
+                root->setText(str(32));
                 makeActBtn("gadforest",act(0));
             }
             else
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday,root->vStatus(daystart));
+                root->vEvent(gadboyday) =root->vStatus(daystart);
                 root->setImage(media(12));
-                root->setDesc(str(33));
+                root->setText(str(33));
                 makeActBtn("kolyambasex",act(0));
             }
         }
         else
         {
-            if(root->gVEvent(mitkasextimes) < 13 || root->gVEvent(gadriver_gang) >= 3)
+            if(root->vEvent(mitkasextimes) < 13 || root->vEvent(gadriver_gang) >= 3)
             {
-                if(root->gVQuest(miragopQW) >= 11)
+                if(root->vQuest(miragopQW) >= 11)
                 {
                     root->incTime(5);
-                    root->sVEvent(gadboyday,root->vStatus(daystart));
-                    root->sVEvent(mirainforest,0);
+                    root->vEvent(gadboyday) =root->vStatus(daystart);
+                    root->vEvent(mirainforest) =0;
                     root->setImage(media(12));
-                    root->setDesc(str(34));
+                    root->setText(str(34));
                     makeActBtn("gadforest",act(3));
                     makeActBtn("watch_mirakolyamba",act(4));
                 }
                 else
                 {
                     root->incTime(15);
-                    root->sVEvent(gadboyday,root->vStatus(daystart));
+                    root->vEvent(gadboyday) =root->vStatus(daystart);
                     root->setImage(media(12));
-                    root->setDesc(str(36));
+                    root->setText(str(36));
                     makeActBtn("gadforest", act(0));
                 }
             }
-            else if(root->gVEvent(mitkasextimes) >= 13 && root->gVQuest(miragopQW) < 11 && root->gVEvent(gadriver_gang) < 3)
+            else if(root->vEvent(mitkasextimes) >= 13 && root->vQuest(miragopQW) < 11 && root->vEvent(gadriver_gang) < 3)
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday,root->vStatus(daystart));
-                root->sVEvent(mirainforest,0);
+                root->vEvent(gadboyday) =root->vStatus(daystart);
+                root->vEvent(mirainforest) =0;
                 root->setImage(media(12));
-                root->setDesc(str(36));
+                root->setText(str(36));
                 makeActBtn("kolyambasex",act(0));
             }
-            else if(root->gVEvent(mitkasextimes) >= 13 && root->gVQuest(miragopQW) >= 11 && root->gVEvent(gadriver_gang) < 3)
+            else if(root->vEvent(mitkasextimes) >= 13 && root->vQuest(miragopQW) >= 11 && root->vEvent(gadriver_gang) < 3)
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday,root->vStatus(daystart));
-                root->sVEvent(mitboyrand,2);
-                root->sVEvent(mitkaforestsex,1);
-                root->uVEvent(mirasextimes,1);
+                root->vEvent(gadboyday) =root->vStatus(daystart);
+                root->vEvent(mitboyrand) =2;
+                root->vEvent(mitkaforestsex) =1;
+                root->vEvent(mirasextimes) +=1;
                 root->setImage(media(12));
-                root->setDesc(str(37));
+                root->setText(str(37));
                 makeActBtn("kolyambasex2",act(0));
             }
             else
             {
                 root->incTime(15);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
+                root->vEvent(gadboyday) = root->vStatus(daystart);
                 root->setImage(media(12));
-                root->setDesc(str(38));
+                root->setText(str(38));
                 makeActBtn("gadforest",act(0));
             }
         }
     }
     else
     {
-        if(root->gVEvent(mirainforest) == 0)
+        if(root->vEvent(mirainforest) == 0)
         {
-            if(root->gVEvent(mitkasextimes) < 13 || root->gVEvent(gadriver_gang) >= 3)
+            if(root->vEvent(mitkasextimes) < 13 || root->vEvent(gadriver_gang) >= 3)
             {
                 root->incTime(5);
                 int tmp = getRandInt(1,2);
-                root->sVEvent(gadboyday,root->vStatus(daystart));
+                root->vEvent(gadboyday) =root->vStatus(daystart);
                 root->setImage(media(12));
                 if(tmp == 1)
-                    root->setDesc(str(39));
+                    root->setText(str(39));
                 else
-                    root->setDesc(str(40));
+                    root->setText(str(40));
                 if(tmp == 1)
                     makeActBtn("run_and_dress",act(6));
                 else
@@ -458,81 +458,81 @@ void GadforestEvent::gopforest_kolyamba()
             else
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday,root->vStatus(daystart));
-                root->sVEvent(mirainforest,0);
+                root->vEvent(gadboyday) =root->vStatus(daystart);
+                root->vEvent(mirainforest) =0;
                 root->setImage(media(12));
-                root->setDesc(str(42));
+                root->setText(str(42));
                 makeActBtn("kolyambasex",act(0));
             }
         }
         else
         {
-            if(root->gVEvent(mitkasextimes) < 13 || root->gVEvent(gadriver_gang) < 3)
+            if(root->vEvent(mitkasextimes) < 13 || root->vEvent(gadriver_gang) < 3)
             {
-                if(root->gVQuest(miragopQW) < 11)
+                if(root->vQuest(miragopQW) < 11)
                 {
                     root->incTime(15);
-                    root->sVEvent(gadboyday, root->vStatus(daystart));
+                    root->vEvent(gadboyday) = root->vStatus(daystart);
                     int tmp = getRandInt(1,2);
                     root->setImage(media(12));
                     if(tmp == 1)
-                        root->setDesc(str(43));
+                        root->setText(str(43));
                     else
-                        root->setDesc(str(40));
+                        root->setText(str(40));
                     if(tmp == 1)
                         makeActBtn("run_and_dress2",act(6));
                     else
                         makeActBtn("hide4",act(7));
 
                 }
-                else if(root->gVQuest(miragopQW) >= 11)
+                else if(root->vQuest(miragopQW) >= 11)
                 {
                     root->incTime(5);
-                    root->sVEvent(gadboyday, root->vStatus(daystart));
+                    root->vEvent(gadboyday) = root->vStatus(daystart);
                     int tmp = getRandInt(1,2);
                     root->setImage(media(12));
                     if(tmp == 1)
-                        root->setDesc(str(43));
+                        root->setText(str(43));
                     else
-                        root->setDesc(str(40));
+                        root->setText(str(40));
                     if(tmp == 1)
                         makeActBtn("run_and_dress3",act(6));
                     else
                         makeActBtn("hide4",act(7));
                 }
             }
-            else if (root->gVEvent(mitkasextimes) >= 13 && root->gVQuest(miragopQW) < 11 && root->gVEvent(gadriver_gang) < 3)
+            else if (root->vEvent(mitkasextimes) >= 13 && root->vQuest(miragopQW) < 11 && root->vEvent(gadriver_gang) < 3)
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
+                root->vEvent(gadboyday) = root->vStatus(daystart);
                 int tmp = getRandInt(1,2);
                 root->setImage(media(12));
                 if(tmp == 1)
-                    root->setDesc(str(46));
+                    root->setText(str(46));
                 else
-                    root->setDesc(str(40));
+                    root->setText(str(40));
                 if(tmp == 1)
                     makeActBtn("kolyambasex3",act(0));
                 else
                     makeActBtn("hide4",act(7));
             }
-            else if(root->gVEvent(mitkasextimes) >= 13 && root->gVQuest(miragopQW) >= 11 && root->gVEvent(gadriver_gang) < 3)
+            else if(root->vEvent(mitkasextimes) >= 13 && root->vQuest(miragopQW) >= 11 && root->vEvent(gadriver_gang) < 3)
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
-                root->sVEvent(mitboyrand,2);
-                root->sVEvent(mitkaforestsex,1);
-                root->uVEvent(mirasextimes,1);
+                root->vEvent(gadboyday) = root->vStatus(daystart);
+                root->vEvent(mitboyrand) =2;
+                root->vEvent(mitkaforestsex) =1;
+                root->vEvent(mirasextimes) +=1;
                 root->setImage(media(12));
-                root->setDesc(str(47));
+                root->setText(str(47));
                 makeActBtn("kolyambasex2",act(0));
             }
             else
             {
                 root->incTime(15);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
+                root->vEvent(gadboyday) = root->vStatus(daystart);
                 root->setImage(media(12));
-                root->setDesc(str(40));
+                root->setText(str(40));
                 makeActBtn("hide4",act(7));
             }
         }
@@ -543,92 +543,92 @@ void GadforestEvent::gopforest_vasyan()
 {
     if(!root->isNude())
     {
-        if(root->gVEvent(mirainforest) == 0 || root->gVEvent(gadriver_gang) >= 3)
+        if(root->vEvent(mirainforest) == 0 || root->vEvent(gadriver_gang) >= 3)
         {
-            if(root->gVEvent(mitkasextimes) < 13)
+            if(root->vEvent(mitkasextimes) < 13)
             {
                 root->incTime(15);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
+                root->vEvent(gadboyday) = root->vStatus(daystart);
                 root->setImage(media(13));
-                root->setDesc(str(48));
+                root->setText(str(48));
                 makeActBtn("gadforest",act(0));
             }
             else
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
+                root->vEvent(gadboyday) = root->vStatus(daystart);
                 root->setImage(media(13));
-                root->setDesc(str(49));
+                root->setText(str(49));
                 makeActBtn("vasyansex",act(0));
             }
         }
         else
         {
-            if(root->gVEvent(mitkasextimes) < 13 || root->gVEvent(gadriver_gang) >= 3)
+            if(root->vEvent(mitkasextimes) < 13 || root->vEvent(gadriver_gang) >= 3)
             {
-                if(root->gVQuest(miragopQW) >= 11)
+                if(root->vQuest(miragopQW) >= 11)
                 {
                     root->incTime(5);
-                    root->sVEvent(gadboyday, root->vStatus(daystart));
-                    root->sVEvent(mirainforest,0);
+                    root->vEvent(gadboyday) = root->vStatus(daystart);
+                    root->vEvent(mirainforest) = 0;
                     root->setImage(media(13));
-                    root->setDesc(str(50));
+                    root->setText(str(50));
                     makeActBtn("gadforest",act(3));
                     makeActBtn("watch_vasyan1",act(4));
                 }
                 else
                 {
                     root->incTime(15);
-                    root->sVEvent(gadboyday, root->vStatus(daystart));
+                    root->vEvent(gadboyday) = root->vStatus(daystart);
                     root->setImage(media(13));
-                    root->setDesc(str(52));
+                    root->setText(str(52));
                     makeActBtn("gadforest",act(0));
                 }
             }
-            else if(root->gVEvent(mitkasextimes) >= 13 && root->gVQuest(miragopQW) < 11 && root->gVEvent(gadriver_gang) < 3)
+            else if(root->vEvent(mitkasextimes) >= 13 && root->vQuest(miragopQW) < 11 && root->vEvent(gadriver_gang) < 3)
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
-                root->sVEvent(mirainforest,0);
+                root->vEvent(gadboyday) = root->vStatus(daystart);
+                root->vEvent(mirainforest) =0;
                 root->setImage(media(13));
-                root->setDesc(str(53));
+                root->setText(str(53));
                 makeActBtn("vasyansex",act(0));
             }
-            else if(root->gVEvent(mitkasextimes) >= 13 && root->gVQuest(miragopQW) >= 11 && root->gVEvent(gadriver_gang) < 3)
+            else if(root->vEvent(mitkasextimes) >= 13 && root->vQuest(miragopQW) >= 11 && root->vEvent(gadriver_gang) < 3)
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
-                root->sVEvent(mitboyrand,3);
-                root->sVEvent(mitkaforestsex,1);
-                root->uVEvent(mirasextimes,1);
+                root->vEvent(gadboyday) = root->vStatus(daystart);
+                root->vEvent(mitboyrand) =3;
+                root->vEvent(mitkaforestsex) =1;
+                root->vEvent(mirasextimes) +=1;
                 root->setImage(media(13));
-                root->setDesc(str(54));
+                root->setText(str(54));
                 makeActBtn("vasyansex2",act(0));
             }
             else
             {
                 root->incTime(15);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
+                root->vEvent(gadboyday) = root->vStatus(daystart);
                 root->setImage(media(13));
-                root->setDesc(str(52));
+                root->setText(str(52));
                 makeActBtn("gadforest",act(0));
             }
         }
     }
     else
     {
-        if(root->gVEvent(mirainforest) == 0)
+        if(root->vEvent(mirainforest) == 0)
         {
-            if(root->gVEvent(mitkasextimes) < 13 || root->gVEvent(gadriver_gang) >= 3)
+            if(root->vEvent(mitkasextimes) < 13 || root->vEvent(gadriver_gang) >= 3)
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
+                root->vEvent(gadboyday) = root->vStatus(daystart);
                 int temp = getRandInt(1,2);
                 root->setImage(media(13));
                 if(temp == 1)
-                    root->setDesc(str(55));
+                    root->setText(str(55));
                 else
-                    root->setDesc(str(56));
+                    root->setText(str(56));
                 if(temp == 1)
                     makeActBtn("run_and_dress",act(6));
                 else
@@ -637,79 +637,79 @@ void GadforestEvent::gopforest_vasyan()
             else
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
+                root->vEvent(gadboyday) = root->vStatus(daystart);
                 root->setImage(media(13));
-                root->setDesc(str(58));
+                root->setText(str(58));
                 makeActBtn("vasyansex",act(0));
             }
         }
         else
         {
-            if(root->gVEvent(mitkasextimes) < 13 || root->gVEvent(gadriver_gang) >= 3)
+            if(root->vEvent(mitkasextimes) < 13 || root->vEvent(gadriver_gang) >= 3)
             {
-                if(root->gVQuest(miragopQW) < 11)
+                if(root->vQuest(miragopQW) < 11)
                 {
                     root->incTime(15);
-                    root->sVEvent(gadboyday, root->vStatus(daystart));
+                    root->vEvent(gadboyday) = root->vStatus(daystart);
                     root->setImage(media(13));
                     int tmp = getRandInt(1,2);
                     if(tmp == 1)
-                        root->setDesc(str(59));
+                        root->setText(str(59));
                     else
-                        root->setDesc(str(56));
+                        root->setText(str(56));
                     if(tmp == 1)
                         makeActBtn("run_and_dress2",act(6));
                     else
                         makeActBtn("hide6",act(7));
                 }
-                else if(root->gVQuest(miragopQW) >= 11)
+                else if(root->vQuest(miragopQW) >= 11)
                 {
                     root->incTime(5);
-                    root->sVEvent(gadboyday, root->vStatus(daystart));
+                    root->vEvent(gadboyday) = root->vStatus(daystart);
                     int temp = getRandInt(1,2);
                     root->setImage(media(13));
                     if(temp == 1)
-                        root->setDesc(str(59));
+                        root->setText(str(59));
                     else
-                        root->setDesc(str(56));
+                        root->setText(str(56));
                     if(temp == 1)
                         makeActBtn("run_and_dress4",act(6));
                     else
                         makeActBtn("hide5",act(7));
                 }
             }
-            else if(root->gVEvent(mitkasextimes) >= 13 && root->gVQuest(miragopQW) < 11 && root->gVEvent(gadriver_gang) < 3)
+            else if(root->vEvent(mitkasextimes) >= 13 && root->vQuest(miragopQW) < 11 && root->vEvent(gadriver_gang) < 3)
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
+                root->vEvent(gadboyday) = root->vStatus(daystart);
                 int temp = getRandInt(1,2);
                 root->setImage(media(13));
                 if(temp == 1)
-                    root->setDesc(str(62));
+                    root->setText(str(62));
                 else
-                    root->setDesc(str(56));
+                    root->setText(str(56));
                 if(temp == 1)
                     makeActBtn("vasyansex3",act(0));
                 else
                     makeActBtn("hide6",act(7));
             }
-            else if (root->gVEvent(mitkasextimes) >= 13 && root->gVQuest(miragopQW) >= 11 && root->gVEvent(gadriver_gang) < 3)
+            else if (root->vEvent(mitkasextimes) >= 13 && root->vQuest(miragopQW) >= 11 && root->vEvent(gadriver_gang) < 3)
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
-                root->sVEvent(mitboyrand,3);
-                root->sVEvent(mitkaforestsex,1);
-                root->uVEvent(mirasextimes,1);
+                root->vEvent(gadboyday) = root->vStatus(daystart);
+                root->vEvent(mitboyrand) =3;
+                root->vEvent(mitkaforestsex) =1;
+                root->vEvent(mirasextimes) +=1;
                 root->setImage(media(13));
-                root->setDesc(str(63));
+                root->setText(str(63));
                 makeActBtn("vasyansex2",act(0));
             }
             else
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
+                root->vEvent(gadboyday) = root->vStatus(daystart);
                 root->setImage(media(13));
-                root->setDesc(str(56));
+                root->setText(str(56));
                 makeActBtn("hide6",act(7));
             }
         }
@@ -720,271 +720,271 @@ void GadforestEvent::gopforest_2boys()
 {
     if(!root->isNude())
     {
-        if(root->gVEvent(mirainforest) == 0)
+        if(root->vEvent(mirainforest) == 0)
         {
-            root->sVEvent(temphant,getRandInt(4,6));
-            if(root->gVEvent(mitkasextimes) < 13 || root->gVEvent(gadriver_gang) >= 3)
+            root->vEvent(temphant) = getRandInt(4,6);
+            if(root->vEvent(mitkasextimes) < 13 || root->vEvent(gadriver_gang) >= 3)
             {
                 root->incTime(15);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
+                root->vEvent(gadboyday) = root->vStatus(daystart);
                 root->setImage(media(14));
-                if(root->gVEvent(temphant) == 4)
-                    root->setDesc(str(64));
-                if(root->gVEvent(temphant) == 5)
-                    root->setDesc(str(65));
-                if(root->gVEvent(temphant) == 6)
-                    root->setDesc(str(66));
+                if(root->vEvent(temphant) == 4)
+                    root->setText(str(64));
+                if(root->vEvent(temphant) == 5)
+                    root->setText(str(65));
+                if(root->vEvent(temphant) == 6)
+                    root->setText(str(66));
                 makeActBtn("gadforest",act(0));
             }
             else
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
+                root->vEvent(gadboyday) = root->vStatus(daystart);
                 root->setImage(media(14));
-                if(root->gVEvent(temphant) == 4)
-                    root->setDesc(str(67));
-                if(root->gVEvent(temphant) == 5)
-                    root->setDesc(str(68));
-                if(root->gVEvent(temphant) == 6)
-                    root->setDesc(str(69));
+                if(root->vEvent(temphant) == 4)
+                    root->setText(str(67));
+                if(root->vEvent(temphant) == 5)
+                    root->setText(str(68));
+                if(root->vEvent(temphant) == 6)
+                    root->setText(str(69));
                 makeActBtn("2boyssex",act(0));
             }
         }
         else
         {
-            if(root->gVEvent(mitkasextimes) < 13 || root->gVEvent(gadriver_gang) >= 3)
+            if(root->vEvent(mitkasextimes) < 13 || root->vEvent(gadriver_gang) >= 3)
             {
-                root->sVEvent(mitboyrand,getRandInt(1,3));
-                if(root->gVQuest(miragopQW) >= 11)
+                root->vEvent(mitboyrand) =getRandInt(1,3);
+                if(root->vQuest(miragopQW) >= 11)
                 {
                     root->incTime(5);
-                    root->sVEvent(gadboyday, root->vStatus(daystart));
-                    root->sVEvent(mirainforest,0);
+                    root->vEvent(gadboyday) = root->vStatus(daystart);
+                    root->vEvent(mirainforest) =0;
                     root->setImage(media(14));
-                    if(root->gVEvent(temphant) == 4)
-                        root->setDesc(str(70));
-                    if(root->gVEvent(temphant) == 5)
-                        root->setDesc(str(71));
-                    if(root->gVEvent(temphant) == 6)
-                        root->setDesc(str(72));
+                    if(root->vEvent(temphant) == 4)
+                        root->setText(str(70));
+                    if(root->vEvent(temphant) == 5)
+                        root->setText(str(71));
+                    if(root->vEvent(temphant) == 6)
+                        root->setText(str(72));
                     makeActBtn("gadforest", act(3));
                     makeActBtn("watch_mira2boys",act(4));
                 }
                 else
                 {
                     root->incTime(15);
-                    root->sVEvent(gadboyday, root->vStatus(daystart));
+                    root->vEvent(gadboyday) = root->vStatus(daystart);
                     root->setImage(media(14));
-                    if(root->gVEvent(temphant) == 4)
-                        root->setDesc(str(76));
-                    if(root->gVEvent(temphant) == 5)
-                        root->setDesc(str(77));
-                    if(root->gVEvent(temphant) == 6)
-                        root->setDesc(str(78));
+                    if(root->vEvent(temphant) == 4)
+                        root->setText(str(76));
+                    if(root->vEvent(temphant) == 5)
+                        root->setText(str(77));
+                    if(root->vEvent(temphant) == 6)
+                        root->setText(str(78));
                     makeActBtn("gadforest",act(0));
                 }
             }
-            else if(root->gVEvent(mitkasextimes) >= 13 && root->gVQuest(miragopQW) < 11 && root->gVEvent(gadriver_gang) < 3)
+            else if(root->vEvent(mitkasextimes) >= 13 && root->vQuest(miragopQW) < 11 && root->vEvent(gadriver_gang) < 3)
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
-                root->sVEvent(mirainforest,0);
+                root->vEvent(gadboyday) = root->vStatus(daystart);
+                root->vEvent(mirainforest) =0;
                 root->setImage(media(14));
-                if(root->gVEvent(temphant) == 4)
-                    root->setDesc(str(79));
-                if(root->gVEvent(temphant) == 5)
-                    root->setDesc(str(80));
-                if(root->gVEvent(temphant) == 6)
-                    root->setDesc(str(81));
+                if(root->vEvent(temphant) == 4)
+                    root->setText(str(79));
+                if(root->vEvent(temphant) == 5)
+                    root->setText(str(80));
+                if(root->vEvent(temphant) == 6)
+                    root->setText(str(81));
                 makeActBtn("2boyssex",act(0));
             }
-            else if(root->gVEvent(mitkasextimes) >= 13 && root->gVQuest(miragopQW) >= 11 && root->gVEvent(gadriver_gang) < 3)
+            else if(root->vEvent(mitkasextimes) >= 13 && root->vQuest(miragopQW) >= 11 && root->vEvent(gadriver_gang) < 3)
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
-                root->sVEvent(mirainforest,0);
+                root->vEvent(gadboyday) = root->vStatus(daystart);
+                root->vEvent(mirainforest) =0;
                 root->setImage(media(14));
-                if(root->gVEvent(temphant) == 4)
-                    root->setDesc(str(82));
-                if(root->gVEvent(temphant) == 5)
-                    root->setDesc(str(83));
-                if(root->gVEvent(temphant) == 6)
-                    root->setDesc(str(84));
+                if(root->vEvent(temphant) == 4)
+                    root->setText(str(82));
+                if(root->vEvent(temphant) == 5)
+                    root->setText(str(83));
+                if(root->vEvent(temphant) == 6)
+                    root->setText(str(84));
                 makeActBtn("2boyssex2",act(0));
             }
             else
             {
                 root->incTime(15);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
+                root->vEvent(gadboyday) = root->vStatus(daystart);
                 root->setImage(media(14));
-                if(root->gVEvent(temphant) == 4)
-                    root->setDesc(str(76));
-                if(root->gVEvent(temphant) == 5)
-                    root->setDesc(str(77));
-                if(root->gVEvent(temphant) == 6)
-                    root->setDesc(str(78));
+                if(root->vEvent(temphant) == 4)
+                    root->setText(str(76));
+                if(root->vEvent(temphant) == 5)
+                    root->setText(str(77));
+                if(root->vEvent(temphant) == 6)
+                    root->setText(str(78));
                 makeActBtn("gadforest",act(0));
             }
         }
     }
     else
     {
-        if(root->gVEvent(mirainforest) == 0)
+        if(root->vEvent(mirainforest) == 0)
         {
-            root->sVEvent(temphant,getRandInt(1,3));
-            if(root->gVEvent(mitkasextimes) < 13 || root->gVEvent(gadriver_gang) >= 3)
+            root->vEvent(temphant) =getRandInt(1,3);
+            if(root->vEvent(mitkasextimes) < 13 || root->vEvent(gadriver_gang) >= 3)
             {
                 root->incTime(5);
                 int temp = getRandInt(1,2);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
+                root->vEvent(gadboyday) = root->vStatus(daystart);
                 root->setImage(media(14));
                 if(temp == 1)
                 {
-                    if(root->gVEvent(temphant) == 1)
-                        root->setDesc(str(85));
-                    if(root->gVEvent(temphant) == 2)
-                        root->setDesc(str(86));
-                    if(root->gVEvent(temphant) == 3)
-                        root->setDesc(str(87));
+                    if(root->vEvent(temphant) == 1)
+                        root->setText(str(85));
+                    if(root->vEvent(temphant) == 2)
+                        root->setText(str(86));
+                    if(root->vEvent(temphant) == 3)
+                        root->setText(str(87));
                     makeActBtn("run_and_dress",act(6));
                 }
                 else
                 {
-                    if(root->gVEvent(temphant) == 1)
-                        root->setDesc(str(88));
-                    if(root->gVEvent(temphant) == 2)
-                        root->setDesc(str(89));
-                    if(root->gVEvent(temphant) == 3)
-                        root->setDesc(str(90));
+                    if(root->vEvent(temphant) == 1)
+                        root->setText(str(88));
+                    if(root->vEvent(temphant) == 2)
+                        root->setText(str(89));
+                    if(root->vEvent(temphant) == 3)
+                        root->setText(str(90));
                     makeActBtn("hide7",act(7));
                 }
             }
             else
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
+                root->vEvent(gadboyday) = root->vStatus(daystart);
                 root->setImage(media(14));
-                if(root->gVEvent(temphant) == 1)
-                    root->setDesc(str(91));
-                if(root->gVEvent(temphant) == 2)
-                    root->setDesc(str(92));
-                if(root->gVEvent(temphant) == 3)
-                    root->setDesc(str(93));
+                if(root->vEvent(temphant) == 1)
+                    root->setText(str(91));
+                if(root->vEvent(temphant) == 2)
+                    root->setText(str(92));
+                if(root->vEvent(temphant) == 3)
+                    root->setText(str(93));
                 makeActBtn("2boyssex",act(0));
             }
         }
         else
         {
-            root->sVEvent(mitboyrand,getRandInt(1,3));
-            if(root->gVEvent(mitkasextimes) < 13 || root->gVEvent(gadriver_gang) >= 3)
+            root->vEvent(mitboyrand) =getRandInt(1,3);
+            if(root->vEvent(mitkasextimes) < 13 || root->vEvent(gadriver_gang) >= 3)
             {
-                if(root->gVQuest(miragopQW) < 11)
+                if(root->vQuest(miragopQW) < 11)
                 {
                     root->incTime(15);
-                    root->sVEvent(gadboyday, root->vStatus(daystart));
+                    root->vEvent(gadboyday) = root->vStatus(daystart);
                     root->setImage(media(14));
                     int tmp = getRandInt(1,2);
                     if(tmp == 1)
                     {
-                        if(root->gVEvent(mitboyrand) == 1)
-                            root->setDesc(str(94));
-                        if(root->gVEvent(mitboyrand) == 2)
-                            root->setDesc(str(95));
-                        if(root->gVEvent(mitboyrand) == 3)
-                            root->setDesc(str(96));
+                        if(root->vEvent(mitboyrand) == 1)
+                            root->setText(str(94));
+                        if(root->vEvent(mitboyrand) == 2)
+                            root->setText(str(95));
+                        if(root->vEvent(mitboyrand) == 3)
+                            root->setText(str(96));
                         makeActBtn("run_and_dress2",act(6));
                     }
                     else
                     {
-                        if(root->gVEvent(mitboyrand) == 1)
-                            root->setDesc(str(97));
-                        if(root->gVEvent(mitboyrand) == 2)
-                            root->setDesc(str(98));
-                        if(root->gVEvent(mitboyrand) == 3)
-                            root->setDesc(str(99));
+                        if(root->vEvent(mitboyrand) == 1)
+                            root->setText(str(97));
+                        if(root->vEvent(mitboyrand) == 2)
+                            root->setText(str(98));
+                        if(root->vEvent(mitboyrand) == 3)
+                            root->setText(str(99));
                         makeActBtn("hide8",act(7));
                     }
                 }
-                else if(root->gVQuest(miragopQW) >= 11)
+                else if(root->vQuest(miragopQW) >= 11)
                 {
                     root->incTime(5);
-                    root->sVEvent(gadboyday, root->vStatus(daystart));
+                    root->vEvent(gadboyday) = root->vStatus(daystart);
                     root->setImage(media(14));
                     int tmp = getRandInt(1,2);
                     if(tmp == 1)
                     {
-                        if(root->gVEvent(mitboyrand) == 1)
-                            root->setDesc(str(94));
-                        if(root->gVEvent(mitboyrand) == 2)
-                            root->setDesc(str(95));
-                        if(root->gVEvent(mitboyrand) == 3)
-                            root->setDesc(str(96));
+                        if(root->vEvent(mitboyrand) == 1)
+                            root->setText(str(94));
+                        if(root->vEvent(mitboyrand) == 2)
+                            root->setText(str(95));
+                        if(root->vEvent(mitboyrand) == 3)
+                            root->setText(str(96));
                         makeActBtn("run_and_dress5",act(6));
                     }
                     else
                     {
-                        if(root->gVEvent(mitboyrand) == 1)
-                            root->setDesc(str(97));
-                        if(root->gVEvent(mitboyrand) == 2)
-                            root->setDesc(str(98));
-                        if(root->gVEvent(mitboyrand) == 3)
-                            root->setDesc(str(99));
+                        if(root->vEvent(mitboyrand) == 1)
+                            root->setText(str(97));
+                        if(root->vEvent(mitboyrand) == 2)
+                            root->setText(str(98));
+                        if(root->vEvent(mitboyrand) == 3)
+                            root->setText(str(99));
                         makeActBtn("hide8",act(7));
                     }
                 }
             }
-            else if(root->gVEvent(mitkasextimes) >= 13 && root->gVQuest(miragopQW) < 11 && root->gVEvent(gadriver_gang)< 3)
+            else if(root->vEvent(mitkasextimes) >= 13 && root->vQuest(miragopQW) < 11 && root->vEvent(gadriver_gang)< 3)
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
+                root->vEvent(gadboyday) = root->vStatus(daystart);
                 root->setImage(media(14));
                 int tmp = getRandInt(1,2);
                 if(tmp == 1)
                 {
-                    if(root->gVEvent(mitboyrand) == 1)
-                        root->setDesc(str(103));
-                    if(root->gVEvent(mitboyrand) == 2)
-                        root->setDesc(str(104));
-                    if(root->gVEvent(mitboyrand) == 3)
-                        root->setDesc(str(105));
+                    if(root->vEvent(mitboyrand) == 1)
+                        root->setText(str(103));
+                    if(root->vEvent(mitboyrand) == 2)
+                        root->setText(str(104));
+                    if(root->vEvent(mitboyrand) == 3)
+                        root->setText(str(105));
                     makeActBtn("2boyssex3",act(0));
                 }
                 else
                 {
-                    if(root->gVEvent(mitboyrand) == 1)
-                        root->setDesc(str(97));
-                    if(root->gVEvent(mitboyrand) == 2)
-                        root->setDesc(str(98));
-                    if(root->gVEvent(mitboyrand) == 3)
-                        root->setDesc(str(99));
+                    if(root->vEvent(mitboyrand) == 1)
+                        root->setText(str(97));
+                    if(root->vEvent(mitboyrand) == 2)
+                        root->setText(str(98));
+                    if(root->vEvent(mitboyrand) == 3)
+                        root->setText(str(99));
                     makeActBtn("hide8",act(7));
                 }
             }
-            else if(root->gVEvent(mitkasextimes) >= 13 && root->gVQuest(miragopQW) >= 11 && root->gVEvent(gadriver_gang)< 3)
+            else if(root->vEvent(mitkasextimes) >= 13 && root->vQuest(miragopQW) >= 11 && root->vEvent(gadriver_gang)< 3)
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
+                root->vEvent(gadboyday) = root->vStatus(daystart);
                 root->setImage(media(14));
-                root->uVEvent(mirasextimes,1);
-                if(root->gVEvent(mitboyrand) == 1)
-                    root->setDesc(str(106));
-                if(root->gVEvent(mitboyrand) == 2)
-                    root->setDesc(str(107));
-                if(root->gVEvent(mitboyrand) == 3)
-                    root->setDesc(str(108));
+                root->vEvent(mirasextimes) +=1;
+                if(root->vEvent(mitboyrand) == 1)
+                    root->setText(str(106));
+                if(root->vEvent(mitboyrand) == 2)
+                    root->setText(str(107));
+                if(root->vEvent(mitboyrand) == 3)
+                    root->setText(str(108));
                 makeActBtn("2boyssex2",act(0));
             }
             else
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
+                root->vEvent(gadboyday) = root->vStatus(daystart);
                 root->setImage(media(14));
-                if(root->gVEvent(mitboyrand) == 1)
-                    root->setDesc(str(97));
-                if(root->gVEvent(mitboyrand) == 2)
-                    root->setDesc(str(98));
-                if(root->gVEvent(mitboyrand) == 3)
-                    root->setDesc(str(99));
+                if(root->vEvent(mitboyrand) == 1)
+                    root->setText(str(97));
+                if(root->vEvent(mitboyrand) == 2)
+                    root->setText(str(98));
+                if(root->vEvent(mitboyrand) == 3)
+                    root->setText(str(99));
                 makeActBtn("hide8",act(7));
             }
         }
@@ -995,177 +995,177 @@ void GadforestEvent::gopforest_3boys()
 {
     if(!root->isNude())
     {
-        if(root->gVEvent(mirainforest) == 0)
+        if(root->vEvent(mirainforest) == 0)
         {
-            if(root->gVEvent(mitkasextimes) < 13 || root->gVEvent(gadriver_gang) >= 3)
+            if(root->vEvent(mitkasextimes) < 13 || root->vEvent(gadriver_gang) >= 3)
             {
                 root->incTime(15);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
+                root->vEvent(gadboyday) = root->vStatus(daystart);
                 root->setImage(media(15));
-                root->setDesc(str(109));
+                root->setText(str(109));
                 makeActBtn("gadforest",act(0));
             }
             else
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
+                root->vEvent(gadboyday) = root->vStatus(daystart);
                 root->setImage(media(15));
-                root->setDesc(str(110));
+                root->setText(str(110));
                 makeActBtn("3boyssex",act(0));
             }
         }
         else
         {
-            if(root->gVEvent(mitkasextimes) < 13 || root->gVEvent(gadriver_gang) >= 3)
+            if(root->vEvent(mitkasextimes) < 13 || root->vEvent(gadriver_gang) >= 3)
             {
-                if(root->gVQuest(miragopQW) >= 11)
+                if(root->vQuest(miragopQW) >= 11)
                 {
                     root->incTime(5);
-                    root->sVEvent(gadboyday, root->vStatus(daystart));
-                    root->sVEvent(mirainforest,0);
+                    root->vEvent(gadboyday) = root->vStatus(daystart);
+                    root->vEvent(mirainforest) =0;
                     root->setImage(media(15));
-                    root->setDesc(str(111));
+                    root->setText(str(111));
                     makeActBtn("gadforest", act(3));
                     makeActBtn("watch_mira3boys",act(4));
                 }
                 else
                 {
                     root->incTime(15);
-                    root->sVEvent(gadboyday, root->vStatus(daystart));
+                    root->vEvent(gadboyday) = root->vStatus(daystart);
                     root->setImage(media(15));
-                    root->setDesc(str(113));
+                    root->setText(str(113));
                     makeActBtn("gadforest",act(0));
                 }
             }
-            else if(root->gVEvent(mitkasextimes) >= 13 && root->gVQuest(miragopQW) < 11 && root->gVEvent(gadriver_gang) < 3)
+            else if(root->vEvent(mitkasextimes) >= 13 && root->vQuest(miragopQW) < 11 && root->vEvent(gadriver_gang) < 3)
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
-                root->sVEvent(mirainforest,0);
+                root->vEvent(gadboyday) = root->vStatus(daystart);
+                root->vEvent(mirainforest) = 0;
                 root->setImage(media(15));
-                root->setDesc(str(114));
+                root->setText(str(114));
                 makeActBtn("3boyssex",act(0));
             }
-            else if(root->gVEvent(mitkasextimes) >= 13 && root->gVQuest(miragopQW) >= 11 && root->gVEvent(gadriver_gang) < 3)
+            else if(root->vEvent(mitkasextimes) >= 13 && root->vQuest(miragopQW) >= 11 && root->vEvent(gadriver_gang) < 3)
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
-                root->uVEvent(mirasextimes,1);
+                root->vEvent(gadboyday) = root->vStatus(daystart);
+                root->vEvent(mirasextimes) +=1;
                 root->setImage(media(15));
-                root->setDesc(str(115));
+                root->setText(str(115));
                 makeActBtn("3boyssex2",act(0));
             }
             else
             {
                 root->incTime(15);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
+                root->vEvent(gadboyday) = root->vStatus(daystart);
                 root->setImage(media(15));
-                root->setDesc(str(113));
+                root->setText(str(113));
                 makeActBtn("gadforest",act(0));
             }
         }
     }
     else
     {
-        if(root->gVEvent(mirainforest) == 0)
+        if(root->vEvent(mirainforest) == 0)
         {
-            if(root->gVEvent(mitkasextimes) < 13 || root->gVEvent(gadriver_gang) >= 3)
+            if(root->vEvent(mitkasextimes) < 13 || root->vEvent(gadriver_gang) >= 3)
             {
                 root->incTime(5);
                 int temp = getRandInt(1,2);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
+                root->vEvent(gadboyday) = root->vStatus(daystart);
                 root->setImage(media(15));
                 if(temp == 1)
                 {
-                    root->setDesc(str(116));
+                    root->setText(str(116));
                     makeActBtn("run_and_dress",act(6));
                 }
                 else
                 {
-                    root->setDesc(str(117));
+                    root->setText(str(117));
                     makeActBtn("hide7",act(7));
                 }
             }
             else
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
+                root->vEvent(gadboyday) = root->vStatus(daystart);
                 root->setImage(media(15));
-                root->setDesc(str(118));
+                root->setText(str(118));
                 makeActBtn("3boyssex",act(0));
             }
         }
         else
         {
-            if(root->gVEvent(mitkasextimes) < 13 || root->gVEvent(gadriver_gang) >= 3)
+            if(root->vEvent(mitkasextimes) < 13 || root->vEvent(gadriver_gang) >= 3)
             {
-                if(root->gVQuest(miragopQW) < 11)
+                if(root->vQuest(miragopQW) < 11)
                 {
                     root->incTime(15);
-                    root->sVEvent(gadboyday, root->vStatus(daystart));
+                    root->vEvent(gadboyday) = root->vStatus(daystart);
                     root->setImage(media(15));
                     int tmp = getRandInt(1,2);
                     if(tmp == 1)
                     {
                         makeActBtn("run_and_dress2",act(6));
-                        root->setDesc(str(119));
+                        root->setText(str(119));
                     }
                     else
                     {
                         makeActBtn("hide8",act(7));
-                        root->setDesc(str(120));
+                        root->setText(str(120));
                     }
                 }
-                else if(root->gVQuest(miragopQW) >= 11)
+                else if(root->vQuest(miragopQW) >= 11)
                 {
                     root->incTime(5);
-                    root->sVEvent(gadboyday, root->vStatus(daystart));
+                    root->vEvent(gadboyday) = root->vStatus(daystart);
                     root->setImage(media(15));
                     int tmp = getRandInt(1,2);
                     if(tmp == 1)
                     {
-                        root->setDesc(str(119));
+                        root->setText(str(119));
                         makeActBtn("run_and_dress6",act(6));
                     }
                     else
                     {
-                        root->setDesc(str(120));
+                        root->setText(str(120));
                         makeActBtn("hide8",act(7));
                     }
                 }
             }
-            else if(root->gVEvent(mitkasextimes) >= 13 && root->gVQuest(miragopQW) < 11 && root->gVEvent(gadriver_gang)< 3)
+            else if(root->vEvent(mitkasextimes) >= 13 && root->vQuest(miragopQW) < 11 && root->vEvent(gadriver_gang)< 3)
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
+                root->vEvent(gadboyday) = root->vStatus(daystart);
                 root->setImage(media(15));
                 int tmp = getRandInt(1,2);
                 if(tmp == 1)
                 {
-                    root->setDesc(str(121));
+                    root->setText(str(121));
                     makeActBtn("3boyssex3",act(0));
                 }
                 else
                 {
-                    root->setDesc(str(120));
+                    root->setText(str(120));
                     makeActBtn("hide8",act(7));
                 }
             }
-            else if(root->gVEvent(mitkasextimes) >= 13 && root->gVQuest(miragopQW) >= 11 && root->gVEvent(gadriver_gang)< 3)
+            else if(root->vEvent(mitkasextimes) >= 13 && root->vQuest(miragopQW) >= 11 && root->vEvent(gadriver_gang)< 3)
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
+                root->vEvent(gadboyday) = root->vStatus(daystart);
                 root->setImage(media(15));
-                root->uVEvent(mirasextimes,1);
-                root->setDesc(str(122));
+                root->vEvent(mirasextimes) +=1;
+                root->setText(str(122));
                 makeActBtn("3boyssex2",act(0));
             }
             else
             {
                 root->incTime(5);
-                root->sVEvent(gadboyday, root->vStatus(daystart));
+                root->vEvent(gadboyday) = root->vStatus(daystart);
                 root->setImage(media(15));
-                root->setDesc(str(120));
+                root->setText(str(120));
                 makeActBtn("hide8",act(7));
             }
         }
@@ -1175,16 +1175,16 @@ void GadforestEvent::gopforest_3boys()
 void GadforestEvent::nude_event()
 {
     root->incTime(5);
-    root->uVStatus(horny,10);
-    if(root->gVEvent(mirainforest) == 0)
+    root->vStatus(horny) += 10;
+    if(root->vEvent(mirainforest) == 0)
     {
         root->setImage(media(16));
-        root->setDesc(str(123));
+        root->setText(str(123));
     }
     else
     {
         root->setImage(media(17));
-        root->setDesc(str(124));
+        root->setText(str(124));
     }
     makeActBtn("Give_in_to_temptation",act(9));
 }
@@ -1192,40 +1192,40 @@ void GadforestEvent::nude_event()
 void GadforestEvent::mushroom_pickers1()
 {
     root->incTime(5);
-    root->sVEvent(mushroom_pickersday,root->vStatus(daystart));
+    root->vEvent(mushroom_pickersday) = root->vStatus(daystart);
     root->setImage(media(18));
-    root->setDesc(str(127));
+    root->setText(str(127));
     if(root->isNude())
-        root->addDesc(str(128));
+        root->addText(str(128));
     makeActBtn("back_to_loc",act(0));
 }
 
 void GadforestEvent::mushroom_pickers2()
 {
     root->incTime(5);
-    root->sVEvent(mushroom_pickersday,root->vStatus(daystart));
+    root->vEvent(mushroom_pickersday) = root->vStatus(daystart);
     root->setImage(media(19));
-    root->setDesc(str(129));
+    root->setText(str(129));
     if(root->isNude())
     {
-        root->uVStatus(horny,5);
-        root->addDesc(str(128));
+        root->vStatus(horny) += 5;
+        root->addText(str(128));
     }
     makeActBtn("gadforest",act(10));
-    if(root->gVEvent(mirainforest) == 0)
+    if(root->vEvent(mirainforest) == 0)
         makeActBtn("mushroom_pickers_way",act(11));
 }
 
 void GadforestEvent::mushroom_pickers3()
 {
     root->incTime(5);
-    root->sVEvent(mushroom_pickersday,root->vStatus(daystart));
+    root->vEvent(mushroom_pickersday) = root->vStatus(daystart);
     root->setImage(media(20));
-    root->setDesc(str(130));
+    root->setText(str(130));
     if(root->isNude())
     {
-        root->uVStatus(horny,5);
-        root->addDesc(str(128));
+        root->vStatus(horny) += 5;
+        root->addText(str(128));
     }
     makeActBtn("pickers3_exit",act(12));
     if(root->isCloth())
@@ -1234,17 +1234,17 @@ void GadforestEvent::mushroom_pickers3()
 
 void GadforestEvent::mushroom()
 {
-    root->sVEvent(foresteventday, root->vStatus(daystart));
+    root->vEvent(foresteventday) = root->vStatus(daystart);
     root->setImage(media(21));
-    root->setDesc(str(134));
+    root->setText(str(134));
     makeActBtn("collect_mushrooms",act(15));
 }
 
 void GadforestEvent::billberry()
 {
-    root->sVEvent(foresteventday, root->vStatus(daystart));
+    root->vEvent(foresteventday) = root->vStatus(daystart);
     root->setImage(media(22));
-    root->setDesc(str(136));
+    root->setText(str(136));
     makeActBtn("collect_billberry",act(16));
 }
 
@@ -1252,17 +1252,17 @@ void GadforestEvent::basket()
 {
     root->incTime(5);
     int tmp = getRandInt(1,2);
-    root->sVEvent(foresteventday,root->vStatus(daystart));
+    root->vEvent(foresteventday) = root->vStatus(daystart);
     if(tmp == 1)
     {
         root->setImage(media(23));
-        root->setDesc(str(138));
+        root->setText(str(138));
         makeActBtn("take_boletus_basket",act(17));
     }
     if(tmp == 2)
     {
         root->setImage(media(24));
-        root->setDesc(str(139));
+        root->setText(str(139));
         makeActBtn("take_bilberry_basket",act(17));
     }
 }
@@ -1271,10 +1271,10 @@ void GadforestEvent::picnic()
 {
     root->incTime(5);
     root->setImage(media(25));
-    root->setDesc(str(140));
+    root->setText(str(140));
     if(root->isNude())
     {
-        root->addDesc(str(141));
+        root->addText(str(141));
         makeActBtn("hide_n_dress",act(18));
     }
     makeActBtn("gadforest",act(3));
@@ -1283,13 +1283,13 @@ void GadforestEvent::picnic()
 void GadforestEvent::forest_hanters()
 {
     root->incTime(5);
-    root->sVEvent(foresteventday,root->vStatus(daystart));
+    root->vEvent(foresteventday) = root->vStatus(daystart);
     root->setImage(media(26));
-    if(root->gVEvent(hantersKnow) == 0)
-        root->setDesc(str(143));
-    else if(root->gVEvent(hantersKnow) == 1)
-        root->setDesc(str(144));
-    if(root->gVEvent(forest_lost) == 1)
+    if(root->vEvent(hantersKnow) == 0)
+        root->setText(str(143));
+    else if(root->vEvent(hantersKnow) == 1)
+        root->setText(str(144));
+    if(root->vEvent(forest_lost) == 1)
     {
         makeActBtn("hanters_lost1",act(0));
     }
@@ -1311,7 +1311,7 @@ void GadforestEvent::forest_road()
 {
     int tmp = getRandInt(1,10);
     root->setImage(media(16));
-    root->setDesc(str(164));
+    root->setText(str(164));
     if(tmp > 3)
     {
         makeActBtn("forest_road1",act(0));
@@ -1326,7 +1326,7 @@ void GadforestEvent::swamp_road()
 {
     int tmp = getRandInt(1,10);
     root->setImage(media(16));
-    root->setDesc(str(172));
+    root->setText(str(172));
     if(tmp > 3)
     {
         makeActBtn("forest_road1",act(0));
@@ -1340,22 +1340,22 @@ void GadforestEvent::swamp_road()
 void GadforestEvent::lost()
 {
     root->setImage(media(27));
-    root->setDesc(str(173));
+    root->setText(str(173));
     makeActBtn("forest_road1",act(0));
 }
 
 void GadforestEvent::relax()
 {
     root->setImage(media(28));
-    root->setDesc(str(174));
+    root->setText(str(174));
     makeActBtn("forest_road1",act(0));
 }
 
 QString GadforestEvent::str(int id)
 {
     QString str[175];
-    str[0] = "Вы в течение получаса бродили по лесу в поисках грибов или ягод и нашли " + intQStr(root->gVEvent(new_boletus)) + " кг грибов и " + intQStr(root->gVEvent(new_bilberry)) + " кг ягод.";
-    str[1] = "Вы в течение получаса бродили по лесу в поисках грибов или ягод и нашли " + intQStr(root->gVEvent(new_bilberry)) + " кг ягод.";
+    str[0] = "Вы в течение получаса бродили по лесу в поисках грибов или ягод и нашли " + intQStr(root->vEvent(new_boletus)) + " кг грибов и " + intQStr(root->vEvent(new_bilberry)) + " кг ягод.";
+    str[1] = "Вы в течение получаса бродили по лесу в поисках грибов или ягод и нашли " + intQStr(root->vEvent(new_bilberry)) + " кг ягод.";
     str[2] = "Вы в течение получаса бродили по лесу в поисках грибов или ягод, но ничего не нашли.";
     str[3] = "Вы вдруг с ужасом понимаете, что местность вам не знакома... вы заблудились.";
     str[4] = "Идя по лесу вы встретили Митьку. Поболтав с ним немного вы отправились дальше.";
@@ -1699,7 +1699,7 @@ void GadforestEvent::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action,"gadforestevent");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &GadforestEvent::actionHandler);
-    root->addActBtn(btn);
+    root->addActions(btn);
 }
 
 void GadforestEvent::actionHandler(QString action)
@@ -1718,26 +1718,26 @@ void GadforestEvent::actionHandler(QString action)
     }
     if(action == "mitkasex")
     {
-        root->sVEvent(forest_gopsex,1);
-        root->sVEvent(temphant,4);
+        root->vEvent(forest_gopsex) = 1;
+        root->vEvent(temphant) = 4;
         root->startEvent(eHanters);
     }
     if(action == "mitksasex2")
     {
-        root->sVEvent(mirainforest,0);
-        root->sVEvent(forest_gopsex,1);
-        root->sVEvent(temphant,4);
+        root->vEvent(mirainforest) = 0;
+        root->vEvent(forest_gopsex) = 1;
+        root->vEvent(temphant) = 4;
         root->startEvent(eHanters);
     }
     if(action == "mitkasex3")
     {
-        root->sVEvent(mitboyrand,1);
+        root->vEvent(mitboyrand) =1;
         root->startEvent(eMitkaSex);
     }
     if(action == "kolyambasex")
     {
-        root->sVEvent(forest_gopsex,1);
-        root->sVEvent(temphant,5);
+        root->vEvent(forest_gopsex) = 1;
+        root->vEvent(temphant) =5;
         root->startEvent(eHanters);
     }
     if(action == "kolyambasex2")
@@ -1746,15 +1746,15 @@ void GadforestEvent::actionHandler(QString action)
     }
     if(action == "kolyambasex3")
     {
-        root->sVEvent(mirainforest,0);
-        root->sVEvent(forest_gopsex,1);
-        root->sVEvent(temphant,5);
+        root->vEvent(mirainforest) = 0;
+        root->vEvent(forest_gopsex) = 1;
+        root->vEvent(temphant) =5;
         root->startEvent(eHanters);
     }
     if(action == "vasyansex")
     {
-        root->sVEvent(forest_gopsex,1);
-        root->sVEvent(temphant,6);
+        root->vEvent(forest_gopsex) = 1;
+        root->vEvent(temphant) =6;
         root->startEvent(eHanters);
     }
     if(action == "vasyansex2")
@@ -1763,35 +1763,35 @@ void GadforestEvent::actionHandler(QString action)
     }
     if(action == "vasyansex3")
     {
-        root->sVEvent(mirainforest,0);
-        root->sVEvent(forest_gopsex,1);
-        root->sVEvent(temphant,6);
+        root->vEvent(mirainforest) =0;
+        root->vEvent(forest_gopsex) = 1;
+        root->vEvent(temphant) =6;
         root->startEvent(eHanters);
     }
     if(action == "watch_miramitka0")
     {
-        if(root->gVQuest(miragopQW) < 8)
+        if(root->vQuest(miragopQW) < 8)
         {
             root->incTime(2);
-            root->uVSC(voyeurism,1);
-            root->uVStatus(horny,5);
+            root->vStatistics(voyeurism) += 1;
+            root->vStatus(horny) += 5;
             root->setImage(media(29));
-            root->setDesc(str(7));
+            root->setText(str(7));
             makeActBtn("watch_miramitka01",act(5));
         }
         else
         {
             root->incTime(2);
-            root->uVStatus(horny, getRandInt(15,30));
+            root->vStatus(horny) +=  getRandInt(15,30);
             int temp = getRandInt(0,1);
             if(temp == 0)
             {
                 root->setImage(media(30));
-                root->setDesc(str(10));
+                root->setText(str(10));
             }
             else
             {
-                root->setDesc(str(11));
+                root->setText(str(11));
                 root->setImage(media(31));
             }
             makeActBtn("watch_miramitka11",act(5));
@@ -1800,416 +1800,416 @@ void GadforestEvent::actionHandler(QString action)
     if(action == "watch_miramitka01")
     {
         root->incTime(5);
-        root->uVStatus(horny,25);
+        root->vStatus(horny) += 25;
         root->setImage(media(32));
-        root->setDesc(str(8));
+        root->setText(str(8));
         makeActBtn("watch_miramitka02",act(5));
     }
     if(action == "watch_miramitka02")
     {
         root->incTime(5);
-        root->uVStatus(horny,15);
-        if(root->gVQuest(miragopQW) == 2)
-            root->sVQuest(miragopQW,3);
+        root->vStatus(horny) += 15;
+        if(root->vQuest(miragopQW) == 2)
+            root->vQuest(miragopQW) =3;
         root->setImage(media(33));
-        root->setDesc(str(9));
+        root->setText(str(9));
         makeActBtn("gadforest",act(0));
     }
     if(action == "watch_miramitka11")
     {
         root->incTime(10);
-        root->uVStatus(horny,getRandInt(15,30));
-        root->uVEvent(mirasextimes,1);
+        root->vStatus(horny) += getRandInt(15,30);
+        root->vEvent(mirasextimes) +=1;
         root->setImage(media(34));
-        root->setDesc(str(12));
+        root->setText(str(12));
         makeActBtn("gadforest",act(0));
     }
     if(action == "watch_miramitka2")
     {
         root->incTime(5);
-        root->uVStatus(horny,getRandInt(15,30));
-        root->uVSC(voyeurism,1);
+        root->vStatus(horny) += getRandInt(15,30);
+        root->vStatistics(voyeurism) += 1;
         int temp = getRandInt(0,1);
         if(temp == 0)
         {
             root->setImage(media(30));
-            root->setDesc(str(14));
+            root->setText(str(14));
         }
         else
         {
             root->setImage(media(31));
-            root->setDesc(str(15));
+            root->setText(str(15));
         }
         makeActBtn("watch_miramitka21",act(5));
     }
     if(action == "watch_miramitka21")
     {
         root->incTime(10);
-        root->uVStatus(horny,getRandInt(15,30));
-        root->uVEvent(mirasextimes,1);
+        root->vStatus(horny) += getRandInt(15,30);
+        root->vEvent(mirasextimes) +=1;
         root->setImage(media(34));
-        root->setDesc(str(16));
+        root->setText(str(16));
         makeActBtn("gadforest",act(0));
     }
     if(action == "run_and_dress")
     {
-        root->uVEvent(gopsawnaked,1);
-        if(root->gVEvent(gopsawnaked) >= 10)
+        root->vEvent(gopsawnaked) += 1;
+        if(root->vEvent(gopsawnaked) >= 10)
         {
-            root->sVEvent(gopsawnaked,0);
-            root->uVEvent(mitkasextimes,1);
+            root->vEvent(gopsawnaked) = 0;
+            root->vEvent(mitkasextimes) +=1;
         }
-        root->uVStatus(horny,10);
-        root->sVStatus(clothesforest,0);
-        root->sVStatus(swamp_clothes,0);
+        root->vStatus(horny) += 10;
+        root->vStatus(clothesforest) = 0;
+        root->vStatus(swamp_clothes) = 0;
         root->incTime(5);
         root->redressOld();
         root->setImage(media(35));
-        root->setDesc(str(23));
+        root->setText(str(23));
         makeActBtn("gadforest",act(0));
     }
     if(action == "run_and_dress2")
     {
-        root->uVEvent(gopsawnaked,1);
-        if(root->gVEvent(gopsawnaked) >= 10)
+        root->vEvent(gopsawnaked) += 1;
+        if(root->vEvent(gopsawnaked) >= 10)
         {
-            root->sVEvent(gopsawnaked,0);
-            root->uVEvent(mitkasextimes,1);
+            root->vEvent(gopsawnaked) = 0;
+            root->vEvent(mitkasextimes) +=1;
         }
-        root->uVStatus(horny,10);
-        root->sVStatus(clothesforest,0);
-        root->sVStatus(swamp_clothes,0);
+        root->vStatus(horny) += 10;
+        root->vStatus(clothesforest) = 0;
+        root->vStatus(swamp_clothes) = 0;
         root->incTime(5);
         root->redressOld();
         root->setImage(media(36));
-        root->setDesc(str(28));
+        root->setText(str(28));
         makeActBtn("gadforest",act(0));
     }
     if(action == "run_and_dress3")
     {
-        root->uVEvent(gopsawnaked,1);
-        if(root->gVEvent(gopsawnaked) >= 10)
+        root->vEvent(gopsawnaked) += 1;
+        if(root->vEvent(gopsawnaked) >= 10)
         {
-            root->sVEvent(gopsawnaked,0);
-            root->uVEvent(mitkasextimes,1);
+            root->vEvent(gopsawnaked) = 0;
+            root->vEvent(mitkasextimes) +=1;
         }
-        root->uVStatus(horny,10);
-        root->sVStatus(clothesforest,0);
-        root->sVStatus(swamp_clothes,0);
+        root->vStatus(horny) += 10;
+        root->vStatus(clothesforest) = 0;
+        root->vStatus(swamp_clothes) = 0;
         root->incTime(5);
         root->redressOld();
         root->setImage(media(36));
-        root->setDesc(str(45));
+        root->setText(str(45));
         makeActBtn("gadforest",act(3));
         makeActBtn("watch_mirakolyamba2",act(4));
     }
     if(action == "run_and_dress4")
     {
-        root->uVEvent(gopsawnaked,1);
-        if(root->gVEvent(gopsawnaked) >= 10)
+        root->vEvent(gopsawnaked) += 1;
+        if(root->vEvent(gopsawnaked) >= 10)
         {
-            root->sVEvent(gopsawnaked,0);
-            root->uVEvent(mitkasextimes,1);
+            root->vEvent(gopsawnaked) = 0;
+            root->vEvent(mitkasextimes) +=1;
         }
-        root->uVStatus(horny,10);
-        root->sVStatus(clothesforest,0);
-        root->sVStatus(swamp_clothes,0);
+        root->vStatus(horny) += 10;
+        root->vStatus(clothesforest) = 0;
+        root->vStatus(swamp_clothes) = 0;
         root->incTime(5);
         root->redressOld();
         root->setImage(media(36));
-        root->setDesc(str(60));
+        root->setText(str(60));
         makeActBtn("gadforest",act(3));
         makeActBtn("watch_miravasyan",act(4));
     }
     if(action == "run_and_dress5")
     {
-        root->uVEvent(gopsawnaked,1);
-        if(root->gVEvent(gopsawnaked) >= 10)
+        root->vEvent(gopsawnaked) += 1;
+        if(root->vEvent(gopsawnaked) >= 10)
         {
-            root->sVEvent(gopsawnaked,0);
-            root->uVEvent(mitkasextimes,1);
+            root->vEvent(gopsawnaked) = 0;
+            root->vEvent(mitkasextimes) +=1;
         }
-        root->uVStatus(horny,10);
-        root->sVStatus(clothesforest,0);
-        root->sVStatus(swamp_clothes,0);
+        root->vStatus(horny) += 10;
+        root->vStatus(clothesforest) = 0;
+        root->vStatus(swamp_clothes) = 0;
         root->incTime(5);
         root->redressOld();
         root->setImage(media(36));
-        root->setDesc(str(102));
+        root->setText(str(102));
         makeActBtn("gadforest",act(3));
         makeActBtn("watch_mira2boys",act(4));
     }
     if(action == "run_and_dress6")
     {
-        root->uVEvent(gopsawnaked,1);
-        if(root->gVEvent(gopsawnaked) >= 10)
+        root->vEvent(gopsawnaked) += 1;
+        if(root->vEvent(gopsawnaked) >= 10)
         {
-            root->sVEvent(gopsawnaked,0);
-            root->uVEvent(mitkasextimes,1);
+            root->vEvent(gopsawnaked) = 0;
+            root->vEvent(mitkasextimes) +=1;
         }
-        root->uVStatus(horny,10);
-        root->sVStatus(clothesforest,0);
-        root->sVStatus(swamp_clothes,0);
+        root->vStatus(horny) += 10;
+        root->vStatus(clothesforest) = 0;
+        root->vStatus(swamp_clothes) = 0;
         root->incTime(5);
         root->redressOld();
         root->setImage(media(36));
-        root->setDesc(str(102));
+        root->setText(str(102));
         makeActBtn("gadforest",act(3));
         makeActBtn("watch_mira3boys",act(4));
     }
     if(action == "hide")
     {
         root->incTime(5);
-        root->uVStatus(horny,5);
+        root->vStatus(horny) += 5;
         root->setImage(media(37));
-        root->setDesc(str(24));
+        root->setText(str(24));
         makeActBtn("gadforest",act(0));
     }
     if(action == "hide2")
     {
         root->incTime(5);
-        root->uVStatus(horny,5);
+        root->vStatus(horny) += 5;
         root->setImage(media(38));
-        root->setDesc(str(29));
+        root->setText(str(29));
         makeActBtn("gadforest",act(0));
     }
     if(action == "hide3")
     {
         root->incTime(5);
-        root->uVStatus(horny,5);
+        root->vStatus(horny) += 5;
         root->setImage(media(37));
-        root->setDesc(str(41));
+        root->setText(str(41));
         makeActBtn("gadforest",act(0));
     }
     if(action == "hide4")
     {
         root->incTime(5);
-        root->uVStatus(horny,5);
+        root->vStatus(horny) += 5;
         root->setImage(media(38));
-        root->setDesc(str(44));
+        root->setText(str(44));
         makeActBtn("gadforest",act(0));
     }
     if(action == "hide5")
     {
         root->incTime(5);
-        root->uVStatus(horny,5);
+        root->vStatus(horny) += 5;
         root->setImage(media(37));
-        root->setDesc(str(57));
+        root->setText(str(57));
         makeActBtn("gadforest",act(0));
     }
     if(action == "hide6")
     {
         root->incTime(5);
-        root->uVStatus(horny,5);
+        root->vStatus(horny) += 5;
         root->setImage(media(38));
-        root->setDesc(str(61));
+        root->setText(str(61));
         makeActBtn("gadforest",act(0));
     }
     if(action == "hide7")
     {
         root->incTime(5);
-        root->uVStatus(horny,5);
+        root->vStatus(horny) += 5;
         root->setImage(media(37));
-        root->setDesc(str(100));
+        root->setText(str(100));
         makeActBtn("gadforest",act(0));
     }
     if(action == "hide8")
     {
         root->incTime(5);
-        root->uVStatus(horny,5);
+        root->vStatus(horny) += 5;
         root->setImage(media(38));
-        root->setDesc(str(101));
+        root->setText(str(101));
         makeActBtn("gadforest",act(0));
     }
     if(action == "go_next")
     {
-        root->sVEvent(gadboyday, root->vStatus(daystart));
+        root->vEvent(gadboyday) = root->vStatus(daystart);
         root->incTime(5);
-        if(root->gVEvent(mitkasextimes) == 0)
-            root->uVEvent(mitkasextimes,1);
-        root->uVStatus(horny,20);
+        if(root->vEvent(mitkasextimes) == 0)
+            root->vEvent(mitkasextimes) +=1;
+        root->vStatus(horny) += 20;
         root->setImage(media(39));
-        root->setDesc(str(25));
+        root->setText(str(25));
         makeActBtn("gadforest",act(0));
     }
     if(action == "watch_mirakolyamba")
     {
         root->incTime(10);
-        root->uVStatus(horny,30);
-        root->uVEvent(mirasextimes,1);
+        root->vStatus(horny) += 30;
+        root->vEvent(mirasextimes) +=1;
         root->setImage(media(40));
-        root->setDesc(str(35));
+        root->setText(str(35));
         makeActBtn("gadforest",act(0));
     }
     if(action == "watch_mirakolyamba2")
     {
         root->incTime(10);
-        root->uVStatus(horny,30);
-        root->uVEvent(mirasextimes,1);
-        root->uVSC(voyeurism,1);
+        root->vStatus(horny) += 30;
+        root->vEvent(mirasextimes) +=1;
+        root->vStatistics(voyeurism) += 1;
         root->setImage(media(40));
-        root->setDesc(str(35));
+        root->setText(str(35));
         makeActBtn("gadforest",act(0));
     }
     if(action == "watch_vasyan1")
     {
         root->incTime(5);
-        root->uVStatus(horny,5);
-        root->uVEvent(mirasextimes,1);
-        root->uVSC(voyeurism,1);
+        root->vStatus(horny) += 5;
+        root->vEvent(mirasextimes) +=1;
+        root->vStatistics(voyeurism) += 1;
         root->setImage(media(41));
-        root->setDesc(str(51));
+        root->setText(str(51));
         makeActBtn("gadforest",act(0));
     }
     if(action == "watch_miravasyan")
     {
         root->incTime(10);
-        root->uVStatus(horny,40);
-        root->uVEvent(mirasextimes,1);
-        root->uVSC(voyeurism,1);
+        root->vStatus(horny) += 40;
+        root->vEvent(mirasextimes) +=1;
+        root->vStatistics(voyeurism) += 1;
         root->setImage(media(41));
-        root->setDesc(str(51));
+        root->setText(str(51));
         makeActBtn("gadforest",act(0));
     }
     if(action == "2boyssex")
     {
-        root->sVEvent(forest_gopsex,2);
+        root->vEvent(forest_gopsex) = 2;;
         root->startEvent(eHanterSex);
     }
     if(action == "2boyssex2")
     {
-        root->sVEvent(mitkaforestsex, 2);
+        root->vEvent(mitkaforestsex) = 2;
         root->startEvent(eMitkaSex);
     }
     if(action == "2boyssex3")
     {
-        root->sVEvent(mirainforest,0);
-        root->sVEvent(forest_gopsex,2);
+        root->vEvent(mirainforest) =0;
+        root->vEvent(forest_gopsex) = 2;;
         root->startEvent(eHanterSex);
     }
     if(action == "watch_mira2boys")
     {
         root->incTime(5);
-        root->uVStatus(horny,40);
-        root->uVEvent(mirasextimes,1);
-        root->uVSC(voyeurism,1);
-        if(root->gVEvent(mitboyrand) == 1)
+        root->vStatus(horny) += 40;
+        root->vEvent(mirasextimes) +=1;
+        root->vStatistics(voyeurism) += 1;
+        if(root->vEvent(mitboyrand) == 1)
         {
             root->setImage(media(45));
-            root->setDesc(str(73));
+            root->setText(str(73));
         }
-        else if(root->gVEvent(mitboyrand) == 2)
+        else if(root->vEvent(mitboyrand) == 2)
         {
             root->setImage(media(44));
-            root->setDesc(str(74));
+            root->setText(str(74));
         }
         else
         {
             root->setImage(media(43));
-            root->setDesc(str(75));
+            root->setText(str(75));
         }
         makeActBtn("gadforest",act(0));
     }
     if(action == "3boyssex")
     {
-        root->sVEvent(forest_gopsex,3);
+        root->vEvent(forest_gopsex) = 3;;
         root->startEvent(eHanters);
     }
     if(action == "3boyssex2")
     {
-        root->sVEvent(mitkaforestsex,3);
+        root->vEvent(mitkaforestsex) =3;
         root->startEvent(eMitkaSex);
     }
     if(action == "3boyssex3")
     {
-        root->sVEvent(mirainforest,0);
-        root->sVEvent(forest_gopsex,3);
+        root->vEvent(mirainforest) =0;
+        root->vEvent(forest_gopsex) = 3;;
         root->startEvent(eHanters);
     }
     if(action == "watch_mira3boys")
     {
         root->incTime(5);
-        root->uVStatus(horny,40);
-        root->uVEvent(mirasextimes,1);
-        root->uVSC(voyeurism,1);
+        root->vStatus(horny) += 40;
+        root->vEvent(mirasextimes) +=1;
+        root->vStatistics(voyeurism) += 1;
         root->setImage(media(42));
-        root->setDesc(str(112));
+        root->setText(str(112));
         makeActBtn("gadforest",act(0));
     }
     if(action == "Give_in_to_temptation")
     {
-        root->sVStatus(clothesforest,1);
+        root->vStatus(clothesforest) = 1;
         root->incTime(5);
-        root->uVStatus(horny,10);
-        if(root->gVEvent(mirainforest) == 1)
-            root->uVQuest(miraQW,5);
-        if(root->gVEvent(mirainforest) == 0)
-            root->sVEvent(miratalkforest,2);
+        root->vStatus(horny) += 10;
+        if(root->vEvent(mirainforest) == 1)
+            root->vQuest(miraQW) += 5;
+        if(root->vEvent(mirainforest) == 0)
+            root->vEvent(miratalkforest) = 2;
         else
-            root->sVEvent(miratalkforest,3);
-        if(!root->isSkirt() && root->gVEvent(mirainforest) == 0)
+            root->vEvent(miratalkforest) = 3;
+        if(!root->isSkirt() && root->vEvent(mirainforest) == 0)
             root->setImage(media(46));
-        if(root->isSkirt() && root->gVEvent(mirainforest) == 0)
+        if(root->isSkirt() && root->vEvent(mirainforest) == 0)
             root->setImage(media(47));
-        if(root->gVEvent(mirainforest) == 1)
+        if(root->vEvent(mirainforest) == 1)
             root->setImage(media(48));
         root->redress(ClothType::Main,nullptr);
-        if(root->gVEvent(mirainforest) == 0)
-            root->setDesc(str(125));
+        if(root->vEvent(mirainforest) == 0)
+            root->setText(str(125));
         else
-            root->setDesc(str(126));
+            root->setText(str(126));
         makeActBtn("gadforest",act(0));
     }
     if(action == "mushroom_pickers_way")
     {
-        ((Gadforest*)root->getLocPtr())->actionHandler(intQStr(getRandInt(2,4)));
+        ((Gadforest*)root->getLocPtr(root->getCurLoc()))->actionHandler(intQStr(getRandInt(2,4)));
     }
     if(action == "pickers3_exit")
     {
-        root->sVEvent(pickersday,root->vStatus(daystart));
+        root->vEvent(pickersday) = root->vStatus(daystart);
         actionHandler("back_to_loc");
     }
     if(action == "hello_pickers")
     {
-        root->sVEvent(foresteventday, root->vStatus(daystart));
+        root->vEvent(foresteventday) = root->vStatus(daystart);
         root->incTime(3);
-        if(root->gVQuest(pickersQW) < 3)
-            root->uVQuest(pickersQW,1);
+        if(root->vQuest(pickersQW) < 3)
+            root->vQuest(pickersQW) += 1;
         root->setImage(media(20));
-        root->setDesc(str(131));
-        if(root->gVQuest(pickersQW) >= 3)
+        root->setText(str(131));
+        if(root->vQuest(pickersQW) >= 3)
             makeActBtn("talk_pickers",act(14));
         makeActBtn("back_to_loc",act(3));
     }
     if(action == "talk_pickers")
     {
         root->incTime(10);
-        root->sVQuest(pickersQW,getRandInt(4,7));
-        root->uVEvent(goforest,getRandInt(0,1));
+        root->vQuest(pickersQW) = getRandInt(4,7);
+        root->vEvent(goforest) += getRandInt(0,1);
         root->setImage(media(20));
-        if(root->gVQuest(pickersQW) <= 5)
-            root->setDesc(str(132));
-        if(root->gVQuest(pickersQW) > 5 && root->vStatus(boletus) + root->vStatus(bilberry) < 5)
+        if(root->vQuest(pickersQW) <= 5)
+            root->setText(str(132));
+        if(root->vQuest(pickersQW) > 5 && root->vStatus(boletus) + root->vStatus(bilberry) < 5)
         {
-            root->setDesc(str(133));
-            root->sVEvent(pickershelp,1);
+            root->setText(str(133));
+            root->vEvent(pickershelp) =1;
         }
-        if(root->gVQuest(pickersQW) > 5 && root->vStatus(boletus) + root->vStatus(bilberry) >= 5)
+        if(root->vQuest(pickersQW) > 5 && root->vStatus(boletus) + root->vStatus(bilberry) >= 5)
         {
-            root->setDesc(str(134));
+            root->setText(str(134));
         }
-        if(root->gVEvent(pickershelp) == 1)
+        if(root->vEvent(pickershelp) == 1)
         {
-            root->sVEvent(pickershelp,0);
-            root->uVStatus(boletus,getRandInt(1,2));
-            root->uVStatus(bilberry,getRandInt(1,2));
+            root->vEvent(pickershelp) = 0;
+            root->vStatus(boletus) += getRandInt(1,2);
+            root->vStatus(bilberry) += getRandInt(1,2);
         }
         makeActBtn("back_to_loc",act(3));
     }
     if(action == "collect_mushrooms")
     {
         root->incTime(60);
-        root->uVStatus(boletus,getRandInt(5,10));
+        root->vStatus(boletus) += getRandInt(5,10);
         if(root->isCloth() && !root->isSkirt())
             root->setImage(media(1));
         if(root->isCloth() && root->isSkirt() && root->isPanties())
@@ -2218,24 +2218,24 @@ void GadforestEvent::actionHandler(QString action)
             root->setImage(media(50));
         if(root->isNude())
             root->setImage(media(51));
-        root->setDesc(str(135));
+        root->setText(str(135));
         makeActBtn("back_to_loc",act(0));
     }
     if(action == "collect_billberry")
     {
         root->incTime(60);
-        root->uVStatus(bilberry, getRandInt(5,10));
+        root->vStatus(bilberry) += getRandInt(5,10);
         root->setImage(media(52));
-        root->setDesc(str(137));
+        root->setText(str(137));
     }
     if(action == "take_boletus_basket")
     {
-        root->uVStatus(boletus,10);
+        root->vStatus(boletus)+=10;
         actionHandler("back_to_loc");
     }
     if(action == "take_bilberry_basket")
     {
-        root->uVStatus(bilberry,10);
+        root->vStatus(bilberry) += 10;
         actionHandler("back_to_loc");
     }
     if(action == "hide_n_dress")
@@ -2245,17 +2245,17 @@ void GadforestEvent::actionHandler(QString action)
             root->setImage(media(53));
         else
             root->setImage(media(46));
-        root->setDesc(str(142));
+        root->setText(str(142));
         makeActBtn("gadforest",act(19));
     }
     if(action == "hanters_lost1")
     {
-        if(root->gVEvent(hantersKnow) == 0)
+        if(root->vEvent(hantersKnow) == 0)
         {
             root->incTime(5);
-            root->sVEvent(forest_lost,0);
-            root->sVEvent(hantersKnow,1);
-            root->uVEvent(goforest,1);
+            root->vEvent(forest_lost) =0;
+            root->vEvent(hantersKnow) = 1;
+            root->vEvent(goforest) +=1;
             if(root->getMonth() >= 5 && root->getMonth() <= 9)
             {
                 if(!root->isNude())
@@ -2267,43 +2267,43 @@ void GadforestEvent::actionHandler(QString action)
                 root->setImage(media(56));
             if(!root->isNude())
             {
-                root->setDesc(str(145));
-                if(root->gVEvent(wolf_know) == 0)
-                    root->addDesc(str(146));
-                root->addDesc(str(147));
+                root->setText(str(145));
+                if(root->vEvent(wolf_know) == 0)
+                    root->addText(str(146));
+                root->addText(str(147));
             }
             else
             {
-                root->setDesc(str(148));
-                if(root->gVEvent(wolf_know) == 0)
-                    root->addDesc(str(146));
-                root->addDesc(str(149));
-                root->uVEvent(hanterslut,1);
+                root->setText(str(148));
+                if(root->vEvent(wolf_know) == 0)
+                    root->addText(str(146));
+                root->addText(str(149));
+                root->vEvent(hanterslut) +=1;
             }
             makeActBtn("hanters_lost1.1",act(0));
         }
         else
         {
             root->incTime(5);
-            root->uVEvent(goforest,1);
+            root->vEvent(goforest) +=1;
             root->setImage(media(57));
-            root->setDesc(str(157));
-            if(root->gVEvent(hantersKnowSlut) == 0 || (root->gVEvent(hantersKnowSlut) > 0 && root->gVEvent(hantslutsex) > 0))
+            root->setText(str(157));
+            if(root->vEvent(hantersKnowSlut) == 0 || (root->vEvent(hantersKnowSlut) > 0 && root->vEvent(hantslutsex) > 0))
             {
                 root->incTime(30);
-                root->addDesc(str(158));
+                root->addText(str(158));
                 makeActBtn("go_swamp",act(21));
                 makeActBtn("back_to_lock",act(10));
             }
             else
             {
-                root->setDesc(str(159));
+                root->setText(str(159));
                 if(root->vStatus(horny) < 40)
-                    root->addDesc(str(160));
+                    root->addText(str(160));
                 if(root->vStatus(horny) >= 40 && root->vStatus(horny) < 70)
-                    root->addDesc(str(161));
+                    root->addText(str(161));
                 if(root->vStatus(horny) >= 70)
-                    root->addDesc(str(162));
+                    root->addText(str(162));
                 makeActBtn("go_fuck_hanters",act(21));
             }
         }
@@ -2311,56 +2311,56 @@ void GadforestEvent::actionHandler(QString action)
     if(action == "hanters_lost1.1")
     {
         root->incTime(30);
-        root->sVEvent(wolf_know,1);
+        root->vEvent(wolf_know) = 1;
         if(root->isNude())
         {
-            root->sVStatus(swamp_clothes,1);
+            root->vStatus(swamp_clothes) = 1;
             root->redress(ClothType::Main,new ClothMain(1,towel,"полотенце"));
         }
         root->setImage(media(57));
-        root->setDesc(str(150));
+        root->setText(str(150));
         if(root->vStatus(vnesh) >= 40)
-            root->addDesc(str(151));
+            root->addText(str(151));
         if(root->vStatus(vnesh) < 40)
-            root->addDesc(str(152));
-        root->addDesc(str(153));
-        if(root->gVEvent(gadriver_gang) == 0)
-            root->addDesc(str(154));
+            root->addText(str(152));
+        root->addText(str(153));
+        if(root->vEvent(gadriver_gang) == 0)
+            root->addText(str(154));
         else
         {
-            root->addDesc(str(155));
-            root->sVEvent(hantersKnowSlut,1);
-            root->sVEvent(hantersRape,1);
+            root->addText(str(155));
+            root->vEvent(hantersKnowSlut) =1;
+            root->vEvent(hantersRape) =1;
         }
-        root->addDesc(str(156));
+        root->addText(str(156));
         makeActBtn("go_swamp",act(0));
     }
     if(action == "go_swamp")
     {
-        root->sVEvent(goswamp,1);
-        root->sVEvent(hanters,1);
+        root->vEvent(goswamp) = 1;
+        root->vEvent(hanters) = 1;
         root->incTime(60);
         root->changeLoc(lswampyard);
     }
     if(action == "go_fuck_hanters")
     {
-        root->sVEvent(hanters,1);
-        root->sVEvent(goswamp,1);
+        root->vEvent(hanters) = 1;
+        root->vEvent(goswamp) = 1;
         int tmp = getRandInt(1,3);
-        root->sVEvent(temphant,getRandInt(1,3));
+        root->vEvent(temphant) =getRandInt(1,3);
         if(tmp == 1)
         {
-            root->sVEvent(forest_hantersex,1);
+            root->vEvent(forest_hantersex) =1;
             root->startEvent(eHanters);
         }
         if(tmp == 2)
         {
-            root->sVEvent(forest_hantersex,2);
+            root->vEvent(forest_hantersex) =2;
             root->startEvent(eHanterSex);
         }
         if(tmp == 3)
         {
-            root->sVEvent(forest_hantersex,3);
+            root->vEvent(forest_hantersex) =3;
             root->startEvent(eHanters);
         }
     }
@@ -2368,14 +2368,14 @@ void GadforestEvent::actionHandler(QString action)
     {
         root->incTime(5);
         root->setImage(media(58));
-        root->setDesc(str(163));
+        root->setText(str(163));
         makeActBtn("back_to_loc",act(0));
     }
     if(action == "forest_road1")
     {
         root->incTime(75);
         root->setImage(media(59));
-        root->setDesc(str(165));
+        root->setText(str(165));
         if(root->vSkill(domination) >= 0)
             makeActBtn("run_from_wolf",act(22));
         else
@@ -2389,7 +2389,7 @@ void GadforestEvent::actionHandler(QString action)
     {
         root->incTime(1);
         root->setImage(media(60));
-        root->setDesc(str(166));
+        root->setText(str(166));
         makeActBtn("finish_in_forest",act(0));
     }
     if(action == "finish_in_forest")
@@ -2399,34 +2399,34 @@ void GadforestEvent::actionHandler(QString action)
     if(action == "run_from_wolf")
     {
         root->setImage(media(61));
-        root->setDesc(str(167));
+        root->setText(str(167));
         makeActBtn("run_from_wolf2",act(0));
     }
     if(action == "run_from_wolf2")
     {
         int wolftemp = getRandInt(0,200);
         int lostrand = getRandInt(0,100);
-        if(root->vSkill(runner) > wolftemp && root->gVEvent(goforest) > lostrand)
+        if(root->vSkill(runner) > wolftemp && root->vEvent(goforest) > lostrand)
         {
             root->incTime(25);
-            root->uVStatus(sweat,2);
+            root->vStatus(sweat) +=2;
             root->setImage(media(62));
-            root->setDesc(str(168));
+            root->setText(str(168));
             makeActBtn("gadforest",act(0));
         }
-        else if(root->vSkill(runner) > wolftemp && root->gVEvent(goforest) < lostrand)
+        else if(root->vSkill(runner) > wolftemp && root->vEvent(goforest) < lostrand)
         {
             root->incTime(25);
-            root->uVStatus(sweat,2);
+            root->vStatus(sweat) +=2;
             root->setImage(media(63));
-            root->setDesc(str(169));
+            root->setText(str(169));
             makeActBtn("gadforestlostmain",act(0));
         }
         else
         {
             root->incTime(5);
             root->setImage(media(64));
-            root->setDesc(str(170));
+            root->setText(str(170));
             makeActBtn("run_from_wolf3",act(0));
         }
     }
@@ -2434,7 +2434,7 @@ void GadforestEvent::actionHandler(QString action)
     {
         root->incTime(1);
         root->setImage(media(65));
-        root->setDesc(str(171));
+        root->setText(str(171));
         makeActBtn("wolf_end",act(24));
     }
     if(action == "wolf_end")

@@ -7,7 +7,7 @@
 class BedrPar: public Location
 {
 public:
-    BedrPar(LocationHandler* ptr);
+    BedrPar(Game* ptr);
     void show(QString arg = "") override;
     LocId getLocId() override;
     LocId getParId() override;
@@ -21,6 +21,7 @@ private:
     QString str(int id);
     QString act(int id);
     QString img(int id);
+    Game* root;
 };
 
 #endif // BEDRPAR_H

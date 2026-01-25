@@ -1,9 +1,9 @@
 #include "gadforestlost.h"
-#include "../eventhandler.h"
+#include "../../game.h"
 #include "../../menu/buttons.h"
 #include "../../Functions.h"
 
-GadforestLost::GadforestLost(EventHandler* ptr): root(ptr) {}
+GadforestLost::GadforestLost(Game* ptr): root(ptr) {}
 
 void GadforestLost::start(QString arg)
 {
@@ -23,12 +23,12 @@ void GadforestLost::actionHandler(QString action)
             if(root->isDay())
             {
                 root->setImage(media(0));
-                root->setDesc(str(0));
+                root->setText(str(0));
             }
             else
             {
                 root->setImage(media(1));
-                root->setDesc(str(1));
+                root->setText(str(1));
             }
         }
         else
@@ -36,19 +36,19 @@ void GadforestLost::actionHandler(QString action)
             if(root->isDay())
             {
                 root->setImage(media(2));
-                root->setDesc(str(2));
+                root->setText(str(2));
             }
             else
             {
                 root->setImage(media(3));
-                root->setDesc(str(3));
+                root->setText(str(3));
             }
         }
-        if(root->gVEvent(lost) >= getRandInt(1,5) && !root->isDay())
+        if(root->vEvent(lost) >= getRandInt(1,5) && !root->isDay())
             root->startEvent(eGadForestEvent,"lost");
-        if(root->gVEvent(lost) > 1 && getRandInt(1,10) == 1 && root->isDay())
+        if(root->vEvent(lost) > 1 && getRandInt(1,10) == 1 && root->isDay())
         {
-            root->sVEvent(forest_lost,1);
+            root->vEvent(forest_lost) =1;
             root->startEvent(eGadForestEvent,"forest_hanters");
         }
         makeActBtn("search_path",act(0));
@@ -56,16 +56,16 @@ void GadforestLost::actionHandler(QString action)
     }
     if(action == "finish")
     {
-        root->uVStatus(mood,20);
+        root->vStatus(mood) += 20;
         root->setImage(media(4));
-        root->setDesc(str(4));
+        root->setText(str(4));
         makeActBtn("get_out",act(3));
     }
     if(action == "search_path")
     {
         root->incTime(getRandInt(50,70));
-        root->uVStatus(mood,-5);
-        root->uVEvent(goforest,getRandInt(0,1));
+        root->vStatus(mood) -= 5;
+        root->vEvent(goforest) += getRandInt(0,1);
         if(root->isNude())
             root->setImage(media(5));
         else if(root->isSkirt())
@@ -77,12 +77,12 @@ void GadforestLost::actionHandler(QString action)
     }
     if(action == "search_next")
     {
-        int tmp = getRandInt(1,40*root->gVEvent(lost));
-        if(root->gVEvent(goforest) > tmp)
+        int tmp = getRandInt(1,40*root->vEvent(lost));
+        if(root->vEvent(goforest) > tmp)
             actionHandler("finish");
         else
         {
-            if(root->gVEvent(lost) == 4 && getRandInt(1,10) > 7)
+            if(root->vEvent(lost) == 4 && getRandInt(1,10) > 7)
                 root->changeLoc(lgadforestswamp);
             else
                 actionHandler("main");
@@ -95,7 +95,7 @@ void GadforestLost::actionHandler(QString action)
     if(action == "get_out")
     {
         root->incTime(15);
-        int tmp = getRandInt(1,root->gVEvent(lost)*3);
+        int tmp = getRandInt(1,root->vEvent(lost)*3);
         if(tmp == 1)
             root->changeLoc(lgadforest,0,"1");
         if(tmp == 2)
@@ -114,7 +114,7 @@ void GadforestLost::actionHandler(QString action)
             root->changeLoc(lroad,0,"3");
         if(tmp >= 10)
         {
-            if(root->gVEvent(goswamp) == 0 && root->getSnow() <= 0)
+            if(root->vEvent(goswamp) == 0 && root->getSnow() <= 0)
                 root->changeLoc(lgadforestswamp,0,"1");
             else
                 root->changeLoc(lswamp,0);
@@ -127,7 +127,7 @@ void GadforestLost::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action,"GadforestLost");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &GadforestLost::actionHandler);
-    root->addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString GadforestLost::str(int id)

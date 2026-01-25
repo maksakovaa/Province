@@ -2,7 +2,8 @@
 #include "../../Functions.h"
 #include "../../events/questenums.h"
 #include "../../menu/buttons.h"
-Gaddvor::Gaddvor(LocationHandler *ptr): Location(ptr) {}
+#include "../../game.h"
+Gaddvor::Gaddvor(Game *ptr):  root(ptr) {}
 
 void Gaddvor::show(QString arg)
 {
@@ -38,79 +39,79 @@ void Gaddvor::actionHandler(QString action)
 {
     if(action == "gaddvor")
     {
-        sVEvent(grandpa_ingaddvor,0);
-        setImage(makeImage(media(0), isDay(), getMonth()));
-        setDesc(getStr(0));
-        if(isDay() && getMonth() >= 4 && getMonth() <= 10)
-            addText(getStr(1));
-        if(gVEvent(mira_guest) == 1)
-            addText(getStr(2));
-        if(getMonth() > 5 && getMonth() < 9 && getSunWeather() >= 0 && gVJob(graze_cow) == 0)
+        root->vEvent(grandpa_ingaddvor) =0;
+        root->setImage(makeImage(media(0), root->isDay(), root->getMonth()));
+        root->setText(getStr(0));
+        if(root->isDay() && root->getMonth() >= 4 && root->getMonth() <= 10)
+            root->addText(getStr(1));
+        if(root->vEvent(mira_guest) == 1)
+            root->addText(getStr(2));
+        if(root->getMonth() > 5 && root->getMonth() < 9 && root->getSunWeather() >= 0 && root->vJob(graze_cow) == 0)
         {
-            if((getHour() > 7 && getHour() < 13  && (getWeekNum() == 2 || getWeekNum() == 4 || getWeekNum() == 6)) ||
-                (getHour() > 13 && getHour() < 18 && (getWeekNum() == 3 || getWeekNum() == 5)))
+            if((root->getHour() > 7 && root->getHour() < 13  && (root->getWeek() == 2 || root->getWeek() == 4 || root->getWeek() == 6)) ||
+                (root->getHour() > 13 && root->getHour() < 18 && (root->getWeek() == 3 || root->getWeek() == 5)))
             {
-                sVEvent(grandpa_ingaddvor,1);
-                addText(getStr(3));
+                root->vEvent(grandpa_ingaddvor) = 1;
+                root->addText(getStr(3));
             }
         }
         makeActBtn("go_izba", getStr(4));
         makeActBtn("go_sarai", getStr(5));
         makeActBtn("go_bana", getStr(6));
         makeActBtn("go_garden", getStr(7));
-        if(gVEvent(meadow) > 0 && isDay() && getSnow() <= 0 && gVEvent(mira_guest) == 0)
+        if(root->vEvent(meadow) > 0 && root->isDay() && root->getSnow() <= 0 && root->vEvent(mira_guest) == 0)
             makeActBtn("go_meadow", getStr(8));
-        if(isCloth())
+        if(root->isCloth())
             makeActBtn("go_village", getStr(9));
-        if((gVEvent(fishers_nude) == 8 && getHour() >= 18 && getHour() <= 21) || (gVEvent(gadukino_nude) > 8 && getHour() >= 6 && getHour() <= 21))
+        if((root->vEvent(fishers_nude) == 8 && root->getHour() >= 18 && root->getHour() <= 21) || (root->vEvent(gadukino_nude) > 8 && root->getHour() >= 6 && root->getHour() <= 21))
         {
-            startEvent(eGadukinoEvents, "gadriver_nude_end");
+            root->startEvent(eGadukinoEvents, "gadriver_nude_end");
         }
-        if(gVEvent(onlooker_man) == 1 && getHour() >= 6 && getHour() <= 21)
+        if(root->vEvent(onlooker_man) == 1 && root->getHour() >= 6 && root->getHour() <= 21)
         {
-            startEvent(eGadukinoEvents, "gadukino_onlooker_man");
+            root->startEvent(eGadukinoEvents, "gadukino_onlooker_man");
         }
         mira_temp = getRandInt(1,5);
-        if(mira_temp == 3 && getHour() >= 9 && getHour() <= 19 && gVQuest(miraQW) >= 15 && gVEvent(Mira_no) == 0 && gVEvent(mira_guest) == 0 && getSunWeather() >= 0 && gVEvent(mira_guestday) != gVStatus(daystart) && (gVEvent(mitkasextimes) < 13 || gVQuest(miragopQW) >= 10 || gVEvent(mirasex) > 1))
+        if(mira_temp == 3 && root->getHour() >= 9 && root->getHour() <= 19 && root->vQuest(miraQW) >= 15 && root->vEvent(Mira_no) == 0 && root->vEvent(mira_guest) == 0 && root->getSunWeather() >= 0 && root->vEvent(mira_guestday) != root->vStatus(daystart) && (root->vEvent(mitkasextimes) < 13 || root->vQuest(miragopQW) >= 10 || root->vEvent(mirasex) > 1))
         {
-            startEvent(eGrandParentEvents,"mira_courtyard");
+            root->startEvent(eGrandParentEvents,"mira_courtyard");
         }
-        if(getCloth(ClothType::Main) == nullptr)
+        if(root->getCloth(ClothType::Main) == nullptr)
         {
-            startEvent(eGrandParentEvents,"courtyard_nude");
+            root->startEvent(eGrandParentEvents,"courtyard_nude");
         }
     }
     if(action == "chickens")
     {
-        startEvent(eGrandParentEvents,"chickens");
+        root->startEvent(eGrandParentEvents,"chickens");
     }
     if(action == "Miroslava")
     {
-        startEvent(eMiroslava);
+        root->startEvent(eMiroslava);
     }
     if(action == "go_izba")
     {
-        changeLoc(lgadhouse,5);
+        root->changeLoc(lgadhouse,5);
     }
     if(action == "go_sarai")
     {
-        changeLoc(lgadsarai,5);
+        root->changeLoc(lgadsarai,5);
     }
     if(action == "go_bana")
     {
-        changeLoc(lgadbana, 5);
+        root->changeLoc(lgadbana, 5);
     }
     if(action == "go_garden")
     {
-        changeLoc(lgadgarden, 5);
+        root->changeLoc(lgadgarden, 5);
     }
     if(action == "go_meadow")
     {
-        changeLoc(lmeadow, 20);
+        root->changeLoc(lmeadow, 20);
     }
     if(action == "go_village")
     {
-        changeLoc(lgadukino,5);
+        root->changeLoc(lgadukino,5);
     }
 }
 
@@ -119,13 +120,13 @@ void Gaddvor::makeActBtn(QString act, QString actName)
     QActButton* btn = new QActButton(act, "gaddvor");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Gaddvor::actionHandler);
-    addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString Gaddvor::getStr(int id)
 {
     QString ded;
-    if(gVEvent(grandpa_notalk) == 0) ded = "<a href='grandpa'>дедушка</a>";
+    if(root->vEvent(grandpa_notalk) == 0) ded = "<a href='grandpa'>дедушка</a>";
     else ded = "дедушка";
     QString str[10];
     str[0] = "Двор с садом, избой и хозпостройками огорожен изгородью.";

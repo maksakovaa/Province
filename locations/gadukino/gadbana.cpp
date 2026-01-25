@@ -1,7 +1,9 @@
 #include "gadbana.h"
 #include "../../Functions.h"
 #include "../../menu/buttons.h"
-Gadbana::Gadbana(LocationHandler *ptr): Location(ptr) {}
+#include "../../game.h"
+
+Gadbana::Gadbana(Game *ptr): root(ptr) {}
 
 void Gadbana::show(QString arg)
 {
@@ -35,49 +37,49 @@ bool Gadbana::isParent()
 
 void Gadbana::actionHandler(QString action)
 {
-    clearActions();
+    root->clearActions();
     if(action == "bana")
     {
-        rendImagePage();
-        setImage(media(0));
-        setDesc(str(0));
-        if(gVEvent(bana_redress) == 1)
+        root->rendImagePage(this);
+        root->setImage(media(0));
+        root->setText(str(0));
+        if(root->vEvent(bana_redress) == 1)
         {
-            addText(str(1));
-            connect(getTextPtr(), &QLabel::linkActivated, this, &Gadbana::actionHandler);
+            root->addText(str(1));
+            connect(root->getTextPtr(), &QLabel::linkActivated, this, &Gadbana::actionHandler);
         }
-        if(gVEvent(mira) == 0)
+        if(root->vEvent(mira) == 0)
         {
             makeActBtn("goGadDvor", act(0));
-            if(isCanPar() && getHour() <= 18)
-                addText(str(3));
-            if(isCanPar() && getHour() > 18 && getHour() < 22)
+            if(isCanPar() && root->getHour() <= 18)
+                root->addText(str(3));
+            if(isCanPar() && root->getHour() > 18 && root->getHour() < 22)
             {
-                addText(str(4));
-                if(gVEvent(banaday) != gVStatus(daystart))
+                root->addText(str(4));
+                if(root->vEvent(banaday) != root->vStatus(daystart))
                     makeActBtn("parInBan", act(2));
             }
             if(!isCanPar())
                 makeActBtn("takeShower", act(3));
-            if(getItemCount(iTampon) > 0 && gVStatus(mesec) > 0 && gVStatus(isprok) == 0 && !isAutoTampon())
+            if(root->getItmCount(iTampon) > 0 && root->vStatus(mesec) > 0 && root->vStatus(isprok) == 0 && !root->isAutoTampon())
                 makeActBtn("chgTampon", act(5));
-            if(gVStatus(cumLips) > 0 || gVStatus(cumFace) > 0 || gVBody(makeup) != 1)
+            if(root->vStatus(cumLips) > 0 || root->vStatus(cumFace) > 0 || root->vBody(makeup) != 1)
                 makeActBtn("clearFace", act(7));
-            if(gVStatus(cumFrot) > 0)
+            if(root->vStatus(cumFrot) > 0)
                 makeActBtn("cleanClothes", act(8));
-            if(gVBody(legHair) > 0 && getItemCount(iRazor) > 0)
+            if(root->vBody(legHair) > 0 && root->getItmCount(iRazor) > 0)
                 makeActBtn("shaveLegs", act(9));
-            if(gVBody(pubisHair) > 0 && getItemCount(iRazor) > 0)
+            if(root->vBody(pubisHair) > 0 && root->getItmCount(iRazor) > 0)
                 makeActBtn("shavePubis", act(11));
-            if(gVSex(analplugIN) == 1)
+            if(root->vSex(analplugIN) == 1)
                 makeActBtn("remAnalPlug", act(12));
-            if(getItemCount(iAnalPlug) > 0 && gVSex(analplugIN) == 0)
+            if(root->getItmCount(iAnalPlug) > 0 && root->vSex(analplugIN) == 0)
                 makeActBtn("insAnalPlug", act(13));
-            if(gVSex(vibratorIN) == 1)
+            if(root->vSex(vibratorIN) == 1)
                 makeActBtn("remVibrator", act(14));
-            if(getItemCount(iVibrator) > 0 && gVSex(vibratorIN) == 0)
+            if(root->getItmCount(iVibrator) > 0 && root->vSex(vibratorIN) == 0)
                 makeActBtn("insVibrator", act(15));
-            if(getItemCount(iPregtest) > 0)
+            if(root->getItmCount(iPregtest) > 0)
                 makeActBtn("pregTest", act(16));
         }
         else
@@ -87,209 +89,209 @@ void Gadbana::actionHandler(QString action)
     }
     if(action == "goGadDvor")
     {
-        if(isCloth() || (!isCloth() && gVStatus(shamelessFlag) > 2))
+        if(root->isCloth() || (!root->isCloth() && root->vStatus(shamelessFlag) > 2))
         {
-            changeLoc(lgaddvor,5);
+            root->changeLoc(lgaddvor,5);
         }
         else
         {
-            setImage(media(1));
-            setDesc(str(2));
+            root->setImage(media(1));
+            root->setText(str(2));
             makeActBtn("bana", act(1));
         }
     }
     if(action == "parInBan")
     {
-        sVEvent(bana_redress, 1);
-        incTime(105);
-        sVEvent(banaday, gVStatus(daystart));
+        root->vEvent(bana_redress) = 1;
+        root->incTime(105);
+        root->vEvent(banaday) = root->vStatus(daystart);
         cleanMe();
-        updSkin('+', 5);
-        uVStatus(vidageday,1);
-        uVStatus(health, 10);
-        uVStatus(mood,20);
-        uVStatus(day_weight,-1);
+        root->updSkin('+', 5);
+        root->vStatus(vidageday) +=1;
+        root->vStatus(health) += 10;
+        root->vStatus(mood) +=20;
+        root->vStatus(day_weight) -= 1;
         undress();
-        setImage(media(2));
-        setDesc(str(5));
+        root->setImage(media(2));
+        root->setText(str(5));
         makeActBtn("bana", act(4));
     }
     if(action == "takeShower")
     {
         cleanMe();
-        incTime(15);
-        uVStatus(mood,10);
-        sVEvent(bana_redress, 1);
+        root->incTime(15);
+        root->vStatus(mood) += 10;
+        root->vEvent(bana_redress) = 1;
         undress();
-        setImage(media(3));
-        setDesc(str(6));
+        root->setImage(media(3));
+        root->setText(str(6));
         makeActBtn("bana", act(4));
     }
     if(action == "chgTampon")
     {
-        useItem(iTampon,1);
-        sVStatus(isprok,1);
-        incTime(5);
-        uVStatus(mood,-5);
-        setImage(media(4));
-        setDesc(str(7));
+        root->useItem(iTampon,1);
+        root->vStatus(isprok) = 1;
+        root->incTime(5);
+        root->vStatus(mood) -= 5;
+        root->setImage(media(4));
+        root->setText(str(7));
         makeActBtn("bana", act(6));
     }
     if(action == "clearFace")
     {
-        sVBody(makeup,1);
-        sVStatus(cumLips,0);
-        sVStatus(cumFace,0);
-        uVStatus(sweat,-1);
-        incTime(5);
-        setImage(media(5));
-        setDesc(str(8));
+        root->vBody(makeup) = 1;
+        root->vStatus(cumLips) = 0;
+        root->vStatus(cumFace) = 0;
+        root->vStatus(sweat) -= 1;
+        root->incTime(5);
+        root->setImage(media(5));
+        root->setText(str(8));
         makeActBtn("bana", act(6));
     }
     if(action == "cleanClothes")
     {
-        sVStatus(cumFrot,0);
-        incTime(15);
-        setImage(media(6));
-        setDesc(str(9));
+        root->vStatus(cumFrot) = 0;
+        root->incTime(15);
+        root->setImage(media(6));
+        root->setText(str(9));
         makeActBtn("bana", act(6));
     }
     if(action == "shaveLegs")
     {
-        rendVideoPage();
-        incTime(15);
-        uVBody(legHair, -5);
-        uVStatus(horny,5);
-        useItem(iRazor,1);
-        setVideo(media(7), 900, 508);
-        setDesc(str(10));
+        root->rendVideoPage(this);
+        root->incTime(15);
+        root->vBody(legHair) -= 5;
+        root->vStatus(horny) += 5;
+        root->useItem(iRazor,1);
+        root->setVideo(media(7), 900, 508);
+        root->setText(str(10));
         makeActBtn("bana", act(10));
     }
     if(action == "shavePubis")
     {
-        rendVideoPage();
-        incTime(15);
-        uVBody(pubisHair, -5);
-        uVStatus(horny,5);
-        useItem(iRazor,1);
-        setVideo(media(8), 900, 448);
-        setDesc(str(11));
+        root->rendVideoPage(this);
+        root->incTime(15);
+        root->vBody(pubisHair) -=5;
+        root->vStatus(horny) += 5;
+        root->useItem(iRazor,1);
+        root->setVideo(media(8), 900, 448);
+        root->setText(str(11));
         makeActBtn("bana", act(10));
     }
     if(action == "remAnalPlug")
     {
-        incTime(1);
-        sVSex(analplugIN,0);
-        setImage(media(9));
-        if(gVBody(anus) >= 5)
-            setDesc(str(12));
+        root->incTime(1);
+        root->vSex(analplugIN) = 0;
+        root->setImage(media(9));
+        if(root->vBody(anus) >= 5)
+            root->setText(str(12));
         else
-            setDesc(str(13));
+            root->setText(str(13));
         makeActBtn("bana", act(6));
     }
     if(action == "insAnalPlug")
     {
-        incTime(5);
-        if(sextToysBlock(2) == "")
+        root->incTime(5);
+        if(root->sextToysBlock(2) == "")
         {
-            sVSex(analplugIN,1);
-            if(gVBody(anus) < 10)
-                uVBody(anus,1);
-            sVStatus(cumAnus,0);
-            setImage(media(9));
-            if(gVBody(anus) >= 5)
-                setDesc(str(14));
+            root->vSex(analplugIN) = 1;
+            if(root->vBody(anus) < 10)
+                root->vBody(anus) += 1;
+            root->vStatus(cumAnus) = 0;
+            root->setImage(media(9));
+            if(root->vBody(anus) >= 5)
+                root->setText(str(14));
             else
-                setDesc(str(15));
+                root->setText(str(15));
         }
         else
         {
-            setImage("data/sex/toys/no_anus.jpg");
-            setDesc(sextToysBlock(2));
+            root->setImage("data/sex/toys/no_anus.jpg");
+            root->setText(root->sextToysBlock(2));
         }
         makeActBtn("bana", act(6));
     }
     if(action == "remVibrator")
     {
-        incTime(5);
-        sVSex(vibratorIN,0);
-        setImage(media(10));
-        setDesc(str(17));
+        root->incTime(5);
+        root->vSex(vibratorIN) =0;
+        root->setImage(media(10));
+        root->setText(str(17));
         makeActBtn("bana", act(6));
     }
     if(action == "insVibrator")
     {
-        incTime(5);
-        if(sextToysBlock(1) == "")
+        root->incTime(5);
+        if(root->sextToysBlock(1) == "")
         {
-            sVSex(vibratorIN,1);
-            if(gVBody(vagina) < 6)
-                uVBody(vagina,1);
-            setImage(media(10));
-            setDesc(str(16));
+            root->vSex(vibratorIN) = 1;
+            if(root->vBody(vagina) < 6)
+                root->vBody(vagina) += 1;
+            root->setImage(media(10));
+            root->setText(str(16));
         }
         else
         {
-            setImage(media(11));
-            setDesc(sextToysBlock(1));
+            root->setImage(media(11));
+            root->setText(root->sextToysBlock(1));
         }
         makeActBtn("bana", act(6));
     }
     if(action == "pregTest")
     {
-        useItem(iPregtest,1);
-        if(gVStatus(pregnancy) > 0)
+        root->useItem(iPregtest,1);
+        if(root->vStatus(pregnancy) > 0)
         {
-            sVStatus(pregnancyKnow,1);
-            addText(str(18));
+            root->vStatus(pregnancyKnow) = 1;
+            root->addText(str(18));
         }
         else
-            addText(str(19));
+            root->addText(str(19));
         makeActBtn("bana", act(6));
     }
     if(action == "undress")
     {
-        sVEvent(bana_redress, 1);
-        incTime(10);
-        uVStatus(horny,10);
+        root->vEvent(bana_redress) = 1;
+        root->incTime(10);
+        root->vStatus(horny) += 10;
         undress();
-        setImage(media(12));
-        setDesc(str(20));
+        root->setImage(media(12));
+        root->setText(str(20));
         makeActBtn("watchMira", act(18));
     }
     if(action == "watchMira")
     {
-        incTime(10);
-        uVStatus(horny,15);
-        setImage(media(13));
-        setDesc(str(21));
+        root->incTime(10);
+        root->vStatus(horny) += 15;
+        root->setImage(media(13));
+        root->setText(str(21));
         makeActBtn("parMira", act(19));
     }
     if(action == "parMira")
     {
-        incTime(105);
+        root->incTime(105);
         cleanMe();
-        uVStatus(vidageday,1);
-        uVStatus(horny,20);
-        uVStatus(mood,20);
-        uVStatus(health,10);
-        updSkin('+',5);
-        setImage(media(14));
-        setDesc(str(22));
+        root->vStatus(vidageday) += 1;
+        root->vStatus(horny) += 20;
+        root->vStatus(mood) += 20;
+        root->vStatus(health) += 10;
+        root->updSkin('+',5);
+        root->setImage(media(14));
+        root->setText(str(22));
         makeActBtn("endMira", act(6));
     }
     if(action == "endMira")
     {
-        sVEvent(mira, 0);
+        root->vEvent(mira) = 0;
         actionHandler("bana");
     }
     if(action == "dress_after_sauna")
     {
-        redressOld();
-        sVEvent(bana_redress, 0);
+        root->redressOld();
+        root->vEvent(bana_redress) = 0;
         actionHandler("bana");
     }
-    updateParams();
+    root->updateParams();
 }
 
 void Gadbana::makeActBtn(QString act, QString actName)
@@ -297,28 +299,28 @@ void Gadbana::makeActBtn(QString act, QString actName)
     QActButton* btn = new QActButton(act, "gadbana");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Gadbana::actionHandler);
-    addActBtn(btn);
+    root->addActions(btn);
 }
 
 void Gadbana::cleanMe()
 {
-    sVStatus(cumPussy,0);
-    sVStatus(cumFrot,0);
-    sVStatus(cumBelly,0);
-    sVStatus(cumAss,0);
-    sVStatus(cumAnus,0);
-    sVStatus(cumLips,0);
-    sVStatus(cumFace,0);
-    sVStatus(sweat, -3);
-    sVBody(makeup,1);
-    sVBody(hairStatus,0);
-    uVStatus(horny, -gVStatus(horny)/5);
-    uVStatus(vaginal_grease, -gVStatus(vaginal_grease)/2);
+    root->vStatus(cumPussy) = 0;
+    root->vStatus(cumFrot) = 0;
+    root->vStatus(cumBelly) = 0;
+    root->vStatus(cumAss) = 0;
+    root->vStatus(cumAnus) = 0;
+    root->vStatus(cumLips) = 0;
+    root->vStatus(cumFace) = 0;
+    root->vStatus(sweat) = -3;
+    root->vBody(makeup) = 1;
+    root->vBody(hairStatus) = 0;
+    root->vStatus(horny) -= root->vStatus(horny)/5;
+    root->vStatus(vaginal_grease) -= root->vStatus(vaginal_grease)/2;
 }
 
 void Gadbana::undress()
 {
-    redress(ClothType::Main,nullptr);
+    root->redress(ClothType::Main,nullptr);
 }
 
 QString Gadbana::str(int id)
@@ -399,7 +401,7 @@ QString Gadbana::media(int id)
 
 bool Gadbana::isCanPar()
 {
-    int week = getWeekNum();
-    int h = getHour();
+    int week = root->getWeek();
+    int h = root->getHour();
     return (week == 7 && h >= 12 && h < 22);
 }

@@ -3,13 +3,13 @@
 
 #include "../location.h"
 
-class LocationHandler;
+class Game;
 
 class Gadsarai: public Location
 {
     Q_OBJECT
 public:
-    Gadsarai(LocationHandler* ptr);
+    Gadsarai(Game* ptr);
     void show(QString arg = "") override;
     LocId getLocId() override;
     LocId getParId() override;
@@ -23,6 +23,8 @@ private:
     QString str(int id);
     QString act(int id);
     QString media(int id);
+private:
+    Game* root;
 };
 
 #endif

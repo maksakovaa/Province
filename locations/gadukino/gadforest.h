@@ -3,14 +3,14 @@
 
 #include "../location.h"
 
-class LocationHandler;
+class Game;
 class GadforestEvent;
 
 class Gadforest: public Location
 {
     friend GadforestEvent;
 public:
-    Gadforest(LocationHandler* ptr);
+    Gadforest(Game* ptr);
     void show(QString arg = "") override;
     LocId getLocId() override;
     LocId getParId() override;
@@ -24,6 +24,8 @@ private:
     QString str(int id);
     QString act(int id);
     QString media(int id);
+private:
+    Game* root;
 };
 
 #endif // GADFOREST_H

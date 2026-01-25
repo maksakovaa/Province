@@ -2,7 +2,7 @@
 #include "ui_tabwidgetplayer.h"
 #include "../Functions.h"
 #include <QLayoutItem>
-#include "../locations/locationhandler.h"
+#include "../game.h"
 
 TabWidgetPlayer::TabWidgetPlayer(QWidget* parent)
     : QTabWidget(parent)
@@ -17,10 +17,9 @@ TabWidgetPlayer::~TabWidgetPlayer()
     delete ui;
 }
 
-void TabWidgetPlayer::setPtr(Player *ptr, LocationHandler* locHandlerPtr)
+void TabWidgetPlayer::setPtr(Game *ptr)
 {
-    m_player = ptr;
-    locHandler = locHandlerPtr;
+    root = ptr;
 }
 
 void TabWidgetPlayer::reload()
@@ -33,34 +32,34 @@ void TabWidgetPlayer::reload()
 
 void TabWidgetPlayer::fillBodyDesc()
 {
-    QString desc = m_player->getNameDesc() + "<br>";
-    desc += m_player->getBirthDayDesc() + "<br><br>";
-    desc += m_player->getAgesDesc() + "<br>";
-    desc += m_player->getHeightDesc() + "<br>";
-    desc += m_player->getBodyDesc() + "<br>";
-    desc += m_player->getBreastsDesc() + "<br>";
-    desc += m_player->getBodyTypeFigureDesc() + "<br>";
-    desc += m_player->getVneshDesc() + "<br>";
-    desc += m_player->getHairDesc() + "<br>";
-    desc += m_player->getLipsDesc() + "<br>";
-    desc += m_player->getThroatDesc() + "<br>";
-    desc += m_player->getSkinDesc() + "<br>";
-    desc += m_player->getEyeDesc() + "<br>";
-    desc += m_player->getMakeupDesc() + "<br>";
-    desc += m_player->getLegsDesc() + "<br>";
-    desc += m_player->getPubisDesc() + "<br>";
-    desc += m_player->getVaginaDesc() + "<br>";
-    desc += m_player->getAnusDesc() + "<br>";
-    desc += m_player->getShamelessDesc();
+    QString desc = root->getNameDesc() + "<br>";
+    desc += root->getBirthDayDesc() + "<br><br>";
+    desc += root->getAgesDesc() + "<br>";
+    desc += root->getHeightDesc() + "<br>";
+    desc += root->getBodyDesc() + "<br>";
+    desc += root->getBreastsDesc() + "<br>";
+    desc += root->getBodyTypeFigureDesc() + "<br>";
+    desc += root->getVneshDesc() + "<br>";
+    desc += root->getHairDesc() + "<br>";
+    desc += root->getLipsDesc() + "<br>";
+    desc += root->getThroatDesc() + "<br>";
+    desc += root->getSkinDesc() + "<br>";
+    desc += root->getEyeDesc() + "<br>";
+    desc += root->getMakeupDesc() + "<br>";
+    desc += root->getLegsDesc() + "<br>";
+    desc += root->getPubisDesc() + "<br>";
+    desc += root->getVaginaDesc() + "<br>";
+    desc += root->getAnusDesc() + "<br>";
+    desc += root->getShamelessDesc();
 
     QString arr[] { "Лицо", "Одежда","Тело","Грудь","Лобок","Вагина","Анус" };
-    QString img[] {m_player->getPlayerFace(),
-                  m_player->getPlayerClothes(),
-                  m_player->getPlayerBody(),
-                  m_player->getPlayerBreasts(),
-                  m_player->getPlayerPubis(),
-                  m_player->getPlayerVagina(),
-                  m_player->getPlayerAnus()};
+    QString img[] {root->getPlayerFace(),
+                  root->getPlayerClothes(),
+                  root->getPlayerBody(),
+                  root->getPlayerBreasts(),
+                  root->getPlayerPubis(),
+                  root->getPlayerVagina(),
+                  root->getPlayerAnus()};
     QString tabs;
     if(currView == -1) { currView = 0; }
     for (int i = 0; i < 7; ++i)
@@ -81,19 +80,19 @@ void TabWidgetPlayer::fillCharacteristics()
     {
         if (i == 6)
         {
-            ((QProgressBar*)ui->formLayout->itemAt(i, QFormLayout::LabelRole)->widget())->setValue(std::abs(m_player->getSkillValue(static_cast<Skills>(i))));
+            ((QProgressBar*)ui->formLayout->itemAt(i, QFormLayout::LabelRole)->widget())->setValue(std::abs(root->vSkill(static_cast<Skills>(i))));
         }
         else if(i == 22)
         {
-            ((QProgressBar*)ui->formLayout->itemAt(i, QFormLayout::LabelRole)->widget())->setValue(locHandler->gVSchool(progress));
+            ((QProgressBar*)ui->formLayout->itemAt(i, QFormLayout::LabelRole)->widget())->setValue(root->vSchool(progress));
         }
         else if(i == 23)
         {
-            ((QProgressBar*)ui->formLayout->itemAt(i, QFormLayout::LabelRole)->widget())->setValue(locHandler->gVSchool(absent));
+            ((QProgressBar*)ui->formLayout->itemAt(i, QFormLayout::LabelRole)->widget())->setValue(root->vSchool(absent));
         }
         else
         {
-            ((QProgressBar*)ui->formLayout->itemAt(i, QFormLayout::LabelRole)->widget())->setValue(m_player->getSkillValue(static_cast<Skills>(i)));
+            ((QProgressBar*)ui->formLayout->itemAt(i, QFormLayout::LabelRole)->widget())->setValue(root->vSkill(static_cast<Skills>(i)));
         }
     }
     
@@ -103,57 +102,56 @@ void TabWidgetPlayer::fillCharacteristics()
 
 void TabWidgetPlayer::cheatSkillCheck()
 {
-    if(m_player->getSkillValue(strenght) > 100)
-        m_player->setVSkill(strenght,5);
-    if(m_player->getSkillValue(speed) > 100)
-        m_player->setVSkill(speed,5);
-    if(m_player->getSkillValue(agility) > 100)
-        m_player->setVSkill(agility,5);
-    if(m_player->getSkillValue(endurance) > 100)
-        m_player->setVSkill(endurance,5);
-    if(m_player->getSkillValue(intellect) > 100)
-        m_player->setVSkill(intellect,5);
-    if(m_player->getSkillValue(react) > 100)
-        m_player->setVSkill(react,5);
-    if(m_player->getSkillValue(domination) > 100)
-        m_player->setVSkill(domination,-100);
-    if(m_player->getSkillValue(jab) > 120)
-        m_player->setVSkill(jab,0);
-    if(m_player->getSkillValue(punch) > 120)
-        m_player->setVSkill(punch,0);
-    if(m_player->getSkillValue(kik) > 120)
-        m_player->setVSkill(kik,0);
-    if(m_player->getSkillValue(kikDef) > 120)
-        m_player->setVSkill(kikDef,0);
-    if(m_player->getSkillValue(boxing) > 120)
-        m_player->setVSkill(boxing,0);
-    if(m_player->getSkillValue(runner) > 2000)
-        m_player->setVSkill(runner,10);
-    if(m_player->getSkillValue(volleyball) > 100)
-        m_player->setVSkill(volleyball,0);
-    if(m_player->getSkillValue(oficiant) > 100)
-        m_player->setVSkill(oficiant,0);
-    if(m_player->getSkillValue(maid) > 100)
-        m_player->setVSkill(maid,0);
-    if(m_player->getSkillValue(vokal) > 100)
-        m_player->setVSkill(vokal,0);
-    if(m_player->getSkillValue(dance) > 100)
-        m_player->setVSkill(dance,0);
-    if(m_player->getSkillValue(dancePro) > 100)
-        m_player->setVSkill(dancePro,0);
-    if(m_player->getSkillValue(danceStrip) > 100)
-        m_player->setVSkill(danceStrip,0);
-    if(m_player->getSkillValue(dancePole) > 100)
-        m_player->setVSkill(dancePole,0);
-    if(m_player->getSkillValue(posSkill) > 1000)
-        m_player->setVSkill(posSkill,0);
-
+    if(root->vSkill(strenght) > 100)
+        root->vSkill(strenght) = 5;
+    if(root->vSkill(speed) > 100)
+        root->vSkill(speed) = 5;
+    if(root->vSkill(agility) > 100)
+        root->vSkill(agility) = 5;
+    if(root->vSkill(endurance) > 100)
+        root->vSkill(endurance) = 5;
+    if(root->vSkill(intellect) > 100)
+        root->vSkill(intellect) = 5;
+    if(root->vSkill(react) > 100)
+        root->vSkill(react) = 5;
+    if(root->vSkill(domination) > 100)
+        root->vSkill(domination) = -100;
+    if(root->vSkill(jab) > 120)
+        root->vSkill(jab) = 0;
+    if(root->vSkill(punch) > 120)
+        root->vSkill(punch) = 0;
+    if(root->vSkill(kik) > 120)
+        root->vSkill(kik) = 0;
+    if(root->vSkill(kikDef) > 120)
+        root->vSkill(kikDef) = 0;
+    if(root->vSkill(boxing) > 120)
+        root->vSkill(boxing) = 0;
+    if(root->vSkill(runner) > 2000)
+        root->vSkill(runner) = 10;
+    if(root->vSkill(volleyball) > 100)
+        root->vSkill(volleyball) = 0;
+    if(root->vSkill(oficiant) > 100)
+        root->vSkill(oficiant) = 0;
+    if(root->vSkill(maid) > 100)
+        root->vSkill(maid) = 0;
+    if(root->vSkill(vokal) > 100)
+        root->vSkill(vokal) = 0;
+    if(root->vSkill(dance) > 100)
+        root->vSkill(dance) = 0;
+    if(root->vSkill(dancePro) > 100)
+        root->vSkill(dancePro) = 0;
+    if(root->vSkill(danceStrip) > 100)
+        root->vSkill(danceStrip) = 0;
+    if(root->vSkill(dancePole) > 100)
+        root->vSkill(dancePole) = 0;
+    if(root->vSkill(posSkill) > 1000)
+        root->vSkill(posSkill) = 0;
 }
 
 void TabWidgetPlayer::setBarStyle()
 {
     int type;
-    if(m_player->getSkillValue(Skills::domination) < 0) { type = 1; }
+    if(root->vSkill(Skills::domination) < 0) { type = 1; }
     else { type = 0; }
 
     for (int i = 0; i < ui->formLayout->rowCount(); i++)
@@ -173,31 +171,6 @@ void TabWidgetPlayer::setBarStyle()
     }
 }
 
-int TabWidgetPlayer::getVBody(Body param)
-{
-    return m_player->getVBody(param);
-}
-
-void TabWidgetPlayer::updBodyVal(Body param, int val)
-{
-    m_player->updVBody(param, val);
-}
-
-void TabWidgetPlayer::setVBody(Body param, int val)
-{
-    m_player->setVBody(param,val);
-}
-
-int TabWidgetPlayer::getVSc(SC param)
-{
-    return m_player->getStatisticsValue(param);
-}
-
-void TabWidgetPlayer::setVSc(SC param, int val)
-{
-    m_player->setVSC(param,val);
-}
-
 void TabWidgetPlayer::loadStrings()
 {
     std::vector<QString> strings {"сила", "скорость","ловкость",
@@ -206,7 +179,7 @@ void TabWidgetPlayer::loadStrings()
         "Бег","Воллейбол","Навыки официантки","Навыки горничной","Вокал",
         "Танцы","Проф.танцы","Стриптиз","Танцы на шесте","Кройка и шитьё",
         "Успеваемость","Прогулы"};
-    int dom = m_player->getSkillValue(Skills::domination);
+    int dom = root->vSkill(Skills::domination);
     if (dom < 0)
     {
         strings[Skills::domination] = "Сабмиссивность: ";
@@ -250,7 +223,7 @@ void TabWidgetPlayer::loadStrings()
 //Block Skill description
     QString result;
 
-    if(m_player->isCheatsOn())
+    if(root->isCheats())
     {
         for (int i = 0; i < strings.size(); ++i)
         {
@@ -285,225 +258,225 @@ void TabWidgetPlayer::on_label_pers_desc_linkActivated(const QString &link)
 
     if(link == "vidage")
     {       
-        updBodyVal(Body::vidage, 1);
-        if(getVBody(vidage) > 24)
-            setVBody(vidage,16);
+        root->vBody(vidage) += 1;
+        if(root->vBody(vidage) > 24)
+            root->vBody(vidage) = 16;
     }
     if (link == "skinTan")
     {
-        int cur = getVBody(Body::skinTan);
+        int cur = root->vBody(skinTan);
         if (cur == 0)
-            setVBody(Body::skinTan, 10);
+            root->vBody(skinTan) = 10;
         else if (cur > 0 && cur <= 30)
-            setVBody(Body::skinTan, 70);
+            root->vBody(skinTan) = 70;
         else if (cur > 30 && cur <= 100)
-            setVBody(Body::skinTan, 120);
+            root->vBody(skinTan) = 120;
         else
-            setVBody(Body::skinTan, 0);
+            root->vBody(skinTan) = 0;
     }
     if (link == "skin")
     {
-        updBodyVal(Body::skin, 1);
-        if(getVBody(skin) > 4)
-            setVBody(skin,0);
+        root->vBody(skin) += 1;
+        if(root->vBody(skin) > 4)
+            root->vBody(skin) = 0;
     }
     if (link == "lips")
     {
-        updBodyVal(Body::lip, 1);
-        if(getVBody(lip) > 4)
-            setVBody(lip, 0);
+        root->vBody(lip) += 1;
+        if(root->vBody(lip) > 4)
+            root->vBody(lip) = 0;
     }
     if (link == "anus")
     {
-        int anus = m_player->getVBody(Body::anus);
-        if (anus == 0)
+        int val = root->vBody(anus);
+        if (val == 0)
         {
-            setVBody(Body::anus, 1);
-            if(getVSc(analSex) < 1)
-                setVSc(analSex,1);
+            root->vBody(anus) = 1;
+            if(root->vStatistics(analSex) < 1)
+                root->vStatistics(analSex) =1;
         }
-        else if (anus > 0 && anus <= 5)
+        else if (val > 0 && val <= 5)
         {
-            setVBody(Body::anus, 6);
-            if(getVSc(analSex) < 6)
-                setVSc(analSex,6);
+            root->vBody(anus) = 6;
+            if(root->vStatistics(analSex) < 6)
+                root->vStatistics(analSex) =6;
         }
-        else if (anus > 5 && anus <= 10)
+        else if (val > 5 && val <= 10)
         {
-            setVBody(Body::anus, 11);
-            if(getVSc(analSex) < 6)
-                setVSc(analSex,6);
+            root->vBody(anus) = 11;
+            if(root->vStatistics(analSex) < 6)
+                root->vStatistics(analSex) =6;
         }
-        else if (anus > 10 && anus <= 15)
+        else if (val > 10 && val <= 15)
         {
-            setVBody(Body::anus, 16);
-            if(getVSc(analSex) < 51)
-                setVSc(analSex,51);
+            root->vBody(anus) = 16;
+            if(root->vStatistics(analSex) < 51)
+                root->vStatistics(analSex) =51;
         }
-        else if (anus > 15 && anus <= 25)
+        else if (val > 15 && val <= 25)
         {
-            setVBody(Body::anus, 26);
-            if(getVSc(analSex) < 201)
-                setVSc(analSex,201);
+            root->vBody(anus) = 26;
+            if(root->vStatistics(analSex) < 201)
+                root->vStatistics(analSex) =201;
         }
-        else if (anus > 25 && anus <= 35)
+        else if (val > 25 && val <= 35)
         {
-            setVBody(Body::anus, 36);
-            if(getVSc(analSex) < 201)
-                setVSc(analSex,201);
+            root->vBody(anus) = 36;
+            if(root->vStatistics(analSex) < 201)
+                root->vStatistics(analSex) =201;
         }
         else
         {
-            setVBody(Body::anus, 0);
-            setVSc(analSex,0);
+            root->vBody(anus) = 0;
+            root->vStatistics(analSex) =0;
         }
     }
     if (link == "vagina")
     {
-        int vag = m_player->getVBody(Body::vagina);
+        int vag = root->vBody(vagina);
         if (vag == 0)
         {
-            setVBody(Body::vagina, 1);
-            if(getVSc(vaginalSex) < 1)
-                setVSc(vaginalSex,1);
+            root->vBody(vagina) = 1;
+            if(root->vStatistics(vaginalSex) < 1)
+                root->vStatistics(vaginalSex) =1;
         }
         else if (vag > 0 && vag <= 5)
         {
-            setVBody(Body::vagina, 6);
-            if(getVSc(vaginalSex) < 6)
-                setVSc(vaginalSex,6);
+            root->vBody(vagina) = 6;
+            if(root->vStatistics(vaginalSex) < 6)
+                root->vStatistics(vaginalSex) =6;
         }
         else if (vag > 5 && vag <= 10)
         {
-            setVBody(Body::vagina, 11);
-            if(getVSc(vaginalSex) < 6)
-                setVSc(vaginalSex,6);
+            root->vBody(vagina) = 11;
+            if(root->vStatistics(vaginalSex) < 6)
+                root->vStatistics(vaginalSex) =6;
         }
         else if (vag > 10 && vag <= 15)
         {
-            setVBody(Body::vagina, 16);
-            if(getVSc(vaginalSex) < 51)
-                setVSc(vaginalSex,51);
+            root->vBody(vagina) = 16;
+            if(root->vStatistics(vaginalSex) < 51)
+                root->vStatistics(vaginalSex) =51;
         }
         else if (vag > 15 && vag <= 25)
         {
-            setVBody(Body::vagina, 26);
-            if(getVSc(vaginalSex) < 201)
-                setVSc(vaginalSex,201);
+            root->vBody(vagina) = 26;
+            if(root->vStatistics(vaginalSex) < 201)
+                root->vStatistics(vaginalSex) =201;
         }
         else if (vag > 25 && vag <= 35)
         {
-            setVBody(Body::vagina, 36);
-            if(getVSc(vaginalSex) < 201)
-                setVSc(vaginalSex,201);
+            root->vBody(vagina) = 36;
+            if(root->vStatistics(vaginalSex) < 201)
+                root->vStatistics(vaginalSex) =201;
         }
         else
         {
-            setVBody(Body::vagina, 0);
-            setVSc(vaginalSex,0);
+            root->vBody(vagina) = 0;
+            root->vStatistics(vaginalSex) =0;
         }
     }
     if (link == "throat")
     {
-        int thrVal = m_player->getVBody(Body::throat);
+        int thrVal = root->vBody(throat);
         if (thrVal == 0)
-            updBodyVal(Body::throat, 1);
+            root->vBody(throat) += 1;
         else if (thrVal > 0 && thrVal <= 15)
-            updBodyVal(Body::throat, 5);
+            root->vBody(throat) += 5;
         else if (thrVal > 15 && thrVal <= 35)
-            updBodyVal(Body::throat, 10);
+            root->vBody(throat) += 10;
         else
-            setVBody(Body::throat, 0);
+            root->vBody(throat) = 0;
     }
     if (link == "pubisHair")
     {
-        updBodyVal(Body::pubisHair, 2);
-        if(getVBody(Body::pubisHair) > 4)
+        root->vBody(pubisHair) += 2;
+        if(root->vBody(pubisHair) > 4)
         {
-            setVBody(Body::pubisHair, 0);
+            root->vBody(pubisHair) = 0;
         }
     }
     if (link == "legHair")
     {
-        if (getVBody(Body::legHair) == 3)
+        if (root->vBody(legHair) == 3)
         {
-            updBodyVal(Body::legHair, 3);
+            root->vBody(legHair) += 3;
         }
         else
         {
-            updBodyVal(Body::legHair, 2);
+            root->vBody(legHair) += 2;
         }
-        if(getVBody(Body::legHair) > 6)
+        if(root->vBody(legHair) > 6)
         {
-            setVBody(Body::legHair, 0);
+            root->vBody(legHair) = 0;
         }
         
     }
     if (link == "weight")
     {
-        updBodyVal(Body::weight, 1);
-        if(getVBody(weight) > 100)
-            setVBody(weight,40);
+        root->vBody(weight) += 1;
+        if(root->vBody(weight) > 100)
+            root->vBody(weight) = 40;
     }
     if (link == "height")
     {
-        updBodyVal(Body::height, 1);
-        if(getVBody(Body::height) > 180)
-            setVBody(Body::height,160);
+        root->vBody(Body::height) += 1;
+        if(root->vBody(Body::height) > 180)
+            root->vBody(Body::height) = 160;
     }
     if (link == "makeup")
     {
-        updBodyVal(Body::makeup, 1);
-        if(getVBody(makeup) >= 5)
-            setVBody(makeup,0);
+        root->vBody(makeup) += 1;
+        if(root->vBody(makeup) >= 5)
+            root->vBody(makeup) = 0;
     }
     if (link == "hairCurly")
     {
-        updBodyVal(Body::hairCurly, 10);
-        if(getVBody(hairCurly) > 10)
-            setVBody(hairCurly,0);
+        root->vBody(hairCurly) += 10;
+        if(root->vBody(hairCurly) > 10)
+            root->vBody(hairCurly) = 0;
     }
     if (link == "hairColor")
     {
-        updBodyVal(Body::hairColor, 1);
-        if(getVBody(hairColor) >= 4)
-            setVBody(hairColor,0);
+        root->vBody(hairColor) += 1;
+        if(root->vBody(hairColor) >= 4)
+            root->vBody(hairColor) = 0;
     }
     if (link == "hairLength")
     {
-        updBodyVal(Body::hairLength, 1);
-        if(getVBody(hairLength) >= 4)
-            setVBody(hairLength,0);
+        root->vBody(hairLength) += 1;
+        if(root->vBody(hairLength) >= 4)
+            root->vBody(hairLength) = 0;
     }
     if (link == "eyeColor")
     {
-        updBodyVal(Body::eyeColor, 1);
-        if(getVBody(eyeColor) > 3)
-            setVBody(eyeColor,0);
+        root->vBody(eyeColor) += 1;
+        if(root->vBody(eyeColor) > 3)
+            root->vBody(eyeColor) = 0;
     }
     if (link == "eyeSize")
     {
-        updBodyVal(Body::eyeSize, 1);
-        if(getVBody(eyeSize) > 3)
-            setVBody(eyeSize,0);
+        root->vBody(eyeSize) += 1;
+        if(root->vBody(eyeSize) > 3)
+            root->vBody(eyeSize) = 0;
     }
     if (link == "eyeLashes")
     {
-        updBodyVal(Body::eyeLashes, 1);
-        if(getVBody(eyeLashes) > 2)
-            setVBody(eyeLashes,0);
+        root->vBody(eyeLashes) += 1;
+        if(root->vBody(eyeLashes) > 2)
+            root->vBody(eyeLashes) = 0;
     }
     if (link == "eyeBrows")
     {
-        updBodyVal(Body::eyeBrows, 10);
-        if(getVBody(eyeBrows) >= 20)
-            setVBody(eyeBrows,-1);
+        root->vBody(eyeBrows) += 10;
+        if(root->vBody(eyeBrows) >= 20)
+            root->vBody(eyeBrows) = -1;
     }
     if (link == "glass")
     {
-        updBodyVal(Body::glass, 1);
-        if(getVBody(glass) > 3)
-            setVBody(glass,1);
+        root->vBody(glass) += 1;
+        if(root->vBody(glass) > 3)
+            root->vBody(glass) = 1;
     }
     fillBodyDesc();
     emit sigUpdateStatus();
@@ -517,10 +490,10 @@ void TabWidgetPlayer::slotSkillUpdate(const QString &link)
     if(skill == Skills::boxing)
     {
         value = 4;
-        m_player->updVSkill(Skills::jab, value);
-        m_player->updVSkill(Skills::punch, value);
-        m_player->updVSkill(Skills::kik, value);
-        m_player->updVSkill(Skills::kikDef, value);
+        root->vSkill(Skills::jab) += value;
+        root->vSkill(Skills::punch) += value;
+        root->vSkill(Skills::kik) += value;
+        root->vSkill(Skills::kikDef) += value;
     }
     else
     {
@@ -528,7 +501,7 @@ void TabWidgetPlayer::slotSkillUpdate(const QString &link)
         else if (skill == Skills::volleyball) { value = 10; }
         else if (skill == Skills::posSkill) { value = 50; }
         else { value = 5; }
-        m_player->updVSkill(skill, value);
+        root->vSkill(skill) += value;
     }
     cheatSkillCheck();
     fillCharacteristics();
@@ -538,15 +511,15 @@ void TabWidgetPlayer::slotSchoolUpdate(const QString &link)
 {
     if(link == "22")
     {
-        locHandler->uVSchool(progress,5);
-        if(locHandler->gVSchool(progress) > 100)
-            locHandler->sVSchool(progress,0);
+        root->vSchool(progress) +=5;
+        if(root->vSchool(progress) > 100)
+            root->vSchool(progress) = 0;
     }
     if(link == "23")
     {
-        locHandler->uVSchool(absent,3);
-        if(locHandler->gVSchool(absent) > 30)
-            locHandler->sVSchool(absent,0);
+        root->vSchool(absent) += 3;
+        if(root->vSchool(absent) > 30)
+            root->vSchool(absent) = 0;
     }
     fillCharacteristics();
 }

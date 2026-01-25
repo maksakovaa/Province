@@ -1,6 +1,6 @@
 #include "gadukino_events.h"
 #include <QDebug>
-#include "../eventhandler.h"
+#include "../../game.h"
 #include "../../Functions.h"
 #include "../../menu/buttons.h"
 
@@ -79,46 +79,46 @@ void GadukinoEvent::actionHandler(QString action)
     root->clearActions();
     if (action == "go_meadow")
     {
-        root->sVEvent(meadow, 1);
+        root->vEvent(meadow) = 1;
         root->incTime(20);
         root->setImage(media(0));
-        root->setDesc(str(1));
+        root->setText(str(1));
         makeActBtn("to_gaddvor", act(1));
     }
     if (action == "help_mira")
     {
-        root->sVQuest(miraQW, 1);
+        root->vQuest(miraQW) = 1;
         root->incTime(15);
         root->setImage(media(1));
-        root->setDesc(str(3));
+        root->setText(str(3));
         makeActBtn("to_gadukino", act(3));
     }
     if (action == "show_pussy")
     {
         root->incTime(5);
         i = getRandInt(0, 30);
-        root->uVSkill(domination, 1);
-        if (root->gVEvent(mirasextimes) < 50)
+        root->vSkill(domination) += 1;
+        if (root->vEvent(mirasextimes) < 50)
         {
             if (i < 5)
             {
                 root->setImage(media(2));
-                root->setDesc(str(5));
+                root->setText(str(5));
             }
             else if (i >= 5 && i < 10)
             {
                 root->setImage(media(2));
-                root->setDesc(str(6));
+                root->setText(str(6));
             }
             else if (i >= 10 && i < 25)
             {
                 root->setImage(media(3));
-                root->setDesc(str(7));
+                root->setText(str(7));
             }
             else
             {
                 root->setImage(media(5));
-                root->setDesc(str(8));
+                root->setText(str(8));
             }
         }
         else
@@ -126,40 +126,40 @@ void GadukinoEvent::actionHandler(QString action)
             if (i < 5)
             {
                 root->setImage(media(4));
-                root->setDesc(str(9));
+                root->setText(str(9));
             }
             else
             {
                 root->setImage(media(4));
-                root->setDesc(str(10));
+                root->setText(str(10));
             }
         }
         makeActBtn("gadukino", act(5));
     }
     if (action == "watch_mirasex")
     {
-        root->uVStatus(horny, 10);
+        root->vStatus(horny) += 10;
         root->incTime(5);
         i = getRandInt(0, 1);
         root->setImage(media(6));
-        root->setDesc(str(14));
+        root->setText(str(14));
         makeActBtn("gadukino", act(5));
     }
     if (action == "mira_apologise_next")
     {
         root->incTime(5);
         root->startEvent(eMiroslava, "miraclothes");
-        root->setDesc(str(37));
+        root->setText(str(37));
         makeActBtn("agree_mira_apologize", act(9));
         makeActBtn("disagree_mira_apologize", act(10));
     }
     if (action == "agree_mira_apologize")
     {
         root->incTime(5);
-        root->uVStatus(horny, 5);
-        root->sVEvent(mirasex, 2);
+        root->vStatus(horny) += 5;
+        root->vEvent(mirasex) = 2;
         root->startEvent(eMiroslava, "miraclothes");
-        root->setDesc(str(29));
+        root->setText(str(29));
         makeActBtn("mirasex_lick", act(8));
     }
     if (action == "mirasex_lick")
@@ -169,61 +169,61 @@ void GadukinoEvent::actionHandler(QString action)
     if (action == "disagree_mira_apologize")
     {
         root->incTime(30);
-        root->sVEvent(mirasex, 3);
+        root->vEvent(mirasex) = 3;
         root->startEvent(eMiroslava, "miraclothes");
-        root->setDesc(str(30));
+        root->setText(str(30));
         makeActBtn("gadukino", act(5));
     }
     if (action == "mitka_apologise_next")
     {
         root->incTime(5);
         root->setImage(media(7));
-        root->setDesc(str(32));
-        if (root->gVQuest(miragopQW) >= 12)
-            root->addDesc(str(33));
+        root->setText(str(32));
+        if (root->vQuest(miragopQW) >= 12)
+            root->addText(str(33));
         else
-            root->addDesc(str(34));
+            root->addText(str(34));
         makeActBtn("gadukino", act(5));
     }
     if (action == "wait_gang_apologize")
     {
         root->incTime(5);
         root->setImage(media(8));
-        root->setDesc(str(36));
+        root->setText(str(36));
         makeActBtn("gang_apologize_par2", act(8));
     }
     if (action == "gang_apologize_par2")
     {
         root->incTime(5);
         root->setImage(media(9));
-        root->setDesc(str(37));
+        root->setText(str(37));
         makeActBtn("take_money", act(12));
         makeActBtn("dont_take_money", act(10));
     }
     if (action == "take_money")
     {
         root->incTime(5);
-        root->uVSkill(domination, -1);
-        root->sVEvent(gadriver_gang, 2);
-        root->uVStatus(money, 10000);
+        root->vSkill(domination) -= 1;
+        root->vEvent(gadriver_gang) = 2;
+        root->vStatus(money) += 10000;
         root->setImage(media(10));
-        root->setDesc(str(38));
+        root->setText(str(38));
         makeActBtn("gadukino", act(5));
     }
     if (action == "dont_take_money")
     {
         root->incTime(5);
-        root->uVSkill(domination, 1);
-        root->sVEvent(gadriver_gang, 3);
+        root->vSkill(domination) += 1;
+        root->vEvent(gadriver_gang) =  3;
         root->setImage(media(11));
-        root->setDesc(str(39));
+        root->setText(str(39));
         makeActBtn("gadukino", act(5));
     }
     if (action == "run_from_gang")
     {
         root->incTime(15);
         root->setImage(media(12));
-        root->setDesc(str(40));
+        root->setText(str(40));
         makeActBtn("meadow", act(8));
     }
     if (action == "gang_act1")
@@ -232,8 +232,8 @@ void GadukinoEvent::actionHandler(QString action)
         root->redress(ClothType::Main, nullptr);
         root->setBoyName("Пьяный мужик");
         root->setImage(media(13));
-        root->setDesc(str(42));
-        root->sVSex(dick, getRandInt(12, 20));
+        root->setText(str(42));
+        root->vSex(dick) = getRandInt(12, 20);
         root->blow_job();
         makeActBtn("gang_act2", act(15));
     }
@@ -242,8 +242,8 @@ void GadukinoEvent::actionHandler(QString action)
         root->incTime(5);
         root->setBoyName("Какой-то деревенский парень");
         root->setImage(media(14));
-        root->setDesc(str(43));
-        root->sVSex(dick, getRandInt(12, 20));
+        root->setText(str(43));
+        root->vSex(dick) = getRandInt(12, 20);
         root->blow_job();
         makeActBtn("gang_act3", act(8));
     }
@@ -251,7 +251,7 @@ void GadukinoEvent::actionHandler(QString action)
     {
         root->incTime(5);
         root->setImage(media(15));
-        root->setDesc(str(44));
+        root->setText(str(44));
         makeActBtn("gang_act4", act(8));
     }
     if (action == "gang_act4")
@@ -261,20 +261,20 @@ void GadukinoEvent::actionHandler(QString action)
         root->cum("face");
         root->cum("belly");
         root->setImage(media(16));
-        root->setDesc(str(45));
+        root->setText(str(45));
         makeActBtn("gang_act5", act(8));
     }
     if (action == "gang_act5")
     {
         root->incTime(5);
         root->setBoyName("какой-то деревенский мужик");
-        root->sVSex(silavag, getRandInt(0, 2));
-        root->sVSex(dick, getRandInt(12, 20));
-        root->uVSC(blowJob, 1);
-        root->uVSex(guy, 1);
-        root->sVSex(pose, 1);
+        root->vSex(silavag) = getRandInt(0, 2);
+        root->vSex(dick) = getRandInt(12, 20);
+        root->vStatistics(blowJob)  += 1;
+        root->vSex(guy) += 1;
+        root->vSex(pose) = 1;
         root->setImage(media(17));
-        root->setDesc(str(46));
+        root->setText(str(46));
         root->vaginal(tDick);
         makeActBtn("gang_act6", act(8));
     }
@@ -282,15 +282,15 @@ void GadukinoEvent::actionHandler(QString action)
     {
         root->incTime(5);
         root->setBoyName("мужик");
-        root->sVSex(silavag, getRandInt(0, 2));
-        root->sVSex(dick, getRandInt(12, 20));
+        root->vSex(silavag) = getRandInt(0, 2);
+        root->vSex(dick) = getRandInt(12, 20);
         int temp = getRandInt(1, 2);
-        root->sVSex(protect, getRandInt(0, 1));
-        root->uVSC(blowJob, 1);
-        root->uVSex(guy, 1);
-        root->sVSex(pose, 1);
+        root->vSex(protect) = getRandInt(0, 1);
+        root->vStatistics(blowJob)  += 1;
+        root->vSex(guy) += 1;
+        root->vSex(pose) = 1;
         root->setImage(media(18));
-        root->setDesc(str(47));
+        root->setText(str(47));
         root->vaginal(tDick);
         if (temp == 1)
             root->sex_cum();
@@ -300,15 +300,15 @@ void GadukinoEvent::actionHandler(QString action)
     {
         root->incTime(5);
         root->setBoyName("Пьяный Мужик");
-        root->sVSex(silavag, getRandInt(0, 2));
-        root->sVSex(dick, getRandInt(12, 20));
+        root->vSex(silavag) = getRandInt(0, 2);
+        root->vSex(dick) = getRandInt(12, 20);
         int temp = getRandInt(1, 2);
         if (root->vSex(lubonus) == 0)
-            root->sVSex(lubonus, 1);
-        root->uVSC(blowJob, 1);
-        root->uVSex(guy, 1);
+            root->vSex(lubonus) = 1;
+        root->vStatistics(blowJob)  += 1;
+        root->vSex(guy) += 1;
         root->setImage(media(19));
-        root->setDesc(str(48));
+        root->setText(str(48));
         root->anal(tDick);
         if (temp == 2)
             root->anal_cum();
@@ -318,14 +318,14 @@ void GadukinoEvent::actionHandler(QString action)
     {
         root->incTime(5);
         root->setBoyName("Митька");
-        root->sVSex(silavag, 0);
-        root->sVSex(dick, 16);
+        root->vSex(silavag) = 0;
+        root->vSex(dick) = 16;
         int temp = getRandInt(1, 2);
         if (root->vSex(lubonus) == 0)
-            root->sVSex(lubonus, 1);
-        root->uVSC(blowJob, 1);
+            root->vSex(lubonus) = 1;
+        root->vStatistics(blowJob)  += 1;
         root->setImage(media(20));
-        root->setDesc(str(49));
+        root->setText(str(49));
         root->anal(tDick);
         if (temp == 2)
             root->anal_cum();
@@ -335,15 +335,15 @@ void GadukinoEvent::actionHandler(QString action)
     {
         root->incTime(5);
         root->setBoyName("дядя Степа");
-        root->sVSex(silavag, 2);
-        root->sVSex(dick, 22);
+        root->vSex(silavag) = 2;
+        root->vSex(dick) = 22;
         int temp = getRandInt(1, 2);
-        root->sVSex(protect, getRandInt(0, 1));
-        root->uVSC(blowJob, 1);
-        root->uVSex(guy, 1);
-        root->sVSex(pose, 0);
+        root->vSex(protect) = getRandInt(0, 1);
+        root->vStatistics(blowJob)  += 1;
+        root->vSex(guy) += 1;
+        root->vSex(pose) = 0;
         root->setImage(media(21));
-        root->setDesc(str(50));
+        root->setText(str(50));
         root->vaginal(tDick);
         if (temp == 1)
             root->sex_cum();
@@ -353,15 +353,15 @@ void GadukinoEvent::actionHandler(QString action)
     {
         root->incTime(5);
         root->setBoyName("деревенский мужик");
-        root->sVSex(silavag, getRandInt(0, 2));
-        root->sVSex(dick, getRandInt(12, 20));
+        root->vSex(silavag) = getRandInt(0, 2);
+        root->vSex(dick) = getRandInt(12, 20);
         int temp = getRandInt(1, 2);
-        root->sVSex(protect, getRandInt(0, 1));
-        root->uVSC(blowJob, 1);
-        root->uVSex(guy, 1);
-        root->sVSex(pose, 0);
+        root->vSex(protect) = getRandInt(0, 1);
+        root->vStatistics(blowJob)  += 1;
+        root->vSex(guy) += 1;
+        root->vSex(pose) = 0;
         root->setImage(media(22));
-        root->setDesc(str(51));
+        root->setText(str(51));
         root->vaginal(tDick);
         if (temp == 1)
             root->sex_cum();
@@ -371,14 +371,14 @@ void GadukinoEvent::actionHandler(QString action)
     {
         root->incTime(5);
         root->setBoyName("Васян");
-        root->sVSex(silavag, 0);
-        root->sVSex(dick, 14);
+        root->vSex(silavag) = 0;
+        root->vSex(dick) = 14;
         int temp = getRandInt(1, 2);
-        root->sVSex(protect, getRandInt(0, 1));
-        root->uVSC(blowJob, 1);
-        root->sVSex(pose, 0);
+        root->vSex(protect) = getRandInt(0, 1);
+        root->vStatistics(blowJob)  += 1;
+        root->vSex(pose) = 0;
         root->setImage(media(23));
-        root->setDesc(str(52));
+        root->setText(str(52));
         root->vaginal(tDick);
         if (temp == 1)
             root->sex_cum();
@@ -388,39 +388,39 @@ void GadukinoEvent::actionHandler(QString action)
     {
         root->incTime(5);
         if (root->vStatus(health) < 100)
-            root->sVStatus(health, 100);
+            root->vStatus(health) = 100;
         root->setBoyName("Незнакомый пьяный парень");
         root->setImage(media(24));
-        root->setDesc(str(53));
-        root->sVSex(dick, getRandInt(12, 20));
+        root->setText(str(53));
+        root->vSex(dick) = getRandInt(12, 20);
         root->blow_job();
         makeActBtn("gang_act13", act(8));
     }
     if (action == "gang_act13")
     {
         root->incTime(5);
-        root->sVSex(dick, getRandInt(12, 20));
+        root->vSex(dick) = getRandInt(12, 20);
         root->cum("face");
         root->setImage(media(25));
-        root->setDesc(str(54));
+        root->setText(str(54));
         root->blow_job();
         root->fnswallow();
-        root->addDesc(str(55));
+        root->addText(str(55));
         makeActBtn("gang_act14", act(8));
     }
     if (action == "gang_act14")
     {
         root->incTime(5);
         root->setBoyName("мужик");
-        root->sVSex(silavag, getRandInt(0, 2));
-        root->sVSex(dick, getRandInt(12, 20));
-        root->sVSex(protect, getRandInt(0, 1));
+        root->vSex(silavag) = getRandInt(0, 2);
+        root->vSex(dick) = getRandInt(12, 20);
+        root->vSex(protect) = getRandInt(0, 1);
         int temp = getRandInt(1, 2);
-        root->uVSC(blowJob, 1);
-        root->uVSex(guy, 1);
-        root->sVSex(pose, 1);
+        root->vStatistics(blowJob)  += 1;
+        root->vSex(guy) += 1;
+        root->vSex(pose) = 1;
         root->setImage(media(26));
-        root->setDesc(str(56));
+        root->setText(str(56));
         root->vaginal(tDick);
         if (temp == 1)
             root->sex_cum();
@@ -430,14 +430,14 @@ void GadukinoEvent::actionHandler(QString action)
     {
         root->incTime(5);
         root->setBoyName("незнакомый парень");
-        root->sVSex(silavag, getRandInt(0, 2));
-        root->sVSex(dick, getRandInt(12, 20));
-        root->sVSex(protect, getRandInt(0, 1));
-        root->uVSC(blowJob, 1);
-        root->uVSex(guy, 1);
-        root->sVSex(pose, 1);
+        root->vSex(silavag) = getRandInt(0, 2);
+        root->vSex(dick) = getRandInt(12, 20);
+        root->vSex(protect) = getRandInt(0, 1);
+        root->vStatistics(blowJob)  += 1;
+        root->vSex(guy) += 1;
+        root->vSex(pose) = 1;
         root->setImage(media(27));
-        root->setDesc(str(57));
+        root->setText(str(57));
         int temp = getRandInt(1, 2);
         root->vaginal(tDick);
         if (temp == 1)
@@ -448,14 +448,14 @@ void GadukinoEvent::actionHandler(QString action)
     {
         root->incTime(5);
         root->setBoyName("Парень");
-        root->sVSex(silavag, getRandInt(0, 2));
-        root->sVSex(dick, getRandInt(12, 20));
-        root->sVSex(protect, getRandInt(0, 1));
-        root->uVSC(blowJob, 1);
-        root->uVSex(guy, 1);
+        root->vSex(silavag) = getRandInt(0, 2);
+        root->vSex(dick) = getRandInt(12, 20);
+        root->vSex(protect) = getRandInt(0, 1);
+        root->vStatistics(blowJob)  += 1;
+        root->vSex(guy) += 1;
         int temp = getRandInt(1, 2);
         root->setImage(media(28));
-        root->setDesc(str(58));
+        root->setText(str(58));
         root->anal(tDick);
         if (temp == 2)
             root->anal_cum();
@@ -465,13 +465,13 @@ void GadukinoEvent::actionHandler(QString action)
     {
         root->incTime(5);
         root->setBoyName("Пьяный Мужик");
-        root->sVSex(silavag, getRandInt(0, 2));
-        root->sVSex(dick, getRandInt(12, 20));
+        root->vSex(silavag) = getRandInt(0, 2);
+        root->vSex(dick) = getRandInt(12, 20);
         if (root->vSex(lubonus) == 0)
-            root->sVSex(lubonus, 1);
+            root->vSex(lubonus) = 1;
         int temp = getRandInt(1, 2);
-        root->uVSC(blowJob, 1);
-        root->uVSex(guy, 1);
+        root->vStatistics(blowJob)  += 1;
+        root->vSex(guy) += 1;
         root->setImage(media(29));
         root->anal(tDick);
         if (temp == 2)
@@ -481,26 +481,26 @@ void GadukinoEvent::actionHandler(QString action)
     if (action == "gang_act18")
     {
         root->incTime(5);
-        if (root->gVEvent(hantersKnow) == 0)
+        if (root->vEvent(hantersKnow) == 0)
             root->setBoyName("Незнакомый мужик");
         else
             root->setBoyName("Андрей");
-        if (root->gVEvent(hanterandreisex) == 0)
+        if (root->vEvent(hanterandreisex) == 0)
         {
-            root->sVEvent(hanterandreisex, 1);
-            root->uVSex(guy, 1);
+            root->vEvent(hanterandreisex) = 1;
+            root->vSex(guy) += 1;
         }
-        root->sVSex(silavag, 0);
-        root->sVSex(dick, 20);
+        root->vSex(silavag) = 0;
+        root->vSex(dick) = 20;
         if (root->vSex(lubonus) == 0)
-            root->sVSex(lubonus, 1);
+            root->vSex(lubonus) = 1;
         int temp = getRandInt(1, 2);
-        root->uVSC(blowJob, 1);
+        root->vStatistics(blowJob)  += 1;
         root->setImage(media(30));
-        if (root->gVEvent(hantersKnow) == 0)
-            root->setDesc(str(59));
+        if (root->vEvent(hantersKnow) == 0)
+            root->setText(str(59));
         else
-            root->setDesc(str(60));
+            root->setText(str(60));
         root->anal(tDick);
         if (temp == 2)
             root->anal_cum();
@@ -510,15 +510,15 @@ void GadukinoEvent::actionHandler(QString action)
     {
         root->incTime(5);
         root->setBoyName("мужик");
-        root->sVSex(silavag, getRandInt(0, 2));
-        root->sVSex(dick, getRandInt(12, 20));
-        root->sVSex(protect, getRandInt(0, 1));
+        root->vSex(silavag) = getRandInt(0, 2);
+        root->vSex(dick) = getRandInt(12, 20);
+        root->vSex(protect) = getRandInt(0, 1);
         int temp = getRandInt(1, 2);
-        root->uVSC(blowJob, 1);
-        root->uVSex(guy, 1);
-        root->sVSex(pose, 1);
+        root->vStatistics(blowJob)  += 1;
+        root->vSex(guy) += 1;
+        root->vSex(pose) = 1;
         root->setImage(media(31));
-        root->setDesc(str(61));
+        root->setText(str(61));
         root->vaginal(tDick);
         if (temp == 1)
             root->sex_cum();
@@ -528,11 +528,11 @@ void GadukinoEvent::actionHandler(QString action)
     {
         root->incTime(5);
         if (root->vStatus(health) < 100)
-            root->sVStatus(health, 100);
+            root->vStatus(health) = 100;
         root->setBoyName("мужик");
         root->setImage(media(32));
-        root->setDesc(str(62));
-        root->sVSex(dick, getRandInt(12, 20));
+        root->setText(str(62));
+        root->vSex(dick) = getRandInt(12, 20);
         root->blow_job();
         makeActBtn("gang_act21", act(8));
     }
@@ -540,15 +540,15 @@ void GadukinoEvent::actionHandler(QString action)
     {
         root->incTime(5);
         root->setBoyName("незнакомец");
-        root->sVSex(silavag, getRandInt(0, 2));
-        root->sVSex(dick, getRandInt(12, 20));
-        root->sVSex(protect, getRandInt(0, 1));
+        root->vSex(silavag) = getRandInt(0, 2);
+        root->vSex(dick) = getRandInt(12, 20);
+        root->vSex(protect) = getRandInt(0, 1);
         int temp = getRandInt(1, 2);
-        root->uVSC(blowJob, 1);
-        root->uVSex(guy, 1);
-        root->sVSex(pose, 2);
+        root->vStatistics(blowJob)  += 1;
+        root->vSex(guy) += 1;
+        root->vSex(pose) = 2;
         root->setImage(media(33));
-        root->setDesc(str(63));
+        root->setText(str(63));
         root->vaginal(tDick);
         if (temp == 1)
             root->sex_cum();
@@ -558,17 +558,17 @@ void GadukinoEvent::actionHandler(QString action)
     {
         root->incTime(5);
         root->setBoyName("выпивший парень");
-        root->sVSex(silavag, getRandInt(0, 2));
-        root->sVSex(dick, getRandInt(12, 20));
-        root->sVSex(protect, getRandInt(0, 1));
+        root->vSex(silavag) = getRandInt(0, 2);
+        root->vSex(dick) = getRandInt(12, 20);
+        root->vSex(protect) = getRandInt(0, 1);
         int temp = getRandInt(1, 2);
-        root->uVSC(blowJob, 1);
-        root->uVSex(guy, 1);
-        root->sVSex(pose, 2);
+        root->vStatistics(blowJob)  += 1;
+        root->vSex(guy) += 1;
+        root->vSex(pose) = 2;
         root->setImage(media(34));
-        root->setDesc(str(64));
+        root->setText(str(64));
         root->blow_job();
-        root->sVSex(dick, getRandInt(12, 20));
+        root->vSex(dick) = getRandInt(12, 20);
         root->vaginal(tDick);
         if (temp == 1)
             root->sex_cum();
@@ -578,18 +578,18 @@ void GadukinoEvent::actionHandler(QString action)
     {
         root->incTime(5);
         root->setBoyName("мужик");
-        root->sVSex(silavag, getRandInt(0, 2));
-        root->sVSex(dick, getRandInt(12, 20));
-        root->sVSex(protect, getRandInt(0, 1));
+        root->vSex(silavag) = getRandInt(0, 2);
+        root->vSex(dick) = getRandInt(12, 20);
+        root->vSex(protect) = getRandInt(0, 1);
         int temp = getRandInt(1, 2);
-        root->uVSC(blowJob, 1);
-        root->uVSex(guy, 1);
-        root->sVSex(pose, 2);
+        root->vStatistics(blowJob)  += 1;
+        root->vSex(guy) += 1;
+        root->vSex(pose) = 2;
         root->setImage(media(35));
         root->vaginal(tDick);
         if (temp == 1)
             root->sex_cum();
-        root->setDesc(str(65));
+        root->setText(str(65));
         makeActBtn("gang_act24", act(8));
     }
     if (action == "gang_act24")
@@ -597,18 +597,18 @@ void GadukinoEvent::actionHandler(QString action)
         root->incTime(5);
         root->setBoyName("незнакомый мужик");
         root->setBoy2Name("Колямба");
-        root->sVSex(silavag, getRandInt(0, 2));
-        root->sVSex(dick, getRandInt(12, 20));
-        root->sVSex(dick2, 15);
-        root->sVSex(protect, getRandInt(0, 1));
+        root->vSex(silavag) = getRandInt(0, 2);
+        root->vSex(dick) = getRandInt(12, 20);
+        root->vSex(dick2) = 15;
+        root->vSex(protect) = getRandInt(0, 1);
         int temp = getRandInt(1, 2);
         if (root->vSex(lubonus) == 0)
-            root->sVSex(lubonus, 1);
-        root->uVSC(blowJob, 2);
-        root->uVSex(guy, 2);
+            root->vSex(lubonus) = 1;
+        root->vStatistics(blowJob) += 2;
+        root->vSex(guy) += 2;
         root->setImage(media(36));
         root->double_penetration();
-        root->setDesc(str(66));
+        root->setText(str(66));
         makeActBtn("gang_act25", act(8));
     }
     if (action == "gang_act25")
@@ -616,16 +616,16 @@ void GadukinoEvent::actionHandler(QString action)
         root->incTime(5);
         root->setBoyName("первый мужик");
         root->setBoy2Name("второй мужик");
-        root->sVSex(silavag, getRandInt(0, 2));
-        root->sVSex(dick, getRandInt(12, 20));
-        root->sVSex(dick2, getRandInt(12, 20));
-        root->sVSex(protect, getRandInt(0, 1));
+        root->vSex(silavag) = getRandInt(0, 2);
+        root->vSex(dick) = getRandInt(12, 20);
+        root->vSex(dick2) = getRandInt(12, 20);
+        root->vSex(protect) = getRandInt(0, 1);
         if (root->vSex(lubonus) == 0)
-            root->sVSex(lubonus, 1);
-        root->uVSC(blowJob, 2);
-        root->uVSex(guy, 2);
+            root->vSex(lubonus) = 1;
+        root->vStatistics(blowJob) += 2;
+        root->vSex(guy) += 2;
         root->setImage(media(37));
-        root->setDesc(str(67));
+        root->setText(str(67));
         root->double_penetration();
         makeActBtn("gang_act26", act(8));
     }
@@ -633,9 +633,9 @@ void GadukinoEvent::actionHandler(QString action)
     {
         root->incTime(5);
         if (root->vStatus(health) < 100)
-            root->sVStatus(health, 100);
+            root->vStatus(health) = 100;
         root->setImage(media(38));
-        root->setDesc(str(68));
+        root->setText(str(68));
         makeActBtn("gang_act27", act(8));
     }
     if (action == "gang_act27")
@@ -643,9 +643,9 @@ void GadukinoEvent::actionHandler(QString action)
         root->incTime(5);
         root->cum("lip");
         root->cum("face");
-        root->uVSC(swallow, 3);
+        root->vStatistics(swallow) += 3;
         root->setImage(media(39));
-        root->setDesc(str(69));
+        root->setText(str(69));
         makeActBtn("gang_act28", act(8));
     }
     if (action == "gang_act28")
@@ -653,62 +653,62 @@ void GadukinoEvent::actionHandler(QString action)
         root->incTime(5);
         root->cum("lip");
         root->cum("face");
-        root->uVSC(swallow, 3);
-        root->uVSC(gangBang, 1);
-        root->uVSC(blowJob, 20);
+        root->vStatistics(swallow) += 3;
+        root->vStatistics(gangBang) += 1;
+        root->vStatistics(blowJob) += 20;
         root->setImage(media(40));
-        root->setDesc(str(70));
+        root->setText(str(70));
         makeActBtn("gadbeach", act(8));
     }
     if (action == "mitkagadsex11")
     {
-        root->sVEvent(mitkagadsex, 1);
-        root->sVEvent(mitboyrand, 1);
+        root->vEvent(mitkagadsex) =  1;
+        root->vEvent(mitboyrand) =  1;
         root->startEvent(eMitkaSex);
     }
     if (action == "mitkagadsex12")
     {
-        root->sVEvent(mitkagadsex, 1);
-        root->sVEvent(mitboyrand, 2);
+        root->vEvent(mitkagadsex) =  1;
+        root->vEvent(mitboyrand) =  2;
         root->startEvent(eMitkaSex);
     }
     if (action == "mitkagadsex13")
     {
-        root->sVEvent(mitkagadsex, 1);
-        root->sVEvent(mitboyrand, 3);
+        root->vEvent(mitkagadsex) =  1;
+        root->vEvent(mitboyrand) =  3;
         root->startEvent(eMitkaSex);
     }
     if (action == "mitkagadsex2")
     {
-        root->sVEvent(mitkagadsex, 2);
+        root->vEvent(mitkagadsex) =  2;
         root->startEvent(eMitkaSex);
     }
     if (action == "mitkaforestsex11")
     {
-        root->sVEvent(mitkaforestsex, 1);
-        root->sVEvent(mitboyrand, 1);
+        root->vEvent(mitkaforestsex) =  1;
+        root->vEvent(mitboyrand) =  1;
         root->startEvent(eMitkaSex);
     }
     if (action == "mitkaforestsex12")
     {
-        root->sVEvent(mitkaforestsex, 1);
-        root->sVEvent(mitboyrand, 2);
+        root->vEvent(mitkaforestsex) =  1;
+        root->vEvent(mitboyrand) =  2;
         root->startEvent(eMitkaSex);
     }
     if (action == "mitkaforestsex13")
     {
-        root->sVEvent(mitkaforestsex, 1);
-        root->sVEvent(mitboyrand, 3);
+        root->vEvent(mitkaforestsex) =  1;
+        root->vEvent(mitboyrand) =  3;
         root->startEvent(eMitkaSex);
     }
     if (action == "mitkaforestsex2")
     {
-        root->sVEvent(mitkaforestsex, 2);
+        root->vEvent(mitkaforestsex) =  2;
         root->startEvent(eMitkaSex);
     }
     if (action == "mitkaforestsex3")
     {
-        root->sVEvent(mitkaforestsex, 3);
+        root->vEvent(mitkaforestsex) =  3;
         root->startEvent(eMitkaSex);
     }
     if (action == "to_gadhouse")
@@ -726,19 +726,19 @@ void GadukinoEvent::actionHandler(QString action)
     if (action == "store_boletus")
     {
         root->incTime(30);
-        root->uVStatus(money, root->vStatus(boletus) * 150);
+        root->vStatus(money) += root->vStatus(boletus) * 150;
         root->setImage(media(41));
-        root->setDesc(str(88));
-        root->sVStatus(boletus, 0);
+        root->setText(str(88));
+        root->vStatus(boletus) = 0;
         makeActBtn("collection_point", act(8));
     }
     if (action == "store_bilberry")
     {
         root->incTime(30);
-        root->uVStatus(money, root->vStatus(bilberry) * 75);
+        root->vStatus(money) += root->vStatus(bilberry) * 75;
         root->setImage(media(41));
-        root->setDesc(str(89));
-        root->sVStatus(bilberry, 0);
+        root->setText(str(89));
+        root->vStatus(bilberry) = 0;
         makeActBtn("collection_point", act(8));
     }
     if (action == "collection_point")
@@ -762,47 +762,47 @@ void GadukinoEvent::actionHandler(QString action)
         int month = root->getMonth();
         int sunWe = root->getSunWeather();
         int hour = root->getHour();
-        int week = root->getWeekNum();
+        int week = root->getWeek();
 
-        root->uVEvent(gopsawnaked, 1);
-        if (root->gVEvent(gopsawnaked) >= 10)
+        root->vEvent(gopsawnaked) += 1;
+        if (root->vEvent(gopsawnaked) >= 10)
         {
-            root->sVEvent(gopsawnaked, 0);
-            root->uVEvent(mitkasextimes, 1);
+            root->vEvent(gopsawnaked) = 0;
+            root->vEvent(mitkasextimes) += 1;
         }
         if (month >= 4 && month <= 10 && sunWe >= 0 && ((hour > 14 && hour < 18 && week == 6) || (hour > 13 && hour < 18 && week == 0)))
         {
             root->setImage(media(42));
-            root->setDesc(str(95));
+            root->setText(str(95));
             makeActBtn("noticed_grandma", act(8));
         }
         else
         {
-            root->sVEvent(EventParams::gadukino_nude, 8 - week);
-            root->sVEvent(gad_woman_knownude, 1);
+            root->vEvent(EventParams::gadukino_nude) = 8 - week;
+            root->vEvent(gad_woman_knownude) = 1;
             root->setImage(media(43));
-            root->setDesc(str(96));
+            root->setText(str(96));
             makeActBtn("to_gaddvor", act(8));
         }
     }
     if (action == "noticed_grandma")
     {
-        root->sVEvent(gadukino_go_nude, 0);
-        root->sVEvent(grandmaknownude, 1);
-        root->sVEvent(gad_woman_knownude, 1);
-        root->uVQuest(grandmaQW, -20);
-        root->uVQuest(grandpaQW, -20);
+        root->vEvent(gadukino_go_nude) = 0;
+        root->vEvent(grandmaknownude) = 1;
+        root->vEvent(gad_woman_knownude) = 1;
+        root->vQuest(grandmaQW) -= 20;
+        root->vQuest(grandpaQW) -= 20;
         root->redressOld();
-        root->sVStatus(clothesswamphouse, 0);
-        root->sVStatus(clothesbackwater, 0);
-        root->sVStatus(clothesforest, 0);
-        root->sVStatus(swamp_clothes, 0);
+        root->vStatus(clothesswamphouse) = 0;
+        root->vStatus(clothesbackwater) = 0;
+        root->vStatus(clothesforest) = 0;
+        root->vStatus(swamp_clothes) = 0;
         root->incTime(10);
         root->changeLoc(lgadhouse);
     }
     if (action == "gad_nude_end_next")
     {
-        root->uVEvent(grandmaknownude, 1);
+        root->vEvent(grandmaknownude) = 1;
         root->changeLoc(lgadhouse, 0);
     }
     if (action == "gadukino_back")
@@ -811,7 +811,7 @@ void GadukinoEvent::actionHandler(QString action)
     }
     if (action == "gadriver_nude_end_next")
     {
-        root->uVEvent(grandpaknownude, 1);
+        root->vEvent(grandpaknownude) = 1;
         actionHandler("to_gaddvor");
     }
     if (action == "back_to_lock")
@@ -820,13 +820,13 @@ void GadukinoEvent::actionHandler(QString action)
     }
     if (action == "onlooker_woman_next")
     {
-        root->sVEvent(grandma_know, 1);
-        root->sVEvent(grandpa_know, 1);
+        root->vEvent(grandma_know) =1;
+        root->vEvent(grandpa_know) =1;
         actionHandler("to_gadhouse");
     }
     if (action == "onlooker_man_next")
     {
-        root->sVEvent(grandpa_know, 1);
+        root->vEvent(grandpa_know) = 1;
         actionHandler("to_gaddvor");
     }
     if (action == "pack_things")
@@ -840,22 +840,22 @@ void GadukinoEvent::actionHandler(QString action)
     if (action == "punishment11")
     {
         root->incTime(5);
-        root->uVSkill(domination, -5);
+        root->vSkill(domination) -=5;
         root->setImage(media(44));
-        root->setDesc(str(138));
-        root->addDesc(str(136));
+        root->setText(str(138));
+        root->addText(str(136));
         makeActBtn("korrPar", act(28));
     }
     if (action == "punishment12")
     {
-        root->sVEvent(mother_spanking, 1);
+        root->vEvent(mother_spanking) = 1;
         root->incTime(10);
-        root->uVSkill(domination, 5);
-        root->uVSC(spankAss, 1);
-        root->uVSex(spanked, 75);
+        root->vSkill(domination) += 5;
+        root->vStatistics(spankAss) += 1;
+        root->vSex(spanked) += 75;
         root->setImage(media(45));
-        root->setDesc(str(139));
-        root->addDesc(str(135));
+        root->setText(str(139));
+        root->addText(str(135));
         makeActBtn("bedrPar", act(28));
     }
     if (action == "korrPar")
@@ -870,87 +870,86 @@ void GadukinoEvent::actionHandler(QString action)
 
 void GadukinoEvent::gadsarai_check()
 {
-    qDebug() << "GADSARAI_CHECK RUNNING!";
-    if (root->getMonth() >= 5 && root->getMonth() <= 9 && root->getSunWeather() >= 0 && root->getHour() > 13 && root->getHour() < 18 && root->getWeekNum() < 6)
-        root->sVEvent(grandma_ingadsarai, 1);
+    if (root->getMonth() >= 5 && root->getMonth() <= 9 && root->getSunWeather() >= 0 && root->getHour() > 13 && root->getHour() < 18 && root->getWeek() < 6)
+        root->vEvent(grandma_ingadsarai) = 1;
     else
-        root->sVEvent(grandma_ingadsarai, 0);
-    if (root->getMonth() > 5 && root->getMonth() < 9 && root->getSunWeather() >= 0 && root->getHour() > 7 && root->getHour() < 13 && (root->getWeekNum() == 2 || root->getWeekNum() == 4))
-        root->sVEvent(grandpa_ingadsarai, 1);
+        root->vEvent(grandma_ingadsarai) = 0;
+    if (root->getMonth() > 5 && root->getMonth() < 9 && root->getSunWeather() >= 0 && root->getHour() > 7 && root->getHour() < 13 && (root->getWeek() == 2 || root->getWeek() == 4))
+        root->vEvent(grandpa_ingadsarai) = 1;
     else
-        root->sVEvent(grandpa_ingadsarai, 0);
+        root->vEvent(grandpa_ingadsarai) = 0;
 
-    if (root->gVEvent(grandpa_ingadsarai) == 1 || root->gVEvent(grandma_ingadsarai) == 1)
-        root->sVEvent(grandparents_ingadsarai, 1);
+    if (root->vEvent(grandpa_ingadsarai) == 1 || root->vEvent(grandma_ingadsarai) == 1)
+        root->vEvent(grandparents_ingadsarai) = 1;
     else
-        root->sVEvent(grandparents_ingadsarai, 0);
+        root->vEvent(grandparents_ingadsarai) = 0;
 }
 
 void GadukinoEvent::walk()
 {
     root->incTime(15);
     i = getRandInt(0, 100);
-    if (root->gVEvent(meadow) == 0)
+    if (root->vEvent(meadow) == 0)
     {
         root->setImage(media(46));
-        root->setDesc(str(0));
+        root->setText(str(0));
         makeActBtn("go_meadow", act(0));
     }
-    else if (root->gVEvent(meadow) == 1 && root->gVQuest(miraQW) == 0)
+    else if (root->vEvent(meadow) == 1 && root->vQuest(miraQW) == 0)
     {
         root->setImage(media(47));
-        root->setDesc(str(2));
+        root->setText(str(2));
         makeActBtn("help_mira", act(2));
     }
-    else if (i < 10 && root->gVEvent(Mira_no) == 0)
+    else if (i < 10 && root->vEvent(Mira_no) == 0)
     {
-        if (root->gVQuest(miraQW) > 0 && i < 5)
+        if (root->vQuest(miraQW) > 0 && i < 5)
         {
-            if (root->gVQuest(miraQW) < 25)
-                root->uVQuest(miraQW, 1);
+            if (root->vQuest(miraQW) < 25)
+                root->vQuest(miraQW) += 1;
             root->incTime(10);
             QString add;
-            if (root->gVQuest(miragopQW) == 0)
+            if (root->vQuest(miragopQW) == 0)
                 root->setImage(media(48));
             else
                 root->setImage(media(49));
-            root->setDesc(str(4));
-            if (root->gVQuest(miragopQW) >= 20)
+            root->setText(str(4));
+            if (root->vQuest(miragopQW) >= 20)
             {
                 makeActBtn("show_pussy", act(4));
             }
             else
                 makeActBtn("to_gadukino", act(5));
         }
-        else if (root->gVQuest(miraQW) > 0 && root->gVQuest(miragopQW) < 4 && i > 5)
+        else if (root->vQuest(miraQW) > 0 && root->vQuest(miragopQW) < 4 && i > 5)
         {
-            if (root->gVQuest(miraQW) < 25)
-                root->uVQuest(miraQW, 1);
+            if (root->vQuest(miraQW) < 25)
+                root->vQuest(miraQW) += 1;
             root->incTime(10);
             root->setImage(media(50));
-            root->setDesc(str(11));
+            root->setText(str(11));
             makeActBtn("to_gadukino", act(3));
         }
-        else if (root->gVQuest(miraQW) > 0 && root->gVQuest(miragopQW) >= 4 && root->gVEvent(mirasextimes) >= 10 && root->getTemp() >= 15 && root->getSunWeather() >= 0 && i < 5)
+        else if (root->vQuest(miraQW) > 0 && root->vQuest(miragopQW) >= 4 && root->vEvent(mirasextimes) >= 10 && root->getTemp() >= 15 && root->getSunWeather() >= 0 && i < 5)
         {
-            root->uVStatus(horny, 20);
+            root->vStatus(horny) += 20;
             i = getRandInt(0, 1);
             root->incTime(5);
-            root->uVSC(voyeurism, 1);
+            root->vStatistics(voyeurism) += 1;
             if (i == 1)
                 root->setImage(media(51));
             else
                 root->setImage(media(52));
-            root->setDesc(str(12));
+            root->setText(str(12));
             makeActBtn("to_gadukino", act(5));
         }
-        else if (root->gVQuest(miraQW) > 0 && root->gVQuest(miragopQW) >= 6 && root->gVEvent(mirasextimes) >= 10 && root->getTemp() >= 15 && root->getSunWeather() >= 0 && i >= 5)
+        else if (root->vQuest(miraQW) > 0 && root->vQuest(miragopQW) >= 6 && root->vEvent(mirasextimes) >= 10 && root->getTemp() >= 15 && root->getSunWeather() >= 0 && i >= 5)
         {
-            root->uVStatus(horny, 20);
+            root->vStatus(horny) += 20;
             root->incTime(10);
-            root->uVSC(voyeurism, 1);
+            root->vStatistics(voyeurism) += 1;
             root->setImage(media(53));
-            root->setDesc(str(13));
+            root->setText(str(13));
             makeActBtn("watch_mirasex", act(6));
         }
         else
@@ -963,114 +962,114 @@ void GadukinoEvent::walk()
             last_walk = walki;
             qDebug() << last_walk;
             root->setImage(media(54));
-            root->setDesc(str(15));
+            root->setText(str(15));
             makeActBtn("to_gadukino", act(5));
         }
     }
-    else if (root->gVQuest(miragopQW) >= 11 && i >= 10 && i < 15 && root->getTemp() >= 20 && root->getSunWeather() >= 0 && root->gVEvent(Mira_no) == 0)
+    else if (root->vQuest(miragopQW) >= 11 && i >= 10 && i < 15 && root->getTemp() >= 20 && root->getSunWeather() >= 0 && root->vEvent(Mira_no) == 0)
     {
         root->incTime(5);
-        root->uVStatus(horny, getRandInt(15, 30));
-        root->uVSC(voyeurism, 1);
+        root->vStatus(horny) += getRandInt(15, 30);
+        root->vStatistics(voyeurism) += 1;
         root->setImage(media(55));
-        root->setDesc(str(16));
+        root->setText(str(16));
         makeActBtn("to_gadukino", act(5));
     }
-    else if (root->gVQuest(miragopQW) >= 11 && i >= 15 && i < 20 && root->getTemp() >= 25 && root->getSunWeather() >= 0 && root->gVEvent(Mira_no) == 0)
+    else if (root->vQuest(miragopQW) >= 11 && i >= 15 && i < 20 && root->getTemp() >= 25 && root->getSunWeather() >= 0 && root->vEvent(Mira_no) == 0)
     {
         root->incTime(5);
-        root->uVStatus(horny, getRandInt(15, 30));
-        root->uVSC(voyeurism, 1);
+        root->vStatus(horny) += getRandInt(15, 30);
+        root->vStatistics(voyeurism) += 1;
         root->setImage(media(56));
-        root->setDesc(str(16));
+        root->setText(str(16));
         makeActBtn("to_gadukino", act(5));
     }
-    else if (root->gVQuest(miragopQW) >= 11 && i >= 20 && i < 25 && root->getTemp() >= 20 && root->getSunWeather() >= 0 && root->gVEvent(Mira_no) == 0)
+    else if (root->vQuest(miragopQW) >= 11 && i >= 20 && i < 25 && root->getTemp() >= 20 && root->getSunWeather() >= 0 && root->vEvent(Mira_no) == 0)
     {
         root->incTime(5);
-        root->uVStatus(horny, getRandInt(15, 30));
-        root->uVSC(voyeurism, 1);
+        root->vStatus(horny) += getRandInt(15, 30);
+        root->vStatistics(voyeurism) += 1;
         root->setImage(media(57));
-        root->setDesc(str(17));
+        root->setText(str(17));
         makeActBtn("to_gadukino", act(5));
     }
-    else if (root->gVQuest(miragopQW) >= 15 && i >= 25 && i < 30 && root->getTemp() >= 20 && root->getSunWeather() >= 0 && root->gVEvent(Mira_no) == 0)
+    else if (root->vQuest(miragopQW) >= 15 && i >= 25 && i < 30 && root->getTemp() >= 20 && root->getSunWeather() >= 0 && root->vEvent(Mira_no) == 0)
     {
         root->incTime(5);
-        root->uVStatus(horny, getRandInt(20, 40));
-        root->uVSC(voyeurism, 1);
+        root->vStatus(horny) += getRandInt(20, 40);
+        root->vStatistics(voyeurism) += 1;
         root->setImage(media(58));
-        root->setDesc(str(18));
+        root->setText(str(18));
         makeActBtn("to_gadukino", act(5));
     }
-    else if (root->gVQuest(miragopQW) >= 20 && i >= 30 && i < 35 && root->getTemp() >= 20 && root->getSunWeather() >= 0 && root->gVEvent(Mira_no) == 0)
+    else if (root->vQuest(miragopQW) >= 20 && i >= 30 && i < 35 && root->getTemp() >= 20 && root->getSunWeather() >= 0 && root->vEvent(Mira_no) == 0)
     {
         root->incTime(5);
-        root->uVStatus(horny, getRandInt(20, 40));
-        root->uVSC(voyeurism, 1);
+        root->vStatus(horny) += getRandInt(20, 40);
+        root->vStatistics(voyeurism) += 1;
         root->setImage(media(62));
-        root->setDesc(str(19));
+        root->setText(str(19));
         makeActBtn("to_gadukino", act(5));
     }
-    else if (root->gVQuest(miragopQW) >= 20 && i >= 35 && i < 40 && root->getTemp() >= 20 && root->getSunWeather() >= 0 && root->gVEvent(Mira_no) == 0)
+    else if (root->vQuest(miragopQW) >= 20 && i >= 35 && i < 40 && root->getTemp() >= 20 && root->getSunWeather() >= 0 && root->vEvent(Mira_no) == 0)
     {
         root->incTime(5);
-        root->uVStatus(horny, getRandInt(25, 50));
-        root->uVSC(voyeurism, 1);
+        root->vStatus(horny) += getRandInt(25, 50);
+        root->vStatistics(voyeurism) += 1;
         root->setImage(media(59));
-        root->setDesc(str(20));
+        root->setText(str(20));
         makeActBtn("to_gadukino", act(5));
     }
-    else if (root->gVQuest(miragopQW) >= 30 && root->gVEvent(mirasextimes) > 50 && i >= 40 && i < 45 && root->getTemp() >= 20 && root->getSunWeather() >= 0 && root->gVEvent(Mira_no) == 0)
+    else if (root->vQuest(miragopQW) >= 30 && root->vEvent(mirasextimes) > 50 && i >= 40 && i < 45 && root->getTemp() >= 20 && root->getSunWeather() >= 0 && root->vEvent(Mira_no) == 0)
     {
         root->incTime(5);
-        root->uVStatus(horny, getRandInt(50, 100));
-        root->uVSC(voyeurism, 1);
+        root->vStatus(horny) += getRandInt(50, 100);
+        root->vStatistics(voyeurism) += 1;
         root->setImage(media(60));
-        root->setDesc(str(21));
+        root->setText(str(21));
         makeActBtn("to_gadukino", act(5));
     }
-    else if (root->gVQuest(miragopQW) >= 20 && i >= 45 && i < 50 && root->getTemp() >= 20 && root->getSunWeather() >= 0 && root->gVEvent(Mira_no) == 0)
+    else if (root->vQuest(miragopQW) >= 20 && i >= 45 && i < 50 && root->getTemp() >= 20 && root->getSunWeather() >= 0 && root->vEvent(Mira_no) == 0)
     {
         root->incTime(5);
-        root->uVStatus(horny, getRandInt(25, 40));
-        root->uVSC(voyeurism, 1);
+        root->vStatus(horny) += getRandInt(25, 40);
+        root->vStatistics(voyeurism) += 1;
         root->setImage(media(61));
-        root->setDesc(str(22));
+        root->setText(str(22));
         makeActBtn("to_gadukino", act(5));
     }
     else if (i >= 50 && i < 55)
     {
         root->incTime(5);
         root->setImage(media(63));
-        root->setDesc(str(23));
+        root->setText(str(23));
         makeActBtn("to_gadukino", act(5));
     }
     else if (i >= 55 && i < 60)
     {
         root->incTime(5);
         root->setImage(media(64));
-        root->setDesc(str(24));
+        root->setText(str(24));
         makeActBtn("to_gadukino", act(5));
     }
     else if (i >= 60 && i < 70)
     {
         root->incTime(5);
-        if (root->gVEvent(mitkasextimes) >= 13)
-            root->uVSkill(domination, -1);
+        if (root->vEvent(mitkasextimes) >= 13)
+            root->vSkill(domination) -= 1;
         QString add;
         if (root->getTemp() < 20)
             root->setImage(media(65));
         else
             root->setImage(media(66));
-        root->setDesc(str(25));
+        root->setText(str(25));
         makeActBtn("to_gadukino", act(7));
     }
     else if (i >= 70 && i < 75 && root->getTemp() >= 20 && root->getSunWeather() >= 0)
     {
         root->incTime(5);
         root->setImage(media(67));
-        root->setDesc(str(26));
+        root->setText(str(26));
         makeActBtn("to_gadukino", act(5));
     }
     else
@@ -1083,7 +1082,7 @@ void GadukinoEvent::walk()
         last_walk = walki;
         qDebug() << last_walk << "second";
         root->setImage(media(54));
-        root->setDesc(str(15));
+        root->setText(str(15));
         makeActBtn("to_gadukino", act(5));
     }
 }
@@ -1091,28 +1090,28 @@ void GadukinoEvent::walk()
 void GadukinoEvent::mira_apologise()
 {
     root->incTime(5);
-    root->sVEvent(gadboyday, root->vStatus(daystart));
+    root->vEvent(gadboyday) =  root->vStatus(daystart);
     root->setImage(media(68));
-    root->setDesc(str(27));
+    root->setText(str(27));
     makeActBtn("mira_apologise_next", act(8));
 }
 
 void GadukinoEvent::mitka_apologise()
 {
     root->incTime(5);
-    root->sVEvent(gadboyday, root->vStatus(daystart));
-    root->sVEvent(gadriver_gang, 4);
+    root->vEvent(gadboyday) =  root->vStatus(daystart);
+    root->vEvent(gadriver_gang) =  4;
     root->setImage(media(68));
-    root->setDesc(str(31));
+    root->setText(str(31));
     makeActBtn("mitka_apologise_next", act(8));
 }
 
 void GadukinoEvent::gang_apologise()
 {
     root->incTime(5);
-    root->sVEvent(gadboyday, root->vStatus(daystart));
+    root->vEvent(gadboyday) =  root->vStatus(daystart);
     root->setImage(media(68));
-    root->setDesc(str(35));
+    root->setText(str(35));
     makeActBtn("wait_gang_apologize", act(11));
     makeActBtn("run_from_gang", act(13));
 }
@@ -1120,63 +1119,63 @@ void GadukinoEvent::gang_apologise()
 void GadukinoEvent::gadrivergang()
 {
     root->incTime(5);
-    root->sVEvent(gadriver_gang, 1);
-    root->sVEvent(gadboyday, root->vStatus(daystart));
-    root->sVEvent(mitkasextimes, 21);
-    root->uVSkill(domination, -10);
+    root->vEvent(gadriver_gang) =  1;
+    root->vEvent(gadboyday) =  root->vStatus(daystart);
+    root->vEvent(mitkasextimes) = 21;
+    root->vSkill(domination) -= 10;
     if (root->vStatus(health) <= 100)
-        root->sVStatus(health, 100);
+        root->vStatus(health) = 100;
     root->setImage(media(69));
-    root->setDesc(str(41));
+    root->setText(str(41));
     makeActBtn("gang_act1", act(14));
 }
 
 void GadukinoEvent::gadukino_mitka()
 {
     root->incTime(5);
-    root->sVEvent(mitkaday, root->vStatus(daystart));
+    root->vEvent(mitkaday) =  root->vStatus(daystart);
     root->setImage(media(7));
-    root->setDesc(str(71));
+    root->setText(str(71));
     makeActBtn("mitkagadsex11", act(8));
 }
 
 void GadukinoEvent::gadukino_kolyamba()
 {
     root->incTime(5);
-    root->sVEvent(mitkaday, root->vStatus(daystart));
+    root->vEvent(mitkaday) =  root->vStatus(daystart);
     root->setImage(media(70));
-    root->setDesc(str(72));
+    root->setText(str(72));
     makeActBtn("mitkagadsex12", act(8));
 }
 
 void GadukinoEvent::gadukino_vasyan()
 {
     root->incTime(5);
-    root->sVEvent(mitkaday, root->vStatus(daystart));
+    root->vEvent(mitkaday) =  root->vStatus(daystart);
     root->setImage(media(71));
-    root->setDesc(str(73));
+    root->setText(str(73));
     makeActBtn("mitkagadsex13", act(8));
 }
 
 void GadukinoEvent::gadukino_2boys()
 {
     root->incTime(5);
-    root->sVEvent(gadboyday, root->vStatus(daystart));
-    root->sVEvent(mitboyrand, getRandInt(1, 3));
+    root->vEvent(gadboyday) =  root->vStatus(daystart);
+    root->vEvent(mitboyrand) =  getRandInt(1, 3);
     if (root->getMonth() >= 6 && root->getMonth() <= 8)
         root->setImage(media(72));
     else
         root->setImage(media(73));
-    switch (root->gVEvent(mitboyrand))
+    switch (root->vEvent(mitboyrand))
     {
     case 1:
-        root->setDesc(str(74));
+        root->setText(str(74));
         break;
     case 2:
-        root->setDesc(str(75));
+        root->setText(str(75));
         break;
     case 3:
-        root->setDesc(str(76));
+        root->setText(str(76));
         break;
     default:
         break;
@@ -1187,49 +1186,49 @@ void GadukinoEvent::gadukino_2boys()
 void GadukinoEvent::mira_mitka()
 {
     root->incTime(5);
-    root->sVEvent(mitkaday, root->vStatus(daystart));
+    root->vEvent(mitkaday) =  root->vStatus(daystart);
     root->setImage(media(7));
-    root->setDesc(str(77));
+    root->setText(str(77));
     makeActBtn("mitkaforestsex11", act(8));
 }
 
 void GadukinoEvent::mira_kolyamba()
 {
     root->incTime(5);
-    root->sVEvent(kolyambaday, root->vStatus(daystart));
+    root->vEvent(kolyambaday) = root->vStatus(daystart);
     root->setImage(media(70));
-    root->setDesc(str(78));
+    root->setText(str(78));
     makeActBtn("mitkaforestsex12", act(8));
 }
 
 void GadukinoEvent::mira_vasyan()
 {
     root->incTime(5);
-    root->sVEvent(kolyambaday, root->vStatus(daystart));
+    root->vEvent(kolyambaday) = root->vStatus(daystart);
     root->setImage(media(71));
-    root->setDesc(str(79));
+    root->setText(str(79));
     makeActBtn("mitkaforestsex13", act(8));
 }
 
 void GadukinoEvent::mira_2boys()
 {
     root->incTime(5);
-    root->sVEvent(gadboyday, root->vStatus(daystart));
-    root->sVEvent(mitboyrand, getRandInt(1, 3));
+    root->vEvent(gadboyday) =  root->vStatus(daystart);
+    root->vEvent(mitboyrand) =  getRandInt(1, 3);
     if (root->getMonth() >= 6 && root->getMonth() <= 8)
         root->setImage(media(72));
     else
         root->setImage(media(73));
-    switch (root->gVEvent(mitboyrand))
+    switch (root->vEvent(mitboyrand))
     {
     case 1:
-        root->setDesc(str(80));
+        root->setText(str(80));
         break;
     case 2:
-        root->setDesc(str(81));
+        root->setText(str(81));
         break;
     case 3:
-        root->setDesc(str(82));
+        root->setText(str(82));
         break;
     default:
         break;
@@ -1240,25 +1239,25 @@ void GadukinoEvent::mira_2boys()
 void GadukinoEvent::mira_3boys()
 {
     root->incTime(5);
-    root->sVEvent(gadboyday, root->vStatus(daystart));
+    root->vEvent(gadboyday) =  root->vStatus(daystart);
     if (root->getMonth() >= 6 && root->getMonth() <= 8)
         root->setImage(media(74));
     else
         root->setImage(media(75));
-    root->setDesc(str(83));
+    root->setText(str(83));
     makeActBtn("mitkaforestsex3", act(8));
 }
 
 void GadukinoEvent::go_home()
 {
-    if (root->getWeekNum() == 0)
+    if (root->getWeek() == 0)
     {
         if (root->getHour() == 20 || root->getHour() == 21)
         {
-            root->sVEvent(family_trip_month, root->getMonth());
+            root->vEvent(family_trip_month) = root->getMonth();
             if (root->getMonth() >= 6 || root->getMonth() <= 8)
             {
-                root->setDesc(str(84));
+                root->setText(str(84));
                 makeActBtn("to_gadhouse", act(16));
                 makeActBtn("go_home_ender", act(17));
             }
@@ -1269,7 +1268,7 @@ void GadukinoEvent::go_home()
         }
         else if (root->getHour() > 21)
         {
-            root->sVEvent(family_trip_month, root->getMonth());
+            root->vEvent(family_trip_month) = root->getMonth();
         }
     }
 }
@@ -1277,8 +1276,8 @@ void GadukinoEvent::go_home()
 void GadukinoEvent::go_home_ender()
 {
     root->incTime(getRandInt(15, 25));
-    root->sVEvent(mira_guest, 0);
-    root->setDesc(str(85));
+    root->vEvent(mira_guest) = 0;
+    root->setText(str(85));
     clearing_basket();
     makeActBtn("my_bedroom", act(18));
 }
@@ -1286,7 +1285,7 @@ void GadukinoEvent::go_home_ender()
 void GadukinoEvent::to_gadukino()
 {
     root->incTime(getRandInt(15, 25));
-    root->setDesc(str(86));
+    root->setText(str(86));
     makeActBtn("to_gadhouse", act(19));
 }
 
@@ -1294,7 +1293,7 @@ void GadukinoEvent::collection_point()
 {
     root->incTime(5);
     root->setImage(media(41));
-    root->setDesc(str(87));
+    root->setText(str(87));
     if (root->vStatus(boletus) > 0)
         makeActBtn("store_boletus", act(20));
     if (root->vStatus(bilberry) > 0)
@@ -1309,7 +1308,7 @@ void GadukinoEvent::gadukino_back()
         root->setImage(media(76));
     else
         root->setImage(media(77));
-    root->setDesc(str(90));
+    root->setText(str(90));
     makeActBtn("to_gadgarden", act(8));
 }
 
@@ -1320,7 +1319,7 @@ void GadukinoEvent::gadukino_nude()
     int hour = root->getHour();
     int sunWe = root->getSunWeather();
     if (hour >= 6 && hour <= 21 && ((sunWe >= 0 && tmp > 1) || (sunWe < 0 && tmp > 3)))
-        root->sVEvent(gadukino_go_nude, 1);
+        root->vEvent(gadukino_go_nude) = 1;
     QString add;
     if (hour < 6 || hour > 21)
         root->setImage(media(78));
@@ -1328,16 +1327,16 @@ void GadukinoEvent::gadukino_nude()
         root->setImage(media(79));
     else
         root->setImage(media(80));
-    root->setDesc(str(91));
+    root->setText(str(91));
     if (hour < 6 || hour > 21)
-        root->addDesc(str(92));
+        root->addText(str(92));
     if (hour >= 6 && hour <= 21 && sunWe < 0 && tmp < 4)
-        root->addDesc(str(93));
+        root->addText(str(93));
     if (hour >= 6 && hour <= 21 && sunWe >= 0 && tmp == 1)
-        root->addDesc(str(94));
-    if (root->gVEvent(gadukino_go_nude) == 0)
+        root->addText(str(94));
+    if (root->vEvent(gadukino_go_nude) == 0)
         makeActBtn("to_gaddvor", act(8));
-    else if (root->gVEvent(gadukino_go_nude) == 1)
+    else if (root->vEvent(gadukino_go_nude) == 1)
     {
         makeActBtn("go_nude", act(8));
     }
@@ -1346,21 +1345,21 @@ void GadukinoEvent::gadukino_nude()
 void GadukinoEvent::gadukino_nude_end()
 {
     root->incTime(30);
-    root->sVEvent(EventParams::gadukino_nude, 0);
-    root->uVQuest(grandmaQW, -20);
-    root->uVQuest(grandpaQW, -20);
-    root->sVEvent(grandma_notalk, 1);
-    root->sVEvent(grandpa_notalk, 1);
+    root->vEvent(EventParams::gadukino_nude) = 0;
+    root->vQuest(grandmaQW) -= 20;
+    root->vQuest(grandpaQW) -= 20;
+    root->vEvent(grandma_notalk) = 1;
+    root->vEvent(grandpa_notalk) = 1;
     root->setImage(media(81));
-    root->setDesc(str(97));
+    root->setText(str(97));
 
-    if (root->gVEvent(grandmaknownude) == 0)
+    if (root->vEvent(grandmaknownude) == 0)
     {
-        root->setDesc(str(98));
+        root->setText(str(98));
     }
     else
     {
-        root->setDesc(str(99));
+        root->setText(str(99));
     }
     makeActBtn("gad_nude_end_next", act(8));
 }
@@ -1368,29 +1367,29 @@ void GadukinoEvent::gadukino_nude_end()
 void GadukinoEvent::gadriver_nude()
 {
     root->incTime(20);
-    if (root->gVEvent(fishers) == 1)
+    if (root->vEvent(fishers) == 1)
     {
-        root->sVEvent(fishers_nude, 8 - root->getWeekNum());
-        root->uVEvent(gopsawnaked, 1);
-        if (root->gVEvent(gopsawnaked) >= 10)
+        root->vEvent(fishers_nude) = 8 - root->getWeek();
+        root->vEvent(gopsawnaked) = 1;
+        if (root->vEvent(gopsawnaked) >= 10)
         {
-            root->sVEvent(gopsawnaked, 0);
-            root->uVEvent(mitkasextimes, 1);
+            root->vEvent(gopsawnaked) = 0;
+            root->vEvent(mitkasextimes) += 1;
         }
         QString add;
         if (root->getHour() < 6 || root->getHour() > 21)
             root->setImage(media(78));
-        else if (root->gVEvent(fishers) != 0)
+        else if (root->vEvent(fishers) != 0)
             root->setImage(media(82));
         else
             root->setImage(media(80));
-        root->setDesc(str(100));
+        root->setText(str(100));
         if (root->getHour() < 6 || root->getHour() > 21)
-            root->addDesc(str(101));
-        if (root->gVEvent(fishers) == 0)
-            root->addDesc(str(102));
-        if (root->gVEvent(fishers) == 1)
-            root->addDesc(str(103));
+            root->addText(str(101));
+        if (root->vEvent(fishers) == 0)
+            root->addText(str(102));
+        if (root->vEvent(fishers) == 1)
+            root->addText(str(103));
         makeActBtn("to_gadukino", act(22));
         makeActBtn("gadukino_back", act(23));
     }
@@ -1399,49 +1398,49 @@ void GadukinoEvent::gadriver_nude()
 void GadukinoEvent::gadriver_nude_end()
 {
     root->incTime(10);
-    root->sVEvent(fishers_nude, 0);
-    root->uVQuest(grandpaQW, -10);
-    root->sVEvent(grandpa_notalk, 1);
+    root->vEvent(fishers_nude) = 0;
+    root->vQuest(grandpaQW) -= 10;
+    root->vEvent(grandpa_notalk) = 1;
     root->setImage(media(83));
-    root->setDesc(str(104));
-    if (root->gVEvent(grandpaknownude) == 0)
-        root->setDesc(str(105));
+    root->setText(str(104));
+    if (root->vEvent(grandpaknownude) == 0)
+        root->setText(str(105));
     else
-        root->setDesc(str(106));
+        root->setText(str(106));
     makeActBtn("gadriver_nude_end_next", act(8));
 }
 
 void GadukinoEvent::onlooker()
 {
-    root->sVEvent(EventParams::onlooker, 0);
+    root->vEvent(EventParams::onlooker) = 0;
     int temp = getRandInt(1, 10);
-    if (root->getWeekNum() < 6 && root->getWeekNum() > 0)
+    if (root->getWeek() < 6 && root->getWeek() > 0)
     {
         if (root->getHour() < 17 && temp == 1)
-            root->sVEvent(EventParams::onlooker, 1);
+            root->vEvent(EventParams::onlooker) = 1;
         if (root->getHour() >= 17 && temp < 3)
-            root->sVEvent(EventParams::onlooker, 1);
+            root->vEvent(EventParams::onlooker) = 1;
     }
     else if (temp < 4)
-        root->sVEvent(EventParams::onlooker, 1);
+        root->vEvent(EventParams::onlooker) = 1;
 }
 
 void GadukinoEvent::gadukino_onlooker()
 {
     root->incTime(1);
-    root->sVEvent(EventParams::gadukino_onlooker, getRandInt(1, 2));
-    if (root->gVEvent(EventParams::gadukino_onlooker) == 1)
+    root->vEvent(EventParams::gadukino_onlooker) = getRandInt(1, 2);
+    if (root->vEvent(EventParams::gadukino_onlooker) == 1)
     {
-        root->sVEvent(onlooker_woman, 1);
-        root->sVEvent(gad_woman_knowsex, 1);
+        root->vEvent(onlooker_woman) = 1;
+        root->vEvent(gad_woman_knowsex) = 1;
         root->setImage(media(84));
-        root->setDesc(str(107));
+        root->setText(str(107));
     }
     else
     {
-        root->sVEvent(onlooker_man, 1);
+        root->vEvent(onlooker_man) = 1;
         root->setImage(media(84));
-        root->setDesc(str(108));
+        root->setText(str(108));
     }
     makeActBtn("back_to_lock", act(5));
 }
@@ -1449,26 +1448,26 @@ void GadukinoEvent::gadukino_onlooker()
 void GadukinoEvent::gadukino_onlooker_woman()
 {
     root->incTime(30);
-    root->sVEvent(onlooker_woman, 0);
-    root->uVQuest(grandmaQW, -20);
-    root->uVQuest(grandpaQW, -20);
-    root->sVEvent(grandma_notalk, 1);
-    root->sVEvent(grandpa_notalk, 1);
+    root->vEvent(onlooker_woman) = 0;
+    root->vQuest(grandmaQW) -= 20;
+    root->vQuest(grandpaQW) -= 20;
+    root->vEvent(grandma_notalk) = 1;
+    root->vEvent(grandpa_notalk) = 1;
     root->setImage(media(81));
-    root->setDesc(str(109));
-    if (root->gVQuest(grandmaQW) < 40)
+    root->setText(str(109));
+    if (root->vQuest(grandmaQW) < 40)
     {
-        if (root->gVEvent(grandma_know) == 0)
-            root->setDesc(str(110));
-        if (root->gVEvent(grandma_know) == 1)
-            root->setDesc(str(111));
+        if (root->vEvent(grandma_know) == 0)
+            root->setText(str(110));
+        if (root->vEvent(grandma_know) == 1)
+            root->setText(str(111));
     }
     else
     {
-        if (root->gVEvent(grandma_know) == 0)
-            root->setDesc(str(112));
-        if (root->gVEvent(grandma_know) == 1)
-            root->setDesc(str(113));
+        if (root->vEvent(grandma_know) == 0)
+            root->setText(str(112));
+        if (root->vEvent(grandma_know) == 1)
+            root->setText(str(113));
     }
     makeActBtn("onlooker_woman_next", act(8));
 }
@@ -1476,25 +1475,25 @@ void GadukinoEvent::gadukino_onlooker_woman()
 void GadukinoEvent::gadukino_onlooker_man()
 {
     root->incTime(30);
-    root->sVEvent(onlooker_man, 0);
-    root->uVQuest(grandpaQW, -20);
-    root->sVEvent(grandpa_notalk, 1);
+    root->vEvent(onlooker_man) = 0;
+    root->vQuest(grandpaQW) -= 20;
+    root->vEvent(grandpa_notalk) = 1;
     root->setImage(media(83));
-    root->setDesc(str(114));
-    if (root->gVQuest(grandpaQW) < 40)
+    root->setText(str(114));
+    if (root->vQuest(grandpaQW) < 40)
     {
-        root->addDesc(str(115));
-        if (root->gVEvent(grandpa_know) == 0)
-            root->addDesc(str(116));
-        if (root->gVEvent(grandpa_know) == 1)
-            root->addDesc(str(117));
+        root->addText(str(115));
+        if (root->vEvent(grandpa_know) == 0)
+            root->addText(str(116));
+        if (root->vEvent(grandpa_know) == 1)
+            root->addText(str(117));
     }
     else
     {
-        if (root->gVEvent(grandpa_know) == 0)
-            root->addDesc(str(118));
-        if (root->gVEvent(grandpa_know) == 1)
-            root->addDesc(str(119));
+        if (root->vEvent(grandpa_know) == 0)
+            root->addText(str(118));
+        if (root->vEvent(grandpa_know) == 1)
+            root->addText(str(119));
     }
     makeActBtn("onlooker_man_next", act(8));
 }
@@ -1502,37 +1501,37 @@ void GadukinoEvent::gadukino_onlooker_man()
 void GadukinoEvent::gadukino_end()
 {
     root->incTime(10);
-    root->sVEvent(grandma_notalk, 1);
-    root->sVEvent(grandpa_notalk, 1);
+    root->vEvent(grandma_notalk) =1;
+    root->vEvent(grandpa_notalk) =1;
     QString img;
-    if (root->gVQuest(grandpaQW) > root->gVQuest(grandmaQW))
+    if (root->vQuest(grandpaQW) > root->vQuest(grandmaQW))
         root->setImage(media(83));
     else
         root->setImage(media(81));
-    root->setDesc(str(120));
-    if (root->gVQuest(grandpaQW) > root->gVQuest(grandmaQW))
+    root->setText(str(120));
+    if (root->vQuest(grandpaQW) > root->vQuest(grandmaQW))
     {
-        root->addDesc(str(121));
-        if (root->gVEvent(gad_woman_knowsex) > 0 && root->gVEvent(gad_woman_knownude) > 0)
-            root->addDesc(str(122));
-        if (root->gVEvent(gad_woman_knowsex) > 0 && root->gVEvent(gad_woman_knownude) == 0)
-            root->addDesc(str(123));
-        if (root->gVEvent(gad_woman_knowsex) == 0 && root->gVEvent(gad_woman_knownude) > 0)
-            root->addDesc(str(124));
-        if (root->gVEvent(gad_woman_knowsex) == 0 && root->gVEvent(gad_woman_knownude) == 0)
-            root->addDesc(str(125));
+        root->addText(str(121));
+        if (root->vEvent(gad_woman_knowsex) > 0 && root->vEvent(gad_woman_knownude) > 0)
+            root->addText(str(122));
+        if (root->vEvent(gad_woman_knowsex) > 0 && root->vEvent(gad_woman_knownude) == 0)
+            root->addText(str(123));
+        if (root->vEvent(gad_woman_knowsex) == 0 && root->vEvent(gad_woman_knownude) > 0)
+            root->addText(str(124));
+        if (root->vEvent(gad_woman_knowsex) == 0 && root->vEvent(gad_woman_knownude) == 0)
+            root->addText(str(125));
     }
     else
     {
-        root->addDesc(str(126));
-        if (root->gVEvent(gad_woman_knowsex) > 0 && root->gVEvent(gad_woman_knownude) > 0)
-            root->addDesc(str(127));
-        if (root->gVEvent(gad_woman_knowsex) > 0 && root->gVEvent(gad_woman_knownude) == 0)
-            root->addDesc(str(128));
-        if (root->gVEvent(gad_woman_knowsex) == 0 && root->gVEvent(gad_woman_knownude) > 0)
-            root->addDesc(str(129));
-        if (root->gVEvent(gad_woman_knowsex) == 0 && root->gVEvent(gad_woman_knownude) == 0)
-            root->addDesc(str(130));
+        root->addText(str(126));
+        if (root->vEvent(gad_woman_knowsex) > 0 && root->vEvent(gad_woman_knownude) > 0)
+            root->addText(str(127));
+        if (root->vEvent(gad_woman_knowsex) > 0 && root->vEvent(gad_woman_knownude) == 0)
+            root->addText(str(128));
+        if (root->vEvent(gad_woman_knowsex) == 0 && root->vEvent(gad_woman_knownude) > 0)
+            root->addText(str(129));
+        if (root->vEvent(gad_woman_knowsex) == 0 && root->vEvent(gad_woman_knownude) == 0)
+            root->addText(str(130));
     }
     makeActBtn("pack_things", act(24));
 }
@@ -1540,70 +1539,70 @@ void GadukinoEvent::gadukino_end()
 void GadukinoEvent::pack_things()
 {
     root->incTime(60);
-    root->sVEvent(gad_punishment, 1);
-    // mother = 0
-    // father['relation'] = 0
-    if (root->gVEvent(gad_woman_knowsex) > 0)
+    root->vEvent(gad_punishment) = 1;
+    root->gNPC(mother).relation = 0;
+    root->gNPC(father).relation = 0;
+    if (root->vEvent(gad_woman_knowsex) > 0)
     {
-        root->sVEvent(motherKnowSpravka, 1);
-        root->sVEvent(motherKnowWhore, 1);
+        root->vEvent(motherKnowSpravka) = 1;
+        root->vEvent(motherKnowWhore) = 1;
     }
-    root->sVEvent(gadukino_blok, 1);
-    // gs 'npc_editor','get_npc_profile',37
-    root->addDesc(str(131));
+    root->vEvent(gadukino_blok) = 1;
+    root->rendNpcProfile(mother);
+    root->addText(str(131));
     makeActBtn("go_home_ender", act(25));
 }
 
 void GadukinoEvent::punishment()
 {
-    root->sVStatus(mood, 0);
-    root->sVEvent(gad_punishment, 0);
-    // gs 'npc_editor','get_npc_profile',37
-    root->setDesc(str(132));
-    if (root->gVEvent(gad_woman_knowsex) > 0)
+    root->vStatus(mood) = 0;
+    root->vEvent(gad_punishment) = 0;
+    root->rendNpcProfile(mother);
+    root->setText(str(132));
+    if (root->vEvent(gad_woman_knowsex) > 0)
     {
         root->gNPC(37).relation = 0;
         root->gNPC(35).relation = 0;
-        root->sVEvent(mother_punishment, 1);
-        root->addDesc(str(133));
+        root->vEvent(mother_punishment) = 1;
+        root->addText(str(133));
     }
-    else if (root->gVEvent(gad_woman_knowsex) == 0 && root->gVEvent(gad_woman_knownude) > 0)
+    else if (root->vEvent(gad_woman_knowsex) == 0 && root->vEvent(gad_woman_knownude) > 0)
     {
-        root->addDesc(str(134));
-        if (root->gVEvent(mother_spanking) > 0 && root->gVEvent(momslut) < 2)
+        root->addText(str(134));
+        if (root->vEvent(mother_spanking) > 0 && root->vEvent(momslut) < 2)
         {
-            root->addDesc(str(135));
-            root->sVEvent(mother_punishment, 1);
+            root->addText(str(135));
+            root->vEvent(mother_punishment) = 1;
             root->gNPC(37).relation = 10;
             root->gNPC(35).relation = 10;
         }
-        if (root->gVEvent(mother_spanking) == 0 && root->gVEvent(momslut) >= 2)
+        if (root->vEvent(mother_spanking) == 0 && root->vEvent(momslut) >= 2)
         {
-            root->addDesc(str(136));
-            root->sVEvent(mother_punishment, 2);
+            root->addText(str(136));
+            root->vEvent(mother_punishment) = 2;
             root->gNPC(37).relation = 20;
             root->gNPC(35).relation = 20;
         }
     }
     else
     {
-        root->addDesc(str(137));
-        if (root->gVEvent(mother_spanking) > 0)
+        root->addText(str(137));
+        if (root->vEvent(mother_spanking) > 0)
         {
-            root->addDesc(str(135));
-            root->sVEvent(mother_punishment, 1);
+            root->addText(str(135));
+            root->vEvent(mother_punishment) = 1;
             root->gNPC(37).relation = 20;
             root->gNPC(35).relation = 20;
         }
-        if (root->gVEvent(mother_spanking) == 0)
+        if (root->vEvent(mother_spanking) == 0)
         {
-            root->addDesc(str(136));
-            root->sVEvent(mother_punishment, 2);
+            root->addText(str(136));
+            root->vEvent(mother_punishment) = 2;
             root->gNPC(37).relation = 30;
             root->gNPC(35).relation = 30;
         }
     }
-    if (root->gVEvent(mother_punishment) == 1)
+    if (root->vEvent(mother_punishment) == 1)
     {
         makeActBtn("punishment11", act(26));
         makeActBtn("punishment12", act(27));
@@ -1615,26 +1614,26 @@ void GadukinoEvent::punishment()
 void GadukinoEvent::absolution()
 {
     root->incTime(5);
-    root->sVEvent(gadukino_blok, 0);
-    // gs 'npc_editor','get_npc_profile',37
-    root->setDesc(str(140));
+    root->vEvent(gadukino_blok) = 0;
+    root->rendNpcProfile(mother);
+    root->setText(str(140));
     makeActBtn("back_to_lock", act(28));
 }
 
 void GadukinoEvent::offense()
 {
     root->incTime(5);
-    //	gs 'npc_editor','change_rep','-', 37, 10
-    root->sVEvent(gad_offense, 0);
-    // gs 'npc_editor','get_npc_profile',37
-    root->setDesc(str(141));
+    root->changeRep('-',mother,10);
+    root->vEvent(gad_offense) = 0;
+    root->rendNpcProfile(mother);
+    root->setText(str(141));
     makeActBtn("back_to_lock", act(28));
 }
 
 void GadukinoEvent::clearing_basket()
 {
-    root->sVStatus(boletus, 0);
-    root->sVStatus(bilberry, 0);
+    root->vStatus(boletus) =0;
+    root->vStatus(bilberry) = 0;
 }
 
 QString GadukinoEvent::str(int id)
@@ -1721,11 +1720,11 @@ QString GadukinoEvent::str(int id)
               "и с ее киски торчит белая ниточка тампона...";
     str[23] = "Гуляя по деревне, вы видите двух бабулек, пилящих доски...";
     str[24] = "Гуляя по деревне, вы видите двух вороватых бабулек, несущих доски с полуразваленной фермы...";
-    if (root->gVEvent(mitkasextimes) < 13)
+    if (root->vEvent(mitkasextimes) < 13)
     {
         str[25] = "Гуляя по деревне, вы видите местную элиту. Они, как по команде, все вместе затихают и"
                   " усиленно начинают смотреть куда-то в сторону, как только вы приближаетесь к ним";
-        if (root->gVEvent(gad_woman_knownude) == 1)
+        if (root->vEvent(gad_woman_knownude) == 1)
             str[25] += ", а едва вы оказываетесь позади, как слышите негодующие голоса:"
                        "<br>- Экая лахудра! Этож надо такое удумать - голяком по деревне ходить и мандищей своей светить!"
                        "<br>- А с виду так приличная девочка!<br>- Где же приличная? Сразу видно праститутка!";
@@ -1734,7 +1733,7 @@ QString GadukinoEvent::str(int id)
     }
     else
     {
-        if (root->gVEvent(gad_woman_knownude) == 1)
+        if (root->vEvent(gad_woman_knownude) == 1)
             str[25] = "Гуляя по деревне, вы видите местную элиту. Они приветливо улыбаются вам в лицо, "
                       "а как только вы проходите мимо, как слышите старушечье:<br>- О, глядите-ка, "
                       "девоньки, проститутка пошла. Уж как ее Митька Фроськин со своей бандой не вертели,"
@@ -1954,7 +1953,7 @@ QString GadukinoEvent::str(int id)
     str[118] = "- Света, внучка, это как понимать? Мне мужики тут рассказывают про тебя нехорошие вещи. Я понимаю, дело молодое, но не на виду же у всей деревни. Не позорь нас с бабкой на старости лет.";
     str[119] = "Он хотел что-то сказать, но лишь махнул рукой, и еще больше нахмурившись, зашагал прочь.";
     str[120] = "Не успели вы появится в избе, как вам на встречу ";
-    if (root->gVQuest(grandpaQW) > root->gVQuest(grandmaQW))
+    if (root->vQuest(grandpaQW) > root->vQuest(grandmaQW))
         str[120] += "шагнул хмурый дед";
     else
         str[120] += "вышла хмурая бабушка";
@@ -1974,18 +1973,18 @@ QString GadukinoEvent::str(int id)
                "- Иди в машину, дома поговорим, - бросила вам мать, но по её виду вы поняли, что ничего хорошего вас там не ждет.";
     str[132] = "<br>В коридоре вас поджидала грозная мама.";
     str[133] = "- Ну что, Света, думаю пора заняться твоим воспитанием, - с ходу начала она. ";
-    if (root->gVEvent(mother_spanking) == 0)
+    if (root->vEvent(mother_spanking) == 0)
         str[133] += "Я тебя никогда не порола... и видимо зря";
     else
         str[133] += "Я смотрю предыдущая порка тебя ничему не научила";
     str[133] += ". Наверное нужно преподать тебе";
-    if (root->gVEvent(mother_spanking) == 0)
+    if (root->vEvent(mother_spanking) == 0)
         str[133] += "урок.";
     else
         str[133] += "новый урок.";
 
     str[134] = "- Ну ты и учудила, Света, - сказала она, сурово глядя на вас. - Голяком по деревне бегать, это же надо додуматься!";
-    if (root->gVEvent(momslut) < 2)
+    if (root->vEvent(momslut) < 2)
         str[134] += "Что о нас теперь в деревне думать будут?";
     else
         str[134] += "Даже я в твоём возрасте такого не выкидывала!";
@@ -2142,5 +2141,5 @@ void GadukinoEvent::makeActBtn(QString action, QString actName)
     QActButton *btn = new QActButton(action, "gadukinoevents");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &GadukinoEvent::actionHandler);
-    root->addActBtn(btn);
+    root->addActions(btn);
 }

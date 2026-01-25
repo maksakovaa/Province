@@ -1,9 +1,9 @@
 #include "bathroom.h"
 #include "../../Functions.h"
-#include "../locationhandler.h"
+#include "../../game.h"
 #include "../../menu/buttons.h"
 
-BathRoom::BathRoom(LocationHandler* ptr): Location(ptr)
+BathRoom::BathRoom(Game* ptr):  root(ptr)
 {
     bath_lock = 0;
     family_trip = 0;
@@ -13,52 +13,52 @@ void BathRoom::show(QString arg)
 {
     no_bath = 0;
     // 	!Брат в душе
-//	if (back_loc == "korrParr" && gTime()->getHour() == 17 && gTime()->getMin() >= 30 && family_trip = 0 && rand_bathroom_peek = border_bathroom_peek)
+//	if (back_loc == "korrParr" && gTime()->root->getHour() == 17 && gTime()->root->getMin() >= 30 && family_trip = 0 && rand_bathroom_peek = border_bathroom_peek)
 //        peek();
 	// !отчим в душе
-//    else if (back_loc == "korrParr" && gTime()->getHour() == 16 && gTime()->getMin() >= 30 && family_trip = 0 && gTime()->getWeekNum() != 1 && rand_bathroom_peek = border_bathroom_peek)
+//    else if (back_loc == "korrParr" && gTime()->root->getHour() == 16 && gTime()->root->getMin() >= 30 && family_trip = 0 && gTime()->root->getWeek() != 1 && rand_bathroom_peek = border_bathroom_peek)
 //        peek();
 
 // описания
-    if (getPrevId() == ltanyaapartment)
+    if (root->getPrevLoc() == ltanyaapartment)
     {
 
     }
 //		!Ванная Тани Центр-Сити Point Call = gt 'zz_bathroom','init','tanya_apartment'
 //		gs 'zz_render',func('zz_bathroom_strings'+$lang, 'txt_1'),'city/center/tanya/bathroom0.jpg',func('zz_bathroom_strings'+$lang, 'txt_5')
-    else if (getPrevId() == lkorrpar || getPrevId() == lshulgahome) //кв.родителей, кв.Шульги
+    else if (root->getPrevLoc() == lkorrpar || root->getPrevLoc() == lshulgahome) //кв.родителей, кв.Шульги
     {
-        setImage("data/locations/pavlovo/ghomeyard/podezd/2floor/korrParr/bathroom_parents/bath4.jpg");
-        setDesc(bathStr(3));
+        root->setImage("data/locations/pavlovo/ghomeyard/podezd/2floor/korrParr/bathroom_parents/bath4.jpg");
+        root->setText(bathStr(3));
     }
-    else if (getPrevId() == lbandahome) {}
+    else if (root->getPrevLoc() == lbandahome) {}
 //		!кв. Бандитов-Сити
 //		gs 'zz_render', func('zz_bathroom_strings'+$lang, 'txt_1') ,'city/north/banda/home/bath.jpg', func('zz_bathroom_strings'+$lang, 'txt_4')
-    else if (getPrevId() == lalbinaev) {}
+    else if (root->getPrevLoc() == lalbinaev) {}
 //		!кв. Альбины Барловской
 //		gs 'zz_render', func('zz_bathroom_strings'+$lang, 'txt_1') ,'common/interior/bathroom/bath7.jpg', func('zz_bathroom_strings'+$lang, 'txt_5')
-    else if (getPrevId() == lmeyhome) {}
+    else if (root->getPrevLoc() == lmeyhome) {}
 //		gs 'zz_render', func('zz_bathroom_strings'+$lang, 'txt_1') ,'common/interior/bathroom/bath5', func('zz_bathroom_strings'+$lang, 'txt_6')
-    else if (getPrevId() == lstwork || getPrevId() == lskk) {}
+    else if (root->getPrevLoc() == lstwork || root->getPrevLoc() == lskk) {}
 //		! стрипклуб Центр и СКК
 //		no_bath = 1
 //		gs 'zz_render', func('zz_bathroom_strings'+$lang, 'txt_2'),'common/interior/bathroom/bath6', func('zz_bathroom_strings'+$lang, 'txt_7')
-    else if (getPrevId() == lkorr) {}
+    else if (root->getPrevLoc() == lkorr) {}
 //		! квартира Южн.рн.
 //		gs 'zz_render', func('zz_bathroom_strings'+$lang, 'txt_1') ,'common/interior/bathroom/bath'+iif(my_house = 1,'',remvanr)+'.jpg',iif(remvanr = 0 and my_house = 2, func('zz_bathroom_strings'+$lang, 'txt_8'), '')
-    else if (getPrevId() == lunidorm) {}
+    else if (root->getPrevLoc() == lunidorm) {}
 //		no_bath = 1
 //		gs 'zz_render', func('zz_bathroom_strings'+$lang, 'txt_2'),'city/center/university/dorm/interiors/bath',func('zz_bathroom_strings'+$lang, 'txt_9')
-    else if (getPrevId() == lgadbana) {}
+    else if (root->getPrevLoc() == lgadbana) {}
 //		gt 'Gadbana'
 
-    if (gVStatus(bawdy_body) != 0)
+    if (root->vStatus(bawdy_body) != 0)
     {
         makeActBtn(actBath28);
     }
     //	gs 'zz_render', '', '', func('zz_bathroom_strings'+$lang, 'txt_51') ???
 //Задвижка
-    if (getPrevId() == lkorrpar)
+    if (root->getPrevLoc() == lkorrpar)
     {
         if (bath_lock == 0)
         {
@@ -71,7 +71,7 @@ void BathRoom::show(QString arg)
         // if $npc['38,qwKolka'] >= 5 and week <= 5 and hour = 6 and cloth[1] = 1 and anus >= 13 and vagina >= 13: gt 'sisterQW','incest_event5sub'
     }
 
-    if(isNude() || getClothGroup() == 1)
+    if(root->isNude() || root->getClothGroup() == 1)
     {
         makeActBtn(actBath31);
     }
@@ -80,51 +80,51 @@ void BathRoom::show(QString arg)
         makeActBtn(actBath32);
     }
 
-    if (getPrevId() == lkorrpar)
+    if (root->getPrevLoc() == lkorrpar)
     {
-        if (gVStatus(shamelessFlag) >= 1)
+        if (root->vStatus(shamelessFlag) >= 1)
         {
             makeActBtn(actBath23);
         }
-        if (gVStatus(shamelessFlag) >= 2)
+        if (root->vStatus(shamelessFlag) >= 2)
         {
             makeActBtn(actBath24);
         }
     }
-    if (getItemCount(iRazor) > 0)
+    if (root->getItmCount(iRazor) > 0)
     {
-        addText(bathStr(15));
+        root->addText(bathStr(15));
     }
-    if (getItemCount(iTampon) > 0)
+    if (root->getItmCount(iTampon) > 0)
     {
         if (no_bath == 0)
         {
-            addText(bathStr(16));
+            root->addText(bathStr(16));
         }
         else
         {
-            addText(bathStr(17));
+            root->addText(bathStr(17));
         }
-        addText(bathStr(18));
+        root->addText(bathStr(18));
     }
     else
     {
-        addText(bathStr(19));
+        root->addText(bathStr(19));
     }
-    if (getPrevId() == lkorr && my_house == 2 && remvanr == 0)
+    if (root->getPrevLoc() == lkorr && my_house == 2 && remvanr == 0)
     {
-        addText(bathStr(20));
+        root->addText(bathStr(20));
     }
     else
     {
-        addText(bathStr(21));
+        root->addText(bathStr(21));
         makeActBtn(actBath25);
     }
     int bad_vanr;
-    if (getPrevId() == lkorr && remvanr == 0 && my_house == 2) bad_vanr = 1;
+    if (root->getPrevLoc() == lkorr && remvanr == 0 && my_house == 2) bad_vanr = 1;
     else bad_vanr = 0;
 
-    if(bad_vanr == 0 || getPrevId() != lkorr)
+    if(bad_vanr == 0 || root->getPrevLoc() != lkorr)
     {
         makeActBtn(actBath22);
         if(no_bath == 0)
@@ -136,95 +136,95 @@ void BathRoom::show(QString arg)
     {
         makeActBtn(actBath4);
     }
-    if(getItemCount(iTampon) > 0 && gVStatus(mesec) > 0 && gVStatus(isprok) == 0 && !isAutoTampon())
+    if(root->getItmCount(iTampon) > 0 && root->vStatus(mesec) > 0 && root->vStatus(isprok) == 0 && !root->isAutoTampon())
     {
         makeActBtn(actBath6);
     }
 
-    if(gVStatus(cumPussy) > 0 || gVStatus(cumBelly) > 0 || gVStatus(cumAss) > 0 || gVStatus(cumAnus) > 0)
+    if(root->vStatus(cumPussy) > 0 || root->vStatus(cumBelly) > 0 || root->vStatus(cumAss) > 0 || root->vStatus(cumAnus) > 0)
     {
         makeActBtn(actBath7);
     }
 
-    if(gVStatus(cumLips) > 0 || gVStatus(cumFace) > 0)
+    if(root->vStatus(cumLips) > 0 || root->vStatus(cumFace) > 0)
     {
         makeActBtn(actBath8);
     }
 
-    if(gVBody(makeup) != 1)
+    if(root->vBody(makeup) != 1)
     {
         makeActBtn(actBath9);
     }
 
-    if(gVStatus(cumFrot) > 0)
+    if(root->vStatus(cumFrot) > 0)
     {
         makeActBtn(actBath10);
     }
 
-    if(gVBody(legHair) > 0 && getItemCount(iRazor) > 0)
+    if(root->vBody(legHair) > 0 && root->getItmCount(iRazor) > 0)
     {
         makeActBtn(actBath11);
     }
 
-    if(gVBody(pubisHair) > 0 && getItemCount(iRazor) > 0)
+    if(root->vBody(pubisHair) > 0 && root->getItmCount(iRazor) > 0)
     {
         makeActBtn(actBath13);
     }
 
-    if(getItemCount(iAnalPlug) > 0)
+    if(root->getItmCount(iAnalPlug) > 0)
     {
-        if(gVSex(analplugIN) == 1)
+        if(root->vSex(analplugIN) == 1)
             makeActBtn(actBath14);
         else
             makeActBtn(actBath15);
     }
 
-    if(getItemCount(iPregtest) > 0)
+    if(root->getItmCount(iPregtest) > 0)
     {
         makeActBtn(actBath16);
     }
 
-    if(getItemCount(iVibrator) > 0)
+    if(root->getItmCount(iVibrator) > 0)
     {
-        if(gVSex(vibratorIN) == 0)
+        if(root->vSex(vibratorIN) == 0)
             makeActBtn(actBath17);
         else
             makeActBtn(actBath18);
     }
 
-    if(getPrevId() == lkorr)
+    if(root->getPrevLoc() == lkorr)
     {
         if(stiralka > 0 || my_house == 1)
         {
-            if(husband > 0 && husbandday > 0 && husporday != getDay() && poroshok >= 2)
+            if(husband > 0 && husbandday > 0 && husporday != root->getDay() && poroshok >= 2)
             {
                 husband += 5;
                 poroshok -= 2;
-                husporday = getDay();
-                addText(bathStr(43));
+                husporday = root->getDay();
+                root->addText(bathStr(43));
             }
             if(poroshok < 2)
             {
-                addText(bathStr(44));
+                root->addText(bathStr(44));
             }
         }
-        if(getItemCount(iShampoo) > 0)
+        if(root->getItmCount(iShampoo) > 0)
         {
-            addText(bathStr(45));
+            root->addText(bathStr(45));
         }
         else
         {
-            addText(bathStr(46));
+            root->addText(bathStr(46));
         }
         if(poroshok > 0)
         {
-            addText(bathStr(47));
+            root->addText(bathStr(47));
         }
         if(stiralka > 0)
         {
-            addText(bathStr(48));
+            root->addText(bathStr(48));
         }
-        if(husband > 0 && husbandday > 0 && husporday != getDay() && poroshok >= 2)
+        if(husband > 0 && husbandday > 0 && husporday != root->getDay() && poroshok >= 2)
         {
             makeActBtn(actBath19);
         }
@@ -238,7 +238,7 @@ LocId BathRoom::getLocId()
 
 void BathRoom::slotBathActionHandler(bathActs action)
 {
-    clearActions();
+    root->clearActions();
 
     switch (action)
     {
@@ -250,25 +250,25 @@ void BathRoom::slotBathActionHandler(bathActs action)
 
     case actBath2:
     {
-        if(gVStatus(horny) >= 90)
+        if(root->vStatus(horny) >= 90)
         {
-            sVStatus(lust,0);
-            sVStatus(horny,0);
-            incTime(10);
-            uVSC(masturbation,1);
-            uVSC(orgasm,1);
-            uVStatus(mood,15);
-            setImage("data/actions/bathroom/wash7.jpg");
-            setDesc(bathStr(25));
+            root->vStatus(lust) = 0;
+            root->vStatus(horny) = 0;
+            root->incTime(10);
+            root->vStatistics(masturbation) +=1;
+            root->vStatistics(orgasm) += 1;
+            root->vStatus(mood) += 15;
+            root->setImage("data/actions/bathroom/wash7.jpg");
+            root->setText(bathStr(25));
             makeActBtn(actBath1);
         }
-        if(gVStatus(horny) >= 40 && gVStatus(horny) < 90)
+        if(root->vStatus(horny) >= 40 && root->vStatus(horny) < 90)
         {
-            uVStatus(horny,5);
-            incTime(10);
-            uVStatus(mood,10);
-            setImage("data/actions/bathroom/wash8.jpg");
-            setDesc(bathStr(26));
+            root->vStatus(horny) +=5;
+            root->incTime(10);
+            root->vStatus(mood) += 10;
+            root->setImage("data/actions/bathroom/wash8.jpg");
+            root->setText(bathStr(26));
             makeActBtn(actBath1);
         }
     }
@@ -276,19 +276,19 @@ void BathRoom::slotBathActionHandler(bathActs action)
     
     case actBath3:
     {
-        startSelfPlay();
+        root->selfPlayStart();
     }
     break;
     
     case actBath4:
     {
-        incTime(5);
-        sVBody(makeup,1);
-        sVStatus(cumLips,0);
-        sVStatus(cumFace,0);
-        uVStatus(sweat, -1);
-        setImage("data/actions/bathroom/facesp.jpg");
-        setDesc(bathStr(27));
+        root->incTime(5);
+        root->vBody(makeup) = 1;
+        root->vStatus(cumLips) = 0;
+        root->vStatus(cumFace) = 0;
+        root->vStatus(sweat) -= 1;
+        root->setImage("data/actions/bathroom/facesp.jpg");
+        root->setText(bathStr(27));
         makeActBtn(actBath5);
     }
     break;
@@ -301,74 +301,74 @@ void BathRoom::slotBathActionHandler(bathActs action)
     
     case actBath6:
     {
-        useItem(iTampon,1);
-        sVStatus(isprok,1);
-        incTime(5);
-        uVStatus(mood, -5);
-        setImage("data/actions/bathroom/tampon.jpg");
-        setDesc(bathStr(29));
+        root->useItem(iTampon,1);
+        root->vStatus(isprok) = 1;
+        root->incTime(5);
+        root->vStatus(mood) -= 5;
+        root->setImage("data/actions/bathroom/tampon.jpg");
+        root->setText(bathStr(29));
         makeActBtn(actBath1);
     }
     break;
     
     case actBath7:
     {
-        sVStatus(cumPussy,0);
-        sVStatus(cumBelly,0);
-        sVStatus(cumAss,0);
-        sVStatus(cumAnus,0);
-        uVStatus(sweat, -1);
-        incTime(5);
-        setImage("data/actions/bathroom/wash" + intQStr(getRandInt(5,6)) + ".jpg");
-        setDesc(bathStr(28));
+        root->vStatus(cumPussy) = 0;
+        root->vStatus(cumBelly) = 0;
+        root->vStatus(cumAss) = 0;
+        root->vStatus(cumAnus) = 0;
+        root->vStatus(sweat) -= 1;
+        root->incTime(5);
+        root->setImage("data/actions/bathroom/wash" + intQStr(getRandInt(5,6)) + ".jpg");
+        root->setText(bathStr(28));
         makeActBtn(actBath1);
     }
     break;
     
     case actBath8:
     {
-        sVBody(makeup, 1);
-        sVStatus(cumLips,0);
-        sVStatus(cumFace,0);
-        uVStatus(sweat, -1);
-        incTime(5);
-        setImage("data/actions/bathroom/facesp.jpg");
-        setDesc(bathStr(30));
+        root->vBody(makeup) = 1;
+        root->vStatus(cumLips) = 0;
+        root->vStatus(cumFace) = 0;
+        root->vStatus(sweat) -= 1;
+        root->incTime(5);
+        root->setImage("data/actions/bathroom/facesp.jpg");
+        root->setText(bathStr(30));
         makeActBtn(actBath1);
     }
     break;
     
     case actBath9:
     {
-        sVBody(makeup,1);
-        incTime(15);
-        setImage("data/actions/bathroom/facesp.jpg");
-        setDesc(bathStr(31));
+        root->vBody(makeup) = 1;
+        root->incTime(15);
+        root->setImage("data/actions/bathroom/facesp.jpg");
+        root->setText(bathStr(31));
         makeActBtn(actBath1);
     }
     break;
     
     case actBath10:
     {
-        sVStatus(cumFrot,0);
-        getCloth(ClothType::Main)->decreaseCondition();
-        incTime(15);
-        setImage("data/actions/bathroom/frotsp" + intQStr(getRandInt(0,6)) + ".jpg");
-        setDesc(bathStr(32));
+        root->vStatus(cumFrot) = 0;
+        root->getCloth(ClothType::Main)->decreaseCondition();
+        root->incTime(15);
+        root->setImage("data/actions/bathroom/frotsp" + intQStr(getRandInt(0,6)) + ".jpg");
+        root->setText(bathStr(32));
         makeActBtn(actBath1);
     }
     break;
     
     case actBath11:
     {
-        incTime(15);
-        uVBody(legHair, -5);
-        uVStatus(horny, 5);
-        useItem(iRazor, 1);
-        updateParams();
-        rendVideoPage();
-        setDesc(bathStr(33));
-        setVideo("data/actions/bathroom/legs.webm",900,508);
+        root->incTime(15);
+        root->vBody(legHair) -= 5;
+        root->vStatus(horny) += 5;
+        root->useItem(iRazor, 1);
+        root->updateParams();
+        root->rendVideoPage(this);
+        root->setText(bathStr(33));
+        root->setVideo("data/actions/bathroom/legs.webm",900,508);
         makeActBtn(actBath12);
     }
     break;
@@ -381,30 +381,30 @@ void BathRoom::slotBathActionHandler(bathActs action)
     
     case actBath13:
     {
-        incTime(15);
-        uVBody(pubisHair, -5);
-        uVStatus(horny, 5);
-        useItem(iRazor, 1);
-        updateParams();
-        rendVideoPage();
-        setVideo("data/actions/bathroom/pubic.webm",900,448);
-        setDesc(bathStr(34));
+        root->incTime(15);
+        root->vBody(pubisHair) -= 5;
+        root->vStatus(horny) += 5;
+        root->useItem(iRazor, 1);
+        root->updateParams();
+        root->rendVideoPage(this);
+        root->setVideo("data/actions/bathroom/pubic.webm",900,448);
+        root->setText(bathStr(34));
         makeActBtn(actBath12);
     }
     break;
     
     case actBath14:
     {
-        incTime(1);
-        sVSex(analplugIN,0);
-        setImage("data/sex/toys/analplug.jpg");
-        if (gVBody(anus) >= 5)
+        root->incTime(1);
+        root->vSex(analplugIN) = 0;
+        root->setImage("data/sex/toys/analplug.jpg");
+        if (root->vBody(anus) >= 5)
         {
-            setDesc(bathStr(35));
+            root->setText(bathStr(35));
         }
         else
         {
-            setDesc(bathStr(36));
+            root->setText(bathStr(36));
         }
         makeActBtn(actBath1);
     }
@@ -412,29 +412,29 @@ void BathRoom::slotBathActionHandler(bathActs action)
     
     case actBath15:
     {
-        incTime(5);
+        root->incTime(5);
 
-        if (sextToysBlock(2).isEmpty())
+        if (root->sextToysBlock(2).isEmpty())
         {
-            sVSex(analplugIN, 1);
-            if (gVBody(anus) < 10)
+            root->vSex(analplugIN) = 1;
+            if (root->vBody(anus) < 10)
             {
-                uVBody(anus, 1);
+                root->vBody(anus) += 1;
             }
-            setImage("data/sex/toys/analplug.jpg");
-            if (gVBody(anus) >= 5)
+            root->setImage("data/sex/toys/analplug.jpg");
+            if (root->vBody(anus) >= 5)
             {
-                setDesc(bathStr(37));
+                root->setText(bathStr(37));
             }
             else
             {
-                setDesc(bathStr(38));
+                root->setText(bathStr(38));
             }
         }
         else
         {
-            setImage("data/sex/toys/no_anus.jpg");
-            setDesc(sextToysBlock(2));
+            root->setImage("data/sex/toys/no_anus.jpg");
+            root->setText(root->sextToysBlock(2));
         }
         makeActBtn(actBath1);
     }
@@ -442,15 +442,15 @@ void BathRoom::slotBathActionHandler(bathActs action)
     
     case actBath16:
     {
-        useItem(iPregtest,1);
-        if(gVStatus(pregnancy) > 0)
+        root->useItem(iPregtest,1);
+        if(root->vStatus(pregnancy) > 0)
         {
-            sVStatus(pregnancyKnow,1);
-            setDesc(bathStr(39));
+            root->vStatus(pregnancyKnow) = 1;
+            root->setText(bathStr(39));
         }
         else
         {
-            setDesc(bathStr(40));
+            root->setText(bathStr(40));
         }
         makeActBtn(actBath1);
     }
@@ -458,21 +458,21 @@ void BathRoom::slotBathActionHandler(bathActs action)
     
     case actBath17:
     {
-        incTime(5);
-        if (sextToysBlock(1).isEmpty())
+        root->incTime(5);
+        if (root->sextToysBlock(1).isEmpty())
         {
-            sVSex(vibratorIN, 1);
-            if (gVBody(vagina) < 6)
+            root->vSex(vibratorIN) = 1;
+            if (root->vBody(vagina) < 6)
             {
-                uVBody(vagina, 1);
+                root->vBody(vagina) += 1;
             }
-            setImage("data/sex/toys/vibrator" + intQStr(getRandInt(0, 1)) + ".jpg");
-            setDesc(bathStr(41));
+            root->setImage("data/sex/toys/vibrator" + intQStr(getRandInt(0, 1)) + ".jpg");
+            root->setText(bathStr(41));
         }
         else
         {
-            setImage("data/sex/toys/no_pussy.jpg");
-            setDesc(sextToysBlock(1));
+            root->setImage("data/sex/toys/no_pussy.jpg");
+            root->setText(root->sextToysBlock(1));
         }
         makeActBtn(actBath1);
     }
@@ -480,10 +480,10 @@ void BathRoom::slotBathActionHandler(bathActs action)
     
     case actBath18:
     {
-        incTime(2);
-        sVSex(vibratorIN, 0);
-        setImage("data/sex/toys/vibrator" + intQStr(getRandInt(0, 1)) + ".jpg");
-        setDesc(bathStr(42));
+        root->incTime(2);
+        root->vSex(vibratorIN) = 0;
+        root->setImage("data/sex/toys/vibrator" + intQStr(getRandInt(0, 1)) + ".jpg");
+        root->setText(bathStr(42));
         makeActBtn(actBath1);
     }
     break;
@@ -492,11 +492,11 @@ void BathRoom::slotBathActionHandler(bathActs action)
     {
         husband += 5;
         poroshok -= 2;
-        incTime(60);
-        husporday = getDay();
-        uVStatus(mood, -25);
-        setImage("data/actions/bathroom/stir.jpg");
-        setDesc(bathStr(49));
+        root->incTime(60);
+        husporday = root->getDay();
+        root->vStatus(mood) -= 25;
+        root->setImage("data/actions/bathroom/stir.jpg");
+        root->setText(bathStr(49));
         makeActBtn(actBath20);
     }
     break;
@@ -515,23 +515,23 @@ void BathRoom::slotBathActionHandler(bathActs action)
     
     case actBath22:
     {
-        if((getPrevId() == lkorr || getPrevId() == lskk || getPrevId() == lunidorm) && getItemCount(iShampoo) == 0)
+        if((root->getPrevLoc() == lkorr || root->getPrevLoc() == lskk || root->getPrevLoc() == lunidorm) && root->getItmCount(iShampoo) == 0)
         {
             noShampoo();
         }
         else
         {
-            uVStatus(horny, -gVStatus(horny)/5);
-            uVStatus(vaginal_grease, -gVStatus(vaginal_grease)/3);
-            uVStatus(mood, 5);
-            uVStatus(hygiene, 3);
+            root->vStatus(horny) += -root->vStatus(horny)/5;
+            root->vStatus(vaginal_grease) -= root->vStatus(vaginal_grease)/3;
+            root->vStatus(mood) += 5;
+            root->vStatus(hygiene) += 3;
             shower();
-            redress(ClothType::Main, new ClothMain(1, ClothGroup::towel, "Полотенце"));
-            setImage("data/actions/bathroom/dush.jpg");
-            setDesc(bathStr(22));
-            if(bath_lock == 0 && getPrevId() == lkorrpar)
+            root->redress(ClothType::Main, new ClothMain(1, ClothGroup::towel, "Полотенце"));
+            root->setImage("data/actions/bathroom/dush.jpg");
+            root->setText(bathStr(22));
+            if(bath_lock == 0 && root->getPrevLoc() == lkorrpar)
             {
-                addText("<br>" + bathStr(23));
+                root->addText("<br>" + bathStr(23));
                 makeActBtn(actBath26);
             }
             else
@@ -544,21 +544,21 @@ void BathRoom::slotBathActionHandler(bathActs action)
     
     case actBath23:
     {
-        redress(ClothType::Main, new ClothMain(1,ClothGroup::towel,"Полотенце"));
-        changeLoc(getParId(),1);
+        root->redress(ClothType::Main, new ClothMain(1,ClothGroup::towel,"Полотенце"));
+        root->changeLoc(getParId(),1);
     }
     break;
     
     case actBath24:
     {
-        redress(ClothType::Main,nullptr);
-        changeLoc(getParId(),1);
+        root->redress(ClothType::Main,nullptr);
+        root->changeLoc(getParId(),1);
     }
     break;
     
     case actBath25:
     {
-        viewObj("mirror");
+        root->viewObj("mirror");
     }
     break;
     
@@ -577,29 +577,29 @@ void BathRoom::slotBathActionHandler(bathActs action)
     
     case actBath27:
     {
-        if(getParId() == lkorr && getItemCount(iShampoo) <= 0)
+        if(getParId() == lkorr && root->getItmCount(iShampoo) <= 0)
         {
             noShampoo();
         }
-        incTime(45);
-        if(skinday != gVStatus(daystart))
+        root->incTime(45);
+        if(skinday != root->vStatus(daystart))
         {
-            skinday = gVStatus(daystart);
-            updSkin('+', 3);
+            skinday = root->vStatus(daystart);
+            root->updSkin('+', 3);
         }
         shower();
-        redress(ClothType::Main,nullptr);
-        uVStatus(horny, -gVStatus(horny)/4);
-        uVStatus(vaginal_grease, -gVStatus(vaginal_grease)/2);
-        uVStatus(hygiene,15);
-        setImage("data/actions/bathroom/wash4.jpg");
-        setDesc(bathStr(24));
+        root->redress(ClothType::Main,nullptr);
+        root->vStatus(horny) += -root->vStatus(horny)/4;
+        root->vStatus(vaginal_grease) -= root->vStatus(vaginal_grease)/2;
+        root->vStatus(hygiene) += 15;
+        root->setImage("data/actions/bathroom/wash4.jpg");
+        root->setText(bathStr(24));
         makeActBtn(actBath1);
-        if(gVStatus(horny) >= 40)
+        if(root->vStatus(horny) >= 40)
         {
             makeActBtn(actBath2);
         }
-        if(gVStatus(horny) >= 50)
+        if(root->vStatus(horny) >= 50)
         {
             makeActBtn(actBath3);
         }
@@ -608,8 +608,8 @@ void BathRoom::slotBathActionHandler(bathActs action)
     
     case actBath28:
     {
-        incTime(10);
-        sVStatus(bawdy_body, 0);
+        root->incTime(10);
+        root->vStatus(bawdy_body) = 0;
         show();
     }
     break;
@@ -630,7 +630,7 @@ void BathRoom::slotBathActionHandler(bathActs action)
 
     case actBath31:
     {
-        redressOld();
+        root->redressOld();
         slotBathActionHandler(actBath32);
     }
     break;
@@ -638,21 +638,21 @@ void BathRoom::slotBathActionHandler(bathActs action)
     case actBath32:
     {
         if(bath_lock == 1) bath_lock = 0;
-        changeLoc(getParId(),1);
+        root->changeLoc(getParId(),1);
     }
     break;
     }
-    updateParams();
+    root->updateParams();
 }
 
 LocId BathRoom::getParId()
 {
-    return getPrevId();
+    return root->getPrevLoc();
 }
 
 LocId BathRoom::getLocIn()
 {
-    return getPrevIn();
+    return root->getMainLoc();
 }
 
 QString BathRoom::getLocName()
@@ -671,29 +671,29 @@ void BathRoom::slotPeekActHandler(peekActs action)
     {
     case actPeek1:
     {
-        changeLoc(getParId(),0);
+        root->changeLoc(getParId(),0);
     }
         break;
     case actPeek2:
     {
-        if (gVSC(peek1day) == 1)
+        if (root->vStatistics(peek1day) == 1)
         {
-            setImage("data/qwest/brotherpeek/brotherpeek2.jpg");
-            setDesc(peekStr(2));
+            root->setImage("data/qwest/brotherpeek/brotherpeek2.jpg");
+            root->setText(peekStr(2));
             makePeekActBtn(actPeek1);
         }
-        else if (gVStatus(shamelessFlag) == 0 && peek1day == 0)
+        else if (root->vStatus(shamelessFlag) == 0 && peek1day == 0)
         {
-            incTime(getRandInt(2,4));
-            setImage("data/qwest/brotherpeek/brotherpeek1.jpg");
-            setDesc(peekStr(1));
+            root->incTime(getRandInt(2,4));
+            root->setImage("data/qwest/brotherpeek/brotherpeek1.jpg");
+            root->setText(peekStr(1));
             makePeekActBtn(actPeek5);
         }
-        else if (brotherpeekstage >= 5 && brotherpeekhelp <= 5 && peek1day == 0 && gVStatus(shamelessFlag) > 0 && npc_39relation > 60)
+        else if (brotherpeekstage >= 5 && brotherpeekhelp <= 5 && peek1day == 0 && root->vStatus(shamelessFlag) > 0 && npc_39relation > 60)
         {
-            incTime(getRandInt(2,4));
-            setImage("data/qwest/brotherpeek/brotherpeek3.jpg");
-            setDesc(peekStr(6));
+            root->incTime(getRandInt(2,4));
+            root->setImage("data/qwest/brotherpeek/brotherpeek3.jpg");
+            root->setText(peekStr(6));
             makePeekActBtn(actPeek3);
             makePeekActBtn(actPeek7);
         }
@@ -701,11 +701,11 @@ void BathRoom::slotPeekActHandler(peekActs action)
         break;
     case actPeek3:
     {
-        incTime(getRandInt(2,4));
-        uVStatus(mood,5);
-        setImage("data/qwest/brotherpeek/brotherpeek7.jpg");
-        setDesc(peekStr(3));
-        if (gVStatus(shamelessFlag) > 1)
+        root->incTime(getRandInt(2,4));
+        root->vStatus(mood) += 5;
+        root->setImage("data/qwest/brotherpeek/brotherpeek7.jpg");
+        root->setText(peekStr(3));
+        if (root->vStatus(shamelessFlag) > 1)
         {
             makePeekActBtn(actPeek4); //brother_jerk
         }
@@ -714,61 +714,61 @@ void BathRoom::slotPeekActHandler(peekActs action)
         break;
     case actPeek4:
     {
-        incTime(getRandInt(2,4));
-        setImage("data/qwest/brotherpeek/brotherpeek6.jpg");
-        setDesc(peekStr(8));
+        root->incTime(getRandInt(2,4));
+        root->setImage("data/qwest/brotherpeek/brotherpeek6.jpg");
+        root->setText(peekStr(8));
         makePeekActBtn(actPeek9);
     }
         break;
     case actPeek5:
     {
-        incTime(getRandInt(2,4));
-        setImage("data/qwest/brotherpeek/brotherpeek5.jpg");
-        setDesc(peekStr(7));
+        root->incTime(getRandInt(2,4));
+        root->setImage("data/qwest/brotherpeek/brotherpeek5.jpg");
+        root->setText(peekStr(7));
         brotherpeekstage += 1;
-        uVSC(peek1day, 1);
-        uVStatus(horny, getRandInt(10,15));
+        root->vStatistics(peek1day) += 1;
+        root->vStatus(horny) += getRandInt(10,15);
         makePeekActBtn(actPeek6);
     }
         break;
     case actPeek6:
     {
-        incTime(getRandInt(2,4));
+        root->incTime(getRandInt(2,4));
         slotPeekActHandler(actPeek1);
     }
         break;
     case actPeek7:
     {
         brotherpeekstage +=1;
-        uVSC(peek1day, 1);
-        uVStatus(horny, getRandInt(5,10));
-        uVSC(voyeurism,1);
+        root->vStatistics(peek1day) += 1;
+        root->vStatus(horny) += getRandInt(5,10);
+        root->vStatistics(voyeurism) += 1;
         slotPeekActHandler(actPeek1);
     }
         break;
     case actPeek8:
     {
-        incTime(getRandInt(2,4));
-        setImage("data/qwest/brotherpeek/brotherpeek4.jpg");
-        setDesc(peekStr(5));
+        root->incTime(getRandInt(2,4));
+        root->setImage("data/qwest/brotherpeek/brotherpeek4.jpg");
+        root->setText(peekStr(5));
         makePeekActBtn(actPeek7);
     }
         break;
     case actPeek9:
     {
-        incTime(getRandInt(2,4));
-        uVStatus(mood, -5);
-        setImage("data/qwest/brotherpeek/brotherpeek8.jpg");
-        setDesc(peekStr(9));
+        root->incTime(getRandInt(2,4));
+        root->vStatus(mood) -= 5;
+        root->setImage("data/qwest/brotherpeek/brotherpeek8.jpg");
+        root->setText(peekStr(9));
         makePeekActBtn(actPeek10);
     }
         break;
     case actPeek10:
     {
-        incTime(getRandInt(5,10));
-        uVStatus(mood, -5);
-        setImage("data/qwest/brotherpeek/brotherpeek4.jpg");
-        setDesc(peekStr(10));
+        root->incTime(getRandInt(5,10));
+        root->vStatus(mood) -= 5;
+        root->setImage("data/qwest/brotherpeek/brotherpeek4.jpg");
+        root->setText(peekStr(10));
         makePeekActBtn(actPeek11);
     }
     break;
@@ -776,13 +776,13 @@ void BathRoom::slotPeekActHandler(peekActs action)
     case actPeek11:
     {
         brotherpeekstage +=1;
-        uVSC(peek1day, 1);
-        uVStatus(horny, getRandInt(20,30));
+        root->vStatistics(peek1day) += 1;
+        root->vStatus(horny) += getRandInt(20,30);
         slotPeekActHandler(actPeek1);
     }
         break;
     }
-    updateParams();
+    root->updateParams();
 }
 
 void BathRoom::slotVoyerActHandler(bathVoyerActs action)
@@ -807,7 +807,7 @@ void BathRoom::slotVoyerActHandler(bathVoyerActs action)
     case actBV8:
         break;
     }
-    updateParams();
+    root->updateParams();
 }
 
 void BathRoom::actionHandler(QString action)
@@ -817,13 +817,13 @@ void BathRoom::actionHandler(QString action)
 
 void BathRoom::peek()
 {
-    setImage("data/qwest/brotherpeek/brotherpeek0.jpg");
-    setDesc(peekStr(0));
+    root->setImage("data/qwest/brotherpeek/brotherpeek0.jpg");
+    root->setText(peekStr(0));
     if(getParId() == lkorrpar)
     {
         makePeekActBtn(actPeek1);
     }
-    if(family_trip == 0 && getHour() == 17 && getMin() >= 30)
+    if(family_trip == 0 && root->getHour() == 17 && root->getMin() >= 30)
         makePeekActBtn(actPeek2);
     
 }
@@ -832,7 +832,7 @@ void BathRoom::makeActBtn(bathActs action)
 {
     BathActBtn* btn = new BathActBtn(action, bathActStr(action));
     connect(btn, &BathActBtn::sigAction, this, &BathRoom::slotBathActionHandler);
-    addActBtn(btn);
+    root->addActions(btn);
 }
 
 void BathRoom::makeVoyerActBtn(bathVoyerActs action)
@@ -862,10 +862,10 @@ QString BathRoom::bathStr(int value)
     str[12] = "";
     str[13] = "";
     str[14] = "";
-    str[15] = "Вашего бритвенного станка хватит ещё на " + intQStr(getItemCount(iRazor)) + " раз.";
+    str[15] = "Вашего бритвенного станка хватит ещё на " + intQStr(root->getItmCount(iRazor)) + " раз.";
     str[16] = "На полке лежит";
     str[17] = "У вас имеется";
-    str[18] = " упаковка тампонов. Ее хватит ещё на <b>" + intQStr(getItemCount(iTampon)) + "</b> раз.";
+    str[18] = " упаковка тампонов. Ее хватит ещё на <b>" + intQStr(root->getItmCount(iTampon)) + "</b> раз.";
     str[19] = "У вас нет тампонов.";
     str[20] = "Судя по оставшемуся контуру, на этом месте висело зеркало.";
     str[21] = "Над раковиной висит зеркало.";
@@ -1100,58 +1100,58 @@ QString BathRoom::peekActStr(int value)
 
 void BathRoom::shower()
 {
-    incTime(15);
+    root->incTime(15);
     cleanMe();
-    if(getParId() == lkorr && getItemCount(iShampoo) > 0)
+    if(getParId() == lkorr && root->getItmCount(iShampoo) > 0)
     {
-        useItem(iShampoo, 1);
+        root->useItem(iShampoo, 1);
     }
 }
 
 void BathRoom::cleanMe()
 {
-    sVStatus(cumPussy, 0);
-    sVStatus(cumBelly, 0);
-    sVStatus(cumAss, 0);
-    sVStatus(cumAnus, 0);
-    sVStatus(cumLips, 0);
-    sVStatus(cumFace, 0);
-    sVStatus(cumFrot, 0);
-    sVStatus(sweat, 0);
-    sVBody(makeup, 1);
-    sVBody(hairStatus,0);
-    uVStatus(horny, -gVStatus(horny)/5);
-    uVStatus(vaginal_grease, -gVStatus(vaginal_grease)/3);
+    root->vStatus(cumPussy) = 0;
+    root->vStatus(cumBelly) = 0;
+    root->vStatus(cumAss) =  0;
+    root->vStatus(cumAnus) = 0;
+    root->vStatus(cumLips) = 0;
+    root->vStatus(cumFace) = 0;
+    root->vStatus(cumFrot) = 0;
+    root->vStatus(sweat) = 0;
+    root->vBody(makeup) = 1;
+    root->vBody(hairStatus) = 0;
+    root->vStatus(horny) -= root->vStatus(horny)/5;
+    root->vStatus(vaginal_grease) -= root->vStatus(vaginal_grease)/3;
 }
 
 void BathRoom::noShampoo()
 {
-    setDesc(bathStr(50));
+    root->setText(bathStr(50));
     makeActBtn(actBath21);
 }
 
 void BathRoom::voyer()
 {
-    father_dadqw_day = getDay();
-    brother_ev1 = getDay();
-    int week = getWeekNum();
-    int hour = getHour();
+    father_dadqw_day = root->getDay();
+    brother_ev1 = root->getDay();
+    int week = root->getWeek();
+    int hour = root->getHour();
     if (
-        (((week == 0 || week == 6) && hour >= 7 && hour <= 17) || (week > 1 && week < 6 && (hour == 7 || hour == 17))) && father_dadqw_day != getDay())
+        (((week == 0 || week == 6) && hour >= 7 && hour <= 17) || (week > 1 && week < 6 && (hour == 7 || hour == 17))) && father_dadqw_day != root->getDay())
     {
-        father_dadqw_day = getDay();
+        father_dadqw_day = root->getDay();
         // if $npc['35,relation'] < 60 or $npc['35,qwOtchim'] < 3:
         // gs 'zz_render','','qwest/alter/father/bath_voyer_0.webm',func('zz_bathroom_voyer_strings'+$lang, 'txt_1')
         //$npc['35,qwOtchim'] += 1
         // makeActBtn(actBath1);
     }
-    else if (hour >= 18 && hour <= 21 && brother_ev1 != getDay() && brother_location == "guestroom")
+    else if (hour >= 18 && hour <= 21 && brother_ev1 != root->getDay() && brother_location == "guestroom")
     {
     }
     else
     {
-        setImage("data/qwest/father/bath_voyer_4.jpg");
-        setDesc(voyerStr(4));
+        root->setImage("data/qwest/father/bath_voyer_4.jpg");
+        root->setText(voyerStr(4));
         makeActBtn(actBath1);
     }
 }

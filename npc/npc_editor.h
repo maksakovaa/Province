@@ -7,11 +7,13 @@
 #include "../events/questenums.h"
 #include "../events/eventenums.h"
 
+class Game;
+
 class NPC_Editor: public QObject
 {
     Q_OBJECT
 public:
-    NPC_Editor(QWidget * ptr);
+    NPC_Editor(Game * ptr);
     void init();
     NPC& gNPC(int id);
     QString getNpcTex(int id);
@@ -39,7 +41,7 @@ private:
 private:
     int curNpc;
     std::vector<NPC> npcs;
-    QWidget* root;
+    Game* root;
 };
 
 #endif // NPC_EDITOR_H

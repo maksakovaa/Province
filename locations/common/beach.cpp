@@ -1,49 +1,49 @@
 #include "beach.h"
-#include "../locationhandler.h"
+#include "../../game.h"
 #include "../../Functions.h"
 #include "bathroom.h"
 #include "../../menu/buttons.h"
 
-Beach::Beach(LocationHandler *ptr): root(ptr) {}
+Beach::Beach(Game *ptr): root(ptr) {}
 
 void Beach::check_people()
 {
-    root->m_events->sVEvent(lake_people,0);
+    root->vEvent(lake_people) = 0;
     int month = root->getMonth();
     int SunWeather = root->getSunWeather();
     bool isday = root->isDay();
     int temp = root->getTemp();
-    int week = root->getWeekNum();
+    int week = root->getWeek();
     int hour = root->getHour();
 
     if(month > 4 && month < 10 && SunWeather >= 2 && isday)
     {
         if(temp < 20)
-            root->m_events->sVEvent(lake_people,1);
+            root->vEvent(lake_people) = 1;
         else if(week >= 1 && week <= 5)
         {
             if(root->getHour() < 17)
-                root->m_events->sVEvent(lake_people,2);
+                root->vEvent(lake_people) = 2;
             else
-                root->m_events->sVEvent(lake_people,3);
+                root->vEvent(lake_people) = 3;
         }
         else
         {
             if(temp <= 25)
-                root->m_events->sVEvent(lake_people,3);
+                root->vEvent(lake_people) = 3;
             else
-                root->m_events->sVEvent(lake_people,4);
+                root->vEvent(lake_people) = 4;
         }
     }
 
-    if(root->m_events->gVEvent(lake_people) > 2 && (hour == root->getSunrise() || hour == root->getSunrise() + 1 || hour == root->getSunset() || hour == root->getSunrise() - 1))
-        root->m_events->uVEvent(lake_people, -1);
+    if(root->vEvent(lake_people) > 2 && (hour == root->getSunrise() || hour == root->getSunrise() + 1 || hour == root->getSunset() || hour == root->getSunrise() - 1))
+        root->vEvent(lake_people) -= 1;
 }
 
 void Beach::walk()
 {
     root->incTime(30);
-    root->updVStatus(mood,5);
+    root->vStatus(mood) += 5;
     ClothMain* ptr = (ClothMain*)root->getCloth(ClothType::Main);
     QString ext = "";
     if(ptr != nullptr && ptr->getClothGroup() > swimsuit)
@@ -58,7 +58,7 @@ void Beach::walk()
     if(root->getCurLoc() == lglake)
         add = "glake";
     root->setImage("data/locations/common/beach/walk_" + add + ext);
-    root->setDesc(str(0));
+    root->setText(str(0));
     makeActBtn("back_to_loc",act(0));
     if(root->getCurLoc() == llake && getRandInt(0,10) == 0)
     {
@@ -70,11 +70,11 @@ void Beach::undress(int arg)
 {
     if(arg == 1)
     {
-        if(root->getVStatus(shamelessFlag) >= 1 || root->m_events->gVEvent(lake_people) < 2)
+        if(root->vStatus(shamelessFlag) >= 1 || root->vEvent(lake_people) < 2)
         {
-            if(root->getVStatus(horny) >= 90)
+            if(root->vStatus(horny) >= 90)
             {
-                if(root->getVStatus(shamelessFlag) > 1  /*||  func('zz_reputation','get')|| */ || root->m_events->gVEvent(lake_people) < 3)
+                if(root->vStatus(shamelessFlag) > 1  /*||  func('zz_reputation','get')|| */ || root->vEvent(lake_people) < 3)
                 {
                     nude();
                 }
@@ -84,7 +84,7 @@ void Beach::undress(int arg)
                     if(root->getCloth(ClothType::Panties) == nullptr) i = "0.jpg";
                     else i = "1.jpg";
                     root->setImage("data/locations/common/beach/wetpussy" + i);
-                    root->setDesc(str(1));
+                    root->setText(str(1));
                     makeActBtn("back_to_loc",act(0));
                 }
             }
@@ -93,20 +93,20 @@ void Beach::undress(int arg)
         else
         {
             root->setImage("data/locations/common/beach/shyness.jpg");
-            root->setDesc(str(2));
+            root->setText(str(2));
             makeActBtn("back_to_loc",act(0));
         }
     }
     else
     {
-        if(root->getVStatus(horny) >= 90)
+        if(root->vStatus(horny) >= 90)
         {
-            if(root->getVStatus(shamelessFlag) > 1 /*||  func('zz_reputation','get')|| */ || root->m_events->gVEvent(lake_people) < 3)
+            if(root->vStatus(shamelessFlag) > 1 /*||  func('zz_reputation','get')|| */ || root->vEvent(lake_people) < 3)
                 wearswimsuit();
             else
             {
                 root->setImage("data/locations/common/beach/wetpussypants.jpg");
-                root->setDesc(str(3));
+                root->setText(str(3));
                 makeActBtn("back_to_loc",act(0));
             }
         }
@@ -122,15 +122,15 @@ void Beach::wearswimsuit()
     root->redress(ClothType::Main,new ClothMain(2,swimsuit,"Купальник"));
     if(root->getCurLoc() == lgadbeach)
     {
-        root->setVStatus(inriver,1);
+        root->vStatus(inriver) = 1;
         root->setImage("data/locations/common/beach/swimsuit_gadbeach.jpg");
-        root->setDesc(str(4));
+        root->setText(str(4));
     }
     else
     {
         QString add = "",loc = "";
-        if(root->getVStatus(shamelessFlag) < 2)
-            add = intQStr(root->getVStatus(shamelessFlag)) + ".jpg";
+        if(root->vStatus(shamelessFlag) < 2)
+            add = intQStr(root->vStatus(shamelessFlag)) + ".jpg";
         else
             add = "2.jpg";
         if(root->getCurLoc() == llake)
@@ -142,7 +142,7 @@ void Beach::wearswimsuit()
         else if(root->getCurLoc() == lglakenude)
             loc = "glakenude";
         root->setImage("data/locations/common/beach/swimsuit_" + loc + add);
-        root->setDesc(str(5));
+        root->setText(str(5));
     }
     makeActBtn("back_to_loc",act(0));
 }
@@ -150,7 +150,7 @@ void Beach::wearswimsuit()
 void Beach::nude()
 {
     if(root->getCurLoc() == lgadbeach)
-        root->setVStatus(inriver,1);
+        root->vStatus(inriver) = 1;
     root->incTime(5);
     root->redress(ClothType::Main,nullptr);
     QString loc;
@@ -161,7 +161,7 @@ void Beach::nude()
     else if(root->getCurLoc() == lgadbeach)
         loc = "gadbeach";
     root->setImage("data/locations/common/beach/undress_" + loc + ".jpg");
-    root->setDesc(str(6));
+    root->setText(str(6));
     makeActBtn("back_to_loc", act(0));
 }
 
@@ -177,7 +177,7 @@ void Beach::getDressed(int arg)
         else
             add = "swimsuit_";
         root->setImage("data/locations/common/beach/" + add + "gadbeach.jpg");
-        root->setDesc(str(7));
+        root->setText(str(7));
     }
     else
     {
@@ -202,38 +202,38 @@ void Beach::getDressed(int arg)
             if(root->getCurLoc() == lnudelake)
                 loc = "nudelake";
 
-            if(root->getVStatus(shamelessFlag) < 2)
-                root->setImage("data/locations/common/beach/swimsuit_" + loc + intQStr(root->getVStatus(shamelessFlag)) + ".jpg");
+            if(root->vStatus(shamelessFlag) < 2)
+                root->setImage("data/locations/common/beach/swimsuit_" + loc + intQStr(root->vStatus(shamelessFlag)) + ".jpg");
             else
                 root->setImage("data/locations/common/beach/swimsuit_" + loc + intQStr(2) + ".jpg");
         }
-        root->setDesc(str(8));
+        root->setText(str(8));
     }
     makeActBtn("back_to_loc",act(0));
 }
 
 void Beach::swim()
 {
-    if(root->m_events->gVEvent(lake_people) < 2 && root->getVAddict(alko) >= 10)
+    if(root->vEvent(lake_people) < 2 && root->vAddict(alko) >= 10)
     {
-        //xgt 'gameover', 4
+        root->startEvent(eGameOver, "4");
     }
     root->incTime(30);
     ((BathRoom*)root->getLocPtr(lbathroom))->cleanMe();
-    if(root->getVSkill(strenght) < 20)
-        root->updVSkill(strenght,1);
+    if(root->vSkill(strenght) < 20)
+        root->vSkill(strenght) += 1;
     if(root->getTemp() <= 25)
-        root->updVStatus(horny, -10);
+        root->vStatus(horny) -= 10;
     else
-        root->updVStatus(horny,-5);
-    root->updVStatus(mood,10);
-    if(root->getCurLoc() == lgadbeach && root->m_events->gVEvent(mirainriver) == 1)
+        root->vStatus(horny) -= 5;
+    root->vStatus(mood) += 10;
+    if(root->getCurLoc() == lgadbeach && root->vEvent(mirainriver) == 1)
     {
         if(root->getCloth(ClothType::Main) == nullptr)
             root->setImage("data/locations/common/beach/swim_mira_nude" + intQStr(getRandInt(1,3)) + ".jpg");
         else
             root->setImage("data/locations/common/beach/swim_mira" + intQStr(getRandInt(1,3)) + ".jpg");
-        root->setDesc(str(9));
+        root->setText(str(9));
     }
     else
     {
@@ -250,19 +250,19 @@ void Beach::swim()
             root->setImage("data/locations/common/beach/swim_" + loc + "_nude" + intQStr(getRandInt(1,3)) + ".jpg");
         else
             root->setImage("data/locations/common/beach/swim_" + loc + intQStr(getRandInt(1,3)) + ".jpg");
-        root->setDesc(str(10));
+        root->setText(str(10));
     }
     if(root->getCurLoc() == lglake && root->getCloth(ClothType::Main) == nullptr)
     {
-        root->updVStatus(mood,-10);
-        root->addDesc(str(11));
+        root->vStatus(mood) -= 10;
+        root->addText(str(11));
         //gs 'zz_reputation','edit', rand(-1,0)
     }
     ClothMain* ptr = (ClothMain*)root->getCloth(ClothType::Main);
-    if(root->getCurLoc() == lglakenude && root->m_events->gVEvent(lake_people) > 1 &&  ptr != nullptr && ptr->getClothGroup() == swimsuit && root->getVStatus(shamelessFlag) < 3)
+    if(root->getCurLoc() == lglakenude && root->vEvent(lake_people) > 1 &&  ptr != nullptr && ptr->getClothGroup() == swimsuit && root->vStatus(shamelessFlag) < 3)
     {
-        root->updVStatus(mood,-10);
-        root->addDesc(str(12));
+        root->vStatus(mood) -= 10;
+        root->addText(str(12));
     }
     makeActBtn("check_n_back",act(1));
 }
@@ -272,14 +272,14 @@ void Beach::sunbathe(int isCream)
     ClothMain* clothPtr = (ClothMain*)root->getCloth(ClothType::Main);
     root->incTime(30);
     if(clothPtr == nullptr)
-        root->updVStatus(mood,10);
+        root->vStatus(mood) += 10;
     else
-        root->updVStatus(mood,5);
+        root->vStatus(mood) += 5;
     if(root->getTemp() > 22 && root->getTemp() < 30)
-        root->updVStatus(sweat,1);
+        root->vStatus(sweat) += 1;
     if(root->getTemp() >= 30)
-        root->updVStatus(sweat,2);
-    root->setVBody(hairStatus,1);
+        root->vStatus(sweat) += 2;
+    root->vBody(hairStatus) = 1;
     int tanInc = 0;
     if(root->getSunWeather() < 2)
     {
@@ -315,7 +315,7 @@ void Beach::sunbathe(int isCream)
                 tanInc =3;
         }
     }
-    root->updVBody(skinTan,tanInc);
+    root->vBody(skinTan) += tanInc;
     int var{0};
     if(isCream == 1)
         var = getRandInt(4,6);
@@ -336,30 +336,30 @@ void Beach::sunbathe(int isCream)
         loc = "lake";
     if(root->getCurLoc() == lnudelake)
         loc = "nudelake";
-    if(root->getCurLoc() == lgadbeach && root->m_events->gVEvent(mirainriver) == 1)
+    if(root->getCurLoc() == lgadbeach && root->vEvent(mirainriver) == 1)
     {
         root->setImage("data/locations/common/beach/sunbathe_mira" + add + intQStr(getRandInt(1,3)) + ".jpg");
-        root->setDesc(str(13));
+        root->setText(str(13));
     }
     else
     {
         root->setImage("data/locations/common/beach/sunbathe_" + loc + add + intQStr(var) + ".jpg");
-        root->setDesc(str(14));
+        root->setText(str(14));
     }
     if(root->getCurLoc() == lglake && clothPtr == nullptr)
     {
-        root->updVStatus(mood,-10);
-        root->addDesc(str(11));
+        root->vStatus(mood) -= 10;
+        root->addText(str(11));
         //gs 'zz_reputation','edit', rand(-1,0)
     }
 
-    if(root->getCurLoc() == lglakenude && root->m_events->gVEvent(lake_people) > 1 && clothPtr != nullptr && clothPtr->getClothGroup() == swimsuit)
+    if(root->getCurLoc() == lglakenude && root->vEvent(lake_people) > 1 && clothPtr != nullptr && clothPtr->getClothGroup() == swimsuit)
     {
-        root->updVStatus(mood,-10);
-        root->addDesc(str(12));
+        root->vStatus(mood) -= 10;
+        root->addText(str(12));
     }
 
-    if(root->getCurLoc() == lglakenude && root->m_events->gVEvent(lake_people) > 1)
+    if(root->getCurLoc() == lglakenude && root->vEvent(lake_people) > 1)
     {
         //gs'glake_events','voyeurism_start'
     }
@@ -373,18 +373,18 @@ void Beach::cream()
     root->incTime(5);
     root->useItem(iSunscreen,1);
     if(root->getCloth(ClothType::Main) == nullptr)
-        root->updVStatus(horny,10);
+        root->vStatus(horny) += 10;
     else
-        root->updVStatus(horny,5);
+        root->vStatus(horny) += 5;
     QString image = "data/locations/common/beach/cream";
     if(root->getCloth(ClothType::Main) == nullptr)
     {
         image += "_nude";
-        if(root->m_events->gVEvent(lake_people) <= 2 || loc == lgadbeach)
+        if(root->vEvent(lake_people) <= 2 || loc == lgadbeach)
             image += "1";
         else
         {
-            if(root->m_events->gVEvent(lake_people) == 3)
+            if(root->vEvent(lake_people) == 3)
                 image += "2";
             else
                 image += "3";
@@ -394,7 +394,7 @@ void Beach::cream()
         image += intQStr(getRandInt(1,3));
     image += ".jpg";
     root->setImage(image);
-    root->setDesc(str(15));
+    root->setText(str(15));
     makeActBtn("sunbathe+cream",act(3));
 }
 
@@ -402,15 +402,15 @@ void Beach::actionHandler(QString action)
 {
     if(action == "back_to_loc")
     {
-        root->slotChangeLoc(root->getCurLoc(),0);
+        root->changeLoc(root->getCurLoc(),0);
     }
     if(action == "check_n_back")
     {
         if(root->getCurLoc() == lgadbeach)
         {
-            root->m_events->startEvent(eRiverEvents,"swim_guys");
+            root->startEvent(eRiverEvents,"swim_guys");
         }
-        root->slotChangeLoc(root->getCurLoc(),0);
+        root->changeLoc(root->getCurLoc(),0);
     }
     if(action == "checkAndGo")
     {
@@ -429,7 +429,7 @@ void Beach::actionHandler(QString action)
         }
         if(loc == lgadbeach)
         {
-            root->m_events->startEvent(eRiverEvents,"sunbathe_guys");
+            root->startEvent(eRiverEvents,"sunbathe_guys");
         }
         actionHandler("back_to_loc");
     }
@@ -455,7 +455,7 @@ void Beach::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action, "beach");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Beach::actionHandler);
-    root->m_actions->addWidget(btn);
+    root->addActions(btn);
 }
 
 QString Beach::str(int id)
@@ -466,7 +466,7 @@ QString Beach::str(int id)
     str[2] = "У вас появляется желание раздеться полностью, но вы не можете побороть свою стеснительность.";
     str[3] = "Вы хотите переодеться в купальник, но понимаете, что ваша сочащаяся писечка тут же его намочит. От мысли, что люди могут это заметить, вам становится не по себе и вы отказываетесь от этой идеи.<br><dh>— Наверное стоит как-нибудь снять напряжение</dh>, — думаете вы.";
     str[4] = "Вы снимаете свою одежду, и надеваете купальник. Теперь можно спокойно идти купаться и загорать.";
-    if(root->getVStatus(shamelessFlag) == 0)
+    if(root->vStatus(shamelessFlag) == 0)
     {
         str[5] = "Вы заходите в ";
         if(root->getCurLoc() == llake)
@@ -475,7 +475,7 @@ QString Beach::str(int id)
             str[5] += "ближайшие кустики";
         str[5] += "и переодеваетесь в купальник";
     }
-    else if(root->getVStatus(shamelessFlag) == 1)
+    else if(root->vStatus(shamelessFlag) == 1)
     {
         str[5] = "Убедившись, что на вас никто не смотрит, вы быстренько переодеваетесь в купальник";
     }
@@ -488,10 +488,10 @@ QString Beach::str(int id)
     }
     str[5] += "<br>Теперь можно спокойно идти купаться и загорать.";
     str[6] = "Вы не стесняясь раздеваетесь, оставшись в чем мать родила.";
-    if(root->getVStatus(horny) >= 90 && root->m_events->gVEvent(lake_people) > 2)
+    if(root->vStatus(horny) >= 90 && root->vEvent(lake_people) > 2)
         str[6] += "Проходящие мимо мужчины заинтересовано рассматривают вашу сочащуюся вагину. Но вам уже наплевать на то, что скажут или подумают о вас люди.";
     str[7] = "Вы сняли купальник, и переодеваетесь в свою одежду.";
-    if(root->getVStatus(shamelessFlag) == 0)
+    if(root->vStatus(shamelessFlag) == 0)
     {
         str[8] = "Вы заходите в ";
         if(root->getCurLoc() == llake)
@@ -500,7 +500,7 @@ QString Beach::str(int id)
             str[8] += "ближайшие кустики";
         str[8] += "и переодеваетесь в свою одежду.";
     }
-    else if (root->getVStatus(shamelessFlag) == 1)
+    else if (root->vStatus(shamelessFlag) == 1)
     {
         str[8] = "Убедившись, что на вас никто не смотрит, вы быстренько переодеваетесь в свою одежду";
     }

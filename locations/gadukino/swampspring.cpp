@@ -1,8 +1,9 @@
 #include "swampspring.h"
 #include "../../menu/buttons.h"
 #include "../../Functions.h"
+#include "../../game.h"
 
-SwampSpring::SwampSpring(LocationHandler* ptr): Location(ptr) {}
+SwampSpring::SwampSpring(Game* ptr): root(ptr) {}
 
 void SwampSpring::show(QString arg)
 {
@@ -41,42 +42,42 @@ void SwampSpring::actionHandler(QString action)
 {
     if(action == "swampspring")
     {
-        setImage(makeImage(media(0),isDay(),getMonth()));
-        setDesc(str(0));
+        root->setImage(makeImage(media(0),root->isDay(),root->getMonth()));
+        root->setText(str(0));
         makeActBtn("drink_water",act(0));
-        if(gVEvent(bucket) < 10)
+        if(root->vEvent(bucket) < 10)
             makeActBtn("fill_bucket",act(2));
         makeActBtn("swamp_yard",act(3));
     }
     if(action == "drink_water")
     {
-        incTime(5);
-        if(gVStatus(water) >= 20)
+        root->incTime(5);
+        if(root->vStatus(water) >= 20)
         {
-            setImage(media(1));
-            setDesc(str(1));
+            root->setImage(media(1));
+            root->setText(str(1));
         }
         else
         {
-            uVStatus(water,20);
-            sVStatus(cumLips,0);
-            sVStatus(dirtylip,0);
-            setImage(media(1));
-            setDesc(str(2));
+            root->vStatus(water) +=20;
+            root->vStatus(cumLips) = 0;
+            root->vStatus(dirtylip) = 0;
+            root->setImage(media(1));
+            root->setText(str(2));
         }
         makeActBtn("swampspring",act(1));
     }
     if(action == "fill_bucket")
     {
-        incTime(10);
-        uVEvent(bucket,10);
-        setImage(media(2));
-        setDesc(str(3));
+        root->incTime(10);
+        root->vEvent(bucket) += 10;
+        root->setImage(media(2));
+        root->setText(str(3));
         makeActBtn("swampspring",act(1));
     }
     if(action == "swamp_yard")
     {
-        changeLoc(lswampyard,5);
+        root->changeLoc(lswampyard,5);
     }
 }
 
@@ -85,7 +86,7 @@ void SwampSpring::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action,"swampspring");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &SwampSpring::actionHandler);
-    addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString SwampSpring::str(int id)

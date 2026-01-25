@@ -93,6 +93,11 @@ QString BagForm::getItemName(Items id)
     return m_items[id]->getName();
 }
 
+void BagForm::setItemCount(Items id, int count)
+{
+    m_storage[m_items[id]] = count;
+}
+
 void BagForm::updQuantity(Items type, int count)
 {
     m_storage[m_items[type]] += count;

@@ -2,12 +2,12 @@
 #define HANTERSEX_H
 
 #include "../event.h"
-class EventHandler;
+class Game;
 
 class HanterSex: public Event
 {
 public:
-    HanterSex(EventHandler* ptr);
+    HanterSex(Game* ptr);
     void start(QString arg = "") override;
     void makeActBtn(QString action, QString actName);
 private slots:
@@ -140,7 +140,7 @@ private:
     inline void setVasyan();
     inline void setKolyamba();
 private:
-    EventHandler* root;
+    Game* root;
     int hantsexa;
     int hantsexb;
     int boyAsex;

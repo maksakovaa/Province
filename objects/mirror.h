@@ -9,7 +9,7 @@ class Mirror: public GameObj
 {
     Q_OBJECT
 public:
-    Mirror(ObjectHandler* ptr);
+    Mirror(Game* ptr);
     ~Mirror();
     QString getName() override;
     QString getImage() override;
@@ -24,7 +24,7 @@ private:
     void makeMirrorActBtn(MirrorActs act);
     QString actStr(MirrorActs type);
     QString str(MirrorActs type);
-    ObjectHandler* root;
+    Game* root;
     QString m_name;
     QString m_desc;
     MirrorActs current;

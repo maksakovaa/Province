@@ -2,12 +2,12 @@
 #define GADFORESTLOST_H
 
 #include "../event.h"
-class EventHandler;
+class Game;
 
 class GadforestLost: public Event
 {
 public:
-    GadforestLost(EventHandler* ptr);
+    GadforestLost(Game* ptr);
     void start(QString arg = "") override;
     void makeActBtn(QString action, QString actName);
 private slots:
@@ -17,7 +17,7 @@ private:
     QString act(int id);
     QString media(int id);
 private:
-    EventHandler* root;
+    Game* root;
 };
 
 #endif // GADFORESTLOST_H

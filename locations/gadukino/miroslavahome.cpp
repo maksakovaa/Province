@@ -1,8 +1,9 @@
 #include "miroslavahome.h"
 #include "../../menu/buttons.h"
 #include "../../Functions.h"
+#include "../../game.h"
 
-MiroslavaHome::MiroslavaHome(LocationHandler* ptr): Location(ptr) {}
+MiroslavaHome::MiroslavaHome(Game* ptr): root(ptr) {}
 
 void MiroslavaHome::show(QString arg)
 {
@@ -36,122 +37,122 @@ bool MiroslavaHome::isParent()
 
 void MiroslavaHome::actionHandler(QString action)
 {
-    clearActions();
+    root->clearActions();
     if(action == "MiroslavaHome")
     {
-        incTime(5);
+        root->incTime(5);
         mira_temp = getRandInt(0,15);
         grandpa_guest = 0;
-        setImage(makeImage(media(1),isDay(),getMonth()));
-        if(getHour() >= 7 && getHour() <= 22)
+        root->setImage(makeImage(media(1),root->isDay(),root->getMonth()));
+        if(root->getHour() >= 7 && root->getHour() <= 22)
         {
-            if(getMonth() > 5 && getMonth() < 9 && getSunWeather() >= 0 && getHour() > 13 && getHour() < 18 && gVJob(graze_cow) == 0 && (getWeekNum() == 1 || getWeekNum() == 5))
+            if(root->getMonth() > 5 && root->getMonth() < 9 && root->getSunWeather() >= 0 && root->getHour() > 13 && root->getHour() < 18 && root->vJob(graze_cow) == 0 && (root->getWeek() == 1 || root->getWeek() == 5))
             {
                 grandpa_guest = 1;
-                setDesc(str(0));
+                root->setText(str(0));
             }
             else
-                setDesc(str(1));
-            if(gVEvent(mira_no_home) == 0)
+                root->setText(str(1));
+            if(root->vEvent(mira_no_home) == 0)
                 makeActBtn("call_mira",act(0));
         }
         else
         {
-            setDesc(str(2));
+            root->setText(str(2));
         }
         makeActBtn("gadukino",act(2));
-        if(gVEvent(Mira_no) > 0 && gVEvent(mirafathertalk) == 0 && gVEvent(miraday) != gVStatus(daystart))
+        if(root->vEvent(Mira_no) > 0 && root->vEvent(mirafathertalk) == 0 && root->vEvent(miraday) != root->vStatus(daystart))
         {
-            incTime(10);
-            sVEvent(mirafathertalk,1);
-            setImage(media(2));
-            setDesc(str(3));
+            root->incTime(10);
+            root->vEvent(mirafathertalk) = 1;
+            root->setImage(media(2));
+            root->setText(str(3));
             makeActBtn("MiroslavaHome",act(2));
         }
-        if(getTemp() >= 20 && getSunWeather() >= 0 && gVQuest(miragopQW) == 7 && getHour() >= 8 && getHour() <= 18)
+        if(root->getTemp() >= 20 && root->getSunWeather() >= 0 && root->vQuest(miragopQW) == 7 && root->getHour() >= 8 && root->getHour() <= 18)
         {
-            setImage(media(3));
-            setDesc(str(4));
+            root->setImage(media(3));
+            root->setText(str(4));
             makeActBtn("get_close_mira",act(3));
         }
     }
     if(action == "gadukino")
     {
-        changeLoc(lgadukino,5);
+        root->changeLoc(lgadukino,5);
     }
     if(action == "call_mira")
     {
-        if(mira_temp >= 10 && getSunWeather() >= 0 && getTemp() >= 20 && getHour() < 20 && gVEvent(mirainhome) == 0 && gVEvent(Mira_no) == 0)
+        if(mira_temp >= 10 && root->getSunWeather() >= 0 && root->getTemp() >= 20 && root->getHour() < 20 && root->vEvent(mirainhome) == 0 && root->vEvent(Mira_no) == 0)
         {
-            incTime(2);
-            sVEvent(mirainriver,1);
-            uVEvent(mira_no_home,getRandInt(1,4));
-            setImage(media(2));
-            setDesc(str(5));
+            root->incTime(2);
+            root->vEvent(mirainriver) = 1;
+            root->vEvent(mira_no_home) += getRandInt(1,4);
+            root->setImage(media(2));
+            root->setText(str(5));
             makeActBtn("MiroslavaHome",act(1));
         }
-        else if(mira_temp >= 10 && getSunWeather() >= 0 && getHour() < 20 && gVEvent(mirainhome) == 0 && gVEvent(Mira_no) == 0)
+        else if(mira_temp >= 10 && root->getSunWeather() >= 0 && root->getHour() < 20 && root->vEvent(mirainhome) == 0 && root->vEvent(Mira_no) == 0)
         {
-            incTime(2);
-            uVEvent(mira_no_home,getRandInt(1,4));
-            setImage(media(2));
-            setDesc(str(6));
+            root->incTime(2);
+            root->vEvent(mira_no_home) += getRandInt(1,4);
+            root->setImage(media(2));
+            root->setText(str(6));
             makeActBtn("MiroslavaHome",act(1));
         }
         else
         {
-            sVEvent(mirainhome,1);
-            sVEvent(mirainriver,0);
-            sVEvent(mira_guest,0);
-            sVEvent(mirainmeadow,0);
-            sVEvent(mirainforest,0);
-            startEvent(eMiroslava);
+            root->vEvent(mirainhome) = 1;
+            root->vEvent(mirainriver) = 0;
+            root->vEvent(mira_guest) = 0;
+            root->vEvent(mirainmeadow) = 0;
+            root->vEvent(mirainforest) = 0;
+            root->startEvent(eMiroslava);
         }
     }
     if(action == "get_close_mira")
     {
-        uVQuest(miraQW,1);
-        incTime(15);
-        int gopqw = gVQuest(miragopQW);
+        root->vQuest(miraQW) += 1;
+        root->incTime(15);
+        int gopqw = root->vQuest(miragopQW);
         if(gopqw == 0)
-            setImage(media(4));
+            root->setImage(media(4));
         else if(gopqw > 0 && gopqw < 4)
-            setImage(media(5));
+            root->setImage(media(5));
         else if(gopqw >= 4 && gopqw < 8)
-            setImage(media(6));
+            root->setImage(media(6));
         else if(gopqw >= 8 && gopqw < 12)
-            setImage(media(7));
+            root->setImage(media(7));
         else if(gopqw >= 12 && gopqw < 20)
-            setImage(media(8));
+            root->setImage(media(8));
         else if(gopqw >= 20)
-            setImage(media(9));
-        setDesc(str(7));
+            root->setImage(media(9));
+        root->setText(str(7));
         makeActBtn("watch_mira_pussy",act(4));
     }
     if(action == "watch_mira_pussy")
     {
-        incTime(2);
-        uVStatus(horny,15);
-        setImage(media(10));
-        setDesc(str(8));
+        root->incTime(2);
+        root->vStatus(horny) += 15;
+        root->setImage(media(10));
+        root->setText(str(8));
         makeActBtn("mirawish2",act(5));
     }
     if(action == "mirawish2")
     {
-        incTime(45);
-        sVQuest(miragopQW,8);
-        setImage(media(11));
-        setDesc(str(9));
+        root->incTime(45);
+        root->vQuest(miragopQW) = 8;
+        root->setImage(media(11));
+        root->setText(str(9));
         makeActBtn("gadukino",act(1));
     }
     //HREF LINKS
     if(action == "mirafather")
     {
-        startEvent(eMiraFather);
+        root->startEvent(eMiraFather);
     }
     if(action == "grandpa")
     {
-        startEvent(eGrandPa);
+        root->startEvent(eGrandPa);
     }
 }
 
@@ -160,22 +161,22 @@ void MiroslavaHome::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action, "mirahome");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &MiroslavaHome::actionHandler);
-    addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString MiroslavaHome::str(int id)
 {
     QString ded, mfather, nottime;
-    if(gVEvent(grandpa_notalk) == 0)
+    if(root->vEvent(grandpa_notalk) == 0)
         ded = "<a href='grandpa'>дедушка</a>";
     else
         ded = "дедушка";
-    if(gVQuest(MiraFatherQW) < 10)
+    if(root->vQuest(MiraFatherQW) < 10)
         mfather = "отец Миры";
     else
         mfather = "Афанасий";
 
-    if(getHour() > 3 && getHour() < 7)
+    if(root->getHour() > 3 && root->getHour() < 7)
         nottime = "рано";
     else
         nottime = "поздно";

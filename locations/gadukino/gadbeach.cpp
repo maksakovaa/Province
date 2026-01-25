@@ -1,7 +1,9 @@
 #include "gadbeach.h"
 #include "../../Functions.h"
 #include "../../menu/buttons.h"
-Gadbeach::Gadbeach(LocationHandler* ptr): Location(ptr) {}
+#include "../../game.h"
+
+Gadbeach::Gadbeach(Game* ptr):  root(ptr) {}
 
 void Gadbeach::show(QString arg)
 {
@@ -37,29 +39,29 @@ void Gadbeach::actionHandler(QString action)
 {
     if(action == "gadbeach")
     {
-        clearActions();
-        if(gVEvent(mirainriver) == 1 && gVEvent(miratalkforest) < 3)
-            sVEvent(lake_people, 2);
+        root->clearActions();
+        if(root->vEvent(mirainriver) == 1 && root->vEvent(miratalkforest) < 3)
+            root->vEvent(lake_people) = 2;
         else
-            sVEvent(lake_people, 0);
+            root->vEvent(lake_people) = 0;
 
         int i = getRandInt(0,10);
-        setImage(makeImage(media(0),isDay(),getMonth()));
-        setDesc(str(0));
-        ClothMain* ptr = (ClothMain*)getCloth(ClothType::Main);
+        root->setImage(makeImage(media(0),root->isDay(),root->getMonth()));
+        root->setText(str(0));
+        ClothMain* ptr = (ClothMain*)root->getCloth(ClothType::Main);
         if(ptr == nullptr || ptr->getClothGroup() <= swimsuit)
-            addText(str(1));
-        if(gVEvent(mirainriver) == 1)
-            addText(str(2));
-        if(gVJob(horse_river) > 0)
-            addText(str(3));
-        if(getTemp() >= 20 && isDay())
+            root->addText(str(1));
+        if(root->vEvent(mirainriver) == 1)
+            root->addText(str(2));
+        if(root->vJob(horse_river) > 0)
+            root->addText(str(3));
+        if(root->getTemp() >= 20 && root->isDay())
         {
-            if(gVEvent(mirainriver) == 0 && gVEvent(mitkasextimes) >= 13 && i == 0 && getSunWeather() >= 0 && gVEvent(guysriver) != getDay())
+            if(root->vEvent(mirainriver) == 0 && root->vEvent(mitkasextimes) >= 13 && i == 0 && root->getSunWeather() >= 0 && root->vEvent(guysriver) != root->getDay())
             {
-                startEvent(eRiverEvents, "guys_beach");
+                root->startEvent(eRiverEvents, "guys_beach");
             }
-            ClothMain* ptr = (ClothMain*)getCloth(ClothType::Main);
+            ClothMain* ptr = (ClothMain*)root->getCloth(ClothType::Main);
             if(ptr != nullptr && ptr->getClothGroup() != swimsuit)
                 makeActBtn("wear_swimsuit",act(0));
             if(ptr != nullptr && ptr->getClothGroup() > 0)
@@ -67,77 +69,77 @@ void Gadbeach::actionHandler(QString action)
             if(ptr == nullptr || ptr->getClothGroup() == swimsuit)
             {
                 makeActBtn("swim30",act(2));
-                if(getSunWeather() >= 0)
+                if(root->getSunWeather() >= 0)
                 {
-                    if(getItemCount(iSunscreen) <= 0)
+                    if(root->getItmCount(iSunscreen) <= 0)
                         makeActBtn("sunbathe",act(3));
                     else
                         makeActBtn("useSunscreen",act(4));
                 }
-                if(gVEvent(book_in_bag) >= 0)
-                    makeActBtn("read_book", act(8) + getBookName(gVEvent(book_in_bag)));
+                if(root->vEvent(book_in_bag) >= 0)
+                    makeActBtn("read_book", act(8) + root->getBookName(root->vEvent(book_in_bag)));
             }
         }
         if(ptr == nullptr || ptr->getClothGroup() <= swimsuit)
             makeActBtn("wearClothes",act(5));
         makeActBtn("exit",act(6));
-        startEvent(eRiverEvents,"mira_in_river");
+        root->startEvent(eRiverEvents,"mira_in_river");
     }
     if(action == "read_book")
     {
-        readOnWalk();
+        root->readOnWalk();
     }
     if(action == "Miroslava")
     {
-        startEvent(eMiroslava);
+        root->startEvent(eMiroslava);
     }
     if(action == "wear_swimsuit")
     {
-        clearActions();
-        undress();
+        root->clearActions();
+        root->undress();
     }
     if(action == "undress_all")
     {
-        clearActions();
-        undress(1);
+        root->clearActions();
+        root->undress(1);
     }
     if(action == "swim30")
     {
-        clearActions();
-        swim();
+        root->clearActions();
+        root->swim();
     }
     if(action == "sunbathe")
     {
-        clearActions();
-        sunbathe();
+        root->clearActions();
+        root->sunbathe();
     }
     if(action == "useSunscreen")
     {
-        cream();
+        root->cream();
     }
     if(action == "wearClothes")
     {
-        clearActions();
-        if(getCloth(ClothType::Main) == nullptr)
-            getDressed(1);
+        root->clearActions();
+        if(root->getCloth(ClothType::Main) == nullptr)
+            root->getDressed(1);
         else
-            getDressed(0);
+            root->getDressed(0);
     }
     if(action == "exit")
     {
-        ClothMain* ptr = (ClothMain*)getCloth(ClothType::Main);
-        if((isCloth()) || (ptr == nullptr && gVSC(exhibi) > 0))
+        ClothMain* ptr = (ClothMain*)root->getCloth(ClothType::Main);
+        if((root->isCloth()) || (ptr == nullptr && root->vStatistics(exhibi) > 0))
         {
-            sVStatus(inriver,0);
-            changeLoc(lgadriver,5);
+            root->vStatus(inriver) = 0;
+            root->changeLoc(lgadriver,5);
         }
         else
         {
-            addText(str(4));
+            root->addText(str(4));
         }
     }
     if(action == "horse_river")
-        startEvent(eRiverEvents,"horse_river");
+        root->startEvent(eRiverEvents,"horse_river");
 }
 
 void Gadbeach::makeActBtn(QString action, QString actName)
@@ -145,7 +147,7 @@ void Gadbeach::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action, "gadbeach");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Gadbeach::actionHandler);
-    addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString Gadbeach::str(int id)
@@ -162,7 +164,7 @@ QString Gadbeach::str(int id)
 
 QString Gadbeach::act(int id)
 {
-    QString act[8];
+    QString act[9];
     act[0] = "Надеть купальник";
     act[1] = "Раздеться догола";
     act[2] = "Купаться полчаса";

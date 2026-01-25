@@ -15,7 +15,7 @@ class Wardrobe: public GameObj
     friend void ObjectHandler::slotInitWardrobe();
     friend SaveForm; friend LoadForm;
 public:
-    Wardrobe(ObjectHandler* ptr);
+    Wardrobe(Game* ptr);
     ~Wardrobe() = default;
     QString getName() override;
     QString getImage() override;
@@ -42,7 +42,7 @@ private:
     void makeButtons();
     void makeActBtn(WardrActs act);
     QString warStr(int index);
-    ObjectHandler* root;
+    Game* root;
     ClothPanties* m_panties;
     std::unordered_map<Cloth*, int> m_storage;
     std::vector<Cloth*> m_trash;

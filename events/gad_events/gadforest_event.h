@@ -2,12 +2,12 @@
 #define GADFOREST_EVENT_H
 
 #include "../event.h"
-class EventHandler;
+class Game;
 
 class GadforestEvent: public Event
 {
 public:
-    GadforestEvent(EventHandler* ptr): root(ptr){}
+    GadforestEvent(Game* ptr): root(ptr){}
     void start(QString arg = "") override;
     void makeActBtn(QString action, QString actName);
 private slots:
@@ -39,7 +39,7 @@ private:
     QString act(int id);
     QString media(int id);
 private:
-    EventHandler* root;
+    Game* root;
 };
 
 #endif

@@ -43,6 +43,7 @@ enum QuestParams
     qwKolkaPrince,          //Квест по Кольке-принцу brother['KolkaPrince']
     qwBrotherNude,          //Квест по показу голого тела Кольке
     qwKolka,
+    qwKolkaNewYear,
     qwShopping,
     qwMisha,
     qwArtur,                //Квест по устройству на работу к Артуру

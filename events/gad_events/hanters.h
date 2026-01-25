@@ -2,12 +2,12 @@
 #define HANTERS_H
 
 #include "../event.h"
-class EventHandler;
+class Game;
 
 class Hanters: public Event
 {
 public:
-    Hanters(EventHandler* ptr);
+    Hanters(Game* ptr);
     void start(QString arg = "") override;
     void makeActBtn(QString action, QString actName);
 private slots:
@@ -135,7 +135,7 @@ private:
     inline void checkBoyBsexAnal();
     inline void checkBoyCsexAnal();
 private:
-    EventHandler* root;
+    Game* root;
     int hantsexa;
     int hantsexb;
 

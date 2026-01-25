@@ -1,100 +1,101 @@
 #include "bedrpar.h"
 #include "../../menu/buttons.h"
 #include "../../npc/npc_enum.h"
+#include "../../game.h"
 
-BedrPar::BedrPar(LocationHandler* ptr): Location(ptr) {}
+BedrPar::BedrPar(Game* ptr): root(ptr){}
 
 void BedrPar::show(QString arg)
 {
-    int hour = getHour();
-    int week = getWeekNum();
-    int month = getMonth();
+    int hour = root->getHour();
+    int week = root->getWeek();
+    int month = root->getMonth();
 
-    if(gVQuest(qwSisterBoy) > 10)
-        sVQuest(qwSisterBoy,10);
-    incTime(1);
-    setImage(img(0));
-    setDesc(str(0));
-    if(gVQuest(qwSisterLesbi) >= 3 && week == 0 && gNPC(AnyaLebedeva).relation >= 80 && gVEvent(sister_show) == 0 && hour >= 10 && hour <= 11 && gVEvent(family_trip) == 0)
-        startEvent(eDinSister,"sister_show");
-    if(gVQuest(gets_bicycleQW) >= 10 && month >= 9 && hour >= 9 && gVEvent(have_bicycle) == 0 && gVEvent(msg_bicycle) == 0)
-        sendNotif(str(7));
-    if((getItemCount(iDildo) >= 1 || getItemCount(iMidDildo) >= 1 || getItemCount(iLargeDildo) >= 1 || getItemCount(iBigDildo) || getItemCount(iExtraDildo) >= 1
-         || getItemCount(iSuperDildo) >= 1 || getItemCount(iMadDildo) >= 1) && gVEvent(turnirWin) == 1 && gVBody(anus) >= 13 && gVStatus(shamelessFlag) == 3
-        && gVBody(vagina) >= 13 && gNPC(KolyaSkryabin).sex >= 3 && gVQuest(qwKolka) == 0 && week == 5 && hour == 23)
+    if(root->vQuest(qwSisterBoy) > 10)
+        root->vQuest(qwSisterBoy) = 10;
+    root->incTime(1);
+    root->setImage(img(0));
+    root->setText(str(0));
+    if(root->vQuest(qwSisterLesbi) >= 3 && week == 0 && root->gNPC(sister).relation >= 80 && root->vEvent(sister_show) == 0 && hour >= 10 && hour <= 11 && root->vEvent(family_trip) == 0)
+        root->startEvent(eDinSister,"sister_show");
+    if(root->vQuest(gets_bicycleQW) >= 10 && month >= 9 && hour >= 9 && root->vEvent(have_bicycle) == 0 && root->vEvent(msg_bicycle) == 0)
+        root->sendNotif(str(7));
+    if((root->getItmCount(iDildo) >= 1 || root->getItmCount(iMidDildo) >= 1 || root->getItmCount(iLargeDildo) >= 1 || root->getItmCount(iBigDildo) || root->getItmCount(iExtraDildo) >= 1
+         || root->getItmCount(iSuperDildo) >= 1 || root->getItmCount(iMadDildo) >= 1) && root->vEvent(turnirWin) == 1 && root->vBody(anus) >= 13 && root->vStatus(shamelessFlag) == 3
+        && root->vBody(vagina) >= 13 && root->gNPC(brother).sex >= 3 && root->vQuest(qwKolka) == 0 && week == 5 && hour == 23)
     {
-        startEvent(eSisterQW,"incest_event1");
+        root->startEvent(eSisterQW,"incest_event1");
     }
 
-    if(gVQuest(qwKolka) >= 5 && gVQuest(qwShopping) == getDay() && week == 0 && hour == 22 && gVEvent(family_trip) == 0)
+    if(root->vQuest(qwKolka) >= 5 && root->vQuest(qwShopping) == root->getDay() && week == 0 && hour == 22 && root->vEvent(family_trip) == 0)
     {
-        if(getItemCount(iAntiPregPills) > 0 && gVBody(anus) >= 13 && gVBody(vagina) >= 13)
-            startEvent(eSisterQW,"incest_event6");
-        if(gVBody(anus) >= 13 && gVBody(vagina) >= 18 && getItemCount(iLargeDildo) >= 1 && gVStatus(horny) >= 40)
-            startEvent(eSisterQW,"incest_event6sub");
+        if(root->getItmCount(iAntiPregPills) > 0 && root->vBody(anus) >= 13 && root->vBody(vagina) >= 13)
+            root->startEvent(eSisterQW,"incest_event6");
+        if(root->vBody(anus) >= 13 && root->vBody(vagina) >= 18 && root->getItmCount(iLargeDildo) >= 1 && root->vStatus(horny) >= 40)
+            root->startEvent(eSisterQW,"incest_event6sub");
     }
-    if(gVBody(anus) >= 13 && gVBody(vagina) >= 13)
+    if(root->vBody(anus) >= 13 && root->vBody(vagina) >= 13)
     {
-        if(gVEvent(incest_event9_flag) == 1 && gVQuest(qwKolka) == 8)
-            startEvent(eSisterQW,"incest_event9");
-        if(gVEvent(incest_event10_flag) == 1 && gVQuest(qwKolka) == 9)
-            startEvent(eSisterQW,"incest_event10");
+        if(root->vEvent(incest_event9_flag) == 1 && root->vQuest(qwKolka) == 8)
+            root->startEvent(eSisterQW,"incest_event9");
+        if(root->vEvent(incest_event10_flag) == 1 && root->vQuest(qwKolka) == 9)
+            root->startEvent(eSisterQW,"incest_event10");
     }
 
-    if(gVQuest(qwMisha) == 1 && week == 6 && hour == 10 && getItemCount(iLubri) > 0 && gVQuest(anayslut) == 0 && gVQuest(wedding) == 0 && gVBody(anus) >= 18 && gVBody(vagina) >= 18)
-        startEvent(eSisterQW,"incest_event11");
-    if(gVQuest(wedding) == 1 && hour == 18 && gVEvent(family_trip) == 0)
-        startEvent(eSisterQW,"incest_mini1");
-    if(gVQuest(wedding) == 1 && hour == 17 && gVEvent(family_trip) == 0)
-        startEvent(eSisterQW,"incest_mini2");
+    if(root->vQuest(qwMisha) == 1 && week == 6 && hour == 10 && root->getItmCount(iLubri) > 0 && root->vQuest(anayslut) == 0 && root->vQuest(wedding) == 0 && root->vBody(anus) >= 18 && root->vBody(vagina) >= 18)
+        root->startEvent(eSisterQW,"incest_event11");
+    if(root->vQuest(wedding) == 1 && hour == 18 && root->vEvent(family_trip) == 0)
+        root->startEvent(eSisterQW,"incest_mini1");
+    if(root->vQuest(wedding) == 1 && hour == 17 && root->vEvent(family_trip) == 0)
+        root->startEvent(eSisterQW,"incest_mini2");
 
     //if arrsize('books') = 0: gs 'zz_books','init'
 
-    if(getItemCount(iLaptop) == 1)
-        addText(str(1));
-    if(gVSick(sick) < 1)
-        home_workout();
+    if(root->getItmCount(iLaptop) == 1)
+        root->addText(str(1));
+    if(root->vSick(sick) < 1)
+        root->home_workout();
     else
-        addText(str(2));
+        root->addText(str(2));
 
-    if(((((week >= 1 && week <= 4) || week == 0) && hour < 6) || (week == 5 && hour >= 22) || ((week == 6 || week == 0) && hour < 9)) && gVEvent(rexCarCount) >= 9 && gVEvent(rexSmsDay) != gVStatus(daystart) && gVEvent(smsForRex) < 13)
+    if(((((week >= 1 && week <= 4) || week == 0) && hour < 6) || (week == 5 && hour >= 22) || ((week == 6 || week == 0) && hour < 9)) && root->vEvent(rexCarCount) >= 9 && root->vEvent(rexSmsDay) != root->vStatus(daystart) && root->vEvent(smsForRex) < 13)
         makeActBtn("takeSisPhone",act(10));
     makeActBtn("korrPar",act(1));
-    waiting();
+    root->waiting();
     makeActBtn("locker",act(2));
     makeActBtn("bed",act(3));
     makeActBtn("books",act(4));
 
-    startEvent(eFamily,"brother_sheduler");
-    startEvent(eFamily,"sister_sheduler");
+    root->startEvent(eFamily,"brother_sheduler");
+    root->startEvent(eFamily,"sister_sheduler");
 
-    fancywork();
-    if(gVEvent(reading_erotic_enable) == 1 && hour >= 18 && hour < 21 && eroReaded() > 0)
-        eroBlock();
-    if(gVStatus(horny) >= 50 && gNPC(AnyaLebedeva).location != getLocId())
+    root->fancywork();
+    if(root->vEvent(reading_erotic_enable) == 1 && hour >= 18 && hour < 21 && root->eroReaded() > 0)
+        root->eroBlock();
+    if(root->vStatus(horny) >= 50 && root->gNPC(sister).location != getLocId())
         makeActBtn("selfplay",act(5));
 
-    if(getItemCount(iPornMagazine) > 0)
+    if(root->getItmCount(iPornMagazine) > 0)
     {
-        addText(str(3));
-        if(gNPC(AnyaLebedeva).location != getLocId())
-            read_porn();
+        root->addText(str(3));
+        if(root->gNPC(sister).location != getLocId())
+            root->read_porn();
     }
 
-    if(gVJob(tovarL) > 0)
-        addText(str(4));
-    if(cardCheck() == 1)
+    if(root->vJob(tovarL) > 0)
+        root->addText(str(4));
+    if(root->cardCheck() == 1)
         makeActBtn("takeCards",act(6));
-    if(gNPC(AnyaLebedeva).location != getLocId() && gVQuest(TsarevMainQWday) != getDay())
+    if(root->gNPC(sister).location != getLocId() && root->vQuest(TsarevMainQWday) != root->getDay())
     {
-        if(gVQuest(TsarevMainQW) == 103)
-            addText(str(5));
-        if(gVQuest(TsarevMainQW) >= 105 && gVQuest(TsarevMainQW) <= 112)
-            addText(str(6));
-        if((gVQuest(TsarevMainQW) == 115 || gVQuest(TsarevMainQW) == 117) && hour >= 8 && hour <= 18 && !isMesec())
-            startEvent(eTsarevEvents,"teacher_choice_detective9");
-        if(gVQuest(TsarevMainQW) == 120)
-            startEvent(eTsarevEvents,"teacher_choice_detective11");
+        if(root->vQuest(TsarevMainQW) == 103)
+            root->addText(str(5));
+        if(root->vQuest(TsarevMainQW) >= 105 && root->vQuest(TsarevMainQW) <= 112)
+            root->addText(str(6));
+        if((root->vQuest(TsarevMainQW) == 115 || root->vQuest(TsarevMainQW) == 117) && hour >= 8 && hour <= 18 && !root->isMesec())
+            root->startEvent(eTsarevEvents,"teacher_choice_detective9");
+        if(root->vQuest(TsarevMainQW) == 120)
+            root->startEvent(eTsarevEvents,"teacher_choice_detective11");
     }
 
     //gs 'zz_school','homework'
@@ -106,7 +107,7 @@ void BedrPar::show(QString arg)
     //    end
     // end
 
-    if(getItemCount(iLaptop) == 1)
+    if(root->getItmCount(iLaptop) == 1)
         makeActBtn("Komp",act(9));
 
     ////////////////////////
@@ -147,44 +148,44 @@ void BedrPar::makeActBtn(QString act, QString actName)
     QActButton* btn = new QActButton(act, "BedrPar");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &BedrPar::actionHandler);
-    addActBtn(btn);
+    root->addActions(btn);
 }
 
 void BedrPar::actionHandler(QString action)
 {
     if(action == "takeSisPhone")
     {
-        startEvent(eReks, "sms");
+        root->startEvent(eReks, "sms");
     }
     if(action == "korrPar")
-        changeLoc(lkorrpar,5);
+        root->changeLoc(lkorrpar,5);
     if(action == "locker")
-        viewObj("wardrobe");
+        root->viewObj("wardrobe");
     if(action == "bed")
-        viewObj("bed");
+        root->viewObj("bed");
     if(action == "selfplay")
-        startSelfPlay();
+        root->selfPlayStart();
     if(action == "Komp")
     {
 
     }
     if(action == "takeCards")
     {
-        setImage(img(1));
-        setDesc("");
+        root->setImage(img(1));
+        root->setText("");
         makeActBtn("pullOutCard", act(11));
         makeActBtn("back_to_cur_loc", act(12));
     }
     if(action == "pullOutCard")
     {
-        setImage(getCard());
-        uVStatus(horny,getCardHorny());
-        incTime(getCardTime());
+        root->setImage(root->getCard());
+        root->vStatus(horny) += root->getCardHorny();
+        root->incTime(root->getCardTime());
         makeActBtn("takeCards", act(13));
     }
     if (action == "books")
     {
-        viewObj("books");
+        root->viewObj("books");
     }
     
 }

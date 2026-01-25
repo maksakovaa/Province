@@ -2,42 +2,42 @@
 #include "../Functions.h"
 #include "../menu/mainwindow.h"
 
-CCSex::CCSex(QWidget *ptr): root(ptr) {}
+CCSex::CCSex(Game *ptr): root(ptr) {}
 
 void CCSex::ability(Body holeType, int value)
 {
     int maxStoreVagina {10}, maxStoreAnus {10};
-    int tmp_vstore = maxStoreVagina - getVSexVar(storeVagina) / maxStoreVagina;
-    int tmp_astore = maxStoreAnus - getVSexVar(storeAnus) / maxStoreAnus;
+    int tmp_vstore = maxStoreVagina - root->vSex(storeVagina) / maxStoreVagina;
+    int tmp_astore = maxStoreAnus - root->vSex(storeAnus) / maxStoreAnus;
     if (holeType == Body::vagina)
     {
-        if (value > 0) { updVSexVar(vagina_ability, 1); }
+        if (value > 0) { /*update*/ root->vSex(vagina_ability) +=1; }
         else
         {
-            if(getVSexVar(vagina_ability) <= 0) { updVSexVar(vagina_ability, 0); }
-            else { updVSexVar(vagina_ability, -1); }
+            if(root->vSex(vagina_ability) <= 0) { /*update*/ root->vSex(vagina_ability) += 0; }
+            else { /*update*/ root->vSex(vagina_ability) -=1; }
         }
-        if(getVSexVar(vagina_ability) > maxStoreVagina)
+        if(root->vSex(vagina_ability) > maxStoreVagina)
         {
-            updVSexVar(storeVagina, tmp_vstore);
-            updVSexVar(vagina_ability, -tmp_vstore);
+            /*update*/ root->vSex(storeVagina) += tmp_vstore;
+            /*update*/ root->vSex(vagina_ability) -= tmp_vstore;
         }
     }
     else if (holeType == Body::anus)
     {
-        if (value > 0) { updVSexVar(anus_ability, 1); }
+        if (value > 0) { /*update*/ root->vSex(anus_ability) += 1; }
         else
         {
-            if (getVSexVar(anus_ability) > maxStoreAnus)
+            if (root->vSex(anus_ability) > maxStoreAnus)
             {
-                updVSexVar(storeAnus, tmp_astore);
-                updVSexVar(anus_ability, -tmp_astore);
+                /*update*/ root->vSex(storeAnus) += tmp_astore;
+                /*update*/ root->vSex(anus_ability) -= tmp_astore;
             }
         }
-        if (getVSexVar(anus_ability) > maxStoreAnus)
+        if (root->vSex(anus_ability) > maxStoreAnus)
         {
-            updVSexVar(storeAnus, tmp_astore);
-            updVSexVar(anus_ability, - tmp_astore);
+            /*update*/ root->vSex(storeAnus) += tmp_astore;
+            /*update*/ root->vSex(anus_ability) += - tmp_astore;
         }
     }
 }
@@ -51,16 +51,16 @@ QString CCSex::sextToysBlock(int arg)
         QString vag[] {"<br>У вас немного болит влагалище.","<br>У вас болит влагалище и вы с трудом можете свести ноги вместе.",
                         "<br>У вас сильно болит влагалище, вы даже с трудом ходите, при этом стараясь пошире расставлять ноги."   
         };
-        if (getVSexVar(stat_vgape) != 0)
+        if (root->vSex(stat_vgape) != 0)
         {
-            res = vag[getVSexVar(stat_vgape)];
+            res = vag[root->vSex(stat_vgape)];
             res += "<br><br><b>Вы не можете вопользоваться вибратором, ждите пока заживёт, а пока посмотрите кино или почитайте порножурнал.</b>";
         }
-        else if (getVSexVar(dry_v_rubbing) > 24 || getVSexVar(level_v_rubbing) > 10)
+        else if (root->vSex(dry_v_rubbing) > 24 || root->vSex(level_v_rubbing) > 10)
         {
             res = "<br>Ваше влагалище натёрто и болит.<br><br><b>Вы не можете вопользоваться анальной пробкой - вашей попе и так досталось.</b>";
         }
-        else if (isMesec())
+        else if (root->isMesec())
         {
             QString red[] { "Гости из Краснодара","Красная армия","Борщ без сметаны","Монстры",
                 "Красные дни календаря","Праздники","Красный москвич","Мурзики","Месячный отчёт", "Бесячные"
@@ -78,12 +78,12 @@ QString CCSex::sextToysBlock(int arg)
     {
         QString anal[] {"<br>У вас немного болит и чешется анус.","<br>У вас болит анус.","<br>У вас сильно болит и кровоточит анус."};
 
-        if (getVSexVar(stat_agape) != 0)
+        if (root->vSex(stat_agape) != 0)
         {
-            res = anal[getVSexVar(stat_agape)];
+            res = anal[root->vSex(stat_agape)];
             res += "<br><br><b>Вы не можете вопользоваться анальной пробкой - вашей попе и так досталось.</b>";
         }
-        else if (getVSexVar(dry_a_rubbing) > 24 || getVSexVar(level_a_rubbing) > 10)
+        else if (root->vSex(dry_a_rubbing) > 24 || root->vSex(level_a_rubbing) > 10)
         {
             res = "<br>Ваш анус натёрт и болит.<br><br><b>Вы не можете вопользоваться анальной пробкой - вашей попе и так досталось.</b>";
         }
@@ -98,24 +98,24 @@ QString CCSex::sextToysBlock(int arg)
 
 int CCSex::getVaginaDampness()
 {
-    int vag_grease = getVStatus(Status::vaginal_grease);
+    int vag_grease = root->vStatus(vaginal_grease);
     if(vag_grease <= 0)
     {
         return 0;
     }
-    else if (vag_grease < getVConst(out_vaginal_grease))
+    else if (vag_grease < root->vConst(out_vaginal_grease))
     {
         return 1;
     }
-    else if (vag_grease >= getVConst(out_vaginal_grease) && vag_grease < (getVConst(out_vaginal_grease) * 3))
+    else if (vag_grease >= root->vConst(out_vaginal_grease) && vag_grease < (root->vConst(out_vaginal_grease) * 3))
     {
         return 2;
     }
-    else if (vag_grease >= (getVConst(out_vaginal_grease) * 3) && vag_grease < (getVConst(out_vaginal_grease) * 5))
+    else if (vag_grease >= (root->vConst(out_vaginal_grease) * 3) && vag_grease < (root->vConst(out_vaginal_grease) * 5))
     {
         return 3;
     }
-    else if (vag_grease >= (getVConst(out_vaginal_grease) * 5) && vag_grease < getVConst(many_vaginal_grease))
+    else if (vag_grease >= (root->vConst(out_vaginal_grease) * 5) && vag_grease < root->vConst(many_vaginal_grease))
     {
         return 4;
     }
@@ -129,7 +129,7 @@ int CCSex::calc_rubb(QString holeType)
 {
     if(holeType == "vagina")
     {
-        int dry = getVSexVar(dry_v_rubbing);
+        int dry = root->vSex(dry_v_rubbing);
         if(dry <= 0)
             return 0;
         else if(dry <= 15)
@@ -145,7 +145,7 @@ int CCSex::calc_rubb(QString holeType)
     }
     else
     {
-        int dry = getVSexVar(dry_a_rubbing);
+        int dry = root->vSex(dry_a_rubbing);
         if(dry <= 0)
             return 0;
         else if(dry <= 15)
@@ -163,54 +163,54 @@ int CCSex::calc_rubb(QString holeType)
 
 void CCSex::slotCalcRubbing()
 {
-    if (getVSexVar(level_v_rubbing) + getVSexVar(level_a_rubbing) > 0)
+    if (root->vSex(level_v_rubbing) + root->vSex(level_a_rubbing) > 0)
     {
-        updVStatus(Status::horny, -(getVSexVar(level_a_rubbing) + getVSexVar(level_v_rubbing))*2/3);
-        if (getVStatus(Status::horny) <= 0)
+        root->vStatus(horny) -= (root->vSex(level_a_rubbing) + root->vSex(level_v_rubbing))*2/3;
+        if (root->vStatus(horny) <= 0)
         {
-            setVStatus(Status::horny, 1);
+            root->vStatus(horny) = 1;
         }
     }
-    if (getVSexVar(dry_v_rubbing) > 0)
+    if (root->vSex(dry_v_rubbing) > 0)
     {
-        updVStatus(Status::vaginal_grease, getRandInt(0,getVStatus(Status::inc_vag_grease)/2));
+        root->vStatus(vaginal_grease) += getRandInt(0,root->vStatus(inc_vag_grease)/2);
     }
-    int hornyVal = getVStatus(horny);
-    int v_level = getVSexVar(level_v_rubbing);
+    int hornyVal = root->vStatus(horny);
+    int v_level = root->vSex(level_v_rubbing);
     int a_level = 0;
-    if(getVSexVar(level_a_rubbing) != 0)
+    if(root->vSex(level_a_rubbing) != 0)
     {
-        a_level = getVSexVar(level_a_rubbing) / 2;
+        a_level = root->vSex(level_a_rubbing) / 2;
     }
-    int a_dry = getVSexVar(dry_a_rubbing);
-    int v_dry = getVSexVar(dry_v_rubbing);
+    int a_dry = root->vSex(dry_a_rubbing);
+    int v_dry = root->vSex(dry_v_rubbing);
 
-    updVStatus(vaginal_grease, hornyVal/(10+v_level + a_level) - (v_dry + a_dry/2)*2/3);
+    root->vStatus(vaginal_grease) += hornyVal/(10+v_level + a_level) - (v_dry + a_dry/2)*2/3;
 
-    int d = getVSexVar(vgape)/3 + getVSexVar(agape)/5;
-    updVStatus(Status::vaginal_grease, -d);
+    int d = root->vSex(vgape)/3 + root->vSex(agape)/5;
+    root->vStatus(vaginal_grease) -= d;
 
-    if (getVStatus(Status::vaginal_grease) < 0)
+    if (root->vStatus(vaginal_grease) < 0)
     {
-       setVStatus(Status::vaginal_grease, 0);
+       root->vStatus(vaginal_grease) = 0;
     }
-    if (getVStatus(Status::vaginal_grease) > getVConst(max_vaginal_grease))
+    if (root->vStatus(vaginal_grease) > root->vConst(max_vaginal_grease))
     {
-        setVStatus(Status::vaginal_grease, getVConst(max_vaginal_grease));
+        root->vStatus(vaginal_grease) = root->vConst(max_vaginal_grease);
     }
 }
 
 void CCSex::slotVagGelTouch()
 {
-    int useAntiRub = getVSexVar(use_anti_rubbing);
-    int vagRubLvl = getVSexVar(level_v_rubbing);
-    int dryVagRub = getVSexVar(dry_v_rubbing);
+    int useAntiRub = root->vSex(use_anti_rubbing);
+    int vagRubLvl = root->vSex(level_v_rubbing);
+    int dryVagRub = root->vSex(dry_v_rubbing);
 
     if (useAntiRub > 0 || (useAntiRub > 0 && (vagRubLvl > 0 || dryVagRub > 0)))
     {
-        updVSexVar(dry_v_rubbing, -getVConst(dec_anti_rubbing));
-        updVSexVar(level_v_rubbing, - getVConst(dec_anti_rubbing) / 2);
-        updVSexVar(use_anti_rubbing, - getVConst(dec_anti_rubbing));
+        /*update*/ root->vSex(dry_v_rubbing) -= root->vConst(dec_anti_rubbing);
+        /*update*/ root->vSex(level_v_rubbing) -= root->vConst(dec_anti_rubbing) / 2;
+        /*update*/ root->vSex(use_anti_rubbing) -= root->vConst(dec_anti_rubbing);
     }
 }
 
@@ -218,74 +218,74 @@ void CCSex::slotDecRubbing(Body holeType)
 {
     if(holeType == Body::vagina)
     {
-        if(getVSexVar(dry_v_rubbing) <= 0)
+        if(root->vSex(dry_v_rubbing) <= 0)
         {
-            setVSexVar(dry_v_rubbing, 0);
-            setVSexVar(level_v_rubbing,0);
+            /*set*/ root->vSex(dry_v_rubbing) = 0;
+            /*set*/ root->vSex(level_v_rubbing) = 0;
         }
-        int _tmp = getVSexVar(dry_v_rubbing) / 24;
+        int _tmp = root->vSex(dry_v_rubbing) / 24;
         int moodDec = getRandInt(0, 3 + _tmp);
-        updVStatus(mood, -moodDec);
-        if(getVStatus(mood) < 0) { setVStatus(mood, 0); }
+        root->vStatus(mood) -= moodDec;
+        if(root->vStatus(mood) < 0) { root->vStatus(mood) = 0; }
         int healthDec = getRandInt(0, 1 + _tmp);
-        updVStatus(health, -healthDec);
-        if(getVStatus(health) < 0) { setVStatus(health, 0); }
-        updVStatus(horny, -getVStatus(horny) / 10);
+        root->vStatus(health) -= healthDec;
+        if(root->vStatus(health) < 0) { root->vStatus(health) = 0; }
+        root->vStatus(horny) -= root->vStatus(horny) / 10;
 
-        int dryDec  = getVSexVar(vagina_ability) / 2;
-        if(getVSexVar(dry_v_rubbing) > 0)
+        int dryDec  = root->vSex(vagina_ability) / 2;
+        if(root->vSex(dry_v_rubbing) > 0)
         {
             dryDec += getRandInt(1,2);
         }
-        updVSexVar(dry_v_rubbing, -dryDec);
-        int levelDex = getVSexVar(vagina_ability) / 3;
-        if(getVSexVar(level_v_rubbing) > 0)
+        root->vSex(dry_v_rubbing) -= dryDec;
+        int levelDex = root->vSex(vagina_ability) / 3;
+        if(root->vSex(level_v_rubbing) > 0)
         {
             levelDex += 1;
         }
-        updVSexVar(level_v_rubbing, -levelDex);
+        /*update*/ root->vSex(level_v_rubbing) -= levelDex;
     }
 
     if(holeType == Body::anus)
     {
-        if(getVSexVar(dry_a_rubbing) <= 0)
+        if(root->vSex(dry_a_rubbing) <= 0)
         {
-            setVSexVar(dry_a_rubbing, 0);
-            setVSexVar(level_a_rubbing,0);
+            /*set*/ root->vSex(dry_a_rubbing) = 0;
+            /*set*/ root->vSex(level_a_rubbing) = 0;
         }
-        int _tmp = getVSexVar(dry_a_rubbing) / 24;
+        int _tmp = root->vSex(dry_a_rubbing) / 24;
         int moodDec = getRandInt(0, 3 + _tmp);
-        updVStatus(mood, -moodDec);
-        if(getVStatus(mood) < 0) { setVStatus(mood, 0); }
+        root->vStatus(mood) -= moodDec;
+        if(root->vStatus(mood) < 0) { root->vStatus(mood) = 0; }
         int healthDec = getRandInt(0, 1+_tmp);
-        updVStatus(health, -healthDec);
-        if(getVStatus(health) < 0) { setVStatus(health, 0); }
-        updVStatus(horny, -getVStatus(horny) / 10);
+        root->vStatus(health) -= healthDec;
+        if(root->vStatus(health) < 0) { root->vStatus(health) = 0; }
+        root->vStatus(horny) -= root->vStatus(horny) / 10;
 
-        int dryDec  = getVSexVar(anus_ability) / 2;
-        if(getVSexVar(dry_a_rubbing) > 0)
+        int dryDec  = root->vSex(anus_ability) / 2;
+        if(root->vSex(dry_a_rubbing) > 0)
         {
             dryDec += getRandInt(1,2);
         }
-        updVSexVar(dry_a_rubbing, -dryDec);
-        int levelDex = getVSexVar(anus_ability) / 3;
-        if(getVSexVar(level_a_rubbing) > 0)
+        /*update*/ root->vSex(dry_a_rubbing) -= dryDec;
+        int levelDex = root->vSex(anus_ability) / 3;
+        if(root->vSex(level_a_rubbing) > 0)
         {
             levelDex += 1;
         }
-        updVSexVar(level_a_rubbing, -levelDex);
+        /*update*/ root->vSex(level_a_rubbing) -= levelDex;
     }
 }
 
 void CCSex::antiRubbing()
 {
-    if (getVSexVar(use_anti_rubbing) != 0)
+    if (root->vSex(use_anti_rubbing) != 0)
     {
         //return to bag
     }
     else
     {
-        updVSexVar(use_anti_rubbing, 160);
+        /*update*/ root->vSex(use_anti_rubbing) += 160;
         //return to bag
     }
 }
@@ -303,17 +303,17 @@ void CCSex::slotSetGape(Body holeType, int horny, int dick, int silavag)
     }
     if(holeType == Body::vagina)
     {
-        gapeBase = getVBody(Body::vagina) + horny / 20 + silavag * 2 + 2;
+        gapeBase = root->vBody(Body::vagina) + horny / 20 + silavag * 2 + 2;
     }
     else if (holeType == Body::anus)
     {
         if(horny == 10)
         {
-            updVSexVar(lubricant, -1);
+            /*update*/ root->vSex(lubricant) -=1;
         }
         int k = 0;
         if(horny > 0) { k = 10; }
-        gapeBase = getVBody(Body::anus) + k + silavag * 2 + 2;
+        gapeBase = root->vBody(Body::anus) + k + silavag * 2 + 2;
     }
     int gapeDiff = setGapeDick - gapeBase;
     int gapeTime;
@@ -336,67 +336,62 @@ void CCSex::slotSetGape(Body holeType, int horny, int dick, int silavag)
 
     if(holeType == Body::vagina)
     {
-        if(getVSexVar(stat_vgape) > 0)
+        if(root->vSex(stat_vgape) > 0)
         {
-            updVSexVar(vgape, 4);
+            /*update*/ root->vSex(vgape) += 4;
         }
-        updVSexVar(vgape, gapeTime);
+        /*update*/ root->vSex(vgape) += gapeTime;
         if(gapeDiff <= 3)
         {
-            if(setGapeDick - 2 > getVBody(Body::vagina))
+            if(setGapeDick - 2 > root->vBody(Body::vagina))
             {
-                updVBody(Body::vagina, 1);
+                root->vBody(vagina)  += 1;
             }
         }
         else
         {
-            updVBody(Body::vagina, 2);
+            root->vBody(vagina)  += 2;
         }
-        int stat = getVSexVar(vgape)/24;
-        if (getVSexVar(stat_vgape) > stat)
+        int stat = root->vSex(vgape)/24;
+        if (root->vSex(stat_vgape) > stat)
         {
-            stat = stat - getVSexVar(stat_vgape);
+            stat = stat - root->vSex(stat_vgape);
         }
-        else if (getVSexVar(stat_vgape) < stat)
+        else if (root->vSex(stat_vgape) < stat)
         {
-            stat = getVSexVar(stat_vgape) - stat;
+            stat = root->vSex(stat_vgape) - stat;
         }
-        updVSexVar(stat_vgape, stat);
+        /*update*/ root->vSex(stat_vgape) += stat;
     }
     if(holeType == Body::anus)
     {
-        if(getVSexVar(stat_agape) > 0)
+        if(root->vSex(stat_agape) > 0)
         {
-            updVSexVar(agape, 4);
+            /*update*/ root->vSex(agape) += 4;
         }
-        updVSexVar(agape, gapeTime);
+        /*update*/ root->vSex(agape) += gapeTime;
         if(gapeDiff <= 3)
         {
-            if((setGapeDick - 2) > getVBody(Body::anus))
+            if((setGapeDick - 2) > root->vBody(Body::anus))
             {
-                updVBody(Body::anus, 1);
+                root->vBody(Body::anus) += 1;
             }
         }
         else
         {
-            updVBody(Body::anus, 2);
+            root->vBody(Body::anus) += 2;
         }
-        int stat = getVSexVar(agape)/24;
-        if (getVSexVar(stat_agape) > stat)
+        int stat = root->vSex(agape)/24;
+        if (root->vSex(stat_agape) > stat)
         {
-            stat = stat - getVSexVar(stat_agape);
+            stat = stat - root->vSex(stat_agape);
         }
-        else if (getVSexVar(stat_agape) < stat)
+        else if (root->vSex(stat_agape) < stat)
         {
-            stat = getVSexVar(stat_agape) - stat;
+            stat = root->vSex(stat_agape) - stat;
         }
-        updVSexVar(stat_agape, stat);
+        /*update*/ root->vSex(stat_agape) += stat;
     }
-}
-
-bool CCSex::isMesec()
-{
-    return ((MainWindow*)root)->m_reproductSys.isMesec();
 }
 
 void CCSex::slotSexCorrector()
@@ -410,49 +405,4 @@ void CCSex::slotSexCorrector()
 int CCSex::getVagDamp()
 {
     return getVaginaDampness();
-}
-
-int CCSex::getVStatus(Status param)
-{
-    return ((MainWindow*)root)->m_player->getVStatus(param);
-}
-
-int CCSex::getVBody(Body param)
-{
-    return ((MainWindow*)root)->m_player->getVBody(param);
-}
-
-int CCSex::getVSexVar(SexVar param)
-{
-    return ((MainWindow*)root)->m_player->getVSexVar(param);
-}
-
-int CCSex::getVConst(Const param)
-{
-    return ((MainWindow*)root)->m_player->getVConst(param);
-}
-
-void CCSex::updVStatus(Status param, int value)
-{
-    ((MainWindow*)root)->m_player->updVStatus(param, value);
-}
-
-void CCSex::updVBody(Body param, int value)
-{
-    ((MainWindow*)root)->m_player->updVBody(param, value);
-}
-
-void CCSex::updVSexVar(SexVar param, int value)
-{
-    ((MainWindow*)root)->m_player->updVSexVar(param, value);
-}
-
-void CCSex::setVSexVar(SexVar param, int val)
-{
-    ((MainWindow*)root)->m_player->setVSexVar(param,val);
-}
-
-void CCSex::setVStatus(Status param, int value)
-{
-    ((MainWindow*)root)->m_player->setVStatus(param, value);
 }

@@ -43,6 +43,9 @@ enum Events
     eDinMother,
     eSeeParentSex,
     eMother,
+    eFather,
+    eBrotherEvents,
+    efamilySmallTalks,
     //Reks
     eReks,
     //Tsarev

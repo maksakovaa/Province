@@ -4,7 +4,6 @@
 #include <QString>
 #include <ctime>
 #include <QObject>
-#include "player/enums.h"
 
 struct TimeCounters {
     int min_05;
@@ -18,14 +17,15 @@ struct TimeCounters {
 
 class SaveForm;
 class LoadForm;
+class Game;
 
 class TimeServer: public QObject
 {
     Q_OBJECT
     friend SaveForm; friend LoadForm;
 public:
-    TimeServer(QWidget* ptr);
-    TimeServer(QWidget* ptr,int year, int month, int day, int hour, int minutes);
+    TimeServer(Game* ptr);
+    TimeServer(Game* ptr,int year, int month, int day, int hour, int minutes);
     ~TimeServer() = default;
     QString getTime();
     QString getDateStr();
@@ -39,13 +39,13 @@ public:
     int getWeekNum();
     void firstStart();
     int calcYears(struct tm from);
+    void setTime(int hour, int min = 0);
 signals:
     void sigElapsed5minutes();
 public slots:
     int calcDateDiffInDays();
     void increaseTime(int minutes);
 private:
-
     void slotUpdParams();
     void statNoTime();
     void Elapsed5minutes();
@@ -58,35 +58,11 @@ private:
     void ElapsedTime();
     void calcEnding();
        
-    int vBody(Body param);
-    int vSex(SexVar param);
-    int vStatus(Status param);
-    int vSkill(Skills param);
-    int vConst(Const param);
-    int vSC(SC param);
-    int vAddict(Addiction param);
-    int vSick(Sickness param);
-
-    void updVBody(Body param, int val);
-    void updVStatus(Status param, int val);
-    void updVSex(SexVar param, int val);
-    void updVSkill(Skills param, int val);
-    void updVSick(Sickness param, int val);
-    void updVAddict(Addiction param, int val);
-
-    void setVBody(Body param, int val);
-    void setVSex(SexVar param, int val);
-    void setVStatus(Status param, int val);
-    void setVSC(SC param, int val);
-    void setVSkill(Skills param, int val);
-    void setVSick(Sickness param, int val);
-    void setVAddict(Addiction param, int val);
-
     void updCounters(int min);
     void chkCounters();
     void isDayOver();
     void updOldTime();
-    QWidget* root;
+    Game* root;
     struct tm currTimePoint{};
     struct tm oldTime{};
     struct TimeCounters counters;

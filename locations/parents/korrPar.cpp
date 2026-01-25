@@ -2,8 +2,8 @@
 #include "../../menu/buttons.h"
 #include "../../npc/npc_enum.h"
 #include "../../Functions.h"
-
-korrPar::korrPar(LocationHandler *ptr): Location(ptr){}
+#include "../../game.h"
+korrPar::korrPar(Game *ptr):  root(ptr){}
 
 void korrPar::show(QString arg)
 {
@@ -40,88 +40,88 @@ void korrPar::actionHandler(QString action)
     if(action == "korrPar")
     {
         //popolaini = 0
-        sVStatus(frost, 0);
-        incTime(1);
-        int month = getMonth();
-        int week = getWeekNum();
-        int hour = getHour();
-        int sun = getSunWeather();
+        root->vStatus(frost) = 0;
+        root->incTime(1);
+        int month = root->getMonth();
+        int week = root->getWeek();
+        int hour = root->getHour();
+        int sun = root->getSunWeather();
 
-        if(gNPC(VladimirSkryabin).location != lgargazel)
-            startEvent(eFamily, "father_sheduler");
-        startEvent(eFamily, "mother_sheduler");
-        startEvent(eFamily, "sister_sheduler");
-        startEvent(eFamily, "brother_sheduler");
+        if(root->gNPC(father).location != lgargazel)
+            root->startEvent(eFamily, "father_sheduler");
+        root->startEvent(eFamily, "mother_sheduler");
+        root->startEvent(eFamily, "sister_sheduler");
+        root->startEvent(eFamily, "brother_sheduler");
 
-        if(gVQuest(wedding) >= 2 && month >= 5 && month <= 9 && week == 0 && hour == 10 && sun > 0)
-            startEvent(eSisterQW,"incest_event12sub");
-        if(isNude() && (gNPC(NatalyaLebedeva).location == lbedrpar2 || gNPC(NatalyaLebedeva).location == lkuhrpar || gNPC(NatalyaLebedeva).location == lsitrpar))
+        if(root->vQuest(wedding) >= 2 && month >= 5 && month <= 9 && week == 0 && hour == 10 && sun > 0)
+            root->startEvent(eSisterQW,"incest_event12sub");
+        if(root->isNude() && (root->gNPC(mother).location == lbedrpar2 || root->gNPC(mother).location == lkuhrpar || root->gNPC(mother).location == lsitrpar))
         {
-            rendNpcProfile(NatalyaLebedeva);
-            gNPC(NatalyaLebedeva).relation -= 1;
-            setDesc(str(0));
+            root->rendNpcProfile(mother);
+            root->gNPC(mother).relation -= 1;
+            root->setText(str(0));
             makeActBtn("bedrPar",act(14));
             return;
         }
-        if(week == 0 && hour == 10 && gVQuest(anayslut) == 1 && gVEvent(incest_event14) == 0)
-            startEvent(eSisterQW, "incest_event14");
-        if(hour != 18 && gVEvent(blockBedrPar) == 1)
-            sVEvent(blockBedrPar,0);
-        if(gVEvent(blockBedrPar) == 0 && gVEvent(sisBoyDay) + 1 == gVStatus(daystart) && hour == 18 && gVQuest(qwSisterBoy) == 3  || gVQuest(qwSisterBoy) == 5 || gVQuest(qwSisterBoy) == 7 || (gVQuest(qwSisterBoy) == 9 && gVQuest(qwSisterTrio) != 1))
+        if(week == 0 && hour == 10 && root->vQuest(anayslut) == 1 && root->vEvent(incest_event14) == 0)
+            root->startEvent(eSisterQW, "incest_event14");
+        if(hour != 18 && root->vEvent(blockBedrPar) == 1)
+            root->vEvent(blockBedrPar) = 0;
+        if(root->vEvent(blockBedrPar) == 0 && root->vEvent(sisBoyDay) + 1 == root->vStatus(daystart) && hour == 18 && root->vQuest(qwSisterBoy) == 3  || root->vQuest(qwSisterBoy) == 5 || root->vQuest(qwSisterBoy) == 7 || (root->vQuest(qwSisterBoy) == 9 && root->vQuest(qwSisterTrio) != 1))
             makeActBtn("sisboyQW_bedroom",act(1));
-        else if(gVEvent(blockBedrPar) == 0 && gVEvent(sisBoyDay) + 1 == gVStatus(daystart) && hour == 18 && gVQuest(qwSisterTrio) == 1)
+        else if(root->vEvent(blockBedrPar) == 0 && root->vEvent(sisBoyDay) + 1 == root->vStatus(daystart) && hour == 18 && root->vQuest(qwSisterTrio) == 1)
             makeActBtn("sisboytrioQW_bedroom",act(1));
-        else if(gVEvent(blockBedrPar) == 0)
+        else if(root->vEvent(blockBedrPar) == 0)
             makeActBtn("bedrPar",act(1));
-        if(gVEvent(parentSexDay) != getDay())
+        if(root->vEvent(parentSexDay) != root->getDay())
             makeActBtn("bedrPar2",act(2));
-        if(gVEvent(isday_bathroom_peek) != getDay())
+        if(root->vEvent(isday_bathroom_peek) != root->getDay())
         {
-            sVEvent(isday_bathroom_peek,getDay());
-            sVEvent(rand_bathroom_peek,getRandInt(0,1));
-            sVEvent(border_bathroom_peek,1);
+            root->vEvent(isday_bathroom_peek) = root->getDay();
+            root->vEvent(rand_bathroom_peek) = getRandInt(0,1);
+            root->vEvent(border_bathroom_peek) =1;
         }
         makeActBtn("sitrPar",act(3));
         makeActBtn("bathroom",act(4));
         makeActBtn("kuhrPar",act(5));
         makeActBtn("pod_ezd_etaj2",act(6));
         makeActBtn("pavlovo",act(7));
-        rendImagePage();
-        setImage("data/locations/pavlovo/parents_home/parents_home.jpg");
-        setDesc(str(12));
+        root->rendImagePage(this);
+        root->setImage("data/locations/pavlovo/parents_home/parents_home.jpg");
+        root->setText(str(12));
 
-        if(getClothGroup() == towel && gNPC(KolyaSkryabin).location == lsitrpar && getRandInt(0,5) == 0 && hour >= 20 && hour < 23 && gVEvent(rand_event_day) != getDay())
-            startEvent(eShortRandom, "pol_rand1");
+        if(root->getClothGroup() == towel && root->gNPC(brother).location == lsitrpar && getRandInt(0,5) == 0 && hour >= 20 && hour < 23 && root->vEvent(rand_event_day) != root->getDay())
+            root->startEvent(eShortRandom, "pol_rand1");
 
         // if palto > 0: gs 'zz_render', '', '', func('korrPar_strings'+$lang, '13')
 
-        if(gVEvent(family_trip) == 0 && ((week > 0 && week < 6) && (hour == 7 || (hour >= 18 && hour <=20))) || ((week == 6 || week == 0) && hour >= 7 && hour <= 20))
+        if(root->vEvent(family_trip) == 0 && ((week > 0 && week < 6) && (hour == 7 || (hour >= 18 && hour <=20))) || ((week == 6 || week == 0) && hour >= 7 && hour <= 20))
         {
-            if(gVEvent(gad_punishment) == 1 && gNPC(NatalyaLebedeva).relation < 80)
-                startEvent(eGadukinoEvents, "punishment");
-            if(gVEvent(gadukino_blok) == 1 && gVQuest(grandmaQW) > 40 && gVQuest(grandpaQW) > 40)
-                startEvent(eGadukinoEvents, "absolution");
-            if(gVEvent(gadukino_blok) == 1 && gVEvent(gad_offense) == 1)
-                startEvent(eGadukinoEvents, "offense");
+            if(root->vEvent(gad_punishment) == 1 && root->gNPC(mother).relation < 80)
+                root->startEvent(eGadukinoEvents, "punishment");
+            if(root->vEvent(gadukino_blok) == 1 && root->vQuest(grandmaQW) > 40 && root->vQuest(grandpaQW) > 40)
+                root->startEvent(eGadukinoEvents, "absolution");
+            if(root->vEvent(gadukino_blok) == 1 && root->vEvent(gad_offense) == 1)
+                root->startEvent(eGadukinoEvents, "offense");
         }
 
-        if(hour >= 17 && hour <= 20 && gVEvent(family_trip) == 0)
+        if(hour >= 17 && hour <= 20 && root->vEvent(family_trip) == 0)
         {
-            if(gVSchool(block) < 3)
+            if(root->vSchool(block) < 3)
             {
-                if((gVSchool(absent) >= 30 && gVSchool(certificate) == 0) || gVSchool(absentStage) == 3)
+                if((root->vSchool(absent) >= 30 && root->vSchool(certificate) == 0) || root->vSchool(absentStage) == 3)
                 {
-                    rendNpcProfile(NatalyaLebedeva);
-                    uVSchool(block,1);
-                    gNPC(NatalyaLebedeva).relation = 0;
-                    uVSkill(domination,-1);
-                    sVSchool(absent,0);
-                    sVSchool(absentStage,0);
-                    setDesc(str(4+gVSchool(block)));
-                    if(gVSchool(block) == 3)
+                    root->rendNpcProfile(mother);
+                    root->vSchool(block) +=1;
+                    root->gNPC(mother).relation = 0;
+                    root->vSkill(domination) -= 1;
+                    root->vSchool(absent) = 0;
+                    root->vSchool(absentStage) = 0;
+                    root->setText(str(4+root->vSchool(block)));
+                    if(root->vSchool(block) == 3)
                     {
-                        sVEvent(ParHomeBlock,1);
-                        removeCloth(ClothGroup::schoolUniform);
+                        root->vEvent(ParHomeBlock) = 1;
+                        root->removeCloth(ClothGroup::schoolUniform);
                         makeActBtn("gorodok",act(14));
                         return;
                     }
@@ -131,40 +131,40 @@ void korrPar::actionHandler(QString action)
             }
         }
 
-        if(gVEvent(worry_check) == 1 && gVEvent(family_trip) == 0)
-            startEvent(eDinMother,"worry");
+        if(root->vEvent(worry_check) == 1 && root->vEvent(family_trip) == 0)
+            root->startEvent(eDinMother,"worry");
 
-        if(gVEvent(NotAtHomeSleep) > 7 && hour >= 18 && hour <= 20 && gVEvent(family_trip) == 0)
+        if(root->vEvent(NotAtHomeSleep) > 7 && hour >= 18 && hour <= 20 && root->vEvent(family_trip) == 0)
         {
-            sVEvent(NotAtHomeSleep,0);
+            root->vEvent(NotAtHomeSleep) = 0;
             makeActBtn("korrPar",act(16));
-            rendNpcProfile(NatalyaLebedeva);
-            if(gNPC(NatalyaLebedeva).relation < 40)
-                setDesc(str(8));
+            root->rendNpcProfile(mother);
+            if(root->gNPC(mother).relation < 40)
+                root->setText(str(8));
             else
-                setDesc(str(9));
+                root->setText(str(9));
         }
 
         // гг слышит странные звуки с комнаты родителей
-        if(hour == 21 && week != 1 && gVEvent(father_horny) >= 70 && gVEvent(family_trip) == 0)
+        if(hour == 21 && week != 1 && root->vEvent(father_horny) >= 70 && root->vEvent(family_trip) == 0)
         {
-            addText(str(10));
+            root->addText(str(10));
         }
 
         // Брат приниает душ
-        if(hour == 17 && getMin() >= 30 && gVEvent(family_trip) == 0 && gVEvent(rand_bathroom_peek) == gVEvent(border_bathroom_peek))
-            addText(str(14));
+        if(hour == 17 && root->getMin() >= 30 && root->vEvent(family_trip) == 0 && root->vEvent(rand_bathroom_peek) == root->vEvent(border_bathroom_peek))
+            root->addText(str(14));
         // Отчим приниает душ
-        if(hour == 16 && getMin() >= 30 && gVEvent(family_trip) == 0 && week != 1 && gVEvent(rand_bathroom_peek) == gVEvent(border_bathroom_peek))
-            addText(str(15));
+        if(hour == 16 && root->getMin() >= 30 && root->vEvent(family_trip) == 0 && week != 1 && root->vEvent(rand_bathroom_peek) == root->vEvent(border_bathroom_peek))
+            root->addText(str(15));
         // если ГГ шлюха и она отдавалась уже пацанам в подъезде, то клиенты долбят в дверь:
-        if(whoreState() == true)
+        if(root->whoreState() == true)
         {
-            startEvent(ePodWhore);
-            if(gVQuest(podWhoreCountQW) <= 15)
+            root->startEvent(ePodWhore);
+            if(root->vQuest(podWhoreCountQW) <= 15)
             {
-                if(getRandInt(1,100) <= 5 && hour >= 10 && hour <= 23 && /*func('zz_reputation','get') >= 4 && */ gVQuest(qwPodezdWhore) >= 3)
-                    addText(str(16));
+                if(getRandInt(1,100) <= 5 && hour >= 10 && hour <= 23 && /*func('zz_reputation','get') >= 4 && */ root->vQuest(qwPodezdWhore) >= 3)
+                    root->addText(str(16));
             }
         }
 
@@ -181,13 +181,13 @@ void korrPar::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action, "korrparr");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &korrPar::actionHandler);
-    addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString korrPar::str(int id)
 {
     QString add1;
-    if(gVEvent(mother_spanking) == 0)
+    if(root->vEvent(mother_spanking) == 0)
         add1 = "Я никогда не порола тебя, да, видать, напрасно...";
     else
         add1 = "Похоже, предыдущая порка тебя ничему не научила.";

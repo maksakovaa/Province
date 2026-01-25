@@ -12,16 +12,18 @@ class MainWindow;
 class Wardrobe;
 class SaveForm;
 class LoadForm;
+class Game;
+
 class Player: public QObject
 {
     Q_OBJECT
     friend MainWindow; friend SaveForm; friend LoadForm;
 public:
-    Player(QWidget* ptr);
+    Player(Game* ptr);
     void newPlayer(CharacterType history);
     ~Player() = default;
 
-    bool isCheatsOn();
+    // bool isCheatsOn();
     bool isPanties();
     bool isAutoTampon();
     bool isSkirt();
@@ -38,41 +40,25 @@ public:
     void storeOldToWardrobe();
     void wearClothes(Cloth* thing);
 
+    int& vSkill(Skills skill);
+    int& vBody(Body param);
+    int& vStatus(Status param);
+    int& vBuzzer(budilnik param);
+    int& vSex(SexVar param);
+    int& vStatistics(SC param);
+    int& vSick(Sickness param);
+    int& vAddict(Addiction param);
+    int& vJob(JobStatus param);
+    int& vPreg(PregVar param);
+    int vConst(Const param);
 
-    void updVSkill(Skills skill_name, int value);
-    void updVBody(Body param, int value);
-    void updVStatus(Status stat, int value);
-    void updVBuzzer(budilnik type, int value);
-    void updVSexVar(SexVar param, int value);
-    void updVStatistic(SC param, int value);
-    void updVSick(Sickness param, int value);
-    void updVAddict(Addiction param, int value);
-    void updVJob(JobStatus param, int val);
     void updSkin(char c, int value);
 
-    void setVStatus(Status stat, int value);
-    void setVBody(Body param, int value);
-    void setVSexVar(SexVar param, int value);
-    void setVSC(SC param, int value);
-    void setVSkill(Skills param, int val);
-    void setVSick(Sickness param, int val);
-    void setVAddict(Addiction param, int value);
-    void setVJob(JobStatus param, int val);
     void setBoyName(QString name);
     void setBoy2Name(QString name);
 
     int getAge();
-    int getSkillValue(Skills skill_name);
-    int getVBody(Body param);
-    int getStatisticsValue(SC stat);
-    int getVStatus(Status stat);
-    int getVConst(Const param);
-    int getVBuzzer(budilnik param);
-    int getVSexVar(SexVar param);
-    int getVSick(Sickness param);
-    int getVAddict(Addiction param);
-    int getVJob(JobStatus param);
-    int& vPreg(PregVar param);
+
     QString getName();
     QString getPFName();
     QString getBoyName();
@@ -122,9 +108,9 @@ public:
     void calcShamelessFlag();
     void checkPanties();
     void updBody();
+    void calcVneshBonus();
 signals:
     void sigInitWardrobe();
-    // void sigUpdClothSize(int size);
 private: //methods
     void zz_body();
 
@@ -144,12 +130,12 @@ private: //methods
     int calcLegBonus();
 
     int calcZZTits();
-    void calcVneshBonus();
+
 
     void skinDecrement(int value = 0);
     void skinIncrement(int value = 0);
 private: //members
-    QWidget* m_main;
+    Game* root;
     QString f_name;
     QString l_name;
     QString pfname;

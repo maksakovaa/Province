@@ -1,8 +1,8 @@
 #include "grandparentsevents.h"
-#include "../eventhandler.h"
+#include "../../game.h"
 #include "../../menu/buttons.h"
 
-GrandparentsEvents::GrandparentsEvents(EventHandler* ptr): root(ptr) {}
+GrandparentsEvents::GrandparentsEvents(Game* ptr): root(ptr) {}
 
 void GrandparentsEvents::start(QString arg)
 {
@@ -14,7 +14,7 @@ void GrandparentsEvents::actionHandler(QString action)
     if (action == "dress_after_sauna")
     {
         root->redressOld();
-        root->sVEvent(bana_redress,0);
+        root->vEvent(bana_redress) =0;
         root->changeLoc(lgadbana,0);
     }
     if(action == "chickens")
@@ -22,8 +22,8 @@ void GrandparentsEvents::actionHandler(QString action)
         root->clearActions();
         root->incTime(5);
         root->setImage(media(0));
-        root->setDesc(str(0));
-        if(root->gVJob(feed_chickens) == 1)
+        root->setText(str(0));
+        if(root->vJob(feed_chickens) == 1)
             makeActBtn("feed_chickens",act(0));
         makeActBtn("back_to_loc",act(2));
     }
@@ -31,12 +31,12 @@ void GrandparentsEvents::actionHandler(QString action)
     {
         root->clearActions();
         root->incTime(30);
-        root->uVEvent(grandmahelp,1);
-        root->uVQuest(grandmaQW,1);
-        root->sVJob(feed_chickens,0);
-        root->uVStatus(mood,10);
+        root->vEvent(grandmahelp) += 1;
+        root->vQuest(grandmaQW) += 1;
+        root->vJob(feed_chickens) = 0;
+        root->vStatus(mood) +=10;
         root->setImage(media(1));
-        root->setDesc(str(1));
+        root->setText(str(1));
         makeActBtn("gaddvor",act(1));
     }
     if(action == "boar")
@@ -44,8 +44,8 @@ void GrandparentsEvents::actionHandler(QString action)
         root->clearActions();
         root->incTime(1);
         root->setImage(media(2));
-        root->setDesc(str(2));
-        if(root->gVJob(feed_boar) == 1)
+        root->setText(str(2));
+        if(root->vJob(feed_boar) == 1)
             makeActBtn("feed_boar",act(3));
         makeActBtn("gadsarai",act(2));
     }
@@ -53,144 +53,144 @@ void GrandparentsEvents::actionHandler(QString action)
     {
         root->clearActions();
         root->incTime(30);
-        root->uVEvent(grandmahelp,1);
-        root->uVQuest(grandmaQW,1);
-        root->sVJob(feed_boar,0);
-        root->uVQuest(grandpaQW,1);
+        root->vEvent(grandmahelp) += 1;
+        root->vQuest(grandmaQW) += 1;
+        root->vJob(feed_boar) = 0;
+        root->vQuest(grandpaQW) += 1;
         root->setImage(media(3));
-        root->setDesc(str(3));
+        root->setText(str(3));
         makeActBtn("gaddvor",act(1));
     }
     if(action == "cow")
     {
         root->setImage(media(4));
-        root->setDesc(str(4));
-        if(root->gVJob(milk_cow) == 1)
+        root->setText(str(4));
+        if(root->vJob(milk_cow) == 1)
             makeActBtn("milk_cow",act(4));
-        if(root->gVJob(feed_cow) == 1)
+        if(root->vJob(feed_cow) == 1)
             makeActBtn("feed_cow",act(5));
-        if(root->gVJob(cow_field) == 1 || root->gVJob(graze_cow) == 1)
+        if(root->vJob(cow_field) == 1 || root->vJob(graze_cow) == 1)
             makeActBtn("cow_field",act(6));
         makeActBtn("gadsarai",act(2));
     }
     if(action == "milk_cow")
     {
         root->incTime(30);
-        root->sVJob(milk_cow,0);
-        root->uVEvent(grandmahelp,1);
-        root->uVQuest(grandmaQW,1);
+        root->vJob(milk_cow) = 0;
+        root->vEvent(grandmahelp) += 1;
+        root->vQuest(grandmaQW) += 1;
         root->setImage(media(5));
-        root->setDesc(str(5));
+        root->setText(str(5));
         makeActBtn("gadsarai",act(1));
     }
     if(action == "feed_cow")
     {
         root->incTime(30);
-        root->sVJob(feed_cow,0);
-        root->uVQuest(grandpaQW,1);
-        root->uVEvent(grandmahelp,1);
+        root->vJob(feed_cow) = 0;
+        root->vQuest(grandpaQW) += 1;
+        root->vEvent(grandmahelp) += 1;
         root->setImage(media(6));
-        root->setDesc(str(6));
+        root->setText(str(6));
         makeActBtn("gadsarai",act(1));
     }
     if(action == "cow_field")
     {
         root->incTime(60);
-        root->sVJob(cow_field,0);
-        root->uVEvent(grandpahelp,1);
-        root->uVQuest(grandpaQW,1);
+        root->vJob(cow_field) = 0;
+        root->vEvent(grandpahelp) += 1;
+        root->vQuest(grandpaQW) += 1;
         root->setImage(media(7));
-        if(root->gVJob(graze_cow) == 1)
-            root->setDesc(str(8));
+        if(root->vJob(graze_cow) == 1)
+            root->setText(str(8));
         else
-            root->setDesc(str(7));
+            root->setText(str(7));
         makeActBtn("graze_field",act(7));
     }
     if(action == "horse")
     {
         root->incTime(1);
         root->setImage(media(8));
-        root->setDesc(str(9));
-        if(root->gVJob(feed_horse) == 1)
+        root->setText(str(9));
+        if(root->vJob(feed_horse) == 1)
             makeActBtn("feed_horse",act(8));
-        if(root->gVJob(horse_field) == 1)
+        if(root->vJob(horse_field) == 1)
             makeActBtn("horse_field",act(9));
-        if(root->gVJob(horse_river) == 1 && root->getSunWeather() >= 0 && root->getTemp() >= 20)
+        if(root->vJob(horse_river) == 1 && root->getSunWeather() >= 0 && root->getTemp() >= 20)
             makeActBtn("horse_river",act(10));
-        if(root->gVJob(comb_horse) == 1)
+        if(root->vJob(comb_horse) == 1)
             makeActBtn("comb_horse",act(11));
         makeActBtn("gadsarai",act(2));
     }
     if(action == "feed_horse")
     {
         root->incTime(30);
-        root->sVJob(feed_horse,0);
-        root->uVQuest(grandpaQW,1);
-        root->uVEvent(grandpahelp,1);
+        root->vJob(feed_horse) = 0;
+        root->vQuest(grandpaQW) += 1;
+        root->vEvent(grandpahelp) += 1;
         root->setImage(media(9));
-        root->setDesc(str(10));
+        root->setText(str(10));
         makeActBtn("gadsarai",act(1));
     }
     if(action == "horse_field")
     {
         root->incTime(60);
-        root->sVJob(horse_field,0);
-        root->uVEvent(grandpahelp,1);
-        root->uVQuest(grandpaQW,1);
+        root->vJob(horse_field) = 0;
+        root->vEvent(grandpahelp) += 1;
+        root->vQuest(grandpaQW) += 1;
         root->setImage(media(10));
-        root->setDesc(str(11));
+        root->setText(str(11));
         makeActBtn("field",act(7));
     }
     if(action == "horse_river")
     {
         root->incTime(30);
-        root->sVJob(horse_river,2);
+        root->vJob(horse_river) = 2;
         root->setImage(media(10));
-        root->setDesc(str(12));
+        root->setText(str(12));
         makeActBtn("gadbeach",act(7));
     }
     if(action == "comb_horse")
     {
         root->incTime(60);
-        root->sVJob(comb_horse,0);
-        root->uVEvent(grandpahelp,1);
-        root->uVQuest(grandpaQW,1);
+        root->vJob(comb_horse) = 0;
+        root->vEvent(grandpahelp) += 1;
+        root->vQuest(grandpaQW) += 1;
         root->setImage(media(11));
-        root->setDesc(str(13));
+        root->setText(str(13));
         makeActBtn("gadsarai",act(7));
     }
     if(action == "mira_dog")
     {
         root->incTime(5);
         root->setImage(media(12));
-        root->setDesc(str(14));
+        root->setText(str(14));
         makeActBtn("free_mira",act(12));
         makeActBtn("gadsarai",act(2));
     }
     if(action == "free_mira")
     {
         root->incTime(5);
-        root->sVEvent(mira_dog,0);
+        root->vEvent(mira_dog) = 0;
         root->setImage(media(13));
-        root->setDesc(str(15));
+        root->setText(str(15));
         makeActBtn("gadsarai",act(7));
     }
     if(action == "mira_courtyard")
     {
-        root->sVEvent(mira_guestday,root->vStatus(daystart));
+        root->vEvent(mira_guestday) = root->vStatus(daystart);
         root->incTime(5);
-        root->sVEvent(mira_guest,1);
+        root->vEvent(mira_guest) = 1;
         root->startEvent(eMiroslava,"miraclothes");
-        root->setDesc(str(16));
+        root->setText(str(16));
         makeActBtn("gaddvor",act(7));
     }
     if(action == "mira_house")
     {
-        root->sVEvent(mira_guestday,root->vStatus(daystart));
+        root->vEvent(mira_guestday) = root->vStatus(daystart);
         root->incTime(5);
-        root->sVEvent(mira_guest,1);
+        root->vEvent(mira_guest) = 1;
         root->startEvent(eMiroslava,"miraclothes");
-        root->setDesc(str(17));
+        root->setText(str(17));
         makeActBtn("gadhouse",act(7));
     }
     if(action == "courtyard_nude")
@@ -200,14 +200,14 @@ void GrandparentsEvents::actionHandler(QString action)
             root->setImage(media(14));
         else
             root->setImage(media(15));
-        if(root->gVEvent(grandpa_ingaddvor) == 0)
+        if(root->vEvent(grandpa_ingaddvor) == 0)
         {
-            root->setDesc(str(18));
+            root->setText(str(18));
             makeActBtn("gadhouse",act(13));
         }
         else
         {
-            root->setDesc(str(19));
+            root->setText(str(19));
             makeActBtn("grandpa",act(7));
         }
     }
@@ -222,19 +222,19 @@ void GrandparentsEvents::actionHandler(QString action)
             root->setImage(media(16));
         else
             root->setImage(media(17));
-        if(root->gVEvent(grandma_ingadgarden) == 1 && root->gVEvent(grandpa_ingadgarden) == 1)
+        if(root->vEvent(grandma_ingadgarden) == 1 && root->vEvent(grandpa_ingadgarden) == 1)
         {
-            root->setDesc(str(20));
+            root->setText(str(20));
             makeActBtn("grandma",act(7));
         }
-        else if(root->gVEvent(grandma_ingadgarden) == 1 && root->gVEvent(grandpa_ingadgarden) == 0)
+        else if(root->vEvent(grandma_ingadgarden) == 1 && root->vEvent(grandpa_ingadgarden) == 0)
         {
-            root->setDesc(str(21));
+            root->setText(str(21));
             makeActBtn("grandma",act(7));
         }
         else
         {
-            root->setDesc(str(22));
+            root->setText(str(22));
             makeActBtn("gaddvor",act(14));
         }
     }
@@ -245,17 +245,17 @@ void GrandparentsEvents::actionHandler(QString action)
     if(action == "market")
     {
         root->incTime(20);
-        root->uVQuest(grandmaQW,1);
+        root->vQuest(grandmaQW) += 1;
         //$inventory[7+'_count'] += 10
         root->setImage(media(18));
-        root->setDesc(str(23));
+        root->setText(str(23));
         makeActBtn("gadmarket",act(7));
     }
     if(action == "villagecat")
     {
         root->incTime(5);
         root->setImage(media(19));
-        root->setDesc(str(24));
+        root->setText(str(24));
         makeActBtn("pat",act(15));
         makeActBtn("gadhouse",act(2));
     }
@@ -263,73 +263,73 @@ void GrandparentsEvents::actionHandler(QString action)
     {
         root->incTime(5);
         root->setImage(media(20));
-        root->setDesc(str(25));
+        root->setText(str(25));
         makeActBtn("gadhouse",act(2));
     }
     if(action == "talk_pay")
     {
-        root->sVEvent(monthbabkapay,1);
-        root->uVStatus(money,2000);
+        root->vEvent(monthbabkapay) = 1;
+        root->vStatus(money) += 2000;
         root->incTime(10);
-        root->sVEvent(monthgrandmahelp,root->getMonth());
+        root->vEvent(monthgrandmahelp) = root->getMonth();
         root->setImage(media(21));
-        root->setDesc(str(26));
+        root->setText(str(26));
         makeActBtn("gadhouse",act(7));
     }
     if(action == "grandpa_boletus")
     {
-        root->uVEvent(grandpahelp,1);
-        root->uVStatus(boletus,-root->gVJob(grandpa_boletus));
+        root->vEvent(grandpahelp) += 1;
+        root->vStatus(boletus) -= root->vJob(grandpa_boletus);
         root->incTime(5);
-        root->sVJob(go_in_boletus,0);
-        root->uVQuest(grandpaQW,1);
+        root->vJob(go_in_boletus) =0;
+        root->vQuest(grandpaQW) += 1;
         root->setImage(media(22));
-        root->setDesc(str(27));
-        root->sVJob(grandpa_boletus,0);
+        root->setText(str(27));
+        root->vJob(grandpa_boletus) =0;
         makeActBtn("gadhouse",act(7));
     }
     if(action == "grandpa_boletus_bilberry")
     {
-        root->uVEvent(grandpahelp,1);
-        root->uVStatus(boletus,-root->gVJob(grandpa_boletus));
-        root->uVStatus(bilberry,-root->gVJob(grandpa_bilberry));
+        root->vEvent(grandpahelp) += 1;
+        root->vStatus(boletus) -= root->vJob(grandpa_boletus);
+        root->vStatus(bilberry)-= root->vJob(grandpa_bilberry);
         root->incTime(5);
-        root->sVJob(go_in_boletus_bilberry,0);
-        root->uVQuest(grandpaQW,1);
+        root->vJob(go_in_boletus_bilberry) = 0;
+        root->vQuest(grandpaQW) += 1;
         root->setImage(media(22));
-        root->setDesc(str(28));
-        root->sVJob(grandpa_boletus,0);
-        root->sVJob(grandpa_bilberry,0);
+        root->setText(str(28));
+        root->vJob(grandpa_boletus) = 0;
+        root->vJob(grandpa_bilberry) = 0;
         makeActBtn("gadhouse",act(7));
     }
     if(action == "grandpa_bilberry")
     {
-        root->uVEvent(grandpahelp,1);
-        root->uVStatus(bilberry,-root->gVJob(grandpa_bilberry));
+        root->vEvent(grandpahelp) += 1;
+        root->vStatus(bilberry) -= root->vJob(grandpa_bilberry);
         root->incTime(5);
-        root->sVJob(go_in_bilberry,0);
-        root->uVQuest(grandpaQW,1);
+        root->vJob(go_in_bilberry) =0;
+        root->vQuest(grandpaQW) += 1;
         root->setImage(media(22));
-        root->setDesc(str(29));
-        root->sVJob(grandpa_bilberry,0);
+        root->setText(str(29));
+        root->vJob(grandpa_bilberry) =0;
         makeActBtn("gadhouse",act(7));
     }
     if(action == "talk_swamp")
     {
         root->incTime(5);
-        root->sVEvent(forester,0);
+        root->vEvent(forester) = 0;
         root->setImage(media(18));
-        if(root->gVEvent(back_swamp) == 0)
+        if(root->vEvent(back_swamp) == 0)
         {
-            root->sVEvent(back_swamp,1);
-            root->uVQuest(grandmaQW,1);
-            root->setDesc(str(30));
+            root->vEvent(back_swamp) = 1;
+            root->vQuest(grandmaQW) += 1;
+            root->setText(str(30));
         }
         else
         {
-            root->uVQuest(grandmaQW,-20);
-            root->uVQuest(grandpaQW,-20);
-            root->setDesc(str(31));
+            root->vQuest(grandmaQW)-= 20;
+            root->vQuest(grandpaQW)-= 20;
+            root->setText(str(31));
         }
         makeActBtn("gadhouse",act(7));
     }
@@ -369,7 +369,7 @@ void GrandparentsEvents::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action,"GrandparentsEvents");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &GrandparentsEvents::actionHandler);
-    root->addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString GrandparentsEvents::str(int id)

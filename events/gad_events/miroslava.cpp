@@ -1,10 +1,10 @@
 #include "miroslava.h"
 #include "../../Functions.h"
-#include "../eventhandler.h"
+#include "../../game.h"
 #include "../../menu/buttons.h"
 #include "../../locations/common/bathroom.h"
 
-Miroslava::Miroslava(EventHandler *ptr): root(ptr) {}
+Miroslava::Miroslava(Game *ptr): root(ptr) {}
 
 void Miroslava::start(QString arg)
 {
@@ -36,22 +36,22 @@ void Miroslava::actionHandler(QString action)
     {
         age = root->getAge();
         int mira_temp = getRandInt(0,20);
-        if(root->gVEvent(mirainriver) == 1)
+        if(root->vEvent(mirainriver) == 1)
         {
             if(!root->isNude())
             {
                 root->setImage(media(0));
-                root->setDesc(str(0));
+                root->setText(str(0));
             }
             else
             {
                 root->setImage(media(1));
-                root->setDesc(str(1));
+                root->setText(str(1));
             }
         }
         else
         {
-            int gopval = root->gVQuest(miragopQW);
+            int gopval = root->vQuest(miragopQW);
             if(gopval == 0)
                 root->setImage(media(2));
             else if(gopval > 0 && gopval < 4)
@@ -65,93 +65,93 @@ void Miroslava::actionHandler(QString action)
             else if(gopval >= 20)
                 root->setImage(media(7));
         }
-        if(root->gVEvent(mirainmeadow) == 1)
-            root->setDesc(str(2));
-        if(root->gVEvent(mirainriver) == 1)
-            root->addDesc(str(3));
-        if(root->gVEvent(mirainmeadow) == 0 && root->gVEvent(mirainriver) == 0)
-            root->setDesc(str(4));
-        int relation = root->gVQuest(miraQW);
+        if(root->vEvent(mirainmeadow) == 1)
+            root->setText(str(2));
+        if(root->vEvent(mirainriver) == 1)
+            root->addText(str(3));
+        if(root->vEvent(mirainmeadow) == 0 && root->vEvent(mirainriver) == 0)
+            root->setText(str(4));
+        int relation = root->vQuest(miraQW);
         if(relation < 5)
-            root->addDesc(str(5));
+            root->addText(str(5));
         if(relation >= 5 && relation < 15)
-            root->addDesc(str(6));
+            root->addText(str(6));
         if(relation >= 15 && relation < 30)
-            root->addDesc(str(7));
+            root->addText(str(7));
         if(relation >= 30 && relation < 50)
-            root->addDesc(str(8));
+            root->addText(str(8));
         if(relation >= 50)
-            root->addDesc(str(9));
+            root->addText(str(9));
         if(root->vStatus(cumFace) > 0 && root->vStatus(cumFrot) == 0)
-            root->addDesc(str(10));
+            root->addText(str(10));
         if(root->vStatus(cumFace) == 0 && root->vStatus(cumFrot) > 0)
-            root->addDesc(str(11));
+            root->addText(str(11));
         if(root->vStatus(cumFace) > 0 && root->vStatus(cumFrot) > 0)
-            root->addDesc(str(12));
-        if(root->gVJob(graze_cow) == 0)
+            root->addText(str(12));
+        if(root->vJob(graze_cow) == 0)
         {
-            if(root->gVQuest(miragopQW) == 11)
+            if(root->vQuest(miragopQW) == 11)
                 makeActBtn("miragopqw11",act(0));
-            else if(root->gVQuest(miragopQW) >= 15 && root->gVEvent(mirasex) == 0 && root->gVEvent(mirainmeadow) == 1 && root->gVEvent(mitkasextimes) < 13)
+            else if(root->vQuest(miragopQW) >= 15 && root->vEvent(mirasex) == 0 && root->vEvent(mirainmeadow) == 1 && root->vEvent(mitkasextimes) < 13)
                 makeActBtn("lesb_talk_mira1",act(0));
-            else if(root->gVQuest(miragopQW) >= 15 && root->gVEvent(mitkasextimes) >= 13 && root->gVEvent(mirasex) == 1 && root->gVEvent(miralick) == 0 && root->gVEvent(mirainmeadow) == 1 && root->vStatus(horny) >= 40)
+            else if(root->vQuest(miragopQW) >= 15 && root->vEvent(mitkasextimes) >= 13 && root->vEvent(mirasex) == 1 && root->vEvent(miralick) == 0 && root->vEvent(mirainmeadow) == 1 && root->vStatus(horny) >= 40)
                 makeActBtn("lesb_talk_mira2",act(0));
             else
             {
-                if(root->gVEvent(mirasex) == 1 && root->gVEvent(mitkasextimes) < 13 && root->gVEvent(miralick) > 0 && root->gVEvent(mirainmeadow) == 1 && root->vStatus(horny) >= 40)
+                if(root->vEvent(mirasex) == 1 && root->vEvent(mitkasextimes) < 13 && root->vEvent(miralick) > 0 && root->vEvent(mirainmeadow) == 1 && root->vStatus(horny) >= 40)
                     makeActBtn("lesb_talk_mira3",act(1));
-                if(root->gVEvent(mirasex) == 2 && root->gVEvent(mirainmeadow) == 1 && root->vStatus(horny) >= 40 && root->gVQuest(miraQW) >= 15)
+                if(root->vEvent(mirasex) == 2 && root->vEvent(mirainmeadow) == 1 && root->vStatus(horny) >= 40 && root->vQuest(miraQW) >= 15)
                     makeActBtn("lesb_mira",act(2));
                 makeActBtn("miratalk",act(3));
                 if(root->getMonth() >= 4 && root->getMonth() <= 10)
                     makeActBtn("walk_together",act(4));
-                if(root->gVEvent(meadow) == 1 && root->gVEvent(mirainforest) == 0)
+                if(root->vEvent(meadow) == 1 && root->vEvent(mirainforest) == 0)
                     makeActBtn("show_meadow",act(7));
-                if(root->gVEvent(meadow) == 3 && root->getHour() >= 8 && root->getHour() < 19 && root->gVEvent(mirainmeadow) == 0 && root->gVEvent(mirainforest) == 0 && root->getSunWeather() >= 0 && root->getMonth() >= 4 && root->getMonth() <= 10)
+                if(root->vEvent(meadow) == 3 && root->getHour() >= 8 && root->getHour() < 19 && root->vEvent(mirainmeadow) == 0 && root->vEvent(mirainforest) == 0 && root->getSunWeather() >= 0 && root->getMonth() >= 4 && root->getMonth() <= 10)
                     makeActBtn("lets_go_meadow",act(9));
-                if(root->gVQuest(miraQW) >= 15 && root->getHour() >= 20 && root->gVQuest(miragopQW) == 0 && root->getSunWeather() >= 0 && root->gVEvent(mirainforest) == 0)
+                if(root->vQuest(miraQW) >= 15 && root->getHour() >= 20 && root->vQuest(miragopQW) == 0 && root->getSunWeather() >= 0 && root->vEvent(mirainforest) == 0)
                     makeActBtn("first_meet_gadguys",act(11));
-                if(root->gVQuest(miraQW) >= 15 && root->getHour() >= 20 && root->gVQuest(miragopQW) > 0 && root->getSunWeather() >= 0 && root->gVEvent(mirainforest) == 0 && root->getMonth() >= 4 && root->getMonth() <= 10)
+                if(root->vQuest(miraQW) >= 15 && root->getHour() >= 20 && root->vQuest(miragopQW) > 0 && root->getSunWeather() >= 0 && root->vEvent(mirainforest) == 0 && root->getMonth() >= 4 && root->getMonth() <= 10)
                     makeActBtn("meet_gadguys",act(12));
-                if(root->gVQuest(miraQW) >= 20 && root->getWeekNum() == 6 && root->getHour() > 18 && root->getHour() < 22)
+                if(root->vQuest(miraQW) >= 20 && root->getWeek() == 6 && root->getHour() > 18 && root->getHour() < 22)
                     makeActBtn("go_bana",act(13));
-                if(root->getSunWeather() >= 0 && root->getTemp() >= 20 && root->getMonth() >= 5 && root->getMonth() <= 9 && root->gVEvent(mirainriver) == 0)
+                if(root->getSunWeather() >= 0 && root->getTemp() >= 20 && root->getMonth() >= 5 && root->getMonth() <= 9 && root->vEvent(mirainriver) == 0)
                     makeActBtn("go_river",act(14));
-                if(root->gVEvent(miratalkforest) == 0 && root->gVQuest(miraQW) >= 5)
+                if(root->vEvent(miratalkforest) == 0 && root->vQuest(miraQW) >= 5)
                     makeActBtn("talk_forest",act(16));
-                if(root->getSunWeather() >= 0 && root->getTemp() >= 20 && root->getMonth() >= 5 && root->getMonth() <= 9 && root->gVEvent(mirainforest) == 0 && root->gVEvent(miratalkforest) > 0 && root->gVQuest(miraQW) >= 5)
+                if(root->getSunWeather() >= 0 && root->getTemp() >= 20 && root->getMonth() >= 5 && root->getMonth() <= 9 && root->vEvent(mirainforest) == 0 && root->vEvent(miratalkforest) > 0 && root->vQuest(miraQW) >= 5)
                     makeActBtn("go_forest",act(17));
-                if(root->getSunWeather() >= 0 && root->getTemp() >= 20 && root->getMonth() >= 5 && root->getMonth() <= 9 && root->gVEvent(mirainforest) == 1 && ((root->gVEvent(miratalkforest) == 2 && root->vStatus(shamelessFlag) > 0) || root->gVEvent(miratalkforest) == 3) && !root->isNude() && root->gVEvent(forestpicnic) == 0)
+                if(root->getSunWeather() >= 0 && root->getTemp() >= 20 && root->getMonth() >= 5 && root->getMonth() <= 9 && root->vEvent(mirainforest) == 1 && ((root->vEvent(miratalkforest) == 2 && root->vStatus(shamelessFlag) > 0) || root->vEvent(miratalkforest) == 3) && !root->isNude() && root->vEvent(forestpicnic) == 0)
                     makeActBtn("walk_forest_nude",act(19));
-                if(root->gVQuest(miragopQW) == 30 && root->getHour() < 19 && root->getMonth() >= 5 && root->getMonth() <= 9 && root->gVEvent(mirainforest) == 0)
+                if(root->vQuest(miragopQW) == 30 && root->getHour() < 19 && root->getMonth() >= 5 && root->getMonth() <= 9 && root->vEvent(mirainforest) == 0)
                     makeActBtn("make_third_wish",act(20));
-                if(root->gVQuest(miraQW) >= 15 && root->gVEvent(mirainforest) == 0 && (root->gVEvent(mitkasextimes) < 13 || root->gVQuest(miragopQW) >= 10 || root->gVEvent(mirasex) > 1))
+                if(root->vQuest(miraQW) >= 15 && root->vEvent(mirainforest) == 0 && (root->vEvent(mitkasextimes) < 13 || root->vQuest(miragopQW) >= 10 || root->vEvent(mirasex) > 1))
                 {
-                    if(root->gVEvent(mira_guest) == 0)
+                    if(root->vEvent(mira_guest) == 0)
                         makeActBtn("go_guest",act(28));
-                    if(root->gVEvent(mira_guest) == 1)
+                    if(root->vEvent(mira_guest) == 1)
                         makeActBtn("watch_tv",act(30));
-                    if(root->gVEvent(mira_guest) > 0)
+                    if(root->vEvent(mira_guest) > 0)
                         makeActBtn("say_bye",act(31));
                 }
             }
             makeActBtn("back_to_loc",act(5));
         }
-        if(root->gVEvent(meadow) == 2)
+        if(root->vEvent(meadow) == 2)
         {
             root->incTime(2);
-            root->uVQuest(miraQW,1);
+            root->vQuest(miraQW) += 1;
             miraclothes();
-            root->setDesc(str(50));
+            root->setText(str(50));
             makeActBtn("allow_mira_meadow",act(32));
         }
-        if(root->gVJob(graze_cow) == 1)
+        if(root->vJob(graze_cow) == 1)
             makeActBtn("talk_graze_cow",act(33));
-        if((mira_temp == 0 && root->gVEvent(mira_go_blok) == 0 && root->gVEvent(meadow) > 2 && root->getCurLoc() != lmirahome) || (root->getHour() >= 22 && root->getCurLoc() != lmirahome))
+        if((mira_temp == 0 && root->vEvent(mira_go_blok) == 0 && root->vEvent(meadow) > 2 && root->getCurLoc() != lmirahome) || (root->getHour() >= 22 && root->getCurLoc() != lmirahome))
         {
             root->incTime(5);
-            root->sVEvent(mira_no_home,0);
-            if(root->gVEvent(mirainriver) == 1)
+            root->vEvent(mira_no_home) = 0;
+            if(root->vEvent(mirainriver) == 1)
             {
                 if(root->isNude())
                     root->setImage(media(8));
@@ -160,67 +160,67 @@ void Miroslava::actionHandler(QString action)
             }
             else
                 miraclothes();
-            root->setDesc(str(53));
+            root->setText(str(53));
             makeActBtn("miragohome",act(10));
         }
-        if(root->gVQuest(miraQW) >= 15 && root->gVEvent(Mira_no) == 0 && (root->gVEvent(mitkasextimes) < 13 || root->gVQuest(miragopQW) >= 10 || root->gVEvent(mirasex) > 1))
+        if(root->vQuest(miraQW) >= 15 && root->vEvent(Mira_no) == 0 && (root->vEvent(mitkasextimes) < 13 || root->vQuest(miragopQW) >= 10 || root->vEvent(mirasex) > 1))
         {
-            if(root->gVEvent(mira_guest) == 0 && mira_temp >= 1 && mira_temp <= 2 && root->gVEvent(mira_go_blok) == 0 && root->gVEvent(mirainforest) == 0)
+            if(root->vEvent(mira_guest) == 0 && mira_temp >= 1 && mira_temp <= 2 && root->vEvent(mira_go_blok) == 0 && root->vEvent(mirainforest) == 0)
             {
                 root->clearActions();
                 root->incTime(1);
-                if(root->gVEvent(mirainriver) == 1)
+                if(root->vEvent(mirainriver) == 1)
                     mira_river();
                 else
                     miraclothes();
-                root->setDesc(str(54));
+                root->setText(str(54));
                 makeActBtn("go_in_guest",act(35));
                 makeActBtn("dontgo_guest",act(36));
             }
-            if(root->gVEvent(mira_guest) == 1 && mira_temp >= 3 && mira_temp <= 4)
+            if(root->vEvent(mira_guest) == 1 && mira_temp >= 3 && mira_temp <= 4)
             {
                 root->clearActions();
                 root->incTime(1);
                 miraclothes();
-                root->setDesc(str(57));
+                root->setText(str(57));
                 makeActBtn("agree_watch_tv",act(35));
                 makeActBtn("disagree_watch_tv",act(36));
             }
         }
-        if(root->gVEvent(mirainmeadow) == 0 && mira_temp == 5 && root->gVEvent(meadow) == 3 && root->gVEvent(mira_go_blok) == 0 && root->gVEvent(mirainforest) == 0 && root->getHour() < 19 && root->getSunWeather() >= 0 && root->getMonth() >= 4 && root->getMonth() <= 10)
+        if(root->vEvent(mirainmeadow) == 0 && mira_temp == 5 && root->vEvent(meadow) == 3 && root->vEvent(mira_go_blok) == 0 && root->vEvent(mirainforest) == 0 && root->getHour() < 19 && root->getSunWeather() >= 0 && root->getMonth() >= 4 && root->getMonth() <= 10)
         {
             root->clearActions();
             root->incTime(1);
             miraclothes();
-            root->setDesc(str(59));
+            root->setText(str(59));
             makeActBtn("accept_go_meadow",act(35));
             makeActBtn("decline_go_mradow",act(36));
         }
-        if(root->gVEvent(mirainriver) == 0 && mira_temp >= 6 && mira_temp <= 7 && root->getSunWeather() >= 0 && root->getTemp() >= 20 && root->gVEvent(mira_go_blok) == 0 && root->gVEvent(mirainforest) == 0 && root->getHour() < 18)
+        if(root->vEvent(mirainriver) == 0 && mira_temp >= 6 && mira_temp <= 7 && root->getSunWeather() >= 0 && root->getTemp() >= 20 && root->vEvent(mira_go_blok) == 0 && root->vEvent(mirainforest) == 0 && root->getHour() < 18)
         {
             root->clearActions();
             root->incTime(1);
             miraclothes();
-            root->setDesc(str(61));
+            root->setText(str(61));
             makeActBtn("accept_go_river",act(35));
             makeActBtn("decline_go_river",act(36));
         }
-        if(root->getHour() >= 20 && mira_temp > 10 && root->getSunWeather() >= 0 && root->gVEvent(mira_go_blok) == 0 && root->gVQuest(miragopQW) > 0 && root->gVEvent(mirainforest) == 0 && root->getMonth() >= 4 && root->getMonth() <= 10)
+        if(root->getHour() >= 20 && mira_temp > 10 && root->getSunWeather() >= 0 && root->vEvent(mira_go_blok) == 0 && root->vQuest(miragopQW) > 0 && root->vEvent(mirainforest) == 0 && root->getMonth() >= 4 && root->getMonth() <= 10)
         {
             root->clearActions();
             root->incTime(1);
-            root->sVEvent(mira_go_blok,1);
-            root->sVEvent(miraingop,1);
-            root->sVEvent(mirainhome,0);
-            root->sVEvent(mira_guest,0);
-            root->sVEvent(mirainriver,0);
-            root->sVEvent(mirainmeadow,0);
-            root->sVStatus(inriver,0);
+            root->vEvent(mira_go_blok) = 1;
+            root->vEvent(miraingop) = 1;
+            root->vEvent(mirainhome) = 0;
+            root->vEvent(mira_guest) = 0;
+            root->vEvent(mirainriver) = 0;
+            root->vEvent(mirainmeadow) = 0;
+            root->vStatus(inriver) = 0;
             if(!root->isCloth())
                 root->redressOld();
             miraclothes();
-            root->setDesc(str(63));
-            if(root->gVEvent(mitkasextimes) > 15 && root->gVQuest(miragopQW) > 15)
+            root->setText(str(63));
+            if(root->vEvent(mitkasextimes) > 15 && root->vQuest(miragopQW) > 15)
                 makeActBtn("accept_go_buh_group",act(35));
             else
                 makeActBtn("accept_go_buh",act(35));
@@ -230,18 +230,18 @@ void Miroslava::actionHandler(QString action)
         {
             root->clearActions();
             root->incTime(1);
-            root->sVEvent(mira_go_blok,1);
+            root->vEvent(mira_go_blok) = 1;
             miraclothes();
-            root->setDesc(str(64));
+            root->setText(str(64));
             makeActBtn("accept_talks",act(35));
             makeActBtn("decline_talks",act(36));
         }
-        if(root->gVEvent(mirainriver) == 1 && mira_temp >= 8 && mira_temp <= 9 && root->getSunWeather() >= 0 && root->getTemp() >= 20)
+        if(root->vEvent(mirainriver) == 1 && mira_temp >= 8 && mira_temp <= 9 && root->getSunWeather() >= 0 && root->getTemp() >= 20)
         {
             root->clearActions();
             root->incTime(1);
             miraclothes();
-            root->setDesc(str(66));
+            root->setText(str(66));
             makeActBtn("accept_in_river",act(35));
             makeActBtn("decline_in_river",act(36));
         }
@@ -270,43 +270,43 @@ void Miroslava::actionHandler(QString action)
         miratalk();
     if(action == "walk_together")
     {
-        if(root->gVEvent(Mira_no) == 0)
+        if(root->vEvent(Mira_no) == 0)
         {
-            if(root->gVEvent(mitkasextimes) < 13 || root->gVQuest(miragopQW) >= 10 || root->gVEvent(mirasex) > 1)
+            if(root->vEvent(mitkasextimes) < 13 || root->vQuest(miragopQW) >= 10 || root->vEvent(mirasex) > 1)
             {
-                if(root->gVEvent(mirainforest) == 0)
+                if(root->vEvent(mirainforest) == 0)
                     root->incTime(40);
-                if(root->gVEvent(mirainforest) == 1)
+                if(root->vEvent(mirainforest) == 1)
                     root->incTime(85);
-                if(root->gVQuest(miraQW) < 15)
-                    root->uVQuest(miraQW,1);
-                root->sVEvent(mirainmeadow,0);
-                root->sVEvent(mirainriver,0);
-                root->sVEvent(mira_guest,0);
-                root->sVStatus(inriver,0);
-                root->sVEvent(mirainforest,0);
-                root->sVEvent(mirainhome,0);
-                root->uVStatus(mood,10);
+                if(root->vQuest(miraQW) < 15)
+                    root->vQuest(miraQW) += 1;
+                root->vEvent(mirainmeadow) = 0;
+                root->vEvent(mirainriver) = 0;
+                root->vEvent(mira_guest) = 0;
+                root->vStatus(inriver) = 0;
+                root->vEvent(mirainforest) = 0;
+                root->vEvent(mirainhome) = 0;
+                root->vStatus(mood) += 10;
                 if(root->getClothGroup() < sundress)
                 {
                     root->redressOld();
-                    root->sVStatus(clothesforest, 0);
-                    root->sVStatus(swamp_clothes, 0);
+                    root->vStatus(clothesforest) = 0;
+                    root->vStatus(swamp_clothes) = 0;
                 }
                 root->setImage(media(11));
-                root->setDesc(str(13));
-                if(root->gVEvent(mitkasextimes) > 15 && root->gVQuest(miragopQW) > 15 && root->gVEvent(gadriver_gang) < 3)
+                root->setText(str(13));
+                if(root->vEvent(mitkasextimes) > 15 && root->vQuest(miragopQW) > 15 && root->vEvent(gadriver_gang) < 3)
                 {
                     int mitkarand = getRandInt(1,20);
-                    if(mitkarand == 1 && root->getHour() >= 7 && root->getHour() <= 16 && root->getWeekNum() != 0 && root->getWeekNum() <= 5 && root->gVEvent(mitkaday) != root->vStatus(daystart))
+                    if(mitkarand == 1 && root->getHour() >= 7 && root->getHour() <= 16 && root->getWeek() != 0 && root->getWeek() <= 5 && root->vEvent(mitkaday) != root->vStatus(daystart))
                         root->startEvent(eGadukinoEvents,"mira_mitka");
-                    else if(mitkarand == 2 && root->getHour() >= 7 && root->getHour() <= 16 && root->getWeekNum() != 0 && root->getWeekNum() <= 5 && root->gVEvent(kolyambaday) != root->vStatus(daystart))
+                    else if(mitkarand == 2 && root->getHour() >= 7 && root->getHour() <= 16 && root->getWeek() != 0 && root->getWeek() <= 5 && root->vEvent(kolyambaday) != root->vStatus(daystart))
                         root->startEvent(eGadukinoEvents,"mira_kolyamba");
-                    else if(mitkarand == 3 && root->getHour() >= 7 && root->getHour() <= 16 && root->getWeekNum() != 0 && root->getWeekNum() <= 5 && root->gVEvent(vasyanday) != root->vStatus(daystart))
+                    else if(mitkarand == 3 && root->getHour() >= 7 && root->getHour() <= 16 && root->getWeek() != 0 && root->getWeek() <= 5 && root->vEvent(vasyanday) != root->vStatus(daystart))
                         root->startEvent(eGadukinoEvents,"mira_vasyan");
-                    else if(mitkarand == 4 && root->getHour() >= 17 && root->getHour() <= 19 && root->gVEvent(gadboyday) != root->vStatus(daystart) && root->getWeekNum() != 0 && root->getWeekNum() <= 5)
+                    else if(mitkarand == 4 && root->getHour() >= 17 && root->getHour() <= 19 && root->vEvent(gadboyday) != root->vStatus(daystart) && root->getWeek() != 0 && root->getWeek() <= 5)
                         root->startEvent(eGadukinoEvents,"mira_2boys");
-                    else if(mitkarand <= 5 && root->getHour() >= 7 && root->getHour() <= 19 && root->gVEvent(gadboyday) != root->vStatus(daystart) && (root->getWeekNum() == 0 || root->getWeekNum() > 5))
+                    else if(mitkarand <= 5 && root->getHour() >= 7 && root->getHour() <= 19 && root->vEvent(gadboyday) != root->vStatus(daystart) && (root->getWeek() == 0 || root->getWeek() > 5))
                         root->startEvent(eGadukinoEvents,"mira_3boys");
                     else
                         makeActBtn("exit",act(5));
@@ -318,7 +318,7 @@ void Miroslava::actionHandler(QString action)
             {
                 root->incTime(5);
                 root->setImage(media(10));
-                root->setDesc(str(14));
+                root->setText(str(14));
                 makeActBtn("back_to_loc",act(5));
             }
         }
@@ -326,13 +326,13 @@ void Miroslava::actionHandler(QString action)
         {
             root->incTime(5);
             root->setImage(media(12));
-            root->setDesc(str(15));
+            root->setText(str(15));
             makeActBtn("back_to_loc",act(5));
         }
     }
     if(action == "exit")
     {
-        root->sVEvent(mira_guest,0);
+        root->vEvent(mira_guest) = 0;
         root->changeLoc(lgadukino);
     }
     if(action == "back_to_loc")
@@ -342,20 +342,20 @@ void Miroslava::actionHandler(QString action)
     if(action == "show_meadow")
     {
         root->incTime(30);
-        root->uVStatus(mood,10);
-        root->uVQuest(miraQW,2);
-        root->sVEvent(meadow,2);
-        root->sVEvent(mirainmeadow,1);
-        root->sVEvent(mirainforest,0);
-        root->sVEvent(mirainriver,0);
-        root->sVEvent(mira_guest,0);
-        root->sVEvent(mirainhome,0);
+        root->vStatus(mood) += 10;
+        root->vQuest(miraQW) += 2;
+        root->vEvent(meadow) = 2;
+        root->vEvent(mirainmeadow) = 1;
+        root->vEvent(mirainforest) = 0;
+        root->vEvent(mirainriver) = 0;
+        root->vEvent(mira_guest) = 0;
+        root->vEvent(mirainhome) = 0;
         if(root->getClothGroup() < sundress)
         {
             root->redressOld();
         }
         root->setImage(media(13));
-        root->setDesc(str(16));
+        root->setText(str(16));
         makeActBtn("get_in_meadow",act(8));
     }
     if(action == "get_in_meadow")
@@ -364,32 +364,32 @@ void Miroslava::actionHandler(QString action)
     }
     if(action == "lets_go_meadow")
     {
-        if(root->gVEvent(Mira_no) == 0)
+        if(root->vEvent(Mira_no) == 0)
         {
-            if(root->gVEvent(mitkasextimes) < 13 || root->gVQuest(miragopQW) >= 5 || root->gVEvent(mirasex) > 1)
+            if(root->vEvent(mitkasextimes) < 13 || root->vQuest(miragopQW) >= 5 || root->vEvent(mirasex) > 1)
             {
-                if(root->gVQuest(miraQW) < 50)
-                    root->uVQuest(miraQW,1);
-                root->uVStatus(mood,10);
-                root->sVEvent(mirainmeadow,1);
-                root->sVEvent(mirainriver,0);
-                root->sVEvent(mira_guest,0);
-                root->sVStatus(inriver,0);
-                root->sVEvent(mirainforest,0);
-                root->sVEvent(mirainhome,0);
+                if(root->vQuest(miraQW) < 50)
+                    root->vQuest(miraQW) += 1;
+                root->vStatus(mood) += 10;
+                root->vEvent(mirainmeadow) = 1;
+                root->vEvent(mirainriver) = 0;
+                root->vEvent(mira_guest) = 0;
+                root->vStatus(inriver) = 0;
+                root->vEvent(mirainforest) = 0;
+                root->vEvent(mirainhome) = 0;
                 if(root->getClothGroup() < sundress)
                 {
                     root->redressOld();
                 }
                 root->setImage(media(13));
-                root->setDesc(str(17));
+                root->setText(str(17));
                 makeActBtn("get_in_meadow",act(10));
             }
             else
             {
                 root->incTime(5);
                 root->setImage(media(10));
-                root->setDesc(str(18));
+                root->setText(str(18));
                 makeActBtn("back_to_loc",act(5));
             }
         }
@@ -397,105 +397,105 @@ void Miroslava::actionHandler(QString action)
         {
             root->incTime(5);
             root->setImage(media(12));
-            root->setDesc(str(19));
+            root->setText(str(19));
             makeActBtn("back_to_loc",act(5));
         }
     }
     if(action == "first_meet_gadguys")
     {
         root->incTime(2);
-        root->uVQuest(miraQW,1);
-        root->sVEvent(miraingop,1);
-        root->sVQuest(miragopQW,1);
-        root->sVEvent(mirainmeadow,1);
-        root->sVEvent(mirainriver,0);
-        root->sVEvent(mira_guest,0);
-        root->sVStatus(inriver,0);
-        root->sVEvent(mirainhome,0);
+        root->vQuest(miraQW) += 1;
+        root->vEvent(miraingop) = 1;
+        root->vQuest(miragopQW) = 1;
+        root->vEvent(mirainmeadow) = 1;
+        root->vEvent(mirainriver) = 0;
+        root->vEvent(mira_guest) = 0;
+        root->vStatus(inriver) = 0;
+        root->vEvent(mirainhome) = 0;
         if(root->getClothGroup() < sundress)
         {
             root->redressOld();
         }
         miraclothes();
-        root->setDesc(str(23));
+        root->setText(str(23));
         makeActBtn("first_mitkabuh",act(10));
     }
     if(action == "first_mitkabuh")
     {
-        root->sVEvent(mira_guest,0);
+        root->vEvent(mira_guest) = 0;
         root->incTime(15);
-        root->sVEvent(miralko,0);
+        root->vEvent(miralko) = 0;
         root->startEvent(eMitkaBuh);
     }
     if(action == "meet_gadguys")
     {
-        if(root->gVEvent(Mira_no) == 0)
+        if(root->vEvent(Mira_no) == 0)
         {
             root->incTime(5);
-            if(root->gVQuest(miraQW) < 20)
-                root->uVQuest(miraQW,1);
-            root->sVEvent(miraingop,1);
+            if(root->vQuest(miraQW) < 20)
+                root->vQuest(miraQW) += 1;
+            root->vEvent(miraingop) = 1;
             if(root->getClothGroup() < sundress)
             {
                 root->redressOld();
             }
             miraclothes();
-            if(root->gVQuest(miragopQW) == 5)
-                root->setDesc(str(20));
+            if(root->vQuest(miragopQW) == 5)
+                root->setText(str(20));
             else
-                root->setDesc(str(21));
-            root->sVEvent(mira_guest,0);
-            root->sVEvent(mirainriver,0);
-            root->sVEvent(mirainmeadow,0);
+                root->setText(str(21));
+            root->vEvent(mira_guest) = 0;
+            root->vEvent(mirainriver) = 0;
+            root->vEvent(mirainmeadow) = 0;
             root->incTime(15);
-            root->sVEvent(miralko,0);
+            root->vEvent(miralko) = 0;
             makeActBtn("go_buh",act(10));
         }
         else
         {
             root->incTime(5);
             root->setImage(media(12));
-            root->setDesc(str(22));
+            root->setText(str(22));
             makeActBtn("back_to_loc",act(5));
         }
     }
     if(action == "go_buh")
     {
-        if(root->gVQuest(miragopQW) > 15 && root->gVEvent(mitkasextimes) > 15 && root->gVEvent(gadriver_gang) < 3)
+        if(root->vQuest(miragopQW) > 15 && root->vEvent(mitkasextimes) > 15 && root->vEvent(gadriver_gang) < 3)
             root->startEvent(eMitkaBuhGroup);
         else
             root->startEvent(eMitkaBuh);
     }
     if(action == "go_bana")
     {
-        if(root->gVEvent(Mira_no) == 0)
+        if(root->vEvent(Mira_no) == 0)
         {
-            if(root->gVEvent(mitkasextimes) < 13 || root->gVQuest(miragopQW) >= 10 || root->gVEvent(mirasex) > 1)
+            if(root->vEvent(mitkasextimes) < 13 || root->vQuest(miragopQW) >= 10 || root->vEvent(mirasex) > 1)
             {
                 root->incTime(10);
-                root->uVStatus(mood,20);
-                if(root->gVQuest(miraQW) < 50)
-                    root->uVQuest(miraQW,1);
-                root->sVEvent(mira_guest,0);
-                root->sVEvent(mirainriver,0);
-                root->sVEvent(mirainmeadow,0);
-                root->sVEvent(mirainhome,0);
+                root->vStatus(mood) += 20;
+                if(root->vQuest(miraQW) < 50)
+                    root->vQuest(miraQW) += 1;
+                root->vEvent(mira_guest) = 0;
+                root->vEvent(mirainriver) = 0;
+                root->vEvent(mirainmeadow) = 0;
+                root->vEvent(mirainhome) = 0;
                 if(root->getClothGroup() < sundress)
                 {
                     root->redressOld();
                 }
                 miraclothes();
-                root->setDesc(str(24));
-                if(root->gVEvent(mirainforest) == 0)
+                root->setText(str(24));
+                if(root->vEvent(mirainforest) == 0)
                     makeActBtn("go_bana_from_gad",act(10));
-                if(root->gVEvent(mirainforest) == 1)
+                if(root->vEvent(mirainforest) == 1)
                     makeActBtn("go_bana_from_gadforest",act(10));
             }
             else
             {
                 root->incTime(5);
                 root->setImage(media(10));
-                root->setDesc(str(25));
+                root->setText(str(25));
                 makeActBtn("back_to_loc",act(5));
             }
         }
@@ -503,53 +503,53 @@ void Miroslava::actionHandler(QString action)
         {
             root->incTime(5);
             root->setImage(media(12));
-            root->setDesc(str(26));
+            root->setText(str(26));
             makeActBtn("back_to_loc",act(5));
         }
     }
     if(action == "go_bana_from_gad")
     {
-        root->sVEvent(mira,1);
+        root->vEvent(mira) = 1;
         root->changeLoc(lgadbana,15);
     }
     if(action == "go_bana_from_gadforest")
     {
-        root->sVEvent(mirainforest,0);
-        root->sVEvent(mira,1);
+        root->vEvent(mirainforest) = 0;
+        root->vEvent(mira) = 1;
         root->changeLoc(lgadbana,45);
     }
 
     if(action == "go_river")
     {
-        if(root->gVEvent(Mira_no) == 0)
+        if(root->vEvent(Mira_no) == 0)
         {
-            if(root->gVEvent(mitkasextimes) < 13 || root->gVQuest(miragopQW) >= 10 || root->gVEvent(mirasex) > 1)
+            if(root->vEvent(mitkasextimes) < 13 || root->vQuest(miragopQW) >= 10 || root->vEvent(mirasex) > 1)
             {
                 root->incTime(2);
-                if(root->gVQuest(miraQW) < 30)
-                    root->uVQuest(miraQW,1);
-                root->sVEvent(mira_guest,0);
-                root->sVEvent(mirainmeadow,0);
-                root->sVEvent(mirainhome,0);
-                root->sVEvent(mirainriver,1);
-                root->sVStatus(inriver,1);
+                if(root->vQuest(miraQW) < 30)
+                    root->vQuest(miraQW) += 1;
+                root->vEvent(mira_guest) = 0;
+                root->vEvent(mirainmeadow) = 0;
+                root->vEvent(mirainhome) = 0;
+                root->vEvent(mirainriver) = 1;
+                root->vStatus(inriver) = 1;
                 if(root->getClothGroup() < sundress)
                 {
                     root->redressOld();
-                    root->sVStatus(swamp_clothes,0);
+                    root->vStatus(swamp_clothes) = 0;
                 }
                 miraclothes();
-                root->setDesc(str(27));
-                if(root->gVEvent(mirainforest) == 0)
+                root->setText(str(27));
+                if(root->vEvent(mirainforest) == 0)
                     makeActBtn("goriver_from_gad",act(15));
-                if(root->gVEvent(mirainforest) == 1)
+                if(root->vEvent(mirainforest) == 1)
                     makeActBtn("goriver_from_gadforest",act(15));
             }
             else
             {
                 root->incTime(5);
                 root->setImage(media(10));
-                root->setDesc(str(28));
+                root->setText(str(28));
                 makeActBtn("back_to_loc",act(5));
             }
         }
@@ -557,7 +557,7 @@ void Miroslava::actionHandler(QString action)
         {
             root->incTime(5);
             root->setImage(media(12));
-            root->setDesc(str(29));
+            root->setText(str(29));
             makeActBtn("back_to_loc",act(5));
         }
     }
@@ -567,46 +567,46 @@ void Miroslava::actionHandler(QString action)
     }
     if(action == "goriver_from_gadforest")
     {
-        root->sVEvent(mirainforest,0);
+        root->vEvent(mirainforest) = 0;
         root->changeLoc(lgadbeach,45);
     }
     if(action == "talk_forest")
     {
         root->incTime(15);
-        root->uVQuest(miraQW,1);
-        root->sVEvent(miratalkforest,1);
-        root->uVEvent(goforest,1);
+        root->vQuest(miraQW) += 1;
+        root->vEvent(miratalkforest) = 1;
+        root->vEvent(goforest) += 1;
         miraclothes();
-        root->setDesc(str(30));
+        root->setText(str(30));
         makeActBtn("back_to_loc",act(10));
     }
     if(action == "go_forest")
     {
-        if(root->gVEvent(Mira_no) == 0)
+        if(root->vEvent(Mira_no) == 0)
         {
-            if(root->gVEvent(mitkasextimes) < 13 || root->gVQuest(miragopQW) >= 10 || root->gVEvent(mirasex) > 1)
+            if(root->vEvent(mitkasextimes) < 13 || root->vQuest(miragopQW) >= 10 || root->vEvent(mirasex) > 1)
             {
                 root->incTime(2);
-                if(root->gVQuest(miraQW) < 30)
-                    root->uVQuest(miraQW,1);
-                root->sVEvent(mira_guest,0);
-                root->sVEvent(mirainmeadow,0);
-                root->sVEvent(mirainhome,0);
-                root->sVEvent(mirainriver,0);
-                root->sVEvent(mirainforest,1);
+                if(root->vQuest(miraQW) < 30)
+                    root->vQuest(miraQW) += 1;
+                root->vEvent(mira_guest) = 0;
+                root->vEvent(mirainmeadow) = 0;
+                root->vEvent(mirainhome) = 0;
+                root->vEvent(mirainriver) = 0;
+                root->vEvent(mirainforest) = 1;
                 if(root->getClothGroup() < sundress)
                 {
                     root->redressOld();
                 }
                 miraclothes();
-                root->setDesc(str(31));
+                root->setText(str(31));
                 makeActBtn("gadforest",act(18));
             }
             else
             {
                 root->incTime(5);
                 root->setImage(media(10));
-                root->setDesc(str(32));
+                root->setText(str(32));
                 makeActBtn("back_to_loc",act(5));
             }
         }
@@ -614,18 +614,18 @@ void Miroslava::actionHandler(QString action)
         {
             root->incTime(5);
             root->setImage(media(12));
-            root->setDesc(str(33));
+            root->setText(str(33));
             makeActBtn("back_to_loc",act(5));
         }
     }
     if(action == "walk_forest_nude")
     {
-        root->sVStatus(clothesforest,1);
+        root->vStatus(clothesforest) =1;
         root->incTime(5);
-        root->uVStatus(mood,5);
+        root->vStatus(mood) += 5;
         root->redress(ClothType::Main,nullptr);
         root->setImage(media(15));
-        root->setDesc(str(34));
+        root->setText(str(34));
         makeActBtn("gadforest",act(10));
     }
     if(action == "gadforest")
@@ -635,18 +635,18 @@ void Miroslava::actionHandler(QString action)
     if(action == "make_third_wish")
     {
         root->incTime(2);
-        root->uVStatus(mood,10);
-        root->sVEvent(mirainriver,0);
-        root->sVEvent(mirainmeadow,0);
-        root->sVEvent(mira_guest,0);
-        root->sVEvent(mirainhome,0);
-        root->sVStatus(inriver,0);
+        root->vStatus(mood) += 10;
+        root->vEvent(mirainriver) = 0;
+        root->vEvent(mirainmeadow) = 0;
+        root->vEvent(mira_guest) = 0;
+        root->vEvent(mirainhome) = 0;
+        root->vStatus(inriver) = 0;
         if(root->getClothGroup() < sundress)
         {
             root->redressOld();
         }
         miraclothes();
-        root->setDesc(str(35));
+        root->setText(str(35));
         makeActBtn("third_wish_1",act(21));
         makeActBtn("third_wish_2",act(27));
     }
@@ -654,112 +654,112 @@ void Miroslava::actionHandler(QString action)
     {
         root->incTime(15);
         root->setImage(makeImage(media(16),root->isDay(),root->getMonth()));
-        root->setDesc(str(36));
+        root->setText(str(36));
         makeActBtn("third_wish_1.1",act(22));
     }
     if(action == "third_wish_1.1")
     {
         root->incTime(2);
         root->setImage(media(17));
-        root->setDesc(str(37));
+        root->setText(str(37));
         makeActBtn("third_wish_1.1.1",act(23));
         makeActBtn("third_wish_1.1.2",act(26));
     }
     if(action == "third_wish_1.1.1")
     {
         root->incTime(5);
-        root->uVStatus(horny,getRandInt(5,10));
+        root->vStatus(horny) = getRandInt(5,10);
         root->setImage(media(18));
-        root->setDesc(str(38));
+        root->setText(str(38));
         makeActBtn("third_wish_1.1.1.1",act(24));
     }
     if(action == "third_wish_1.1.1.1")
     {
         root->incTime(5);
-        root->uVStatus(horny,getRandInt(5,10));
+        root->vStatus(horny) = getRandInt(5,10);
         root->setImage(media(19));
-        root->setDesc(str(39));
+        root->setText(str(39));
         makeActBtn("third_wish_1.1.1.1.1",act(25));
     }
     if(action == "third_wish_1.1.1.1.1")
     {
         root->incTime(15);
-        root->uVStatus(horny,getRandInt(5,10));
-        root->uVEvent(Mira_no,getRandInt(10,30));
-        root->sVEvent(miraday,root->vStatus(daystart));
-        root->sVQuest(miragopQW,33);
-        root->sVQuest(miraQW,1);
+        root->vStatus(horny) = getRandInt(5,10);
+        root->vEvent(Mira_no) += getRandInt(10,30);
+        root->vEvent(miraday) = root->vStatus(daystart);
+        root->vQuest(miragopQW) = 33;
+        root->vQuest(miraQW) = 1;
         root->setImage(media(20));
-        root->setDesc(str(40));
+        root->setText(str(40));
         makeActBtn("third_wish_end",act(6));
     }
     if(action == "third_wish_end")
     {
-        root->sVEvent(mira_guest,0);
+        root->vEvent(mira_guest) = 0;
         root->changeLoc(lgadukino);
     }
     if(action == "third_wish_1.1.2")
     {
         root->incTime(5);
-        root->uVQuest(miraQW,5);
-        root->sVQuest(miragopQW,31);
+        root->vQuest(miraQW) += 5;
+        root->vQuest(miragopQW) = 31;
         root->setImage(media(21));
-        root->setDesc(str(41));
+        root->setText(str(41));
         makeActBtn("third_wish_end",act(6));
     }
     if(action == "third_wish_2")
     {
         root->incTime(15);
         root->setImage(makeImage(media(22),root->isDay(),root->getMonth()));
-        root->setDesc(str(42));
+        root->setText(str(42));
         makeActBtn("third_wish_2.1",act(22));
     }
     if(action == "third_wish_2.1")
     {
         root->incTime(2);
         root->setImage(media(17));
-        root->setDesc(str(43));
+        root->setText(str(43));
         makeActBtn("third_wish_2.1.1",act(23));
         makeActBtn("third_wish_2.1.2",act(26));
     }
     if(action == "third_wish_2.1.1")
     {
         root->incTime(15);
-        root->uVStatus(horny,getRandInt(5,10));
+        root->vStatus(horny) = getRandInt(5,10);
         root->setImage(media(23));
-        root->setDesc(str(44));
+        root->setText(str(44));
         makeActBtn("third_wish_2.1.1.1",act(24));
     }
     if(action == "third_wish_2.1.1.1")
     {
         root->incTime(15);
-        root->uVStatus(horny,getRandInt(5,10));
+        root->vStatus(horny) = getRandInt(5,10);
         root->setImage(media(24));
-        root->setDesc(str(45));
+        root->setText(str(45));
         makeActBtn("third_wish_end",act(6));
     }
     if(action == "third_wish_2.1.2")
     {
         root->incTime(5);
-        root->uVQuest(miraQW,2);
-        root->sVQuest(miragopQW,31);
+        root->vQuest(miraQW) += 2;
+        root->vQuest(miragopQW) = 31;
         root->setImage(media(21));
-        root->setDesc(str(41));
+        root->setText(str(41));
         makeActBtn("third_wish_end",act(6));
     }
     if(action == "go_guest")
     {
         root->incTime(5);
-        root->uVStatus(mood,5);
-        root->sVEvent(mira_guest,1);
-        root->sVEvent(mirainriver,0);
-        root->sVEvent(mirainmeadow,0);
-        root->sVStatus(inriver,0);
-        root->sVEvent(mirainhome,0);
-        if(root->gVQuest(miraQW) < 30)
-            root->uVQuest(miraQW,1);
+        root->vStatus(mood) += 5;
+        root->vEvent(mira_guest) = 1;
+        root->vEvent(mirainriver) = 0;
+        root->vEvent(mirainmeadow) = 0;
+        root->vStatus(inriver) = 0;
+        root->vEvent(mirainhome) = 0;
+        if(root->vQuest(miraQW) < 30)
+            root->vQuest(miraQW) += 1;
         miraclothes();
-        root->setDesc(str(46));
+        root->setText(str(46));
         makeActBtn("go_guest1",act(29));
     }
     if(action == "go_guest1")
@@ -769,14 +769,14 @@ void Miroslava::actionHandler(QString action)
         else
         {
             root->incTime(5);
-            root->sVEvent(mira_guest,1);
-            root->sVEvent(mirainriver,0);
-            root->sVEvent(mirainmeadow,0);
-            root->sVStatus(inriver,0);
+            root->vEvent(mira_guest) = 1;
+            root->vEvent(mirainriver) = 0;
+            root->vEvent(mirainmeadow) = 0;
+            root->vStatus(inriver) = 0;
             if(root->getClothGroup() <= swimsuit)
                 root->redressOld();
             root->setImage(media(25));
-            root->setDesc(str(47));
+            root->setText(str(47));
             makeActBtn("gadhouse",act(10));
         }
     }
@@ -791,184 +791,184 @@ void Miroslava::actionHandler(QString action)
     if(action == "watch_tv")
     {
         root->incTime(60);
-        if(root->gVQuest(miraQW) < 20)
-            root->uVQuest(miraQW,1);
-        root->uVStatus(mood,getRandInt(10,50));
+        if(root->vQuest(miraQW) < 20)
+            root->vQuest(miraQW) += 1;
+        root->vStatus(mood) += getRandInt(10,50);
         root->setImage(media(26));
-        root->setDesc(str(48));
+        root->setText(str(48));
         makeActBtn("gadhouse0",act(10));
     }
     if(action == "say_bye")
     {
         root->incTime(5);
-        root->sVEvent(mira_guest,0);
+        root->vEvent(mira_guest) = 0;
         miraclothes();
-        root->setDesc(str(49));
+        root->setText(str(49));
         makeActBtn("back_to_loc",act(10));
     }
     if(action == "allow_mira_meadow")
     {
-        root->sVEvent(meadow,3);
+        root->vEvent(meadow) =3;
         root->incTime(2);
-        root->uVQuest(miraQW,1);
+        root->vQuest(miraQW) += 1;
         miraclothes();
-        root->setDesc(str(51));
+        root->setText(str(51));
         makeActBtn("get_in_meadow",act(6));
     }
     if(action == "talk_graze_cow")
     {
         root->incTime(60);
-        root->uVStatus(mood,10);
-        if(root->gVQuest(miraQW) < 50)
-            root->uVQuest(miraQW,1);
+        root->vStatus(mood) += 10;
+        if(root->vQuest(miraQW) < 50)
+            root->vQuest(miraQW) += 1;
         root->setImage(media(27));
-        root->setDesc(str(52));
+        root->setText(str(52));
         makeActBtn("back_to_loc",act(34));
     }
     if(action == "miragohome")
     {
-        root->sVEvent(mira,0);
-        root->sVEvent(mira_guest,0);
-        root->sVEvent(mirainriver,0);
-        root->sVEvent(mirainmeadow,0);
-        root->sVEvent(mirainforest,0);
+        root->vEvent(mira) = 0;
+        root->vEvent(mira_guest) = 0;
+        root->vEvent(mirainriver) = 0;
+        root->vEvent(mirainmeadow) = 0;
+        root->vEvent(mirainforest) = 0;
         actionHandler("back_to_loc");
     }
     if(action == "go_in_guest")
     {
         if(root->isCloth())
         {
-            root->sVEvent(mira_go_blok,1);
-            root->sVEvent(mirainmeadow,0);
-            root->sVEvent(mirainhome,0);
-            root->sVStatus(inriver,0);
-            root->sVEvent(mirainriver,0);
-            root->sVEvent(mira_guest,1);
-            root->uVQuest(miraQW,1);
+            root->vEvent(mira_go_blok) = 1;
+            root->vEvent(mirainmeadow) = 0;
+            root->vEvent(mirainhome) = 0;
+            root->vStatus(inriver) = 0;
+            root->vEvent(mirainriver) = 0;
+            root->vEvent(mira_guest) = 1;
+            root->vQuest(miraQW) += 1;
             actionHandler("gadhouse");
         }
         else
         {
-            root->uVQuest(miraQW,1);
-            root->sVEvent(mira_go_blok,1);
-            root->sVEvent(mira_guest,1);
-            root->sVEvent(mirainriver,0);
-            root->sVEvent(mirainmeadow,0);
-            root->sVEvent(mirainhome,0);
-            root->sVStatus(inriver,0);
-            if(root->gVQuest(miraQW) < 30)
-                root->uVQuest(miraQW,1);
+            root->vQuest(miraQW) += 1;
+            root->vEvent(mira_go_blok) = 1;
+            root->vEvent(mira_guest) = 1;
+            root->vEvent(mirainriver) = 0;
+            root->vEvent(mirainmeadow) = 0;
+            root->vEvent(mirainhome) = 0;
+            root->vStatus(inriver) = 0;
+            if(root->vQuest(miraQW) < 30)
+                root->vQuest(miraQW) += 1;
             root->incTime(20);
             root->redressOld();
             root->setImage(media(25));
-            root->setDesc(str(55));
+            root->setText(str(55));
             makeActBtn("gadhouse0",act(10));
         }
     }
     if(action == "dontgo_guest")
     {
         root->incTime(1);
-        root->uVQuest(miraQW,-1);
+        root->vQuest(miraQW) -= 1;
         root->setImage(media(14));
-        root->setDesc(str(56));
+        root->setText(str(56));
         makeActBtn("back_to_loc",act(10));
     }
     if(action == "agree_watch_tv")
     {
         root->incTime(60);
-        if(root->gVQuest(miraQW) < 20)
-            root->uVQuest(miraQW,1);
-        root->uVStatus(mood,getRandInt(10,50));
-        root->sVEvent(mira_go_blok,1);
+        if(root->vQuest(miraQW) < 20)
+            root->vQuest(miraQW) += 1;
+        root->vStatus(mood) += getRandInt(10,50);
+        root->vEvent(mira_go_blok) = 1;
         root->setImage(media(26));
-        root->setDesc(str(48));
+        root->setText(str(48));
         makeActBtn("gadhouse0",act(10));
     }
     if(action == "disagree_watch_tv")
     {
         root->incTime(1);
-        root->uVQuest(miraQW,-1);
+        root->vQuest(miraQW)-= 1;
         root->setImage(media(14));
-        root->setDesc(str(58));
+        root->setText(str(58));
         makeActBtn("back_to_loc",act(10));
     }
     if(action == "accept_go_meadow")
     {
         root->incTime(15);
-        root->uVStatus(mood,5);
-        if(root->gVQuest(miraQW) < 50)
-            root->uVQuest(miraQW,1);
-        root->sVEvent(mira_guest,0);
-        root->sVEvent(mirainriver,0);
-        root->sVEvent(mirainmeadow,1);
-        root->sVStatus(inriver,0);
-        root->sVEvent(mira_go_blok,1);
-        root->sVEvent(mirainhome,0);
+        root->vStatus(mood) += 5;
+        if(root->vQuest(miraQW) < 50)
+            root->vQuest(miraQW) += 1;
+        root->vEvent(mira_guest) = 0;
+        root->vEvent(mirainriver) = 0;
+        root->vEvent(mirainmeadow) = 1;
+        root->vStatus(inriver) = 0;
+        root->vEvent(mira_go_blok) = 1;
+        root->vEvent(mirainhome) = 0;
         if(root->getClothGroup() <= swimsuit)
             root->redressOld();
         root->setImage(media(13));
-        root->setDesc(str(60));
+        root->setText(str(60));
         makeActBtn("get_in_meadow",act(10));
     }
     if(action == "decline_go_mradow")
     {
         root->incTime(1);
-        root->uVQuest(miraQW,-1);
+        root->vQuest(miraQW) -= 1;
         root->setImage(media(14));
-        root->setDesc(str(56));
+        root->setText(str(56));
         makeActBtn("back_to_loc",act(10));
     }
     if(action == "accept_go_river")
     {
         root->incTime(15);
-        if(root->gVQuest(miraQW) < 30)
-            root->uVQuest(miraQW,1);
-        root->sVEvent(mira_guest,0);
-        root->sVEvent(mirainriver,1);
-        root->sVEvent(mirainmeadow,0);
-        root->sVStatus(inriver,1);
-        root->sVEvent(mira_go_blok,1);
-        root->sVEvent(mirainhome,0);
+        if(root->vQuest(miraQW) < 30)
+            root->vQuest(miraQW) += 1;
+        root->vEvent(mira_guest) = 0;
+        root->vEvent(mirainriver) = 1;
+        root->vEvent(mirainmeadow) = 0;
+        root->vStatus(inriver) = 1;
+        root->vEvent(mira_go_blok) = 1;
+        root->vEvent(mirainhome) = 0;
         if(root->getClothGroup() <= swimsuit)
             root->redressOld();
         root->setImage(media(13));
-        root->setDesc(str(62));
+        root->setText(str(62));
         makeActBtn("gadbeach",act(10));
     }
     if(action == "decline_go_river")
     {
         root->incTime(1);
-        root->uVQuest(miraQW,-1);
+        root->vQuest(miraQW) -= 1;
         root->setImage(media(14));
-        root->setDesc(str(56));
+        root->setText(str(56));
         makeActBtn("back_to_loc",act(10));
     }
     if(action == "accept_go_buh_group")
     {
-        root->sVEvent(mira_guest,0);
-        root->sVEvent(mirainriver,0);
-        root->sVEvent(mirainmeadow,0);
-        root->sVStatus(inriver,0);
-        root->sVEvent(miralko,0);
+        root->vEvent(mira_guest) = 0;
+        root->vEvent(mirainriver) = 0;
+        root->vEvent(mirainmeadow) = 0;
+        root->vStatus(inriver) = 0;
+        root->vEvent(miralko) = 0;
         root->incTime(15);
         root->startEvent(eMitkaBuhGroup);
     }
     if(action == "accept_go_buh")
     {
-        root->sVEvent(mira_guest,0);
-        root->sVEvent(mirainriver,0);
-        root->sVEvent(mirainmeadow,0);
-        root->sVStatus(inriver,0);
-        root->sVEvent(miralko,0);
+        root->vEvent(mira_guest) = 0;
+        root->vEvent(mirainriver) = 0;
+        root->vEvent(mirainmeadow) = 0;
+        root->vStatus(inriver) = 0;
+        root->vEvent(miralko) = 0;
         root->incTime(15);
         root->startEvent(eMitkaBuh);
     }
     if(action == "decline_go_buh")
     {
         root->incTime(1);
-        root->uVQuest(miraQW,-1);
+        root->vQuest(miraQW) -= 1;
         root->setImage(media(14));
-        root->setDesc(str(56));
+        root->setText(str(56));
         makeActBtn("back_to_loc",act(10));
     }
     if(action == "accept_talks")
@@ -979,9 +979,9 @@ void Miroslava::actionHandler(QString action)
     if(action == "decline_talks")
     {
         root->incTime(1);
-        root->uVQuest(miraQW,-1);
+        root->vQuest(miraQW) -= 1;
         root->setImage(media(14));
-        root->setDesc(str(65));
+        root->setText(str(65));
         makeActBtn("back_to_loc",act(10));
     }
     if(action == "accept_in_river")
@@ -990,23 +990,23 @@ void Miroslava::actionHandler(QString action)
         {
             root->incTime(60);
             ((BathRoom*)root->getLocPtr(lbathroom))->cleanMe();
-            root->uVStatus(mood,10);
+            root->vStatus(mood) += 10;
             if(root->vSkill(strenght) < 20)
-                root->uVSkill(strenght,1);
+                root->vSkill(strenght) += 1;
             if(root->getClothGroup() == swimsuit)
                 root->setImage(media(28));
             else
                 root->setImage(media(29));
-            root->setDesc(str(67));
+            root->setText(str(67));
             makeActBtn("gadbeach",act(37));
         }
         else
         {
             root->incTime(5);
-            root->sVStatus(inriver,1);
+            root->vStatus(inriver) = 1;
             root->redress(ClothType::Main, new ClothMain(2,swimsuit,"Купальник"));
             root->setImage(media(30));
-            root->setDesc(str(68));
+            root->setText(str(68));
             makeActBtn("swim",act(38));
         }
     }
@@ -1018,61 +1018,61 @@ void Miroslava::actionHandler(QString action)
     {
         root->incTime(60);
         ((BathRoom*)root->getLocPtr(lbathroom))->cleanMe();
-        root->uVStatus(mood,10);
+        root->vStatus(mood) += 10;
         if(root->vSkill(strenght) < 20)
-            root->uVSkill(strenght,1);
+            root->vSkill(strenght) += 1;
         root->setImage(media(28));
-        root->setDesc(str(67));
+        root->setText(str(67));
         makeActBtn("gadbeach",act(37));
     }
     if(action == "decline_in_river")
     {
         root->incTime(1);
-        root->uVQuest(miraQW,-1);
+        root->vQuest(miraQW) -= 1;
         root->setImage(media(14));
-        root->setDesc(str(69));
+        root->setText(str(69));
         makeActBtn("gadbeach",act(10));
     }
     if(action == "ask_about_mitka")
     {
         root->incTime(2);
-        root->uVStatus(horny,10);
-        root->uVQuest(miraQW,1);
-        root->sVQuest(miragopQW,2);
-        root->uVStatus(mood,10);
+        root->vStatus(horny) += 10;
+        root->vQuest(miraQW) += 1;
+        root->vQuest(miragopQW) = 2;
+        root->vStatus(mood) += 10;
         root->setImage(media(3));
-        root->setDesc(str(73));
+        root->setText(str(73));
         makeActBtn("back_to_loc",act(6));
     }
     if(action == "say_you_saw")
     {
         root->incTime(2);
-        root->uVStatus(horny,10);
-        root->uVQuest(miraQW,-1);
-        root->uVStatus(mood,10);
+        root->vStatus(horny) += 10;
+        root->vQuest(miraQW) -= 1;
+        root->vStatus(mood) += 10;
         root->setImage(media(3));
-        root->setDesc(str(75));
+        root->setText(str(75));
         makeActBtn("do_anal_mitka",act(41));
     }
     if(action == "do_anal_mitka")
     {
         root->incTime(5);
-        root->uVStatus(horny,10);
-        root->uVStatus(mood,10);
-        root->sVQuest(miragopQW,5);
-        root->uVQuest(miraQW,-1);
+        root->vStatus(horny) += 10;
+        root->vStatus(mood) += 10;
+        root->vQuest(miragopQW) = 5;
+        root->vQuest(miraQW) -= 1;
         root->setImage(media(3));
-        root->setDesc(str(76));
+        root->setText(str(76));
         makeActBtn("back_to_loc",act(5));
     }
     if(action == "first_wish_complete")
     {
         root->incTime(10);
-        root->uVStatus(horny,15);
-        root->sVQuest(miragopQW,7);
-        root->uVStatus(mood,10);
+        root->vStatus(horny) += 15;
+        root->vQuest(miragopQW) = 7;
+        root->vStatus(mood) += 10;
         root->setImage(media(3));
-        root->setDesc(str(80));
+        root->setText(str(80));
         makeActBtn("back_to_loc",act(5));
     }
 }
@@ -1082,12 +1082,12 @@ void Miroslava::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action,"miroslava");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Miroslava::actionHandler);
-    root->addActBtn(btn);
+    root->addActions(btn);
 }
 
 void Miroslava::miraclothes()
 {
-    int gopQuest = root->gVQuest(miragopQW);
+    int gopQuest = root->vQuest(miragopQW);
     if(gopQuest == 0)
     {
         root->setImage(media(2));
@@ -1126,121 +1126,121 @@ void Miroslava::mira_river()
 
 void Miroslava::miratalk()
 {
-    if(root->gVQuest(miragopQW) == 0)
+    if(root->vQuest(miragopQW) == 0)
     {
         root->incTime(10);
-        root->uVStatus(mood,5);
-        if(root->gVQuest(miraQW) < 10)
-            root->uVQuest(miraQW,1);
-        if(root->gVEvent(mirainriver) == 0)
+        root->vStatus(mood) += 5;
+        if(root->vQuest(miraQW) < 10)
+            root->vQuest(miraQW) += 1;
+        if(root->vEvent(mirainriver) == 0)
             miraclothes();
-        if(root->gVEvent(mirainriver) == 1)
+        if(root->vEvent(mirainriver) == 1)
             mira_river();
-        if(root->gVEvent(mitkasextimes) < 13 || root->gVEvent(mirasex) > 1)
-            root->setDesc(str(70));
+        if(root->vEvent(mitkasextimes) < 13 || root->vEvent(mirasex) > 1)
+            root->setText(str(70));
         else
-            root->setDesc(str(71));
+            root->setText(str(71));
         makeActBtn("back_to_loc",act(6));
     }
-    else if(root->gVQuest(miragopQW) == 1)
+    else if(root->vQuest(miragopQW) == 1)
     {
         root->incTime(10);
-        root->uVStatus(mood,5);
-        if(root->gVQuest(miraQW) < 20)
-            root->uVQuest(miraQW,1);
-        if(root->gVEvent(mirainriver) == 0)
+        root->vStatus(mood) += 5;
+        if(root->vQuest(miraQW) < 20)
+            root->vQuest(miraQW) += 1;
+        if(root->vEvent(mirainriver) == 0)
             miraclothes();
-        if(root->gVEvent(mirainriver) == 1)
+        if(root->vEvent(mirainriver) == 1)
             mira_river();
-        if(root->gVEvent(mitkasextimes) < 13 || root->gVEvent(mirasex) > 1)
-            root->setDesc(str(72));
+        if(root->vEvent(mitkasextimes) < 13 || root->vEvent(mirasex) > 1)
+            root->setText(str(72));
         else
-            root->setDesc(str(71));
-        if(root->gVEvent(mirasextimes) > 3)
+            root->setText(str(71));
+        if(root->vEvent(mirasextimes) > 3)
             makeActBtn("ask_about_mitka",act(39));
         makeActBtn("Miroslava",act(6));
     }
-    else if(root->gVQuest(miragopQW) == 2 || root->gVQuest(miragopQW) == 3)
+    else if(root->vQuest(miragopQW) == 2 || root->vQuest(miragopQW) == 3)
     {
         root->incTime(10);
-        root->uVStatus(mood,5);
-        if(root->gVQuest(miraQW) < 20)
-            root->uVQuest(miraQW,1);
-        if(root->gVEvent(mirainriver) == 0)
+        root->vStatus(mood) += 5;
+        if(root->vQuest(miraQW) < 20)
+            root->vQuest(miraQW) += 1;
+        if(root->vEvent(mirainriver) == 0)
             miraclothes();
-        if(root->gVEvent(mirainriver) == 1)
+        if(root->vEvent(mirainriver) == 1)
             mira_river();
-        if(root->gVEvent(mitkasextimes) < 13 || root->gVEvent(mirasex) > 1)
+        if(root->vEvent(mitkasextimes) < 13 || root->vEvent(mirasex) > 1)
         {
-            root->setDesc(str(74));
-            if(root->gVQuest(miragopQW) == 3 && root->gVEvent(mitkasextimes) < 13)
+            root->setText(str(74));
+            if(root->vQuest(miragopQW) == 3 && root->vEvent(mitkasextimes) < 13)
                 makeActBtn("say_you_saw",act(40));
         }
         else
-            root->setDesc(str(77));
+            root->setText(str(77));
         makeActBtn("Miroslava",act(6));
     }
-    else if(root->gVQuest(miragopQW) >= 4 && root->gVQuest(miragopQW) < 7)
+    else if(root->vQuest(miragopQW) >= 4 && root->vQuest(miragopQW) < 7)
     {
         root->incTime(10);
-        root->uVStatus(horny,10);
-        root->uVStatus(mood,5);
-        if(root->gVEvent(mirainriver) == 0)
+        root->vStatus(horny) += 10;
+        root->vStatus(mood) += 5;
+        if(root->vEvent(mirainriver) == 0)
             miraclothes();
-        if(root->gVEvent(mirainriver) == 1)
+        if(root->vEvent(mirainriver) == 1)
             mira_river();
-        if(root->gVEvent(mitkasextimes) < 13 || root->gVEvent(mirasex) > 1)
-            root->setDesc(str(78));
+        if(root->vEvent(mitkasextimes) < 13 || root->vEvent(mirasex) > 1)
+            root->setText(str(78));
         else
-            root->setDesc(str(79));
-        if(root->gVQuest(miragopQW) == 6)
+            root->setText(str(79));
+        if(root->vQuest(miragopQW) == 6)
             makeActBtn("first_wish_complete",act(42));
         makeActBtn("back_to_loc",act(6));
     }
-    else if(root->gVQuest(miragopQW) >= 7 && root->gVQuest(miragopQW) < 12)
+    else if(root->vQuest(miragopQW) >= 7 && root->vQuest(miragopQW) < 12)
     {
         root->incTime(10);
-        root->uVStatus(horny,10);
-        root->uVStatus(mood,5);
-        if(root->gVQuest(miraQW) < 10)
-            root->uVQuest(miraQW,1);
-        if(root->gVEvent(mirainriver) == 0)
+        root->vStatus(horny) += 10;
+        root->vStatus(mood) += 5;
+        if(root->vQuest(miraQW) < 10)
+            root->vQuest(miraQW) += 1;
+        if(root->vEvent(mirainriver) == 0)
             miraclothes();
-        if(root->gVEvent(mirainriver) == 1)
+        if(root->vEvent(mirainriver) == 1)
             mira_river();
-        if(root->gVEvent(mitkasextimes) < 13 || root->gVEvent(mirasex) > 1)
-            root->setDesc(str(81));
+        if(root->vEvent(mitkasextimes) < 13 || root->vEvent(mirasex) > 1)
+            root->setText(str(81));
         else
-            root->setDesc(str(82));
+            root->setText(str(82));
         makeActBtn("back_to_loc",act(6));
     }
-    if(root->gVQuest(miragopQW) >= 12)
+    if(root->vQuest(miragopQW) >= 12)
     {
         root->incTime(10);
-        root->uVStatus(mood,5);
-        if(root->gVEvent(mitkasextimes) == 0 && root->gVQuest(miraQW) < 10)
-            root->uVQuest(miraQW,1);
-        if(root->gVEvent(mitkasextimes) > 0 && root->gVEvent(mitkasextimes) < 13 && root->gVQuest(miraQW) < 15)
-            root->uVQuest(miraQW,1);
-        if(root->gVEvent(mitkasextimes) >= 13 && root->gVQuest(miraQW) < 30)
-            root->uVQuest(miraQW,1);
-        if(root->gVEvent(Mira_no) > 0 && root->gVEvent(miraday) != root->vStatus(daystart))
+        root->vStatus(mood) += 5;
+        if(root->vEvent(mitkasextimes) == 0 && root->vQuest(miraQW) < 10)
+            root->vQuest(miraQW) += 1;
+        if(root->vEvent(mitkasextimes) > 0 && root->vEvent(mitkasextimes) < 13 && root->vQuest(miraQW) < 15)
+            root->vQuest(miraQW) += 1;
+        if(root->vEvent(mitkasextimes) >= 13 && root->vQuest(miraQW) < 30)
+            root->vQuest(miraQW) += 1;
+        if(root->vEvent(Mira_no) > 0 && root->vEvent(miraday) != root->vStatus(daystart))
         {
-            root->sVEvent(miraday,root->vStatus(daystart));
-            root->uVEvent(Mira_no,-1);
+            root->vEvent(miraday) = root->vStatus(daystart);
+            root->vEvent(Mira_no) += -1;
         }
-        if(root->gVEvent(mirainriver) == 0)
+        if(root->vEvent(mirainriver) == 0)
             miraclothes();
-        if(root->gVEvent(mirainriver) == 1)
+        if(root->vEvent(mirainriver) == 1)
             mira_river();
-        if(root->gVQuest(miragopQW) < 20 && root->gVEvent(mitkasextimes) < 13)
-            root->setDesc(str(83));
-        else if(root->gVQuest(miragopQW) >= 20 && root->gVQuest(miragopQW) < 30 && root->gVEvent(mitkasextimes) < 13)
-            root->setDesc(str(84));
-        else if(root->gVQuest(miragopQW) >= 30 && root->gVEvent(mitkasextimes) < 13)
-            root->setDesc(str(85));
+        if(root->vQuest(miragopQW) < 20 && root->vEvent(mitkasextimes) < 13)
+            root->setText(str(83));
+        else if(root->vQuest(miragopQW) >= 20 && root->vQuest(miragopQW) < 30 && root->vEvent(mitkasextimes) < 13)
+            root->setText(str(84));
+        else if(root->vQuest(miragopQW) >= 30 && root->vEvent(mitkasextimes) < 13)
+            root->setText(str(85));
         else
-            root->setDesc(str(86));
+            root->setText(str(86));
         makeActBtn("back_to_loc",act(6));
     }
 }

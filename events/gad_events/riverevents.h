@@ -3,12 +3,12 @@
 #include "../event.h"
 #include <QObject>
 
-class EventHandler;
+class Game;
 class RiverEvents: public Event
 {
     Q_OBJECT
 public:
-    RiverEvents(EventHandler* ptr);
+    RiverEvents(Game* ptr);
     void start(QString arg = "") override;
     void makeActBtn(QString action, QString actName);
 private slots:
@@ -28,7 +28,7 @@ private:
     QString act(int id);
     QString media(int id);
 private:
-    EventHandler* root;
+    Game* root;
     int i,g,f;
 };
 

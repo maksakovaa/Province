@@ -2,12 +2,12 @@
 #define MIRASEX_H
 
 #include "../event.h"
-class EventHandler;
+class Game;
 
 class MiraSex: public Event
 {
 public:
-    MiraSex(EventHandler* ptr);
+    MiraSex(Game* ptr);
     void start(QString arg = "") override;
     void makeActBtn(QString action, QString actName);
 private slots:
@@ -36,7 +36,7 @@ private:
     void end();
     void checkMiraSex();
 private:
-    EventHandler* root;
+    Game* root;
     int you_orgasm;
 };
 

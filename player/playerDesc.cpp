@@ -15,7 +15,7 @@ QString Player::getBirthDayDesc()
 QString Player::getAgesDesc()
 {
     QString vidage = intQStr(m_body[Body::vidage]);
-    if(isCheatsOn())
+    if(root->isCheats())
     {
         makeLink(vidage, "vidage");
     }
@@ -29,7 +29,7 @@ QString Player::getHeightDesc()
     QString heightStr = intQStr(m_body[Body::height]);
     QString weightStr = intQStr(m_body[Body::weight]);
 
-    if (isCheatsOn()) {
+    if (root->isCheats()) {
         makeLink(heightStr, "height");
         makeLink(weightStr, "weight");
     }
@@ -99,7 +99,7 @@ QString Player::getLipsDesc()
     default:
         break;
     }
-    if (isCheatsOn())
+    if (root->isCheats())
     {
         makeLink(result, "lips");
     }
@@ -188,7 +188,7 @@ QString Player::getThroatDesc()
     {
         res += "У вас рот и горло опытной проститутки.";
     }
-    if (isCheatsOn())
+    if (root->isCheats())
     {
         makeLink(res, "throat");
     }
@@ -262,7 +262,7 @@ QString Player::getVaginaDesc()
     {
         res += "У вас рабочая, как у проститутки, вагина.";
     }
-    if (isCheatsOn())
+    if (root->isCheats())
     {
         makeLink(res, "vagina");
     }
@@ -405,7 +405,7 @@ QString Player::getAnusDesc()
     {
         res += "У вас рабочая, как у проститутки, раздолбанная и красная дырень.";
     }
-    if (isCheatsOn())
+    if (root->isCheats())
     {
         makeLink(res, "anus");
     }
@@ -637,7 +637,7 @@ QString Player::getHairDesc()
         m_body[Body::hairStatus] = 1;
         m_body[Body::hairCurly] = 0;
     }
-    if(!((MainWindow*)m_main)->page4->settings()->isHapri())
+    if(!root->isHapri())
     {
         m_body[Body::hairStatus] = 1;
     }
@@ -700,16 +700,16 @@ QString Player::getHairDesc()
         hairDesc += hairStatus + " ";
     }
 
-    if (isCheatsOn()) { makeLink(hairLength, "hairLength"); }
+    if (root->isCheats()) { makeLink(hairLength, "hairLength"); }
 
     hairDesc += hairLength + " ";
 
     if (m_body[Body::hairLength] < 2)
     {
-        if (isCheatsOn()) { makeLink(hairCurly, "hairCurly"); }
+        if (root->isCheats()) { makeLink(hairCurly, "hairCurly"); }
         hairDesc += hairCurly + " ";
     }
-    if (isCheatsOn()) { makeLink(hairColor, "hairColor"); }
+    if (root->isCheats()) { makeLink(hairColor, "hairColor"); }
     hairDesc += hairColor + " волосы.";
 
     return hairDesc;
@@ -741,7 +741,7 @@ QString Player::getPubisDesc()
     else if (lobok > 0 && lobok <= 2) { tmp = "У вас небольшая щетина на лобке."; }
     else { tmp = "У вас волосатый лобок."; }
 
-    if (isCheatsOn()) { makeLink(tmp, "pubisHair"); }
+    if (root->isCheats()) { makeLink(tmp, "pubisHair"); }
     return tmp + piercingGstr;
 }
 
@@ -789,7 +789,7 @@ QString Player::getSkinDesc()
     if(Bodykin < 3) { result = "Ваша "; }
     else { result = "У вас "; }
 
-    if (isCheatsOn()) {
+    if (root->isCheats()) {
         makeLink(tan, "skinTan");
         makeLink(skinTemp, "skin");
     }
@@ -880,10 +880,10 @@ QString Player::getEyeDesc()
         default:
             break;
         }
-        if (isCheatsOn()) { makeLink(glassStr, "glass"); }
+        if (root->isCheats()) { makeLink(glassStr, "glass"); }
     }
 
-    if (isCheatsOn())
+    if (root->isCheats())
     {
         makeLink(eyeSizeStr, "eyeSize");
         makeLink(eyeColorStr, "eyeColor");
@@ -930,7 +930,7 @@ QString Player::getMakeupDesc()
     default:
         break;
     }
-    if (isCheatsOn())
+    if (root->isCheats())
     {
         makeLink(result, "makeup");
     }
@@ -947,7 +947,7 @@ QString Player::getLegsDesc()
     else if(val > 3 && val <= 5) { result += "У вас отчётливо видимые тонкие волосики на ногах."; }
     else { result += "У вас длинные выделяющиеся волосы на ногах."; }
 
-    if (isCheatsOn())
+    if (root->isCheats())
     {
         makeLink(result, "legHair");
     }

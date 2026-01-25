@@ -1,8 +1,9 @@
 #include "meadow.h"
 #include "../../menu/buttons.h"
 #include "../../Functions.h"
+#include "../../game.h"
 
-Meadow::Meadow(LocationHandler* ptr): Location(ptr) {}
+Meadow::Meadow(Game* ptr): root(ptr) {}
 
 void Meadow::show(QString arg)
 {
@@ -38,69 +39,69 @@ void Meadow::actionHandler(QString action)
 {
     if(action == "meadow")
     {
-        setImage(media(0));
-        setDesc(str(0));
-        if(gVEvent(mirainmeadow) == 1)
+        root->setImage(media(0));
+        root->setText(str(0));
+        if(root->vEvent(mirainmeadow) == 1)
         {
-            addText(str(1));
+            root->addText(str(1));
         }
-        if(gVEvent(meadow) == 3 && gVEvent(mirainmeadow) == 0)
+        if(root->vEvent(meadow) == 3 && root->vEvent(mirainmeadow) == 0)
         {
             int tmp = getRandInt(0,9);
-            if(gVEvent(Mira_no) == 0 && gVEvent(mirainmeadow) == 0 && getTemp() >= 20 && getSunWeather() >= 0)
+            if(root->vEvent(Mira_no) == 0 && root->vEvent(mirainmeadow) == 0 && root->getTemp() >= 20 && root->getSunWeather() >= 0)
             {
                 QString string;
-                if(gVEvent(mirasextimes) < 15 && tmp == 1)
+                if(root->vEvent(mirasextimes) < 15 && tmp == 1)
                     string = str(2);
-                if(gVQuest(miragopQW) >= 2 && tmp == 1)
+                if(root->vQuest(miragopQW) >= 2 && tmp == 1)
                     string = str(3);
-                if(gVQuest(miragopQW) >= 8 && tmp == 2)
+                if(root->vQuest(miragopQW) >= 8 && tmp == 2)
                     string = str(3);
-                if(gVQuest(miragopQW) >= 11 && tmp == 3)
+                if(root->vQuest(miragopQW) >= 11 && tmp == 3)
                     string = str(4);
-                if(gVQuest(miragopQW) >= 11 && tmp == 4)
+                if(root->vQuest(miragopQW) >= 11 && tmp == 4)
                     string = str(5);
-                if(gVQuest(miragopQW) >= 11 && tmp == 5)
+                if(root->vQuest(miragopQW) >= 11 && tmp == 5)
                     string = str(5);
-                if(gVQuest(miragopQW) >= 11 && tmp == 6)
+                if(root->vQuest(miragopQW) >= 11 && tmp == 6)
                     string = str(6);
-                if(gVQuest(miragopQW) >= 20 && tmp == 7)
+                if(root->vQuest(miragopQW) >= 20 && tmp == 7)
                     string = str(7);
-                if(gVQuest(miragopQW) >= 33 && tmp == 8)
+                if(root->vQuest(miragopQW) >= 33 && tmp == 8)
                     string = str(8);
-                if(gVQuest(miragopQW) >= 20 && tmp == 9)
+                if(root->vQuest(miragopQW) >= 20 && tmp == 9)
                     string = str(2);
                 if(!string.isEmpty())
-                    addText(str(9) + string + str(10));
+                    root->addText(str(9) + string + str(10));
             }
         }
         makeActBtn("to_gaddvor",act(0));
         int miratemp = getRandInt(1,5);
-        if(gVEvent(meadow) == 3 && gVEvent(mirainmeadow) == 0 && gVQuest(miragopQW) == 2 && getTemp() >= 15 && getSunWeather() >= 0)
-            startEvent(eMeadowEvent,"mira_mitka");
-        if(gVEvent(meadow) == 3 && gVEvent(Mira_no) == 0 && gVEvent(mirainmeadow) == 0 && gVQuest(miragopQW) == 33 && getTemp() >= 15 && getSunWeather() >= 0)
-            startEvent(eMeadowEvent, "mira_gang");
-        if(gVEvent(mitkasextimes) > 13 && gVEvent(mirasex) == 0 && gVQuest(miragopQW) < 11)
-            startEvent(eMeadowEvent, "mira_lesb_talk1");
-        if(gVEvent(mitkasextimes) > 13 && gVEvent(mirasex) == 1 && gVQuest(miragopQW) < 11 && miratemp == 1 && gVEvent(miraday) != getDay())
-            startEvent(eMeadowEvent, "mira_lesb_talk3");
-        if(gVEvent(mitkasextimes) > 13 && gVEvent(mirasex) == 1 && gVQuest(miragopQW) > 11 && gVEvent(lickmira) == 0)
-            startEvent(eMeadowEvent, "mira_lesb_talk2");
-        if(gVEvent(mirasex) == 2 && miratemp > 3 && gVEvent(miraday) != getDay() && gVQuest(miraQW) >= 15)
-            startEvent(eMeadowEvent, "mira_lesb");
+        if(root->vEvent(meadow) == 3 && root->vEvent(mirainmeadow) == 0 && root->vQuest(miragopQW) == 2 && root->getTemp() >= 15 && root->getSunWeather() >= 0)
+            root->startEvent(eMeadowEvent,"mira_mitka");
+        if(root->vEvent(meadow) == 3 && root->vEvent(Mira_no) == 0 && root->vEvent(mirainmeadow) == 0 && root->vQuest(miragopQW) == 33 && root->getTemp() >= 15 && root->getSunWeather() >= 0)
+            root->startEvent(eMeadowEvent, "mira_gang");
+        if(root->vEvent(mitkasextimes) > 13 && root->vEvent(mirasex) == 0 && root->vQuest(miragopQW) < 11)
+            root->startEvent(eMeadowEvent, "mira_lesb_talk1");
+        if(root->vEvent(mitkasextimes) > 13 && root->vEvent(mirasex) == 1 && root->vQuest(miragopQW) < 11 && miratemp == 1 && root->vEvent(miraday) != root->getDay())
+            root->startEvent(eMeadowEvent, "mira_lesb_talk3");
+        if(root->vEvent(mitkasextimes) > 13 && root->vEvent(mirasex) == 1 && root->vQuest(miragopQW) > 11 && root->vEvent(lickmira) == 0)
+            root->startEvent(eMeadowEvent, "mira_lesb_talk2");
+        if(root->vEvent(mirasex) == 2 && miratemp > 3 && root->vEvent(miraday) != root->getDay() && root->vQuest(miraQW) >= 15)
+            root->startEvent(eMeadowEvent, "mira_lesb");
     }
     if(action == "to_gaddvor")
     {
-        sVEvent(mirainmeadow,0);
-        changeLoc(lgaddvor,30);
+        root->vEvent(mirainmeadow) = 0;
+        root->changeLoc(lgaddvor,30);
     }
     if(action == "mirameadow")
     {
-        startEvent(eMeadowEvent,"mirameadow");
+        root->startEvent(eMeadowEvent,"mirameadow");
     }
     if(action == "Miroslava")
     {
-        startEvent(eMiroslava);
+        root->startEvent(eMiroslava);
     }
 }
 
@@ -109,7 +110,7 @@ void Meadow::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action, "meadow");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Meadow::actionHandler);
-    addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString Meadow::str(int id)

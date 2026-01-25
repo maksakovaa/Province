@@ -18,7 +18,7 @@ signals:
 public:
     explicit TabWidgetPlayer(QWidget* parent = nullptr);
     ~TabWidgetPlayer();
-    void setPtr(Player* ptr, LocationHandler* locHandlerPtr);
+    void setPtr(Game* ptr);
     void reload();
 private slots:
     void on_label_pers_desc_linkActivated(const QString &link);
@@ -26,17 +26,11 @@ private slots:
     void slotSchoolUpdate(const QString& link);
 private:
     Ui::TabWidgetPlayer *ui;
-    Player* m_player;
-    LocationHandler* locHandler;
+    Game* root;
     int currView{-1};
     //methods
     void connections();
     void setBarStyle();
-    int getVBody(Body param);
-    void updBodyVal(Body param, int val);
-    void setVBody(Body param,int val);
-    int getVSc(SC param);
-    void setVSc(SC param,int val);
     void loadStrings();
     void fillBodyDesc();
     void fillCharacteristics();

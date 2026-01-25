@@ -2,11 +2,10 @@
 #define BATHROOM_H
 
 #include <QObject>
-#include "../../items/cloth.h"
 #include "../location.h"
 #include "bathenums.h"
 
-class LocationHandler;
+class Game;
 class Beach;
 
 class BathRoom: public Location
@@ -14,7 +13,7 @@ class BathRoom: public Location
     Q_OBJECT
     friend Beach;
 public:
-    BathRoom(LocationHandler* ptr);
+    BathRoom(Game* ptr);
     void show(QString arg = "") override;
     LocId getLocId() override;
     LocId getParId() override;
@@ -42,6 +41,8 @@ private:
     void shower();
     void noShampoo();
     void voyer();
+private:
+    Game* root;
 //members
     int bath_lock;
     int no_bath;

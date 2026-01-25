@@ -1,10 +1,10 @@
 #include "grandma.h"
-#include "../eventhandler.h"
+#include "../../game.h"
 #include "../../menu/buttons.h"
 #include "../../Functions.h"
 #include "../../locations/common/bathroom.h"
 
-Grandma::Grandma(EventHandler* ptr): root(ptr) {}
+Grandma::Grandma(Game* ptr): root(ptr) {}
 
 void Grandma::start(QString arg)
 {
@@ -20,8 +20,8 @@ void Grandma::actionHandler(QString action)
     if(action == "grandma")
     {
         root->incTime(2);
-        if(root->gVEvent(grandmaknowsick) == 1 && root->vSick(sick) == 0)
-            root->sVEvent(grandmaknowsick,0);
+        if(root->vEvent(grandmaknowsick) == 1 && root->vSick(sick) == 0)
+            root->vEvent(grandmaknowsick) = 0;
         if(root->getCurLoc() == lgadhouse)
         {
             if(root->getHour() == 6)
@@ -54,168 +54,168 @@ void Grandma::actionHandler(QString action)
             root->setImage(media(8));
         else
             root->setImage(media(9));
-        root->setDesc(str(0));
-        int relation = root->gVQuest(grandmaQW);
+        root->setText(str(0));
+        int relation = root->vQuest(grandmaQW);
         if(relation < 20)
-            root->addDesc(str(1));
+            root->addText(str(1));
         else if(relation >= 20 && relation < 40)
-            root->addDesc(str(2));
+            root->addText(str(2));
         else if(relation >= 40 && relation < 60)
-            root->addDesc(str(3));
+            root->addText(str(3));
         else if(relation >= 60 && relation < 80)
-            root->addDesc(str(4));
+            root->addText(str(4));
         else if(relation >= 80)
-            root->addDesc(str(5));
+            root->addText(str(5));
 
         if(relation < 0)
-            root->sVQuest(grandmaQW,0);
+            root->vQuest(grandmaQW) = 0;
         if(relation > 100)
-            root->sVQuest(grandmaQW,100);
+            root->vQuest(grandmaQW) = 100;
 
         if(root->isNude())
         {
-            root->sVEvent(grandma_notalk,1);
-            root->uVQuest(grandmaQW,-10);
-            if(root->gVEvent(grandmaknownude) > 0)
-                root->addDesc(str(6));
-            if(root->gVEvent(grandmaknownude) == 0)
+            root->vEvent(grandma_notalk) =1;
+            root->vQuest(grandmaQW) -= 10;
+            if(root->vEvent(grandmaknownude) > 0)
+                root->addText(str(6));
+            if(root->vEvent(grandmaknownude) == 0)
             {
-                root->uVEvent(grandmaknownude,1);
-                root->addDesc(str(7));
+                root->vEvent(grandmaknownude) += 1;
+                root->addText(str(7));
             }
         }
         if(root->vStatus(cumLips) + root->vStatus(cumFace) + root->vStatus(cumFrot) > 0)
         {
-            root->sVEvent(grandma_notalk,1);
-            root->uVQuest(grandmaQW,-10);
-            if(root->gVQuest(grandmaQW) < 40)
+            root->vEvent(grandma_notalk) =1;
+            root->vQuest(grandmaQW) -= 10;
+            if(root->vQuest(grandmaQW) < 40)
             {
-                root->addDesc(str(8));
-                if(root->gVEvent(grandma_know) == 0)
+                root->addText(str(8));
+                if(root->vEvent(grandma_know) == 0)
                 {
-                    root->sVEvent(grandma_know,1);
-                    root->addDesc(str(9));
+                    root->vEvent(grandma_know) = 1;
+                    root->addText(str(9));
                 }
-                else if(root->gVEvent(grandma_know) == 1)
-                    root->addDesc(str(10));
+                else if(root->vEvent(grandma_know) == 1)
+                    root->addText(str(10));
             }
             else
             {
-                if(root->gVEvent(grandma_know) == 0)
+                if(root->vEvent(grandma_know) == 0)
                 {
-                    root->sVEvent(grandma_know,1);
-                    root->addDesc(str(11));
+                    root->vEvent(grandma_know) =1;
+                    root->addText(str(11));
                 }
                 else
-                    root->addDesc(str(12));
+                    root->addText(str(12));
             }
         }
         if(root->vAddict(alko) > 0 && root->getAge() < 20)
         {
-            root->sVEvent(grandma_notalk,1);
+            root->vEvent(grandma_notalk) =1;
             if(root->vAddict(alko) < 3)
             {
-                root->uVQuest(grandmaQW,-1);
-                root->addDesc(str(13));
+                root->vQuest(grandmaQW) -= 1;
+                root->addText(str(13));
             }
             else if(root->vAddict(alko) >= 3 && root->vAddict(alko) < 6)
             {
-                root->uVQuest(grandmaQW,-5);
-                root->addDesc(str(14));
+                root->vQuest(grandmaQW) -= 5;
+                root->addText(str(14));
             }
             else if(root->vAddict(alko) >= 6)
             {
-                root->uVQuest(grandmaQW,-5);
+                root->vQuest(grandmaQW) -= 5;
                 root->incTime(20);
                 ((BathRoom*)root->getLocPtr(lbathroom))->cleanMe();
-                root->addDesc(str(15));
+                root->addText(str(15));
             }
         }
-        if(root->gVEvent(grandmahelpday) != root->vStatus(daystart) && root->gVEvent(grandma_notalk) == 0 && !root->isNude() && root->gVEvent(grandmaknowsick) == 0 && root->vAddict(alko) == 0)
+        if(root->vEvent(grandmahelpday) != root->vStatus(daystart) && root->vEvent(grandma_notalk) == 0 && !root->isNude() && root->vEvent(grandmaknowsick) == 0 && root->vAddict(alko) == 0)
             makeActBtn("help_grandma",act(0));
-        if(root->gVEvent(grandmatalkgad) == 0 && root->gVEvent(grandma_notalk) == 0 && !root->isNude() && root->gVEvent(grandmaknowsick) == 0 && root->vAddict(alko) == 0)
+        if(root->vEvent(grandmatalkgad) == 0 && root->vEvent(grandma_notalk) == 0 && !root->isNude() && root->vEvent(grandmaknowsick) == 0 && root->vAddict(alko) == 0)
             makeActBtn("talk_gadukino",act(1));
         if(root->getCurLoc() == lgadmarket && root->isMesec() && root->getItmCount(iTampon) < 5 && root->vAddict(alko) == 0)
             makeActBtn("buy_tampons",act(3));
-        if(root->vSick(sick) > 0 && root->gVEvent(grandmaknowsick) == 0 && root->vAddict(alko) == 0)
+        if(root->vSick(sick) > 0 && root->vEvent(grandmaknowsick) == 0 && root->vAddict(alko) == 0)
             makeActBtn("say_ill",act(5));
-        if(root->gVEvent(grandmatalk) != root->getHour() && root->gVEvent(grandma_notalk) == 0 && !root->isNude() && root->vAddict(alko) == 0)
+        if(root->vEvent(grandmatalk) != root->getHour() && root->vEvent(grandma_notalk) == 0 && !root->isNude() && root->vAddict(alko) == 0)
             makeActBtn("talk",act(6));
-        if(root->gVEvent(grandmastory) != root->vStatus(daystart) && root->gVEvent(grandma_notalk) == 0 && !root->isNude() && root->vAddict(alko) == 0)
+        if(root->vEvent(grandmastory) != root->vStatus(daystart) && root->vEvent(grandma_notalk) == 0 && !root->isNude() && root->vAddict(alko) == 0)
             makeActBtn("talk_story",act(7));
         makeActBtn("exit",act(4));
     }
     if(action == "help_grandma")
     {
-        root->sVEvent(grandmahelpday,root->vStatus(daystart));
+        root->vEvent(grandmahelpday) = root->vStatus(daystart);
         root->startEvent(eGrandMaHelp);
     }
     if(action == "talk_gadukino")
     {
-        root->sVEvent(grandmatalkgad,1);
+        root->vEvent(grandmatalkgad) = 1;
         root->incTime(10);
-        root->uVStatus(mood,5);
-        root->uVQuest(grandmaQW,1);
+        root->vStatus(mood) += 5;
+        root->vQuest(grandmaQW) += 1;
         root->setImage(media(9));
-        root->setDesc(str(16));
+        root->setText(str(16));
         makeActBtn("back_to_loc",act(2));
     }
     if(action == "buy_tampons")
     {
         root->incTime(5);
-        root->uVStatus(mood,5);
-        root->uVQuest(grandmaQW,1);
-        if(root->gVQuest(grandmaQW) >= 20)
+        root->vStatus(mood) += 5;
+        root->vQuest(grandmaQW) += 1;
+        if(root->vQuest(grandmaQW) >= 20)
             root->addItem(iTampon,20);
         root->setImage(media(9));
-        root->setDesc(str(17));
-        if(root->gVQuest(grandmaQW) < 20)
-            root->setDesc(str(18));
-        if(root->gVQuest(grandmaQW) >= 20 && root->gVQuest(grandmaQW) < 40)
-            root->setDesc(str(19));
-        if(root->gVQuest(grandmaQW) >= 40)
-            root->setDesc(str(20));
+        root->setText(str(17));
+        if(root->vQuest(grandmaQW) < 20)
+            root->setText(str(18));
+        if(root->vQuest(grandmaQW) >= 20 && root->vQuest(grandmaQW) < 40)
+            root->setText(str(19));
+        if(root->vQuest(grandmaQW) >= 40)
+            root->setText(str(20));
         makeActBtn("back_to_loc",act(4));
     }
     if(action == "say_ill")
     {
         root->incTime(5);
-        root->uVStatus(mood,5);
-        root->uVQuest(grandmaQW,1);
-        root->sVEvent(grandmaknowsick,1);
+        root->vStatus(mood) += 5;
+        root->vQuest(grandmaQW) += 1;
+        root->vEvent(grandmaknowsick) = 1;
         if(root->getItmCount(iAntibiotics) == 0)
             root->addItem(iAntibiotics,10);
         root->setImage(media(9));
-        root->setDesc(str(21));
+        root->setText(str(21));
         makeActBtn("gadhouse",act(4));
     }
     if(action == "talk")
     {
-        root->sVEvent(grandmatalk,root->getHour());
+        root->vEvent(grandmatalk) = root->getHour();
         root->setImage(media(9));
         if(root->getCurLoc() == lgadhouse || root->getCurLoc() == lgadukino || root->getCurLoc() == lgadmarket)
         {
             root->incTime(10);
-            root->uVStatus(mood,getRandInt(5,10));
-            if(root->gVQuest(grandmaQW) < 60)
+            root->vStatus(mood) += getRandInt(5,10);
+            if(root->vQuest(grandmaQW) < 60)
             {
-                root->uVQuest(grandmaQW,1);
-                root->setDesc(str(22));
+                root->vQuest(grandmaQW) += 1;
+                root->setText(str(22));
             }
-            if(root->gVQuest(grandmaQW) >= 60)
-                root->setDesc(str(23));
+            if(root->vQuest(grandmaQW) >= 60)
+                root->setText(str(23));
         }
         else
         {
             root->incTime(1);
-            root->uVStatus(mood,-5);
-            root->setDesc(str(24));
+            root->vStatus(mood) -= 5;
+            root->setText(str(24));
         }
         makeActBtn("back_to_loc",act(2));
     }
     if(action == "talk_story")
     {
-        root->sVEvent(grandmastory,root->vStatus(daystart));
+        root->vEvent(grandmastory) = root->vStatus(daystart);
         if(root->getCurLoc() == lgadhouse)
             root->setImage(media(10));
         else
@@ -223,41 +223,41 @@ void Grandma::actionHandler(QString action)
         if(root->getCurLoc() == lgadhouse || root->getCurLoc() == lgadukino)
         {
             root->incTime(20);
-            root->uVStatus(mood,getRandInt(5,10));
+            root->vStatus(mood) += getRandInt(5,10);
             int tmp = getRandInt(0,7);
-            if(root->gVQuest(grandmaQW) < 80)
-                root->uVQuest(grandmaQW,1);
-            root->setDesc(str(25));
+            if(root->vQuest(grandmaQW) < 80)
+                root->vQuest(grandmaQW) += 1;
+            root->setText(str(25));
             if(tmp == 0)
-                root->addDesc(str(26));
+                root->addText(str(26));
             else if(tmp == 1)
-                root->addDesc(str(27));
+                root->addText(str(27));
             else if(tmp == 2)
-                root->addDesc(str(28));
+                root->addText(str(28));
             else if(tmp == 3)
-                root->addDesc(str(29));
+                root->addText(str(29));
             else if(tmp == 4)
-                root->addDesc(str(30));
+                root->addText(str(30));
             else if(tmp == 5)
-                root->addDesc(str(31));
+                root->addText(str(31));
             else if(tmp == 6)
-                root->addDesc(str(32));
+                root->addText(str(32));
             else if(tmp == 7)
-                root->addDesc(str(33));
+                root->addText(str(33));
         }
         else
         {
             root->incTime(1);
-            root->uVStatus(mood,-5);
-            root->setDesc(str(34));
+            root->vStatus(mood)-=5;
+            root->setText(str(34));
         }
         makeActBtn("back_to_loc",act(2));
     }
     if(action == "exit")
     {
-        if(root->vAddict(alko) < 6 && root->gVEvent(grandmaknowsick) == 0 && !root->isNude())
+        if(root->vAddict(alko) < 6 && root->vEvent(grandmaknowsick) == 0 && !root->isNude())
             actionHandler("back_to_loc");
-        if(root->vAddict(alko) < 6 && root->gVEvent(grandmaknowsick) == 1 || root->isNude())
+        if(root->vAddict(alko) < 6 && root->vEvent(grandmaknowsick) == 1 || root->isNude())
             actionHandler("gadhouse");
         if(root->vAddict(alko) >= 6)
         {
@@ -272,7 +272,7 @@ void Grandma::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action,"grandma");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Grandma::actionHandler);
-    root->addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString Grandma::str(int id)

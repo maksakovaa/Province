@@ -10,7 +10,7 @@ class Bed: public GameObj
     Q_OBJECT
     friend ObjectHandler;
 public:
-    Bed(ObjectHandler* ptr);
+    Bed(Game* ptr);
     ~Bed();
     QString getName() override;
     QString getImage() override;
@@ -32,7 +32,7 @@ private:
     void sleepInBed();
     void relaxInBed();
     void bedDreams();
-    ObjectHandler* root;
+    Game* root;
     QString m_name;
     QString m_desc;
     BedActs current;

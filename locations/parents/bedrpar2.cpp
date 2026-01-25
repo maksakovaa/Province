@@ -1,9 +1,9 @@
 #include "bedrpar2.h"
 #include "../../menu/buttons.h"
-#include "../locationhandler.h"
 #include "../../Functions.h"
+#include "../../game.h"
 
-BedrPar2::BedrPar2(LocationHandler* ptr): Location(ptr) {}
+BedrPar2::BedrPar2(Game* ptr):  root(ptr) {}
 
 void BedrPar2::show(QString arg)
 {
@@ -43,7 +43,7 @@ void BedrPar2::makeActBtn(QString act, QString actName)
     QActButton* btn = new QActButton(act, "BedrPar2");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &BedrPar2::actionHandler);
-    addActBtn(btn);
+    root->addActions(btn);
 }
 
 void BedrPar2::actionHandler(QString action)
@@ -64,28 +64,28 @@ void BedrPar2::actionHandler(QString action)
         wardrobe_search();
     if(action == "kamasutra_page_back")
     {
-        uVSex(kamasutra_page,-1);
+        root->vSex(kamasutra_page) -=1;
         read_book();
     }
     if(action == "kamasutra_page_next")
     {
-        uVSex(kamasutra_page,1);
+        root->vSex(kamasutra_page) +=1;
         read_book();
     }
     if(action == "korrPar")
-        changeLoc(lkorrpar,0);
+        root->changeLoc(lkorrpar,0);
     if(action == "bedrPar2")
-        changeLoc(lbedrpar2,0);
+        root->changeLoc(lbedrpar2,0);
     if(action == "selfplay")
-        startSelfPlay();
+        root->selfPlayStart();
     if(action == "still_condoms")
     {
-        incTime(getRandInt(5,7));
-        addItem(iCondoms,getRandInt(1,3));
-        sVSex(condomday,getDay());
-        sVSex(condomProver,0);
-        setImage(media(getRandInt(3,4)));
-        setDesc(str(5));
+        root->incTime(getRandInt(5,7));
+        root->addItem(iCondoms,getRandInt(1,3));
+        root->vSex(condomday) = root->getDay();
+        root->vSex(condomProver) =0;
+        root->setImage(media(getRandInt(3,4)));
+        root->setText(str(5));
         if(getRandInt(1,7) != 1)
             makeActBtn("korrPar",act(17));
         else
@@ -93,19 +93,19 @@ void BedrPar2::actionHandler(QString action)
     }
     if(action == "father_notations")
     {
-        setImage(media(5));
-        setDesc(str(32));
-        incTime(getRandInt(10,20));
+        root->setImage(media(5));
+        root->setText(str(32));
+        root->incTime(getRandInt(10,20));
         makeActBtn("father_notations_end",act(0));
     }
     if(action == "father_notations_end")
     {
-        changeLoc(lkorrpar,getRandInt(10,20));
+        root->changeLoc(lkorrpar,getRandInt(10,20));
     }
     if(action == "open_album")
     {
         i = 0;
-        uVSex(xgb_viewalbum,1);
+        root->vSex(xgb_viewalbum) +=1;
         view_album();
     }
     if(action == "view_album_next")
@@ -121,21 +121,21 @@ QString BedrPar2::str(int id)
     str[1] = "На кровати спят мать и отчим.";
     str[2] = "На кровати спит ваша мать.";
     str[3] = "Комната, в которой живут родители. В центре стоит двухспальная кровать и ";
-    if((getHour() > 8 && getHour() < 16) || (gVEvent(family_trip_month) != getMonth() && (getWeekNum() == 6 || getWeekNum() == 0)))
+    if((root->getHour() > 8 && root->getHour() < 16) || (root->vEvent(family_trip_month) != root->getMonth() && (root->getWeek() == 6 || root->getWeek() == 0)))
         str[3] += "<a href='parents_wardrobe'>большой шкаф</a>";
     else
         str[3] += "большой шкаф";
     str[3] += " у стены.";
     str[4] = "На кровати лежит какая-то <a href='kamasutra'>книга</a>";
-    str[5] = "Вы незаметно достаёте из родительского схрона несколько презервативов. Теперь их у вас " + intQStr(getItemCount(iCondoms)) + " штук.";
+    str[5] = "Вы незаметно достаёте из родительского схрона несколько презервативов. Теперь их у вас " + intQStr(root->getItmCount(iCondoms)) + " штук.";
     str[6] = "Вы недавно уже брали презервативы из родительского схрона. Если их часто таскать, то родители могут что-то заподозрить.";
     str[7] = "На обложке написано \"Камасутра\"";
     str[8] = "Пора валить, а то родители застукают...";
-    if(gVSex(kamasutra_page) < 1)
+    if(root->vSex(kamasutra_page) < 1)
         str[9] = "<center>";
     else
         str[9] = "<center><a href=kamasutra_page_back>Предыдущая страница</a>";
-    if(gVSex(kamasutra_page) > 45)
+    if(root->vSex(kamasutra_page) > 45)
         str[9] += "</center>";
     else
         str[9] += "<a href=kamasutra_page_next'>Следующая страница</a></center>";
@@ -230,24 +230,24 @@ QString BedrPar2::media(int id)
 void BedrPar2::main()
 {
     makeActBtn("korrPar",act(5));
-    int hour = getHour();
-    if(hour == 21 && gVEvent(father_horny) >= 70 && gVEvent(family_trip) == 0)
-        startEvent(eSeeParentSex);
-    incTime(1);
-    if((hour >= 21 || hour < 6) && gVEvent(family_trip) == 0)
+    int hour = root->getHour();
+    if(hour == 21 && root->vEvent(father_horny) >= 70 && root->vEvent(family_trip) == 0)
+        root->startEvent(eSeeParentSex);
+    root->incTime(1);
+    if((hour >= 21 || hour < 6) && root->vEvent(family_trip) == 0)
     {
-        int week = getWeekNum();
+        int week = root->getWeek();
         if(week != 1)
         {
-            setImage(media(0));
-            setDesc(str(1));
+            root->setImage(media(0));
+            root->setText(str(1));
         }
         else
         {
-            if(gVEvent(parentSexDay) == getDay())
+            if(root->vEvent(parentSexDay) == root->getDay())
             {
-                setImage(media(1));
-                setDesc(str(2));
+                root->setImage(media(1));
+                root->setText(str(2));
             }
             else
                 mom_selfplay();
@@ -255,58 +255,58 @@ void BedrPar2::main()
     }
     else
     {
-        setImage(media(2));
-        setDesc(str(3));
+        root->setImage(media(2));
+        root->setText(str(3));
     }
-    startEvent(eFamily, "mother_sheduler");
-    if(gNPC(NatalyaLebedeva).location == lbedrpar2 && (getClothGroup() <= swimsuit || gVAddict(alko) >= 6))
+    root->startEvent(eFamily, "mother_sheduler");
+    if(root->gNPC(mother).location == lbedrpar2 && (root->getClothGroup() <= swimsuit || root->vAddict(alko) >= 6))
     {
-        startEvent(eMother);
+        root->startEvent(eMother);
         return;
     }
-    if(hour > 7 && hour < 21 && gNPC(NatalyaLebedeva).location != lbedrpar2)
+    if(hour > 7 && hour < 21 && root->gNPC(mother).location != lbedrpar2)
     {
-        if(gVSex(kamasutra_day) != getDay())
-            addText(str(4));
-        if(gVSex(condomday) != getDay())
+        if(root->vSex(kamasutra_day) != root->getDay())
+            root->addText(str(4));
+        if(root->vSex(condomday) != root->getDay())
         {
-            if(gVSex(condomProver) >= 3)
+            if(root->vSex(condomProver) >= 3)
             {
-                sVSex(condomday, getDay() - 4);
+                root->vSex(condomday) = root->getDay() - 4;
                 makeActBtn("still_condoms",act(4));
             }
             else
-                addText(str(6));
+                root->addText(str(6));
         }
     }
 }
 
 void BedrPar2::kamasutra()
 {
-    incTime(1);
-    sVSex(kamasutra_day,getDay());
-    sVSex(kamasutra_page,0);
-    setImage(media(6));
-    setDesc(str(7));
+    root->incTime(1);
+    root->vSex(kamasutra_day) = root->getDay();
+    root->vSex(kamasutra_page) = 0;
+    root->setImage(media(6));
+    root->setText(str(7));
     makeActBtn("read_book",act(2));
     makeActBtn("bedrPar2",act(3));
 }
 
 void BedrPar2::momtoy_play()
 {
-    sVSex(dildoHand,10);
-    sVSex(selfmomtoyplay,1);
-    setImage(media(13));
-    setDesc(str(31));
-    if(gVStatus(horny) >= 70)
+    root->vSex(dildoHand) = 10;
+    root->vSex(selfmomtoyplay) = 1;
+    root->setImage(media(13));
+    root->setText(str(31));
+    if(root->vStatus(horny) >= 70)
         makeActBtn("selfplay",act(12));
     makeActBtn("bedrPar2",act(10));
 }
 
 void BedrPar2::xgb_album()
 {
-    setImage(media(19));
-    setDesc(str(25));
+    root->setImage(media(19));
+    root->setText(str(25));
     makeActBtn("open_album",act(15));
     makeActBtn("bedrPar2",act(14));
 }
@@ -322,9 +322,9 @@ void BedrPar2::view_album()
         maxval = num[n] - 1;
         i = getRandInt(0, maxval);
     }
-    setImage(media(20) + string + intQStr(i) + ",jpg");
-    incTime(1);
-    uVStatus(horny,getRandInt(1,3));
+    root->setImage(media(20) + string + intQStr(i) + ",jpg");
+    root->incTime(1);
+    root->vStatus(horny) += getRandInt(1,3);
     if(i < maxval)
         makeActBtn("view_album_next",act(16));
     makeActBtn("view_album_end",act(14));
@@ -335,30 +335,30 @@ void BedrPar2::view_album_end()
     i = 0;
     string = "";
     maxval = 0;
-    if(gVSex(xgb_viewalbum) == 1)
+    if(root->vSex(xgb_viewalbum) == 1)
     {
-        setImage(media(21));
-        setDesc(str(26));
+        root->setImage(media(21));
+        root->setText(str(26));
     }
     else
     {
-        setImage(media(22 + gVStatus(shamelessFlag)));
-        setDesc(str(27 + gVStatus(shamelessFlag)));
+        root->setImage(media(22 + root->vStatus(shamelessFlag)));
+        root->setText(str(27 + root->vStatus(shamelessFlag)));
     }
     makeActBtn("bedrPar2",act(3));
 }
 
 void BedrPar2::read_book()
 {
-    uVStatus(horny,2);
-    incTime(3);
-    setImage(media(7) + intQStr(gVSex(kamasutra_page)) + ".jpg");
-    if((getHour() == 20 && getMin() > 50) || getHour() == 21)
-        setDesc(str(8));
+    root->vStatus(horny) += 2;
+    root->incTime(3);
+    root->setImage(media(7) + intQStr(root->vSex(kamasutra_page)) + ".jpg");
+    if((root->getHour() == 20 && root->getMin() > 50) || root->getHour() == 21)
+        root->setText(str(8));
     else
     {
-        setDesc(str(9));
-        if(gVStatus(horny) >= 60 && getWeekNum() == 6 && gVEvent(family_trip) == 1)
+        root->setText(str(9));
+        if(root->vStatus(horny) >= 60 && root->getWeek() == 6 && root->vEvent(family_trip) == 1)
             makeActBtn("selfplay",act(6));
     }
     makeActBtn("bedrPar2",act(13));
@@ -366,29 +366,29 @@ void BedrPar2::read_book()
 
 void BedrPar2::mom_selfplay()
 {
-    rendVideoPage();
-    setVideo(media(getRandInt(14,18)),960,540);
-    setDesc(str(17));
-    if(gVSC(voyeurism) > 0)
-        addText(str(18));
+    root->rendVideoPage(this);
+    root->setVideo(media(getRandInt(14,18)),960,540);
+    root->setText(str(17));
+    if(root->vStatistics(voyeurism) > 0)
+        root->addText(str(18));
     else
-        addText(str(19));
-    addText(str(20));
-    if(gVSex(momSelfplay) == 0)
-        addText(str(21));
+        root->addText(str(19));
+    root->addText(str(20));
+    if(root->vSex(momSelfplay) == 0)
+        root->addText(str(21));
     else
-        addText(str(22));
-    sVSex(momSelfplay,1);
-    sVEvent(parentSexDay,getDay());
-    uVStatus(horny,getRandInt(10,20));
-    incTime(getRandInt(2,5));
+        root->addText(str(22));
+    root->vSex(momSelfplay) = 1;
+    root->vEvent(parentSexDay) = root->getDay();
+    root->vStatus(horny) += getRandInt(10,20);
+    root->incTime(getRandInt(2,5));
     makeActBtn("korrPar",act(11));
 }
 
 void BedrPar2::parents_wardrobe()
 {
-    setImage(media(8));
-    setDesc(str(10));
+    root->setImage(media(8));
+    root->setText(str(10));
     makeActBtn("wardrobe_search",act(7));
     makeActBtn("bedrPar2",act(8));
 }
@@ -397,20 +397,20 @@ void BedrPar2::wardrobe_search()
 {
     if(getRandInt(1,100) > 75)
     {
-        setImage(media(getRandInt(9,12)));
-        setDesc(str(getRandInt(11,13)));
+        root->setImage(media(getRandInt(9,12)));
+        root->setText(str(getRandInt(11,13)));
     }
     else
     {
-        setImage(media(13));
-        setDesc(str(getRandInt(14,16)));
-        if(gVEvent(xgb_findalbum) == 0)
+        root->setImage(media(13));
+        root->setText(str(getRandInt(14,16)));
+        if(root->vEvent(xgb_findalbum) == 0)
         {
-            sVEvent(xgb_findalbum,1);
-            addText(str(23));
+            root->vEvent(xgb_findalbum) = 1;
+            root->addText(str(23));
         }
         else
-            addText(str(24));
+            root->addText(str(24));
     }
     makeActBtn("bedrPar2",act(9));
 }

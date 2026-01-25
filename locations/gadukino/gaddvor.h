@@ -8,7 +8,7 @@ class Gaddvor: public Location
 {
     Q_OBJECT
 public:
-    Gaddvor(LocationHandler* ptr);
+    Gaddvor(Game* ptr);
     void show(QString arg = "") override;
     LocId getLocId() override;
     LocId getParId() override;
@@ -23,6 +23,7 @@ private:
     QString media(int id);
 private:
     int mira_temp{0};
+    Game* root;
 };
 
 #endif // GADDVOR_H

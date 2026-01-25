@@ -2,12 +2,12 @@
 #define GRANDMAHELP_H
 
 #include "../event.h"
-class EventHandler;
+class Game;
 
 class GrandmaHelp: public Event
 {
 public:
-    GrandmaHelp(EventHandler* ptr);
+    GrandmaHelp(Game* ptr);
     void start(QString arg = "") override;
     void makeActBtn(QString action, QString actName);
 private slots:
@@ -18,7 +18,7 @@ private:
     QString media(int id);
     void fnGrandmaHelping();
 private:
-    EventHandler* root;
+    Game* root;
 };
 
 #endif // GRANDMAHELP_H

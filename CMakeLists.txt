@@ -36,7 +36,7 @@ qt_add_executable(Game
     map/sceneviewer.h map/sceneviewer.cpp
     map/mapform.h map/mapform.cpp map/mapform.ui
 
-    locations/location.h locations/location.cpp
+    locations/location.h
     locations/locationhandler.h locations/locationhandler.cpp
     locations/location_headers.h
     locations/loc_enums.h
@@ -145,6 +145,10 @@ qt_add_executable(Game
     objects/bookform.h objects/bookform.cpp objects/bookform.ui
     npc/npc_editor.h npc/npc_editor.cpp
     locations/parents/bedrpar2.h locations/parents/bedrpar2.cpp
+    player/drugs.h player/drugs.cpp
+    game.h game.cpp
+    locations/parents/sitrpar.h locations/parents/sitrpar.cpp
+    locations/parents/kuhrpar.h locations/parents/kuhrpar.cpp
 )
 
 target_include_directories(Game BEFORE PRIVATE ./map ./menu ./player)

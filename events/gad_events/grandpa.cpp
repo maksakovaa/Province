@@ -1,9 +1,9 @@
 #include "grandpa.h"
 #include "../../menu/buttons.h"
-#include "../eventhandler.h"
+#include "../../game.h"
 #include "../../Functions.h"
 
-Grandpa::Grandpa(EventHandler* ptr): root(ptr) {}
+Grandpa::Grandpa(Game* ptr): root(ptr) {}
 
 void Grandpa::start(QString arg)
 {
@@ -15,8 +15,8 @@ void Grandpa::actionHandler(QString action)
     if(action == "grandpa")
     {
         root->incTime(2);
-        if(root->gVEvent(grandpatalkday) != root->vStatus(daystart))
-            root->sVEvent(grandpatalk,0);
+        if(root->vEvent(grandpatalkday) != root->vStatus(daystart))
+            root->vEvent(grandpatalk) = 0;
         if(root->getCurLoc() == lgadgarden)
         {
             if(root->getMonth() == 5 || root->getMonth() == 9)
@@ -32,89 +32,89 @@ void Grandpa::actionHandler(QString action)
             root->setImage(media(4));
         else if(root->getCurLoc() == lgadukino)
         {
-            if(root->getWeekNum() == 6)
+            if(root->getWeek() == 6)
                 root->setImage(media(5));
             else
                 root->setImage(media(6));
         }
         else
             root->setImage(media(7));
-        root->setDesc(str(0));
-        int val = root->gVQuest(grandpaQW);
+        root->setText(str(0));
+        int val = root->vQuest(grandpaQW);
         if(val < 20)
-            root->addDesc(str(1));
+            root->addText(str(1));
         if(val >= 20 && val < 40)
-            root->addDesc(str(2));
+            root->addText(str(2));
         if(val >= 40 && val < 60)
-            root->addDesc(str(3));
+            root->addText(str(3));
         if(val >= 60 && val < 80)
-            root->addDesc(str(4));
+            root->addText(str(4));
         if(val >= 80)
-            root->addDesc(str(5));
+            root->addText(str(5));
         if(val < 0)
-            root->sVQuest(grandpaQW,0);
+            root->vQuest(grandpaQW) =0;
         if(val > 100)
-            root->sVQuest(grandpaQW,100);
-        if(root->gVJob(go_in_boletus) == 1)
-            root->addDesc(str(6));
-        if(root->gVJob(go_in_bilberry) == 1)
-            root->addDesc(str(7));
-        if(root->gVJob(go_in_boletus_bilberry) == 1)
-            root->addDesc(str(8));
+            root->vQuest(grandpaQW) = 100;
+        if(root->vJob(go_in_boletus) == 1)
+            root->addText(str(6));
+        if(root->vJob(go_in_bilberry) == 1)
+            root->addText(str(7));
+        if(root->vJob(go_in_boletus_bilberry) == 1)
+            root->addText(str(8));
         if(root->isNude())
         {
-            root->sVEvent(grandpa_notalk,1);
-            root->uVQuest(grandpaQW,-5);
-            root->sVEvent(grandpaknownude,1);
-            root->setDesc(str(9));
+            root->vEvent(grandpa_notalk) = 1;
+            root->vQuest(grandpaQW)-= 5;
+            root->vEvent(grandpaknownude) = 1;
+            root->setText(str(9));
         }
         if(root->vStatus(cumFace) > 0 || root->vStatus(cumFrot) > 0)
         {
-            root->sVEvent(grandpa_notalk,1);
-            root->uVQuest(grandpaQW,-10);
-            if(root->gVQuest(grandpaQW) < 40)
+            root->vEvent(grandpa_notalk) = 1;
+            root->vQuest(grandpaQW)-= 10;
+            if(root->vQuest(grandpaQW) < 40)
             {
-                root->setDesc(str(10));
-                if(root->gVEvent(grandpa_know) == 0)
+                root->setText(str(10));
+                if(root->vEvent(grandpa_know) == 0)
                 {
-                    root->sVEvent(grandpa_know,1);
-                    root->setDesc(str(11));
+                    root->vEvent(grandpa_know) =1;
+                    root->setText(str(11));
                 }
                 else
-                    root->setDesc(str(12));
+                    root->setText(str(12));
             }
             else
-                root->setDesc(str(13));
+                root->setText(str(13));
 
         }
         if(root->vAddict(alko) > 0 && root->getAge() < 20)
         {
             if(root->vAddict(alko) < 3)
-                root->setDesc(str(14));
+                root->setText(str(14));
             if(root->vAddict(alko) >= 3 && root->vAddict(alko) < 6)
             {
-                root->uVQuest(grandpaQW,-1);
-                root->sVEvent(grandpa_notalk,1);
-                root->setDesc(str(15));
+                root->vQuest(grandpaQW)-=1;
+                root->vEvent(grandpa_notalk) =1;
+                root->setText(str(15));
             }
             if(root->vAddict(alko) >= 6)
             {
-                root->uVQuest(grandpaQW,-5);
-                root->sVEvent(grandpa_notalk,1);
-                root->setDesc(str(16));
+                root->vQuest(grandpaQW)-=5;
+                root->vEvent(grandpa_notalk) =1;
+                root->setText(str(16));
             }
         }
-        if(root->gVEvent(grandpahelpday) != root->vStatus(daystart) && !root->isNude() && root->gVEvent(grandpa_notalk) == 0 && root->gVEvent(grandmaknowsick) == 0 && root->vAddict(alko) < 3)
+        if(root->vEvent(grandpahelpday) != root->vStatus(daystart) && !root->isNude() && root->vEvent(grandpa_notalk) == 0 && root->vEvent(grandmaknowsick) == 0 && root->vAddict(alko) < 3)
             makeActBtn("give_help",act(0));
-        if(root->gVEvent(grandpatalkforest) == 0 && root->gVEvent(grandpa_notalk) == 0 && !root->isNude() && root->vAddict(alko) < 3)
+        if(root->vEvent(grandpatalkforest) == 0 && root->vEvent(grandpa_notalk) == 0 && !root->isNude() && root->vAddict(alko) < 3)
             makeActBtn("ask_forest",act(1));
-        if(root->getHour() >= root->gVEvent(grandpatalk) + 3 && root->gVEvent(grandpa_notalk) == 0 && !root->isNude() && root->vAddict(alko) < 3)
+        if(root->getHour() >= root->vEvent(grandpatalk) + 3 && root->vEvent(grandpa_notalk) == 0 && !root->isNude() && root->vAddict(alko) < 3)
             makeActBtn("talk",act(3));
         makeActBtn("exit",act(4));
     }
     if(action == "give_help")
     {
-        root->sVEvent(grandpahelpday,root->vStatus(daystart));
+        root->vEvent(grandpahelpday) = root->vStatus(daystart);
         root->startEvent(eGrandPaHelp);
     }
     if(action == "back_to_loc")
@@ -123,28 +123,28 @@ void Grandpa::actionHandler(QString action)
     }
     if(action == "ask_forest")
     {
-        root->sVEvent(grandpatalkforest,1);
+        root->vEvent(grandpatalkforest) =1;
         root->incTime(10);
-        root->uVStatus(mood,5);
-        root->uVEvent(goforest,1);
-        root->uVQuest(grandpaQW,1);
+        root->vStatus(mood) +=5;
+        root->vEvent(goforest) += 1;
+        root->vQuest(grandpaQW) +=1;
         root->setImage(media(7));
-        root->setDesc(str(17));
+        root->setText(str(17));
         makeActBtn("back_to_loc",act(2));
     }
     if(action == "talk")
     {
-        root->sVEvent(grandpatalk,root->getHour());
-        root->sVEvent(grandpatalkday,root->getDay());
+        root->vEvent(grandpatalk) = root->getHour();
+        root->vEvent(grandpatalkday) = root->getDay();
         root->incTime(10);
-        root->uVStatus(mood,getRandInt(5,10));
-        if(root->gVQuest(grandpaQW) < 60)
-            root->uVQuest(grandpaQW,1);
+        root->vStatus(mood) += getRandInt(5,10);
+        if(root->vQuest(grandpaQW) < 60)
+            root->vQuest(grandpaQW) += 1;
         root->setImage(media(7));
-        if(root->gVQuest(grandpaQW) < 60)
-            root->setDesc(str(18));
-        if(root->gVQuest(grandpaQW) >= 60)
-            root->setDesc(str(19));
+        if(root->vQuest(grandpaQW) < 60)
+            root->setText(str(18));
+        if(root->vQuest(grandpaQW) >= 60)
+            root->setText(str(19));
         makeActBtn("back_to_loc",act(2));
     }
     if(action == "exit")
@@ -166,7 +166,7 @@ void Grandpa::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action,"grandpa");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Grandpa::actionHandler);
-    root->addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString Grandpa::str(int id)
@@ -181,9 +181,9 @@ QString Grandpa::str(int id)
     str[3] = "У вас с ним нормальные отношения.";
     str[4] = "У вас с ним хорошие отношения.";
     str[5] = "У вас с ним отличные отношения.";
-    str[6] = "Вы обещали принести дедушке " + intQStr(root->gVJob(grandpa_boletus)) + " кг грибов.";
-    str[7] = "Вы обещали принести дедушке " + intQStr(root->gVJob(grandpa_bilberry)) + " кг ягод.";
-    str[8] = "Вы обещали принести дедушке " + intQStr(root->gVJob(grandpa_boletus)) + " кг грибов и " + intQStr(root->gVJob(grandpa_bilberry)) + " кг ягод.";
+    str[6] = "Вы обещали принести дедушке " + intQStr(root->vJob(grandpa_boletus)) + " кг грибов.";
+    str[7] = "Вы обещали принести дедушке " + intQStr(root->vJob(grandpa_bilberry)) + " кг ягод.";
+    str[8] = "Вы обещали принести дедушке " + intQStr(root->vJob(grandpa_boletus)) + " кг грибов и " + intQStr(root->vJob(grandpa_bilberry)) + " кг ягод.";
     str[9] = "<npc>- Света, ты чего в таком виде разгуливаешь? Я ведь мужик, хоть и твой дед. А ну марш одеваться, пока бабка не увидела!</npc>";
     str[10] = "Дед посмотрел на вас гневным взглядом. На вас была заметна сперма.";
     str[11] = "<npc>- Света, это что такое на тебе? Я думаю, что у меня внучка приличная, а она ебется где-то. Пошла отсюда, глаза б мои тебя не видели!</npc>";

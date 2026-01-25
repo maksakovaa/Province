@@ -2,12 +2,12 @@
 #define MIRAFATHER_H
 
 #include "../event.h"
-class EventHandler;
+class Game;
 
 class MiraFather: public Event
 {
 public:
-    MiraFather(EventHandler* ptr);
+    MiraFather(Game* ptr);
     void start(QString arg = "") override;
     void makeActBtn(QString action, QString actName);
 private slots:
@@ -17,7 +17,7 @@ private:
     QString act(int id);
     QString media(int id);
 private:
-    EventHandler* root;
+    Game* root;
     QString boy {"Афанасий"};
     int dickSize = 18;
     int sexSkill = 0;

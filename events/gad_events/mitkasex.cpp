@@ -1,9 +1,9 @@
 #include "mitkasex.h"
-#include "../eventhandler.h"
+#include "../../game.h"
 #include "../../Functions.h"
 #include "../../menu/buttons.h"
 
-MitkaSex::MitkaSex(EventHandler *ptr):
+MitkaSex::MitkaSex(Game *ptr):
     root(ptr),
     boy{"Митька", "Васян", "Колямба"},
     boyDick{16,14,15},
@@ -24,12 +24,12 @@ MitkaSex::MitkaSex(EventHandler *ptr):
 
 void MitkaSex::start(QString arg)
 {    
-    if(root->gVEvent(mitkaforestsex) == 3)
+    if(root->vEvent(mitkaforestsex) == 3)
     {
-        root->sVEvent(mitkaforestsex,0);
+        root->vEvent(mitkaforestsex) = 0;
         root->incTime(5);
-        root->uVSkill(domination,-1);
-        root->uVSC(gangBang,1);
+        root->vSkill(domination) -= 1;
+        root->vStatistics(gangBang) += 1;
         boyAsex = 0;
         boyBsex = 0;
         boyCsex = 0;
@@ -42,7 +42,7 @@ void MitkaSex::start(QString arg)
         if(root->getCurLoc() == lgadukino)
             root->startEvent(eGadukinoEvents, "onlooker");
         root->setImage(media(2));
-        root->setDesc(str(0));
+        root->setText(str(0));
         if(hantsexa == 1)
             makeActBtn("forestSexOral3_1",act(0));
         if(hantsexa == 2)
@@ -50,33 +50,33 @@ void MitkaSex::start(QString arg)
         if(hantsexa == 3)
             makeActBtn("forestSexOral3_3",act(0));
     }
-    if(root->gVEvent(mitkaforestsex) == 2)
+    if(root->vEvent(mitkaforestsex) == 2)
     {
-        root->sVEvent(mitkaforestsex,0);
+        root->vEvent(mitkaforestsex) = 0;
         boyAsex = 0;
         boyBsex = 0;
         boyAsexa = 0;
         boyBsexa = 0;
         root->incTime(5);
-        root->uVSkill(domination,-1);
-        root->uVSC(gangBang,1);
-        root->sVSex(lubonus,0);
+        root->vSkill(domination) -= 1;
+        root->vStatistics(gangBang) += 1;
+        root->vSex(lubonus) = 0;
         int tmp = getRandInt(1,2);
-        if(root->gVEvent(mitboyrand) == 1)
+        if(root->vEvent(mitboyrand) == 1)
         {
             if(tmp == 1)
                 setMitka();
             if(tmp == 2)
                 setKolyamba();
         }
-        else if(root->gVEvent(mitboyrand) == 2)
+        else if(root->vEvent(mitboyrand) == 2)
         {
             if(tmp == 1)
                 setMitka();
             if(tmp == 2)
                 setVasyan();
         }
-        else if(root->gVEvent(mitboyrand) == 3)
+        else if(root->vEvent(mitboyrand) == 3)
         {
             if(tmp == 1)
                 setKolyamba();
@@ -88,29 +88,29 @@ void MitkaSex::start(QString arg)
         if(root->getCurLoc() == lgadukino)
             root->startEvent(eGadukinoEvents,"onlooker");
         root->setImage(media(1));
-        root->setDesc(str(0));
+        root->setText(str(0));
         makeActBtn("forestSexOral2_1",act(0));
     }
-    if(root->gVEvent(mitkaforestsex) == 1)
+    if(root->vEvent(mitkaforestsex) == 1)
     {
-        root->sVEvent(mitkaforestsex,0);
+        root->vEvent(mitkaforestsex) = 0;
         root->incTime(5);
         boyAsex = 0;
         boyAsexa = 0;
-        root->uVSkill(domination,-1);
-        root->uVSC(blowJob,1);
-        root->sVSex(lubonus,0);
-        if(root->gVEvent(mitboyrand) == 1)
+        root->vSkill(domination) -= 1;
+        root->vStatistics(blowJob) += 1;
+        root->vSex(lubonus) = 0;
+        if(root->vEvent(mitboyrand) == 1)
             setMitka();
-        if(root->gVEvent(mitboyrand) == 2)
+        if(root->vEvent(mitboyrand) == 2)
             setKolyamba();
-        if(root->gVEvent(mitboyrand) == 3)
+        if(root->vEvent(mitboyrand) == 3)
             setVasyan();
         boyAhorny = getRandInt(0,90);
         if(root->getCurLoc() == lgadukino)
             root->startEvent(eGadukinoEvents,"onlooker");
         root->setImage(media(0));
-        root->setDesc(str(89));
+        root->setText(str(89));
         hantsexa = getRandInt(1,3);
         if(hantsexa == 1)
             makeActBtn("forestSexOral1_1",act(0));
@@ -119,21 +119,21 @@ void MitkaSex::start(QString arg)
         if(hantsexa == 3)
             makeActBtn("forestSexOral1_3",act(0));
     }
-    if(root->gVEvent(mitkagadsex) == 1)
+    if(root->vEvent(mitkagadsex) == 1)
     {
-        root->sVEvent(mitkagadsex,0);
+        root->vEvent(mitkagadsex) = 0;
         root->incTime(5);
         boyAsex = 0;
         boyAsexa = 0;
-        root->uVSkill(domination,-1);
-        root->uVSC(blowJob,1);
-        root->sVSex(lubonus,0);
+        root->vSkill(domination) -= 1;
+        root->vStatistics(blowJob) += 1;
+        root->vSex(lubonus) = 0;
 
-        if(root->gVEvent(mitboyrand) == 1)
+        if(root->vEvent(mitboyrand) == 1)
             setMitka();
-        if(root->gVEvent(mitboyrand) == 2)
+        if(root->vEvent(mitboyrand) == 2)
             setKolyamba();
-        if(root->gVEvent(mitboyrand) == 3)
+        if(root->vEvent(mitboyrand) == 3)
             setVasyan();
         boyAhorny = getRandInt(0,90);
         if (root->getCurLoc() == lgadukino)
@@ -142,37 +142,37 @@ void MitkaSex::start(QString arg)
             root->setImage(media(3));
         if(root->vStatus(horny) >= 60)
             root->setImage(media(4));
-        root->setDesc(str(90));
+        root->setText(str(90));
         makeActBtn("gadSexOral1",act(0));        
     }
-    if(root->gVEvent(mitkagadsex) == 2)
+    if(root->vEvent(mitkagadsex) == 2)
     {
-        root->sVEvent(mitkagadsex,0);
+        root->vEvent(mitkagadsex) = 0;
         boyAsex = 0;
       	boyBsex = 0;
         boyAsexa = 0;
 	    boyBsexa = 0;
         root->incTime(5);
-        root->uVSkill(domination,-1);
-        root->uVSC(blowJob,2);
-        root->uVSC(gangBang,1);
-        root->sVSex(lubonus,0);
+        root->vSkill(domination) -= 1;
+        root->vStatistics(blowJob) += 2;
+        root->vStatistics(gangBang) += 1;
+        root->vSex(lubonus) = 0;
         int tmp = getRandInt(1,2);
-        if(root->gVEvent(mitboyrand) == 1)
+        if(root->vEvent(mitboyrand) == 1)
         {
             if(tmp == 1)
                 setMitka();
             if(tmp == 2)
                 setKolyamba();            
         }
-        if(root->gVEvent(mitboyrand) == 2)
+        if(root->vEvent(mitboyrand) == 2)
         {
             if(tmp == 1)
                 setMitka();
             if(tmp == 2)
                 setVasyan();            
         }
-        if(root->gVEvent(mitboyrand) == 3)
+        if(root->vEvent(mitboyrand) == 3)
         {
             if(tmp == 1)
                 setKolyamba();
@@ -189,7 +189,7 @@ void MitkaSex::start(QString arg)
             root->setImage(media(5));
         if(root->vStatus(horny) >= 60)
             root->setImage(media(6));
-        root->setDesc(str(91));
+        root->setText(str(91));
         makeActBtn("gadSexOral2",act(0));
     }
 }
@@ -197,17 +197,17 @@ void MitkaSex::start(QString arg)
 void MitkaSex::gadSexOral1()
 {
     root->incTime(5);
-    root->uVStatus(horny,5);
+    root->vStatus(horny) += 5;
     hantsexa = getRandInt(1,6);
-    root->uVSex(lubonus,1);
+    root->vSex(lubonus) += 1;
     if(root->vBody(throat) <= 15)
         boyAhorny += 5;
     if(root->vBody(throat) > 15)
         boyAhorny += 10;
     root->setImage(media(7));
-    root->setDesc(str(58));
+    root->setText(str(58));
     root->blow_job();
-    root->addDesc(textsexhanter[2]);
+    root->addText(textsexhanter[2]);
     if (boyAhorny < 100)
     {
         if(hantsexa == 1)
@@ -231,8 +231,8 @@ void MitkaSex::gadSexOral1()
 void MitkaSex::gadSexOral2()
 {
     root->incTime(5);
-    root->uVStatus(horny,5);
-    root->uVSex(lubonus,1);
+    root->vStatus(horny) += 5;
+    root->vSex(lubonus) += 1;
     hantsexa = getRandInt(1,3);
     if(root->vBody(throat) <= 15)
     {
@@ -245,29 +245,29 @@ void MitkaSex::gadSexOral2()
         boyBhorny += 10;
     }
     root->setImage(media(8));
-    root->setDesc(str(92));
-    if(root->gVEvent(mitboyrand) == 1)
+    root->setText(str(92));
+    if(root->vEvent(mitboyrand) == 1)
     {
         setMitka();
         root->blow_job();
         setKolyamba();
         root->blow_job();
     }
-    if(root->gVEvent(mitboyrand) == 2)
+    if(root->vEvent(mitboyrand) == 2)
     {
         setVasyan();
         root->blow_job();
         setMitka();
         root->blow_job();
     }
-    if(root->gVEvent(mitboyrand) == 3)
+    if(root->vEvent(mitboyrand) == 3)
     {
         setKolyamba();
         root->blow_job();
         setVasyan();
         root->blow_job();
     }
-    root->addDesc(textsexhanter[5]);
+    root->addText(textsexhanter[5]);
     if(boyAhorny < 100 && boyBhorny < 100)
     {
         if(hantsexa == 1)
@@ -288,33 +288,33 @@ void MitkaSex::gadSexOral2()
 void MitkaSex::gadSexOralCum1()
 {
     root->incTime(5);
-    root->sVSex(protect,0);
+    root->vSex(protect) = 0;
     root->setImage(media(9));
-    root->setDesc(str(93));
+    root->setText(str(93));
     root->fnswallow();
-    root->addDesc(textsexhanter[1]);
+    root->addText(textsexhanter[1]);
     makeActBtn("back_to_loc",act(7));
 }
 
 void MitkaSex::gadSexOralCum2_1()
 {
     root->incTime(5);
-    root->sVSex(protect,0);
-    if(root->gVEvent(mitboyrand) == 1)
+    root->vSex(protect) = 0;
+    if(root->vEvent(mitboyrand) == 1)
         setMitka();
-    if(root->gVEvent(mitboyrand) == 2)
+    if(root->vEvent(mitboyrand) == 2)
         setVasyan();
-    if(root->gVEvent(mitboyrand) == 3)
+    if(root->vEvent(mitboyrand) == 3)
         setKolyamba();
     root->setImage(media(10));
-    root->setDesc(str(99));
+    root->setText(str(99));
     root->fnswallow();
-    root->addDesc(textsexhanter[4]);
-    if(root->gVEvent(mitboyrand) == 1)
+    root->addText(textsexhanter[4]);
+    if(root->vEvent(mitboyrand) == 1)
         setKolyamba();
-    if(root->gVEvent(mitboyrand) == 2)
+    if(root->vEvent(mitboyrand) == 2)
         setMitka();
-    if(root->gVEvent(mitboyrand) == 3)
+    if(root->vEvent(mitboyrand) == 3)
         setVasyan();
     hantsexa = getRandInt(1,6);
     if(hantsexa == 1)
@@ -334,21 +334,21 @@ void MitkaSex::gadSexOralCum2_1()
 void MitkaSex::gadSexOralCum2_2()
 {
     root->incTime(5);
-    if(root->gVEvent(mitboyrand) == 1)
+    if(root->vEvent(mitboyrand) == 1)
         setKolyamba();
-    if(root->gVEvent(mitboyrand) == 2)
+    if(root->vEvent(mitboyrand) == 2)
         setMitka();
-    if(root->gVEvent(mitboyrand) == 3)
+    if(root->vEvent(mitboyrand) == 3)
         setVasyan();
     root->setImage(media(11));
-    root->setDesc(str(99));
+    root->setText(str(99));
     root->fnswallow();
-    root->addDesc(textsexhanter[4]);
-    if(root->gVEvent(mitboyrand) == 1)
+    root->addText(textsexhanter[4]);
+    if(root->vEvent(mitboyrand) == 1)
         setMitka();
-    if(root->gVEvent(mitboyrand) == 2)
+    if(root->vEvent(mitboyrand) == 2)
         setVasyan();
-    if(root->gVEvent(mitboyrand) == 3)
+    if(root->vEvent(mitboyrand) == 3)
         setKolyamba();
     hantsexa = getRandInt(1,6);
     if(hantsexa == 1)
@@ -371,7 +371,7 @@ void MitkaSex::gadSexSideVag1()
     if(boyAsex == 0)
     {
         boyAsex = 1;
-        root->uVSC(vaginalSex,1);
+        root->vStatistics(vaginalSex) += 1;
     }
     hantsexa = getRandInt(1,5);
     if(root->vBody(vagina) <= 25)
@@ -383,11 +383,11 @@ void MitkaSex::gadSexSideVag1()
         root->setImage(media(12));
     if(root->vStatus(horny) >= 60)
         root->setImage(media(13));
-    root->setDesc(str(46));
-    root->sVSex(protect,1);
+    root->setText(str(46));
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
-    root->addDesc(textsexhanter[2]);
+    root->addText(textsexhanter[2]);
     if(boyAhorny < 100)
     {
         if(hantsexa == 1)
@@ -408,21 +408,21 @@ void MitkaSex::gadSexSideVag1()
 void MitkaSex::gadSexSideVagCum1()
 {
     root->incTime(5);
-    root->uVStatus(horny,getRandInt(5,10));
-    root->sVSex(pose,1);
+    root->vStatus(horny) += getRandInt(5,10);
+    root->vSex(pose) = 1;
     root->setImage(media(35));
-    root->setDesc(str(94));
+    root->setText(str(94));
     if(root->vStatus(horny) >= 100)
     {
-        root->addDesc(textsexhanter[9]);
-        root->uVSC(orgasm,1);
-        root->uVSC(vaginalOrgasm,1);
-        root->sVStatus(lust,0);
-        root->sVStatus(horny,0);
-        root->uVStatus(mood,15);
+        root->addText(textsexhanter[9]);
+        root->vStatistics(orgasm) += 1;
+        root->vStatistics(vaginalOrgasm) += 1;
+        root->vStatus(lust) = 0;
+        root->vStatus(horny) = 0;
+        root->vStatus(mood) += 15;
     }
     root->sex_cum();
-    root->addDesc(textsexhanter[1]);
+    root->addText(textsexhanter[1]);
     makeActBtn("back_to_loc",act(7));
 }
 
@@ -432,23 +432,23 @@ void MitkaSex::gadSexMisVag1()
     if(boyAsex == 0)
     {
         boyAsex = 1;
-        root->uVSC(vaginalSex,1);
+        root->vStatistics(vaginalSex) += 1;
     }
     hantsexa = getRandInt(1,5);
     if(root->vBody(vagina) <= 25)
         boyAhorny += 20;
     if(root->vBody(vagina) > 25)
         boyAhorny += 10;
-    root->sVSex(pose,0);
+    root->vSex(pose) = 0;
     if(root->vStatus(horny) < 60)
         root->setImage(media(36));
     if(root->vStatus(horny) >= 60)
         root->setImage(media(37));
-    root->setDesc(str(95));
-    root->sVSex(protect,1);
+    root->setText(str(95));
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
-    root->addDesc(textsexhanter[2]);
+    root->addText(textsexhanter[2]);
     if(boyAhorny < 100)
     {
         if(hantsexa == 1)
@@ -472,20 +472,20 @@ void MitkaSex::gadSexDogVag1()
     if(boyAsex == 0)
     {
         boyAsex = 1;
-        root->uVSC(vaginalSex,1);
+        root->vStatistics(vaginalSex) += 1;
     }
     hantsexa = getRandInt(1,5);
     if(root->vBody(vagina) <= 25)
         boyAhorny += 20;
     if(root->vBody(vagina) > 25)
         boyAhorny += 10;
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     root->setImage(media(38));
-    root->setDesc(str(67));
-    root->sVSex(protect,1);
+    root->setText(str(67));
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
-    root->addDesc(textsexhanter[2]);
+    root->addText(textsexhanter[2]);
     if(boyAhorny < 100)
     {
         if(hantsexa == 1)
@@ -509,7 +509,7 @@ void MitkaSex::gadSexDogAnal1()
     if(boyAsexa == 0)
     {
         boyAsexa = 1;
-        root->uVSC(analSex,1);
+        root->vStatistics(analSex) += 1;
     }
     hantsexa = getRandInt(1,5);
     if(root->vBody(anus) <= 25)
@@ -520,10 +520,10 @@ void MitkaSex::gadSexDogAnal1()
         root->setImage(media(39));
     if(root->vStatus(horny) >= 60)
         root->setImage(media(40));
-    root->setDesc(str(96));
+    root->setText(str(96));
     root->analStart(tDick);
     root->anal(tDick);
-    root->addDesc(textsexhanter[2]);
+    root->addText(textsexhanter[2]);
     if (boyAhorny < 100)
     {
         if(hantsexa == 1)
@@ -547,7 +547,7 @@ void MitkaSex::gadSexDog2()
     if(boyBsex == 0)
     {
         boyBsex = 1;
-        root->uVSC(vaginalSex,1);
+        root->vStatistics(vaginalSex) += 1;
     }
     hantsexa = getRandInt(1,2);
     if(root->vBody(throat) <= 25)
@@ -558,31 +558,31 @@ void MitkaSex::gadSexDog2()
         boyBhorny += 20;
     if(root->vBody(vagina) > 25)
         boyBhorny += 10;
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     root->setImage(media(41));
-    root->setDesc(str(103));
-    if(root->gVEvent(mitboyrand) == 1)
+    root->setText(str(103));
+    if(root->vEvent(mitboyrand) == 1)
     {
         setMitka();
         root->blow_job();
         setKolyamba();
     }
-    else if(root->gVEvent(mitboyrand) == 2)
+    else if(root->vEvent(mitboyrand) == 2)
     {
         setVasyan();
         root->blow_job();
         setMitka();
     }
-    else if(root->gVEvent(mitboyrand) == 3)
+    else if(root->vEvent(mitboyrand) == 3)
     {
         setKolyamba();
         root->blow_job();
         setVasyan();
     }
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
-    root->addDesc(textsexhanter[5]);
+    root->addText(textsexhanter[5]);
     if(boyAhorny < 100 && boyBhorny < 100)
     {
         if(hantsexa == 1)
@@ -601,44 +601,44 @@ void MitkaSex::gadSexDog2()
 void MitkaSex::gadSexDogAnalCum1()
 {
     root->incTime(5);
-    root->uVStatus(horny,getRandInt(5,10));
-    root->sVSex(pose,1);
+    root->vStatus(horny) += getRandInt(5,10);
+    root->vSex(pose) = 1;
     root->cum("anus");
-    root->sVSex(protect,0);
+    root->vSex(protect) = 0;
     root->setImage(media(42));
-    root->setDesc(str(66));
+    root->setText(str(66));
     if(root->vStatus(horny) >= 100)
     {
-        root->addDesc(textsexhanter[10]);
-        root->uVSC(orgasm,1);
-        root->uVSC(analOrgasm,1);
-        root->sVStatus(lust,0);
-        root->sVStatus(horny,0);
-        root->uVStatus(mood,15);
+        root->addText(textsexhanter[10]);
+        root->vStatistics(orgasm) += 1;
+        root->vStatistics(analOrgasm) += 1;
+        root->vStatus(lust) = 0;
+        root->vStatus(horny) = 0;
+        root->vStatus(mood) += 15;
     }
-    root->addDesc(str(97));
-    root->addDesc(textsexhanter[1]);
+    root->addText(str(97));
+    root->addText(textsexhanter[1]);
     makeActBtn("back_to_loc",act(7));
 }
 
 void MitkaSex::gadSexDogCum2_1()
 {
     root->incTime(5);
-    if(root->gVEvent(mitboyrand) == 1)
+    if(root->vEvent(mitboyrand) == 1)
         setMitka();
-    if(root->gVEvent(mitboyrand) == 2)
+    if(root->vEvent(mitboyrand) == 2)
         setVasyan();
-    if(root->gVEvent(mitboyrand) == 3)
+    if(root->vEvent(mitboyrand) == 3)
         setKolyamba();
     root->setImage(media(43));
-    root->setDesc(str(99));
+    root->setText(str(99));
     root->fnswallow();
-    root->addDesc(textsexhanter[4]);
-    if(root->gVEvent(mitboyrand) == 1)
+    root->addText(textsexhanter[4]);
+    if(root->vEvent(mitboyrand) == 1)
         setKolyamba();
-    if(root->gVEvent(mitboyrand) == 2)
+    if(root->vEvent(mitboyrand) == 2)
         setMitka();
-    if(root->gVEvent(mitboyrand) == 3)
+    if(root->vEvent(mitboyrand) == 3)
         setVasyan();
     hantsexa = getRandInt(1,6);
     if(hantsexa == 1)
@@ -658,34 +658,34 @@ void MitkaSex::gadSexDogCum2_1()
 void MitkaSex::gadSexDogCum2_2()
 {
     root->incTime(5);
-    root->uVStatus(horny,getRandInt(5,10));
-    if(root->gVEvent(mitboyrand) == 1)
+    root->vStatus(horny) += getRandInt(5,10);
+    if(root->vEvent(mitboyrand) == 1)
         setKolyamba();
-    if(root->gVEvent(mitboyrand) == 2)
+    if(root->vEvent(mitboyrand) == 2)
         setMitka();
-    if(root->gVEvent(mitboyrand) == 3)
+    if(root->vEvent(mitboyrand) == 3)
         setVasyan();
     if(root->vStatus(horny) < 60)
         root->setImage(media(44));
     if(root->vStatus(horny) >= 60)
         root->setImage(media(45));
-    root->setDesc(str(66));
+    root->setText(str(66));
     if(root->vStatus(horny) >= 100)
     {
-        root->addDesc(textsexhanter[10]);
-        root->uVSC(orgasm,1);
-        root->uVSC(vaginalOrgasm,1);
-        root->sVStatus(lust,0);
-        root->sVStatus(horny,0);
-        root->uVStatus(mood,15);
+        root->addText(textsexhanter[10]);
+        root->vStatistics(orgasm) += 1;
+        root->vStatistics(vaginalOrgasm) += 1;
+        root->vStatus(lust) = 0;
+        root->vStatus(horny) = 0;
+        root->vStatus(mood) += 15;
     }
     root->sex_cum();
-    root->addDesc(textsexhanter[4]);
-    if(root->gVEvent(mitboyrand) == 1)
+    root->addText(textsexhanter[4]);
+    if(root->vEvent(mitboyrand) == 1)
         setMitka();
-    if(root->gVEvent(mitboyrand) == 2)
+    if(root->vEvent(mitboyrand) == 2)
         setVasyan();
-    if(root->gVEvent(mitboyrand) == 3)
+    if(root->vEvent(mitboyrand) == 3)
         setKolyamba();
     hantsexa = getRandInt(1,6);
     if(hantsexa == 1)
@@ -708,23 +708,23 @@ void MitkaSex::gadSexCowVag1()
     if(boyAsex == 0)
     {
         boyAsex = 1;
-        root->uVSC(vaginalSex,1);
+        root->vStatistics(vaginalSex) += 1;
     }
     hantsexa = getRandInt(1,5);
     if(root->vBody(vagina) <= 25)
         boyAhorny += 20;
     if(root->vBody(vagina) > 25)
         boyAhorny += 10;
-    root->sVSex(pose,2);
+    root->vSex(pose) = 2;
     if(root->vStatus(horny) < 60)
         root->setImage(media(46));
     if(root->vStatus(horny) >= 60)
         root->setImage(media(47));
-    root->addDesc(str(77));
-    root->sVSex(protect,1);
+    root->addText(str(77));
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
-    root->addDesc(textsexhanter[2]);
+    root->addText(textsexhanter[2]);
     if (boyAhorny < 100)
     {
         if(hantsexa == 1)
@@ -748,7 +748,7 @@ void MitkaSex::gadSexCow2()
     if(boyBsex == 0)
     {
         boyBsex = 1;
-        root->uVSC(vaginalSex,1);
+        root->vStatistics(vaginalSex) += 1;
     }
     hantsexa = getRandInt(1,2);
     if(root->vBody(throat) <= 25)
@@ -759,31 +759,31 @@ void MitkaSex::gadSexCow2()
         boyBhorny += 20;
     if(root->vBody(vagina) > 25)
         boyBhorny += 10;
-    root->sVSex(pose,2);
+    root->vSex(pose) = 2;
     root->setImage(media(48));
-    root->addDesc(str(104));
-    if(root->gVEvent(mitboyrand) == 1)
+    root->addText(str(104));
+    if(root->vEvent(mitboyrand) == 1)
     {
         setMitka();
         root->blow_job();
         setKolyamba();
     }
-    else if(root->gVEvent(mitboyrand) == 2)
+    else if(root->vEvent(mitboyrand) == 2)
     {
         setVasyan();
         root->blow_job();
         setMitka();
     }
-    else if(root->gVEvent(mitboyrand) == 3)
+    else if(root->vEvent(mitboyrand) == 3)
     {
         setKolyamba();
         root->blow_job();
         setVasyan();
     }
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
-    root->addDesc(textsexhanter[5]);
+    root->addText(textsexhanter[5]);
     if(boyAhorny < 100 && boyBhorny < 100)
     {
         if(hantsexa == 1)
@@ -802,42 +802,42 @@ void MitkaSex::gadSexCow2()
 void MitkaSex::gadSexCowVagCum1()
 {
     root->incTime(5);
-    root->uVStatus(horny,getRandInt(5,10));
-    root->sVSex(pose,0);
+    root->vStatus(horny) += getRandInt(5,10);
+    root->vSex(pose) = 0;
     root->setImage(media(49));
-    root->setDesc(str(76));
+    root->setText(str(76));
     if(root->vStatus(horny) >= 100)
     {
-        root->addDesc(textsexhanter[9]);
-        root->uVSC(orgasm,1);
-        root->uVSC(vaginalOrgasm,1);
-        root->sVStatus(lust,0);
-        root->sVStatus(horny,0);
-        root->uVStatus(mood,15);
+        root->addText(textsexhanter[9]);
+        root->vStatistics(orgasm) += 1;
+        root->vStatistics(vaginalOrgasm) += 1;
+        root->vStatus(lust) = 0;
+        root->vStatus(horny) = 0;
+        root->vStatus(mood) += 15;
     }
     root->sex_cum();
-    root->addDesc(textsexhanter[1]);
+    root->addText(textsexhanter[1]);
     makeActBtn("back_to_loc",act(7));
 }
 
 void MitkaSex::gadSexCowCum2_1()
 {
     root->incTime(5);
-    if(root->gVEvent(mitboyrand) == 1)
+    if(root->vEvent(mitboyrand) == 1)
         setMitka();
-    if(root->gVEvent(mitboyrand) == 2)
+    if(root->vEvent(mitboyrand) == 2)
         setVasyan();
-    if(root->gVEvent(mitboyrand) == 3)
+    if(root->vEvent(mitboyrand) == 3)
         setKolyamba();
     root->setImage(media(50));
-    root->addDesc(str(99));
+    root->addText(str(99));
     root->fnswallow();
-    root->addDesc(textsexhanter[4]);
-    if(root->gVEvent(mitboyrand) == 1)
+    root->addText(textsexhanter[4]);
+    if(root->vEvent(mitboyrand) == 1)
         setKolyamba();
-    if(root->gVEvent(mitboyrand) == 2)
+    if(root->vEvent(mitboyrand) == 2)
         setMitka();
-    if(root->gVEvent(mitboyrand) == 3)
+    if(root->vEvent(mitboyrand) == 3)
         setVasyan();
     hantsexa = getRandInt(1,6);
     if(hantsexa == 1)
@@ -857,30 +857,30 @@ void MitkaSex::gadSexCowCum2_1()
 void MitkaSex::gadSexCowCum2_2()
 {
     root->incTime(5);
-    if(root->gVEvent(mitboyrand) == 1)
+    if(root->vEvent(mitboyrand) == 1)
         setKolyamba();
-    if(root->gVEvent(mitboyrand) == 2)
+    if(root->vEvent(mitboyrand) == 2)
         setMitka();
-    if(root->gVEvent(mitboyrand) == 3)
+    if(root->vEvent(mitboyrand) == 3)
         setVasyan();
     root->setImage(media(51));
-    root->addDesc(str(76));
+    root->addText(str(76));
     if(root->vStatus(horny) >= 100)
     {
-        root->addDesc(textsexhanter[9]);
-        root->uVSC(orgasm,1);
-        root->uVSC(vaginalOrgasm,1);
-        root->sVStatus(lust,0);
-        root->sVStatus(horny,0);
-        root->uVStatus(mood,15);
+        root->addText(textsexhanter[9]);
+        root->vStatistics(orgasm) += 1;
+        root->vStatistics(vaginalOrgasm) += 1;
+        root->vStatus(lust) = 0;
+        root->vStatus(horny) = 0;
+        root->vStatus(mood) += 15;
     }
     root->sex_cum();
-    root->addDesc(textsexhanter[4]);
-    if(root->gVEvent(mitboyrand) == 1)
+    root->addText(textsexhanter[4]);
+    if(root->vEvent(mitboyrand) == 1)
         setMitka();
-    if(root->gVEvent(mitboyrand) == 2)
+    if(root->vEvent(mitboyrand) == 2)
         setVasyan();
-    if(root->gVEvent(mitboyrand) == 3)
+    if(root->vEvent(mitboyrand) == 3)
         setKolyamba();
     hantsexa = getRandInt(1,6);
     if(hantsexa == 1)
@@ -903,7 +903,7 @@ void MitkaSex::gadSexCowAnal1()
     if(boyAsexa == 0)
     {
         boyAsexa = 1;
-        root->uVSC(analSex,1);
+        root->vStatistics(analSex) += 1;
     }
     hantsexa = getRandInt(1,5);
     if(root->vBody(anus) <= 25)
@@ -914,10 +914,10 @@ void MitkaSex::gadSexCowAnal1()
         root->setImage(media(52));
     if(root->vStatus(horny) >= 60)
         root->setImage(media(53));
-    root->setDesc(str(77));
+    root->setText(str(77));
     root->analStart(tDick);
     root->anal(tDick);
-    root->addDesc(textsexhanter[2]);
+    root->addText(textsexhanter[2]);
     if (boyAhorny < 100)
     {
         if(hantsexa == 1)
@@ -939,25 +939,25 @@ void MitkaSex::gadSexCowAnal1()
 void MitkaSex::gadSexHandsCum1()
 {
     root->incTime(5);
-    root->sVSex(protect,0);
+    root->vSex(protect) = 0;
     root->cum("belly");
-    root->uVSC(handJob,1);
+    root->vStatistics(handJob) += 1;
     root->setImage(media(54));
-    root->setDesc(str(98));
-    root->addDesc(textsexhanter[1]);
+    root->setText(str(98));
+    root->addText(textsexhanter[1]);
     makeActBtn("back_to_loc",act(7));
 }
 
 void MitkaSex::gadSexHandsCum2()
 {
     root->incTime(5);
-    root->sVSex(protect,0);
+    root->vSex(protect) = 0;
     root->cum("belly");
-    root->uVSC(handJob,1);
+    root->vStatistics(handJob) += 1;
     root->setImage(media(55));
-    root->setDesc(str(100));
+    root->setText(str(100));
     if(root->getItmCount(iCosmetic) <= 0 && root->getItmCount(iCosmeticBig) <= 0)
-        root->addDesc(str(101));
+        root->addText(str(101));
     if(root->getItmCount(iCosmetic) > 0 || root->getItmCount(iCosmeticBig) > 0)
     {
         makeActBtn("bawd_body", act(7));
@@ -972,7 +972,7 @@ void MitkaSex::gadSexStan2()
     if(boyBsex == 0)
     {
         boyBsex = 1;
-        root->uVSC(vaginalSex,1);
+        root->vStatistics(vaginalSex) += 1;
     }
     hantsexa = getRandInt(1,2);
     if(root->vBody(throat) <= 25)
@@ -983,31 +983,31 @@ void MitkaSex::gadSexStan2()
         boyBhorny += 20;
     if(root->vBody(vagina) > 25)
         boyBhorny += 10;
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     root->setImage(media(56));
-    root->setDesc(str(105));
-    if(root->gVEvent(mitboyrand) == 1)
+    root->setText(str(105));
+    if(root->vEvent(mitboyrand) == 1)
     {
         setMitka();
         root->blow_job();
         setKolyamba();
     }
-    else if(root->gVEvent(mitboyrand) == 2)
+    else if(root->vEvent(mitboyrand) == 2)
     {
         setVasyan();
         root->blow_job();
         setMitka();
     }
-    else if(root->gVEvent(mitboyrand) == 3)
+    else if(root->vEvent(mitboyrand) == 3)
     {
         setKolyamba();
         root->blow_job();
         setVasyan();
     }
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
-    root->addDesc(textsexhanter[5]);
+    root->addText(textsexhanter[5]);
     if(boyAhorny < 100 && boyBhorny < 100)
     {
         if(hantsexa == 1)
@@ -1026,21 +1026,21 @@ void MitkaSex::gadSexStan2()
 void MitkaSex::gadSexStanCum2_1()
 {
     root->incTime(5);
-    if(root->gVEvent(mitboyrand) == 1)
+    if(root->vEvent(mitboyrand) == 1)
         setMitka();
-    else if(root->gVEvent(mitboyrand) == 2)
+    else if(root->vEvent(mitboyrand) == 2)
         setVasyan();
-    else if(root->gVEvent(mitboyrand) == 3)
+    else if(root->vEvent(mitboyrand) == 3)
         setKolyamba();
     root->setImage(media(57));
-    root->setDesc(str(99));
+    root->setText(str(99));
     root->fnswallow();
-    root->addDesc(textsexhanter[4]);
-    if(root->gVEvent(mitboyrand) == 1)
+    root->addText(textsexhanter[4]);
+    if(root->vEvent(mitboyrand) == 1)
         setKolyamba();
-    else if(root->gVEvent(mitboyrand) == 2)
+    else if(root->vEvent(mitboyrand) == 2)
         setMitka();
-    else if(root->gVEvent(mitboyrand) == 3)
+    else if(root->vEvent(mitboyrand) == 3)
         setVasyan();
     hantsexa = getRandInt(1,6);
     if(hantsexa == 1)
@@ -1060,26 +1060,26 @@ void MitkaSex::gadSexStanCum2_1()
 void MitkaSex::gadSexStanCum2_2()
 {
     root->incTime(5);
-    root->uVStatus(horny,getRandInt(5,10));
-    if(root->gVEvent(mitboyrand) == 1)
+    root->vStatus(horny) += getRandInt(5,10);
+    if(root->vEvent(mitboyrand) == 1)
         setKolyamba();
-    else if(root->gVEvent(mitboyrand) == 2)
+    else if(root->vEvent(mitboyrand) == 2)
         setMitka();
-    else if(root->gVEvent(mitboyrand) == 3)
+    else if(root->vEvent(mitboyrand) == 3)
         setVasyan();
     root->setImage(media(58));
-    root->setDesc(str(106));
+    root->setText(str(106));
     if(root->vStatus(horny) >= 100)
     {
-        root->addDesc(textsexhanter[4]);
-        root->uVSC(orgasm,1);
-        root->uVSC(vaginalOrgasm,1);
-        root->sVStatus(lust,0);
-        root->sVStatus(horny,0);
-        root->uVStatus(mood,15);
+        root->addText(textsexhanter[4]);
+        root->vStatistics(orgasm) += 1;
+        root->vStatistics(vaginalOrgasm) += 1;
+        root->vStatus(lust) = 0;
+        root->vStatus(horny) = 0;
+        root->vStatus(mood) += 15;
     }
     root->sex_cum();
-    root->addDesc(textsexhanter[4]);
+    root->addText(textsexhanter[4]);
     hantsexa = getRandInt(1,6);
     if(hantsexa == 1)
         makeActBtn("gadSexSideVag1",act(9));
@@ -1110,7 +1110,7 @@ void MitkaSex::actionHandler(QString action)
         else
             root->useItem(iCosmeticBig,1);
         root->setImage(media(59));
-        root->setDesc(str(102));
+        root->setText(str(102));
         makeActBtn("back_to_loc",act(7));
     }
 //GADUKINO EVENTS
@@ -1287,17 +1287,17 @@ void MitkaSex::actionHandler(QString action)
 void MitkaSex::forestSexOral1_1()
 {
     root->incTime(5);
-    root->uVStatus(horny,5);
+    root->vStatus(horny) += 5;
     hantsexa = getRandInt(1,7);
     if(root->vBody(throat) <= 15)
         boyAhorny += 5;
     if(root->vBody(throat) > 15)
         boyAhorny += 10;
     root->setImage(media(60));
-    root->setDesc(str(85));
+    root->setText(str(85));
     root->blow_job();
-    root->addDesc(str(88));
-    root->addDesc(textsexhanter[2]);
+    root->addText(str(88));
+    root->addText(textsexhanter[2]);
     if(boyAhorny < 100)
     {
         if(hantsexa == 1)
@@ -1322,21 +1322,21 @@ void MitkaSex::forestSexOral1_1()
 void MitkaSex::forestSexOral1_2()
 {
     root->incTime(5);
-    root->uVStatus(horny,5);
+    root->vStatus(horny) += 5;
     hantsexa = getRandInt(1,7);
     if(root->vBody(throat) <= 15)
         boyAhorny += 5;
     if(root->vBody(throat) > 15)
         boyAhorny += 10;
-    if(root->gVEvent(mirasextimes) < 50)
+    if(root->vEvent(mirasextimes) < 50)
         boyAhorny += 5;
-    if(root->gVEvent(mirasextimes) >= 50)
+    if(root->vEvent(mirasextimes) >= 50)
         boyAhorny += 10;
     root->setImage(media(61));
-    root->setDesc(str(85));
+    root->setText(str(85));
     root->blow_job();
-    root->addDesc(str(87));
-    root->addDesc(textsexhanter[2]);
+    root->addText(str(87));
+    root->addText(textsexhanter[2]);
     if(boyAhorny < 100)
     {
         if(hantsexa == 1)
@@ -1361,21 +1361,21 @@ void MitkaSex::forestSexOral1_2()
 void MitkaSex::forestSexOral1_3()
 {
     root->incTime(5);
-    root->uVStatus(horny,5);
+    root->vStatus(horny) += 5;
     hantsexa = getRandInt(1,7);
     if(root->vBody(throat) <= 15)
         boyAhorny += 5;
     if(root->vBody(throat) > 15)
         boyAhorny += 10;
-    if(root->gVEvent(mirasextimes) < 50)
+    if(root->vEvent(mirasextimes) < 50)
         boyAhorny += 5;
-    if(root->gVEvent(mirasextimes) >= 50)
+    if(root->vEvent(mirasextimes) >= 50)
         boyAhorny += 10;
     root->setImage(media(62));
-    root->setDesc(str(85));
+    root->setText(str(85));
     root->blow_job();
-    root->addDesc(str(86));
-    root->addDesc(textsexhanter[2]);
+    root->addText(str(86));
+    root->addText(textsexhanter[2]);
     if(boyAhorny < 100)
     {
         if(hantsexa == 1)
@@ -1400,21 +1400,21 @@ void MitkaSex::forestSexOral1_3()
 void MitkaSex::forestSexOral2_1()
 {
     root->incTime(5);
-    root->uVStatus(horny,getRandInt(5,10));
+    root->vStatus(horny) += getRandInt(5,10);
     hantsexa = getRandInt(1,3);
     if(root->vBody(throat) <= 15)
         boyAhorny += 5;
     if(root->vBody(throat) > 15)
         boyAhorny += 10;
     root->setImage(media(62));
-    root->setDesc(str(58));
+    root->setText(str(58));
     root->blow_job();
-    root->addDesc(str(59));
-    if(root->gVEvent(mirasextimes) < 50)
+    root->addText(str(59));
+    if(root->vEvent(mirasextimes) < 50)
         boyBhorny += 5;
-    if(root->gVEvent(mirasextimes) >= 50)
+    if(root->vEvent(mirasextimes) >= 50)
         boyBhorny += 10;
-    root->addDesc(textsexhanter[2]);
+    root->addText(textsexhanter[2]);
     if(boyAhorny < 100)
     {
         if(hantsexa == 1)
@@ -1433,14 +1433,14 @@ void MitkaSex::forestSexOral2_1()
 void MitkaSex::forestSexOral3_1()
 {
     root->incTime(5);
-    root->uVStatus(horny,getRandInt(5,10));
-    root->uVSex(lubonus,1);
+    root->vStatus(horny) += getRandInt(5,10);
+    root->vSex(lubonus) += 1;
     int tmp = getRandInt(1,3);
     hantsexa = getRandInt(1,5);
     mitboysex += 1;
-    root->uVSC(blowJob,1);
+    root->vStatistics(blowJob) += 1;
     root->setImage(media(63));
-    root->setDesc(str(1));
+    root->setText(str(1));
     if(tmp == 1)
         setMitka();
     if(tmp == 2)
@@ -1453,13 +1453,13 @@ void MitkaSex::forestSexOral3_1()
     if(mitboysex < mitboysexrand)
     {
         if(mirarand == 1)
-            root->addDesc(str(2));
+            root->addText(str(2));
         if(mirarand == 2)
-            root->addDesc(str(3));
+            root->addText(str(3));
         if(mirarand == 3)
-            root->addDesc(str(4));
+            root->addText(str(4));
         if(mirarand == 4)
-            root->addDesc(str(5));
+            root->addText(str(5));
         if(hantsexa == 1)
             makeActBtn("forestSexVag3",act(1));
         if(hantsexa == 2)
@@ -1473,23 +1473,23 @@ void MitkaSex::forestSexOral3_1()
     }
     else
     {
-        root->addDesc(str(6));
+        root->addText(str(6));
         makeActBtn("forestSexCum3_1",act(4));
     }
-    root->addDesc(textsexhanter[2]);
+    root->addText(textsexhanter[2]);
 }
 
 void MitkaSex::forestSexOral3_2()
 {
     root->incTime(5);
-    root->uVStatus(horny,getRandInt(5,10));
-    root->uVSex(lubonus,1);
+    root->vStatus(horny) += getRandInt(5,10);
+    root->vSex(lubonus) += 1;
     int tmp = getRandInt(1,3);
     hantsexa = getRandInt(1,5);
     mitboysex += 1;
-    root->uVSC(blowJob,1);
+    root->vStatistics(blowJob) += 1;
     root->setImage(media(64));
-    root->setDesc(str(21));
+    root->setText(str(21));
     if(tmp == 1)
     {
         setMitka();
@@ -1515,15 +1515,15 @@ void MitkaSex::forestSexOral3_2()
     if(mitboysex < mitboysexrand)
     {
         if(mirarand == 1)
-            root->addDesc(str(8));
+            root->addText(str(8));
         if(mirarand == 2)
-            root->addDesc(str(9));
+            root->addText(str(9));
         if(mirarand == 3)
-            root->addDesc(str(10));
+            root->addText(str(10));
         if(mirarand == 4)
-            root->addDesc(str(11));
+            root->addText(str(11));
         if(mirarand == 5)
-            root->addDesc(str(12));
+            root->addText(str(12));
         if(hantsexa == 1)
             makeActBtn("forestSexVag3",act(1));
         if(hantsexa == 2)
@@ -1537,30 +1537,30 @@ void MitkaSex::forestSexOral3_2()
     }
     else
     {
-        root->addDesc(str(13));
+        root->addText(str(13));
         makeActBtn("forestSexCum3_2",act(4));
     }
-    root->addDesc(textsexhanter[3]);
+    root->addText(textsexhanter[3]);
 }
 
 void MitkaSex::forestSexOral3_3()
 {
     root->incTime(5);
-    root->uVStatus(horny,getRandInt(5,10));
+    root->vStatus(horny) += getRandInt(5,10);
     hantsexa = getRandInt(1,5);
-    root->uVSex(lubonus,1);
+    root->vSex(lubonus) += 1;
     mitboysex += 1;
-    root->uVSC(blowJob,1);
+    root->vStatistics(blowJob) += 1;
     root->setImage(media(65));
-    root->setDesc(str(21));
+    root->setText(str(21));
     setMitka();
     root->blow_job();
     setKolyamba();
     root->blow_job();
     setVasyan();
     root->blow_job();
-    root->addDesc(str(23));
-    root->addDesc(textsexhanter[3]);
+    root->addText(str(23));
+    root->addText(textsexhanter[3]);
     if(mitboysex < mitboysexrand)
     {
         if(hantsexa == 1)
@@ -1583,12 +1583,12 @@ void MitkaSex::forestSexOral3_3()
 void MitkaSex::forestSexOralCum1_1()
 {
     root->incTime(5);
-    root->sVSex(protect,0);
+    root->vSex(protect) = 0;
     root->setImage(media(66));
-    root->setDesc(str(84));
+    root->setText(str(84));
     root->blow_job();
     root->fnswallow();
-    root->addDesc(textsexhanter[8]);
+    root->addText(textsexhanter[8]);
     makeActBtn("back_to_loc",act(7));
 }
 
@@ -1597,23 +1597,23 @@ void MitkaSex::forestSexOralCum2_1()
     root->incTime(5);
     root->cum("face");
     root->setImage(media(67));
-    root->setDesc(str(1));
+    root->setText(str(1));
     root->blow_job();
     root->fnswallow();
-    root->addDesc(textsexhanter[1]);
+    root->addText(textsexhanter[1]);
     if(boyBhorny < 100 && boyBcum == 0)
     {
         int tmp = getRandInt(1,2);
         if(tmp == 1)
-            root->addDesc(str(51));
+            root->addText(str(51));
         if(tmp == 2)
-            root->addDesc(str(52));
+            root->addText(str(52));
     }
     else if(boyBhorny >= 100 && boyBcum == 0)
-        root->addDesc(str(53));
+        root->addText(str(53));
     else
-        root->addDesc(str(49));
-    root->sVSex(protect,0);
+        root->addText(str(49));
+    root->vSex(protect) = 0;
     if(boyBcum == 0)
         makeActBtn("forestSexRelax2",act(7));
     else
@@ -1623,10 +1623,10 @@ void MitkaSex::forestSexOralCum2_1()
 void MitkaSex::forestCowKiss1_1()
 {
     root->incTime(5);
-    root->uVStatus(horny,5);
+    root->vStatus(horny) += 5;
     root->setImage(media(68));
-    root->setDesc(str(71));
-    root->addDesc(textsexhanter[2]);
+    root->setText(str(71));
+    root->addText(textsexhanter[2]);
     if(boyAhorny < 100)
     {
         if(hantsexa == 1)
@@ -1649,7 +1649,7 @@ void MitkaSex::forestCowKiss1_1()
 void MitkaSex::forestSexCowOral1_1()
 {
     root->incTime(5);
-    root->uVStatus(horny,5);
+    root->vStatus(horny) += 5;
     if(root->vBody(throat) <= 15)
         boyAhorny += 5;
     if(root->vBody(throat) > 15)
@@ -1658,14 +1658,14 @@ void MitkaSex::forestSexCowOral1_1()
         root->setImage(media(69));
     if(boyAhorny >= 100)
         root->setImage(media(70));
-    root->setDesc(str(69));
+    root->setText(str(69));
     root->blow_job();
     if(boyAhorny >= 100)
         root->fnswallow();
     if(boyAhorny < 100)
-        root->addDesc(textsexhanter[2]);
+        root->addText(textsexhanter[2]);
     if(boyAhorny >= 100)
-        root->addDesc(textsexhanter[8]);
+        root->addText(textsexhanter[8]);
     if(boyAhorny < 100)
     {
         if(hantsexa == 1)
@@ -1696,25 +1696,25 @@ void MitkaSex::forestSexCow1_1()
     if(boyAsex == 0)
     {
         boyAsex = 1;
-        root->uVSC(vaginalSex,1);
+        root->vStatistics(vaginalSex) += 1;
     }
-    root->sVSex(pose,2);
-    if(root->gVEvent(miralesb) == 0)
+    root->vSex(pose) = 2;
+    if(root->vEvent(miralesb) == 0)
         root->setImage(media(71));
     else
     {
         root->setImage(media(72));
-        root->uVStatus(horny,5);
+        root->vStatus(horny) += 5;
     }
-    root->setDesc(str(77));
-    root->sVSex(protect,1);
+    root->setText(str(77));
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
-    if(root->gVEvent(miralesb) == 0)
-        root->addDesc(str(78));
-    if(root->gVEvent(miralesb) > 2)
-        root->addDesc(str(79));
-    root->addDesc(textsexhanter[2]);
+    if(root->vEvent(miralesb) == 0)
+        root->addText(str(78));
+    if(root->vEvent(miralesb) > 2)
+        root->addText(str(79));
+    root->addText(textsexhanter[2]);
     if(boyAhorny < 100)
     {
         if(hantsexa == 1)
@@ -1737,31 +1737,31 @@ void MitkaSex::forestSexCow1_1()
 void MitkaSex::forestSexCow1_2()
 {
     root->incTime(5);
-    root->uVStatus(horny,5);
+    root->vStatus(horny) += 5;
     hantsexa = getRandInt(1,6);
-    if(root->gVEvent(mirasextimes) < 50)
+    if(root->vEvent(mirasextimes) < 50)
         boyAhorny += 20;
-    if(root->gVEvent(mirasextimes) >= 50)
+    if(root->vEvent(mirasextimes) >= 50)
         boyAhorny += 10;
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     root->setImage(media(73));
-    if(root->gVEvent(mirasextimes) < 50)
-        root->setDesc(str(72));
-    if(root->gVEvent(mirasextimes) >= 50)
-        root->setDesc(str(73));
-    if(root->gVEvent(miralesb) > 0)
-        root->addDesc(str(74));
+    if(root->vEvent(mirasextimes) < 50)
+        root->setText(str(72));
+    if(root->vEvent(mirasextimes) >= 50)
+        root->setText(str(73));
+    if(root->vEvent(miralesb) > 0)
+        root->addText(str(74));
     if(root->vStatus(horny) >= 100)
     {
-        root->addDesc(textsexhanter[9]);
-        root->uVSC(orgasm,1);
-        root->uVSC(vaginalOrgasm,1);
-        root->sVStatus(lust,0);
-        root->sVStatus(horny,0);
-        root->uVStatus(mood,15);
+        root->addText(textsexhanter[9]);
+        root->vStatistics(orgasm) += 1;
+        root->vStatistics(vaginalOrgasm) += 1;
+        root->vStatus(lust) = 0;
+        root->vStatus(horny) = 0;
+        root->vStatus(mood) += 15;
     }
-    root->addDesc(str(75));
-    root->addDesc(textsexhanter[2]);
+    root->addText(str(75));
+    root->addText(textsexhanter[2]);
     if(boyAhorny < 100)
     {
         if(hantsexa == 1)
@@ -1784,30 +1784,30 @@ void MitkaSex::forestSexCow1_2()
 void MitkaSex::forestSexCow2_1()
 {
     root->incTime(5);
-    root->uVStatus(horny,getRandInt(5,10));
+    root->vStatus(horny) += getRandInt(5,10);
     hantsexa = getRandInt(1,5);
     if(root->vBody(vagina) <= 25)
         boyAhorny += 20;
     if(root->vBody(vagina) > 25)
         boyAhorny += 10;
-    root->sVSex(pose,2);
+    root->vSex(pose) = 2;
     if(boyAsex == 0)
     {
         boyAsex = 1;
-        root->uVSC(vaginalSex,1);
+        root->vStatistics(vaginalSex) += 1;
     }
     root->setImage(media(74));
-    root->setDesc(str(45));
-    root->sVSex(protect,1);
+    root->setText(str(45));
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
     if(boyAhorny < 100 && boyBcum == 0)
-        root->addDesc(str(46));
+        root->addText(str(46));
     if(boyAhorny >= 100 && boyBcum == 0)
-        root->addDesc(str(47));
+        root->addText(str(47));
     if(boyBcum == 1)
-        root->addDesc(str(48));
-    root->addDesc(textsexhanter[2]);
+        root->addText(str(48));
+    root->addText(textsexhanter[2]);
     boyBcum = 1;
     if(boyAhorny < 100)
     {
@@ -1826,31 +1826,31 @@ void MitkaSex::forestSexCow2_1()
 void MitkaSex::forestSexCowCum1_1()
 {
     root->incTime(1);
-    root->uVStatus(horny,getRandInt(5,10));
-    root->sVSex(pose,1);
+    root->vStatus(horny) += getRandInt(5,10);
+    root->vSex(pose) = 1;
     root->setImage(media(75));
-    root->setDesc(str(76));
+    root->setText(str(76));
     if(root->vStatus(horny) >= 100)
     {
-        root->addDesc(textsexhanter[9]);
-        root->uVSC(orgasm,1);
-        root->uVSC(vaginalOrgasm,1);
-        root->sVStatus(lust,0);
-        root->sVStatus(horny,0);
-        root->uVStatus(mood,15);
+        root->addText(textsexhanter[9]);
+        root->vStatistics(orgasm) += 1;
+        root->vStatistics(vaginalOrgasm) += 1;
+        root->vStatus(lust) = 0;
+        root->vStatus(horny) = 0;
+        root->vStatus(mood) += 15;
     }
     root->sex_cum();
-    root->addDesc(textsexhanter[8]);
+    root->addText(textsexhanter[8]);
     makeActBtn("back_to_loc",act(7));
 }
 
 void MitkaSex::forestSexCowCum1_2()
 {
     root->incTime(1);
-    root->uVStatus(horny,5);
+    root->vStatus(horny) += 5;
     root->setImage(media(76));
-    root->setDesc(str(70));
-    root->addDesc(textsexhanter[8]);
+    root->setText(str(70));
+    root->addText(textsexhanter[8]);
     makeActBtn("back_to_loc",act(7));
 }
 
@@ -1865,16 +1865,16 @@ void MitkaSex::forestSexDog1_1()
     if(boyAsex == 0)
     {
         boyAsex = 1;
-        root->uVSC(vaginalSex,1);
+        root->vStatistics(vaginalSex) += 1;
     }
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     root->setImage(media(77));
-    root->setDesc(str(67));
-    root->sVSex(protect,1);
+    root->setText(str(67));
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
-    root->addDesc(str(68));
-    root->addDesc(textsexhanter[2]);
+    root->addText(str(68));
+    root->addText(textsexhanter[2]);
     if(boyAhorny < 100)
     {
         if(hantsexa == 1)
@@ -1897,19 +1897,19 @@ void MitkaSex::forestSexDog1_1()
 void MitkaSex::forestSexDog1_2()
 {
     root->incTime(5);
-    root->uVStatus(horny,5);
+    root->vStatus(horny) += 5;
     hantsexa = getRandInt(1,6);
-    if(root->gVEvent(mirasextimes) < 50)
+    if(root->vEvent(mirasextimes) < 50)
         boyAhorny += 20;
-    if(root->gVEvent(mirasextimes) >= 50)
+    if(root->vEvent(mirasextimes) >= 50)
         boyAhorny += 10;
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     root->setImage(media(78));
-    if(root->gVEvent(mirasextimes) < 50)
-        root->setDesc(str(64));
-    if(root->gVEvent(mirasextimes) >= 50)
-        root->setDesc(str(65));
-    root->addDesc(textsexhanter[2]);
+    if(root->vEvent(mirasextimes) < 50)
+        root->setText(str(64));
+    if(root->vEvent(mirasextimes) >= 50)
+        root->setText(str(65));
+    root->addText(textsexhanter[2]);
     if(boyAhorny < 100)
     {
         if(hantsexa == 1)
@@ -1937,19 +1937,19 @@ void MitkaSex::forestSexDog1_3()
         boyAhorny += 20;
     if(root->vBody(vagina) > 25)
         boyAhorny += 10;
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     if(boyAsex == 0)
     {
         boyAsex = 1;
-        root->uVSC(vaginalSex,1);
+        root->vStatistics(vaginalSex) += 1;
     }
     root->setImage(media(79));
-    root->setDesc(str(61));
-    root->sVSex(protect,1);
+    root->setText(str(61));
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
-    root->addDesc(str(62));
-    root->addDesc(textsexhanter[2]);
+    root->addText(str(62));
+    root->addText(textsexhanter[2]);
     if(boyAhorny < 100)
     {
         if(hantsexa == 1)
@@ -1972,31 +1972,31 @@ void MitkaSex::forestSexDog1_3()
 void MitkaSex::forestSexDog2_1()
 {
     root->incTime(5);
-    root->uVStatus(horny,getRandInt(5,10));
+    root->vStatus(horny) += getRandInt(5,10);
     hantsexa = getRandInt(1,5);
     if(root->vBody(vagina) <= 25)
         boyAhorny += 20;
     if(root->vBody(vagina) > 25)
         boyAhorny += 10;
-    if(root->gVEvent(mirasextimes) < 50)
+    if(root->vEvent(mirasextimes) < 50)
         boyBhorny += 20;
-    if(root->gVEvent(mirasextimes) >= 50)
+    if(root->vEvent(mirasextimes) >= 50)
         boyBhorny += 10;
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     if(boyAsex == 0)
     {
         boyAsex = 1;
-        root->uVSC(vaginalSex,1);
+        root->vStatistics(vaginalSex) += 1;
     }
     root->setImage(media(80));
-    root->setDesc(str(17));
-    root->sVSex(protect,1);
+    root->setText(str(17));
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
-    root->addDesc(str(57));
+    root->addText(str(57));
     if(boyBhorny >= 100)
-        root->addDesc(str(40));
-    root->addDesc(textsexhanter[2]);
+        root->addText(str(40));
+    root->addText(textsexhanter[2]);
     if(boyAhorny < 100 && boyBhorny < 100)
     {
         hantsexa = getRandInt(1,2);
@@ -2024,31 +2024,31 @@ void MitkaSex::forestSexDog2_1()
 void MitkaSex::forestSexDog2_2()
 {
     root->incTime(5);
-    root->uVStatus(horny,getRandInt(5,10));
+    root->vStatus(horny) += getRandInt(5,10);
     hantsexa = getRandInt(1,5);
     if(root->vBody(vagina) <= 25)
         boyAhorny += 20;
     if(root->vBody(vagina) > 25)
         boyAhorny += 10;
-    if(root->gVEvent(mirasextimes) < 50)
+    if(root->vEvent(mirasextimes) < 50)
         boyBhorny += 20;
-    if(root->gVEvent(mirasextimes) >= 50)
+    if(root->vEvent(mirasextimes) >= 50)
         boyBhorny += 10;
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     if(boyAsex == 0)
     {
         boyAsex = 1;
-        root->uVSC(vaginalSex,1);
+        root->vStatistics(vaginalSex) += 1;
     }
     root->setImage(media(81));
-    root->setDesc(str(17));
-    root->sVSex(protect,1);
+    root->setText(str(17));
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
-    root->addDesc(str(56));
+    root->addText(str(56));
     if(boyBhorny >= 100)
-        root->addDesc(str(40));
-    root->addDesc(textsexhanter[2]);
+        root->addText(str(40));
+    root->addText(textsexhanter[2]);
     if(boyAhorny < 100 && boyBhorny < 100)
     {
         hantsexa = getRandInt(1,2);
@@ -2076,20 +2076,20 @@ void MitkaSex::forestSexDog2_2()
 void MitkaSex::forestSexDogCum1_1()
 {
     root->incTime(5);
-    root->uVStatus(horny,getRandInt(5,10));
-    root->sVSex(pose,1);
+    root->vStatus(horny) += getRandInt(5,10);
+    root->vSex(pose) = 1;
     root->setImage(media(82));
-    root->setDesc(str(66));
+    root->setText(str(66));
     if(root->vStatus(horny) >= 100)
     {
-        root->addDesc(textsexhanter[9]);
-        root->uVSC(orgasm,1);
-        root->uVSC(vaginalOrgasm,1);
-        root->sVStatus(lust,0);
-        root->sVStatus(horny,0);
-        root->uVStatus(mood,15);
+        root->addText(textsexhanter[9]);
+        root->vStatistics(orgasm) += 1;
+        root->vStatistics(vaginalOrgasm) += 1;
+        root->vStatus(lust) = 0;
+        root->vStatus(horny) = 0;
+        root->vStatus(mood) += 15;
         root->sex_cum();
-        root->addDesc(textsexhanter[8]);
+        root->addText(textsexhanter[8]);
         makeActBtn("back_to_loc",act(7));
     }
 }
@@ -2097,21 +2097,21 @@ void MitkaSex::forestSexDogCum1_1()
 void MitkaSex::forestSexDogCum1_2()
 {
     root->incTime(1);
-    root->uVStatus(horny,5);
+    root->vStatus(horny) += 5;
     root->setImage(media(83));
-    root->setDesc(str(63));
-    root->addDesc(textsexhanter[8]);
+    root->setText(str(63));
+    root->addText(textsexhanter[8]);
     makeActBtn("back_to_loc",act(7));
 }
 
 void MitkaSex::forestSexDogCum1_3()
 {
     root->incTime(5);
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     root->cum("ass");
     root->setImage(media(84));
-    root->setDesc(str(60));
-    root->addDesc(textsexhanter[8]);
+    root->setText(str(60));
+    root->addText(textsexhanter[8]);
     makeActBtn("back_to_loc",act(7));
 }
 
@@ -2123,19 +2123,19 @@ void MitkaSex::forestSexSide1_1()
         boyAhorny +=20;
     if(root->vBody(vagina) > 25)
         boyAhorny += 10;
-    root->sVSex(pose,0);
+    root->vSex(pose) = 0;
     if(boyAsex == 0)
     {
         boyAsex = 1;
-        root->uVSC(vaginalSex,1);
+        root->vStatistics(vaginalSex) += 1;
     }
     root->setImage(media(85));
-    root->setDesc(str(46));
-    root->sVSex(protect,1);
+    root->setText(str(46));
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
-    root->addDesc(str(82));
-    root->addDesc(textsexhanter[2]);
+    root->addText(str(82));
+    root->addText(textsexhanter[2]);
     if(boyAhorny < 100)
     {
         if(hantsexa == 1)
@@ -2158,18 +2158,18 @@ void MitkaSex::forestSexSide1_1()
 void MitkaSex::forestSexSide1_2()
 {
     root->incTime(5);
-    root->uVStatus(horny,5);
-    if(root->gVEvent(mirasextimes) < 50)
+    root->vStatus(horny) += 5;
+    if(root->vEvent(mirasextimes) < 50)
         boyAhorny += 20;
-    if(root->gVEvent(mirasextimes) >= 50)
+    if(root->vEvent(mirasextimes) >= 50)
         boyAhorny += 10;
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     root->setImage(media(86));
-    if(root->gVEvent(mirasextimes) < 50)
-        root->setDesc(str(80));
-    if(root->gVEvent(mirasextimes) >= 50)
-        root->setDesc(str(81));
-    root->addDesc(textsexhanter[2]);
+    if(root->vEvent(mirasextimes) < 50)
+        root->setText(str(80));
+    if(root->vEvent(mirasextimes) >= 50)
+        root->setText(str(81));
+    root->addText(textsexhanter[2]);
     if(boyAhorny < 100)
     {
         if(hantsexa == 1)
@@ -2200,30 +2200,30 @@ void MitkaSex::forestSexSide1_2()
 void MitkaSex::forestSexSide2_1()
 {
     root->incTime(5);
-    root->uVStatus(horny,getRandInt(5,10));
+    root->vStatus(horny) += getRandInt(5,10);
     if(root->vBody(vagina) <= 25)
         boyAhorny +=20;
     if(root->vBody(vagina) > 25)
         boyAhorny += 10;
-    if(root->gVEvent(mirasextimes) < 50)
+    if(root->vEvent(mirasextimes) < 50)
         boyBhorny += 20;
-    if(root->gVEvent(mirasextimes) >= 50)
+    if(root->vEvent(mirasextimes) >= 50)
         boyBhorny += 10;
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     if(boyAsex == 0)
     {
         boyAsex = 1;
-        root->uVSC(vaginalSex,1);
+        root->vStatistics(vaginalSex) += 1;
     }
     root->setImage(media(87));
-    root->setDesc(str(46));
-    root->sVSex(protect,1);
+    root->setText(str(46));
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
-    root->addDesc(str(54));
+    root->addText(str(54));
     if(boyBhorny >= 100)
-        root->addDesc(str(55));
-    root->addDesc(textsexhanter[2]);
+        root->addText(str(55));
+    root->addText(textsexhanter[2]);
     if(boyAhorny < 100 && boyBhorny < 100)
     {
         hantsexa = getRandInt(1,2);
@@ -2251,30 +2251,30 @@ void MitkaSex::forestSexSide2_1()
 void MitkaSex::forestSexSide2_2()
 {
     root->incTime(5);
-    root->uVStatus(horny,getRandInt(5,10));
+    root->vStatus(horny) += getRandInt(5,10);
     hantsexa = getRandInt(1,5);
     if(root->vBody(vagina) <= 25)
         boyAhorny += 20;
     if(root->vBody(vagina) > 25)
         boyAhorny += 10;
-    root->sVSex(pose,0);
+    root->vSex(pose) = 0;
     if(boyAsex == 0)
     {
         boyAsex = 1;
-        root->uVSC(vaginalSex,1);
+        root->vStatistics(vaginalSex) += 1;
     }
     root->setImage(media(88));
-    root->setDesc(str(46));
-    root->sVSex(protect,1);
+    root->setText(str(46));
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
     if(boyAhorny < 100 && boyBcum == 0)
-        root->addDesc(str(47));
+        root->addText(str(47));
     if(boyAhorny >= 100 && boyBcum == 0)
-        root->addDesc(str(48));
+        root->addText(str(48));
     if(boyBcum == 1)
-        root->addDesc(str(49));
-    root->addDesc(textsexhanter[2]);
+        root->addText(str(49));
+    root->addText(textsexhanter[2]);
     boyBcum = 1;
     if(boyAhorny < 100)
     {
@@ -2291,30 +2291,30 @@ void MitkaSex::forestSexSide2_2()
 void MitkaSex::forestSexSide2_3()
 {
     root->incTime(5);
-    root->uVStatus(horny,getRandInt(5,10));
+    root->vStatus(horny) += getRandInt(5,10);
     hantsexa = getRandInt(1,5);
     if(root->vBody(vagina) <= 25)
         boyAhorny += 20;
     if(root->vBody(vagina) > 25)
         boyAhorny += 10;
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     if(boyAsex == 0)
     {
         boyAsex = 1;
-        root->uVSC(vaginalSex,1);
+        root->vStatistics(vaginalSex) += 1;
     }
     root->setImage(media(89));
-    root->setDesc(str(46));
-    root->sVSex(protect,1);
+    root->setText(str(46));
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
     if(boyAhorny < 100 && boyBcum == 0)
-        root->addDesc(str(47));
+        root->addText(str(47));
     if(boyAhorny >= 100 && boyBcum == 0)
-        root->addDesc(str(48));
+        root->addText(str(48));
     if(boyBcum == 1)
-        root->addDesc(str(49));
-    root->addDesc(textsexhanter[2]);
+        root->addText(str(49));
+    root->addText(textsexhanter[2]);
     boyBcum = 1;
     if(boyAhorny < 100)
     {
@@ -2331,34 +2331,34 @@ void MitkaSex::forestSexSide2_3()
 void MitkaSex::forestSexSideCum1_1()
 {
     root->incTime(5);
-    root->uVStatus(horny,getRandInt(5,10));
-    root->sVSex(pose,1);
+    root->vStatus(horny) += getRandInt(5,10);
+    root->vSex(pose) = 1;
     root->setImage(media(90));
-    root->setDesc(str(83));
+    root->setText(str(83));
     if(root->vStatus(horny) >= 100)
     {
-        root->addDesc(textsexhanter[9]);
-        root->uVSC(orgasm,1);
-        root->uVSC(vaginalOrgasm,1);
-        root->sVStatus(lust,0);
-        root->sVStatus(horny,0);
-        root->uVStatus(mood,15);
+        root->addText(textsexhanter[9]);
+        root->vStatistics(orgasm) += 1;
+        root->vStatistics(vaginalOrgasm) += 1;
+        root->vStatus(lust) = 0;
+        root->vStatus(horny) = 0;
+        root->vStatus(mood) += 15;
     }
     root->sex_cum();
-    root->addDesc(textsexhanter[8]);
+    root->addText(textsexhanter[8]);
     makeActBtn("back_to_loc",act(7));
 }
 
 void MitkaSex::forestSexVag3()
 {
     root->incTime(5);
-    root->uVSex(lubonus,1);
+    root->vSex(lubonus) += 1;
     int tmp = getRandInt(1,3);
     hantsexa = getRandInt(1,5);
     mitboysex += 1;
-    root->sVSex(pose,0);
+    root->vSex(pose) = 0;
     root->setImage(media(91));
-    root->setDesc(str(7));
+    root->setText(str(7));
     if(tmp == 1)
     {
         setMitka();
@@ -2366,7 +2366,7 @@ void MitkaSex::forestSexVag3()
         if(boyBsex == 0)
         {
             boyBsex = 1;
-            root->uVSC(vaginalSex,1);
+            root->vStatistics(vaginalSex) += 1;
         }
         setKolyamba();
     }
@@ -2377,7 +2377,7 @@ void MitkaSex::forestSexVag3()
         if(boyAsex == 0)
         {
             boyAsex = 1;
-            root->uVSC(vaginalSex,1);
+            root->vStatistics(vaginalSex) += 1;
         }
         setMitka();
     }
@@ -2388,26 +2388,26 @@ void MitkaSex::forestSexVag3()
         if(boyCsex == 0)
         {
             boyCsex = 1;
-            root->uVSC(vaginalSex,1);
+            root->vStatistics(vaginalSex) += 1;
         }
         setVasyan();
     }
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
     mirarand = getRandInt(1,5);
     if(mitboysex < mitboysexrand)
     {
         if(mirarand == 1)
-            root->addDesc(str(8));
+            root->addText(str(8));
         if(mirarand == 2)
-            root->addDesc(str(9));
+            root->addText(str(9));
         if(mirarand == 3)
-            root->addDesc(str(10));
+            root->addText(str(10));
         if(mirarand == 4)
-            root->addDesc(str(11));
+            root->addText(str(11));
         if(mirarand == 5)
-            root->addDesc(str(12));
+            root->addText(str(12));
         if(hantsexa == 1)
             makeActBtn("forestSexVag3",act(1));
         if(hantsexa == 2)
@@ -2421,10 +2421,10 @@ void MitkaSex::forestSexVag3()
     }
     else
     {
-        root->setDesc(str(13));
+        root->setText(str(13));
         makeActBtn("forestSexCum3_2",act(5));
     }
-    root->addDesc(textsexhanter[3]);
+    root->addText(textsexhanter[3]);
 }
 
 void MitkaSex::forestSexAnal3_1()
@@ -2434,13 +2434,13 @@ void MitkaSex::forestSexAnal3_1()
     hantsexa = getRandInt(1,5);
     mitboysex += 1;
     root->setImage(media(92));
-    root->setDesc(str(17));
+    root->setText(str(17));
     if(tmp == 1)
     {
         if(boyAsexa == 0)
         {
             boyAsexa = 1;
-            root->uVSC(analSex,1);
+            root->vStatistics(analSex) += 1;
         }
         setMitka();
     }
@@ -2449,7 +2449,7 @@ void MitkaSex::forestSexAnal3_1()
         if(boyBsexa == 0)
         {
             boyBsexa = 1;
-            root->uVSC(analSex,1);
+            root->vStatistics(analSex) += 1;
         }
         setKolyamba();
     }
@@ -2458,7 +2458,7 @@ void MitkaSex::forestSexAnal3_1()
         if(boyCsexa == 0)
         {
             boyCsexa = 1;
-            root->uVSC(analSex,1);
+            root->vStatistics(analSex) += 1;
         }
         setVasyan();
     }
@@ -2468,13 +2468,13 @@ void MitkaSex::forestSexAnal3_1()
     if(mitboysex < mitboysexrand)
     {
         if(mirarand == 1)
-            root->addDesc(str(2));
+            root->addText(str(2));
         if(mirarand == 2)
-            root->addDesc(str(3));
+            root->addText(str(3));
         if(mirarand == 3)
-            root->addDesc(str(4));
+            root->addText(str(4));
         if(mirarand == 4)
-            root->addDesc(str(5));
+            root->addText(str(5));
         if(hantsexa == 1)
             makeActBtn("forestSexVag3",act(1));
         if(hantsexa == 2)
@@ -2488,10 +2488,10 @@ void MitkaSex::forestSexAnal3_1()
     }
     else
     {
-        root->addDesc(str(6));
+        root->addText(str(6));
         makeActBtn("forestSexCum3_1",act(5));
     }
-    root->addDesc(textsexhanter[2]);
+    root->addText(textsexhanter[2]);
 }
 
 void MitkaSex::forestSexAnal3_2()
@@ -2501,7 +2501,7 @@ void MitkaSex::forestSexAnal3_2()
     hantsexa = getRandInt(1,5);
     mitboysex += 1;
     root->setImage(media(93));
-    root->setDesc(str(16));
+    root->setText(str(16));
     if(tmp == 1)
     {
         setMitka();
@@ -2509,7 +2509,7 @@ void MitkaSex::forestSexAnal3_2()
         if(boyBsexa == 0)
         {
             boyBsexa = 1;
-            root->uVSC(analSex,1);
+            root->vStatistics(analSex) += 1;
         }
         setKolyamba();
     }
@@ -2520,7 +2520,7 @@ void MitkaSex::forestSexAnal3_2()
         if(boyAsexa == 0)
         {
             boyAsexa = 1;
-            root->uVSC(analSex,1);
+            root->vStatistics(analSex) += 1;
         }
         setMitka();
     }
@@ -2531,26 +2531,26 @@ void MitkaSex::forestSexAnal3_2()
         if(boyCsexa == 0)
         {
             boyCsexa = 1;
-            root->uVSC(analSex,1);
+            root->vStatistics(analSex) += 1;
         }
         setVasyan();
     }
     root->analStart(tDick);
     root->anal(tDick);
-    root->uVSex(lubonus,1);
+    root->vSex(lubonus) += 1;
     mirarand = getRandInt(1,5);
     if(mitboysex < mitboysexrand)
     {
         if(mirarand == 1)
-            root->addDesc(str(8));
+            root->addText(str(8));
         if(mirarand == 2)
-            root->addDesc(str(9));
+            root->addText(str(9));
         if(mirarand == 3)
-            root->addDesc(str(10));
+            root->addText(str(10));
         if(mirarand == 4)
-            root->addDesc(str(11));
+            root->addText(str(11));
         if(mirarand == 5)
-            root->addDesc(str(12));
+            root->addText(str(12));
         if(hantsexa == 1)
             makeActBtn("forestSexVag3",act(1));
         if(hantsexa == 2)
@@ -2564,10 +2564,10 @@ void MitkaSex::forestSexAnal3_2()
     }
     else
     {
-        root->addDesc(str(13));
+        root->addText(str(13));
         makeActBtn("forestSexCum3_2",act(5));
     }
-    root->addDesc(textsexhanter[3]);
+    root->addText(textsexhanter[3]);
 }
 
 void MitkaSex::forestSexAnal3_3()
@@ -2577,8 +2577,8 @@ void MitkaSex::forestSexAnal3_3()
     hantsexa = getRandInt(1,5);
     mitboysex += 1;
     root->setImage(media(94));
-    root->setDesc(str(14));
-    root->addDesc(textsexhanter[3]);
+    root->setText(str(14));
+    root->addText(textsexhanter[3]);
     if(tmp == 1)
     {
         setVasyan();
@@ -2588,7 +2588,7 @@ void MitkaSex::forestSexAnal3_3()
         if(boyBsexa == 0)
         {
             boyBsexa = 1;
-            root->uVSC(analSex,1);
+            root->vStatistics(analSex) += 1;
         }
         setKolyamba();
     }
@@ -2601,7 +2601,7 @@ void MitkaSex::forestSexAnal3_3()
         if(boyAsexa == 0)
         {
             boyAsexa = 1;
-            root->uVSC(analSex,1);
+            root->vStatistics(analSex) += 1;
         }
         setMitka();
     }
@@ -2614,15 +2614,15 @@ void MitkaSex::forestSexAnal3_3()
         if(boyCsexa == 0)
         {
             boyCsexa = 1;
-            root->uVSC(analSex,1);
+            root->vStatistics(analSex) += 1;
         }
         setVasyan();
     }
     root->analStart(tDick);
     root->anal(tDick);
-    root->addDesc(str(15));
-    root->addDesc(textsexhanter[5]);
-    root->uVSex(lubonus,1);
+    root->addText(str(15));
+    root->addText(textsexhanter[5]);
+    root->vSex(lubonus) += 1;
     if(mitboysex < mitboysexrand)
     {
         if(hantsexa == 1)
@@ -2647,9 +2647,9 @@ void MitkaSex::forestSexCum3_1()
 {
     root->incTime(1);
     mitboysex = 0;
-    root->sVSex(protect,0);
+    root->vSex(protect) = 0;
     root->setImage(media(95));
-    root->setDesc(str(1));
+    root->setText(str(1));
     int tmp = getRandInt(1,3);
     if(tmp == 1)
         setMitka();
@@ -2659,7 +2659,7 @@ void MitkaSex::forestSexCum3_1()
         setVasyan();
     root->blow_job();
     root->fnswallow();
-    root->addDesc(textsexhanter[1]);
+    root->addText(textsexhanter[1]);
     makeActBtn("back_to_loc",act(7));
 }
 
@@ -2667,15 +2667,15 @@ void MitkaSex::forestSexCum3_2()
 {
     root->incTime(2);
     root->cum("lip");
-    root->uVSC(swallow,1);
+    root->vStatistics(swallow) += 1;
     root->cum("face");
     if(root->isNude())
         root->cum("belly");
     else
-        root->uVStatus(cumFrot, getRandInt(0,1));
+        root->vStatus(cumFrot) += getRandInt(0,1);
     mitboysex = 0;
     root->setImage(media(96));
-    root->setDesc(str(21));
+    root->setText(str(21));
     int tmp = getRandInt(1,3);
     if(tmp == 1)
     {
@@ -2698,7 +2698,7 @@ void MitkaSex::forestSexCum3_2()
         setVasyan();
         root->blow_job();
     }
-    root->addDesc(str(22));
+    root->addText(str(22));
     makeActBtn("back_to_loc",act(7));
 }
 
@@ -2706,41 +2706,41 @@ void MitkaSex::forestSexCum3_3()
 {
     root->incTime(3);
     root->cum("lip");
-    root->uVSC(swallow,1);
+    root->vStatistics(swallow) += 1;
     root->cum("face");
     if(root->isNude())
         root->cum("belly");
     else
-        root->uVStatus(cumFrot, getRandInt(0,1));
+        root->vStatus(cumFrot) += getRandInt(0,1);
     mitboysex = 0;
-    root->sVSex(protect,0);
+    root->vSex(protect) = 0;
     root->setImage(media(97));
-    root->setDesc(str(21));
+    root->setText(str(21));
     setMitka();
     root->blow_job();
     setKolyamba();
     root->blow_job();
     setVasyan();
     root->blow_job();
-    root->addDesc(str(22));
+    root->addText(str(22));
     makeActBtn("back_to_loc",act(7));
 }
 
 void MitkaSex::forestSexRelax()
 {
     root->incTime(5);
-    root->uVStatus(horny, getRandInt(5,10));
+    root->vStatus(horny) += getRandInt(5,10);
     hantsexa = getRandInt(1,4);
     mitboysex += 1;
     root->setImage(media(33));
-    root->setDesc(str(18));
+    root->setText(str(18));
     mirarand = getRandInt(1,2);
     if(mitboysex < mitboysexrand)
     {
         if(mirarand == 1)
-            root->addDesc(str(19));
+            root->addText(str(19));
         if(mirarand == 2)
-            root->addDesc(str(20));
+            root->addText(str(20));
         if(hantsexa == 1)
             makeActBtn("forestSexVag3",act(1));
         if(hantsexa == 2)
@@ -2754,14 +2754,14 @@ void MitkaSex::forestSexRelax()
     {
         makeActBtn("forestSexCumMira3",act(6));
     }
-    root->addDesc(textsexhanter[5]);
+    root->addText(textsexhanter[5]);
 }
 
 void MitkaSex::forestSexRelax2()
 {
     root->incTime(5);
     root->setImage(media(34));
-    root->setDesc(str(50));
+    root->setText(str(50));
     if(boyBhorny < 100)
     {
         int tmp = getRandInt(1,2);
@@ -2778,7 +2778,7 @@ void MitkaSex::forestSexRelaxMira()
 {
     root->incTime(1);
     root->setImage(media(32));
-    root->setDesc(str(24));
+    root->setText(str(24));
     if(mitboysex < mitboysexrand)
     {
         if(hantsexa == 1)
@@ -2801,11 +2801,11 @@ void MitkaSex::forestSexRelaxMira()
 void MitkaSex::forestSexDPMira3()
 {
     root->incTime(1);
-    root->uVStatus(horny,getRandInt(20,30));
-    root->uVSex(lubonus,1);
+    root->vStatus(horny) += getRandInt(20,30);
+    root->vSex(lubonus) += 1;
     root->setImage(media(31));
-    root->setDesc(str(25));
-    root->addDesc(textsexhanter[5]);
+    root->setText(str(25));
+    root->addText(textsexhanter[5]);
     if(hantsexa == 1)
         makeActBtn("forestSexVag3",act(1));
     if(hantsexa == 2)
@@ -2819,11 +2819,11 @@ void MitkaSex::forestSexDPMira3()
 void MitkaSex::forestSexCowMira3()
 {
     root->incTime(1);
-    root->uVStatus(horny,5);
-    root->uVSex(lubonus,1);
+    root->vStatus(horny) += 5;
+    root->vSex(lubonus) += 1;
     root->setImage(media(30));
-    root->setDesc(str(26));
-    root->addDesc(textsexhanter[5]);
+    root->setText(str(26));
+    root->addText(textsexhanter[5]);
     if(hantsexa == 1)
         makeActBtn("forestSexVag3",act(1));
     if(hantsexa == 2)
@@ -2837,11 +2837,11 @@ void MitkaSex::forestSexCowMira3()
 void MitkaSex::forestSexCowMira2()
 {
     root->incTime(1);
-    root->uVStatus(horny,5);
-    root->uVSex(lubonus,1);
+    root->vStatus(horny) += 5;
+    root->vSex(lubonus) += 1;
     root->setImage(media(29));
-    root->setDesc(str(27));
-    root->addDesc(textsexhanter[2]);
+    root->setText(str(27));
+    root->addText(textsexhanter[2]);
     if(mitboysex < mitboysexrand)
     {
         if(hantsexa == 1)
@@ -2864,11 +2864,11 @@ void MitkaSex::forestSexCowMira2()
 void MitkaSex::forestSexSideMira2()
 {
     root->incTime(1);
-    root->uVStatus(horny,5);
-    root->uVSex(lubonus,1);
+    root->vStatus(horny) += 5;
+    root->vSex(lubonus) += 1;
     root->setImage(media(28));
-    root->setDesc(str(28));
-    root->addDesc(textsexhanter[2]);
+    root->setText(str(28));
+    root->addText(textsexhanter[2]);
     if(mitboysex < mitboysexrand)
     {
         if(hantsexa == 1)
@@ -2891,15 +2891,15 @@ void MitkaSex::forestSexSideMira2()
 void MitkaSex::forestSexDogMira2_1()
 {
     root->incTime(1);
-    root->uVStatus(horny,5);
-    if(root->gVEvent(mirasextimes) < 50)
+    root->vStatus(horny) += 5;
+    if(root->vEvent(mirasextimes) < 50)
         boyBhorny += 20;
-    if(root->gVEvent(mirasextimes) >= 50)
+    if(root->vEvent(mirasextimes) >= 50)
         boyBhorny += 10;
     root->setImage(media(27));
-    root->setDesc(str(41));
+    root->setText(str(41));
     if(boyBhorny >= 100)
-        root->addDesc(str(42));
+        root->addText(str(42));
     if(boyBhorny < 100)
         makeActBtn("forestSexRelax2",act(7));
     else
@@ -2909,11 +2909,11 @@ void MitkaSex::forestSexDogMira2_1()
 void MitkaSex::forestSexMisMira2()
 {
     root->incTime(1);
-    root->uVStatus(horny,5);
-    root->uVSex(lubonus,1);
+    root->vStatus(horny) += 5;
+    root->vSex(lubonus) += 1;
     root->setImage(media(26));
-    root->setDesc(str(29));
-    root->addDesc(textsexhanter[2]);
+    root->setText(str(29));
+    root->addText(textsexhanter[2]);
     if(mitboysex < mitboysexrand)
     {
         if(hantsexa == 1)
@@ -2936,11 +2936,11 @@ void MitkaSex::forestSexMisMira2()
 void MitkaSex::forestSexDogMira2()
 {
     root->incTime(1);
-    root->uVStatus(horny,5);
-    root->uVSex(lubonus,1);
+    root->vStatus(horny) += 5;
+    root->vSex(lubonus) += 1;
     root->setImage(media(24));
-    root->setDesc(str(30));
-    root->addDesc(textsexhanter[2]);
+    root->setText(str(30));
+    root->addText(textsexhanter[2]);
     if(mitboysex < mitboysexrand)
     {
         if(hantsexa == 1)
@@ -2963,10 +2963,10 @@ void MitkaSex::forestSexDogMira2()
 void MitkaSex::forestSexCowMira1()
 {
     root->incTime(1);
-    root->uVStatus(horny,5);
+    root->vStatus(horny) += 5;
     root->setImage(media(25));
-    root->setDesc(str(31));
-    root->addDesc(textsexhanter[3]);
+    root->setText(str(31));
+    root->addText(textsexhanter[3]);
     if(mitboysex < mitboysexrand)
     {
         if(hantsexa == 1)
@@ -2989,15 +2989,15 @@ void MitkaSex::forestSexCowMira1()
 void MitkaSex::forestSexCowMira2_1()
 {
     root->incTime(1);
-    root->uVStatus(horny,5);
-    if(root->gVEvent(mirasextimes) < 50)
+    root->vStatus(horny) += 5;
+    if(root->vEvent(mirasextimes) < 50)
         boyBhorny += 20;
-    if(root->gVEvent(mirasextimes) >= 50)
+    if(root->vEvent(mirasextimes) >= 50)
         boyBhorny += 10;
     root->setImage(media(23));
-    root->setDesc(str(39));
+    root->setText(str(39));
     if(boyBhorny >= 100)
-        root->addDesc(str(40));
+        root->addText(str(40));
     if(boyBhorny < 100)
         makeActBtn("forestSexRelax2",act(7));
     else
@@ -3007,10 +3007,10 @@ void MitkaSex::forestSexCowMira2_1()
 void MitkaSex::forestSexDogVMira1()
 {
     root->incTime(1);
-    root->uVStatus(horny,5);
+    root->vStatus(horny) += 5;
     root->setImage(media(22));
-    root->setDesc(str(32));
-    root->addDesc(textsexhanter[3]);
+    root->setText(str(32));
+    root->addText(textsexhanter[3]);
     if(mitboysex < mitboysexrand)
     {
         if(hantsexa == 1)
@@ -3033,10 +3033,10 @@ void MitkaSex::forestSexDogVMira1()
 void MitkaSex::forestSexDogAMira1()
 {
     root->incTime(1);
-    root->uVStatus(horny,5);
+    root->vStatus(horny) += 5;
     root->setImage(media(21));
-    root->setDesc(str(33));
-    root->addDesc(textsexhanter[3]);
+    root->setText(str(33));
+    root->addText(textsexhanter[3]);
     if(mitboysex < mitboysexrand)
     {
         if(hantsexa == 1)
@@ -3059,11 +3059,11 @@ void MitkaSex::forestSexDogAMira1()
 void MitkaSex::forestSexThroatMira1()
 {
     root->incTime(1);
-    root->uVStatus(horny,5);
-    root->uVSex(lubonus,1);
+    root->vStatus(horny) += 5;
+    root->vSex(lubonus) += 1;
     root->setImage(media(20));
-    root->setDesc(str(34));
-    root->addDesc(textsexhanter[3]);
+    root->setText(str(34));
+    root->addText(textsexhanter[3]);
     if(mitboysex < mitboysexrand)
     {
         if(hantsexa == 1)
@@ -3086,11 +3086,11 @@ void MitkaSex::forestSexThroatMira1()
 void MitkaSex::forestSexOralMira1()
 {
     root->incTime(1);
-    root->uVStatus(horny,5);
-    root->uVSex(lubonus,1);
+    root->vStatus(horny) += 5;
+    root->vSex(lubonus) += 1;
     root->setImage(media(19));
-    root->setDesc(str(35));
-    root->addDesc(textsexhanter[3]);
+    root->setText(str(35));
+    root->addText(textsexhanter[3]);
     if(mitboysex < mitboysexrand)
     {
         if(hantsexa == 1)
@@ -3113,10 +3113,10 @@ void MitkaSex::forestSexOralMira1()
 void MitkaSex::forestSexOralMira2_1()
 {
     root->incTime(1);
-    root->uVStatus(horny,5);
+    root->vStatus(horny) += 5;
     root->setImage(media(18));
-    root->setDesc(str(44));
-    root->addDesc(textsexhanter[2]);
+    root->setText(str(44));
+    root->addText(textsexhanter[2]);
     if(boyAhorny < 100)
     {
         if(hantsexa == 1)
@@ -3135,13 +3135,13 @@ void MitkaSex::forestSexOralMira2_1()
 void MitkaSex::forestSexOralCumMira2_1()
 {
     root->incTime(1);
-    root->uVStatus(horny,5);
+    root->vStatus(horny) += 5;
     boyBcum = 1;
     root->setImage(media(17));
-    root->setDesc(str(43));
+    root->setText(str(43));
     if(boyAhorny < 100)
     {
-        root->addDesc(textsexhanter[2]);
+        root->addText(textsexhanter[2]);
         hantsexa = getRandInt(1,3);
         if(hantsexa == 1)
             makeActBtn("forestSexSide2_2",act(9));
@@ -3158,8 +3158,8 @@ void MitkaSex::forestSexCumMira1()
 {
     root->incTime(1);
     root->setImage(media(14));
-    root->setDesc(str(36));
-    root->addDesc(textsexhanter[3]);
+    root->setText(str(36));
+    root->addText(textsexhanter[3]);
     makeActBtn("forestSexCum3_2",act(0));
 }
 
@@ -3167,8 +3167,8 @@ void MitkaSex::forestSexCumMira2()
 {
     root->incTime(1);
     root->setImage(media(15));
-    root->setDesc(str(37));
-    root->addDesc(textsexhanter[2]);
+    root->setText(str(37));
+    root->addText(textsexhanter[2]);
     makeActBtn("forestSexCum3_2",act(0));
 }
 
@@ -3176,7 +3176,7 @@ void MitkaSex::forestSexCumMira3()
 {
     root->incTime(1);
     root->setImage(media(16));
-    root->setDesc(str(38));
+    root->setText(str(38));
     makeActBtn("back_to_loc",act(7));
 }
 
@@ -3445,22 +3445,22 @@ QString MitkaSex::media(int id)
 void MitkaSex::setMitka()
 {
     root->setBoyName(boy[0]);
-    root->sVSex(silavag,boySilavag[0]);
-    root->sVSex(dick,boyDick[0]);
+    root->vSex(silavag) = boySilavag[0];
+    root->vSex(dick) = boyDick[0];
 }
 
 void MitkaSex::setVasyan()
 {
     root->setBoyName(boy[1]);
-    root->sVSex(silavag,boySilavag[1]);
-    root->sVSex(dick,boyDick[1]);
+    root->vSex(silavag) = boySilavag[1];
+    root->vSex(dick) = boyDick[1];
 }
 
 void MitkaSex::setKolyamba()
 {
     root->setBoyName(boy[2]);
-    root->sVSex(silavag,boySilavag[2]);
-    root->sVSex(dick,boyDick[2]);
+    root->vSex(silavag) = boySilavag[2];
+    root->vSex(dick) = boyDick[2];
 }
 
 void MitkaSex::makeActBtn(QString action, QString actName)
@@ -3468,5 +3468,5 @@ void MitkaSex::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action,"mitkasex");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &MitkaSex::actionHandler);
-    root->addActBtn(btn);
+    root->addActions(btn);
 }

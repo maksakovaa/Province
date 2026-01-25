@@ -2,12 +2,12 @@
 #define GADUKINO_EVENTS_H
 
 #include "../event.h"
-class EventHandler;
+class Game;
 
 class GadukinoEvent: public Event
 {
 public:
-    GadukinoEvent(EventHandler* parent): root(parent){}
+    GadukinoEvent(Game* parent): root(parent){}
     void start(QString arg = "") override;
     void makeActBtn(QString action, QString actName);
 private slots:
@@ -51,7 +51,7 @@ private:
     QString act(int id);
     QString media(int id);
 private:
-    EventHandler* root;
+    Game* root;
     int i;
     int walki;
     int last_walk;

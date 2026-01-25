@@ -1,23 +1,23 @@
 #include "mirafather.h"
-#include "../eventhandler.h"
+#include "../../game.h"
 #include "../../Functions.h"
 #include "../../menu/buttons.h"
 
-MiraFather::MiraFather(EventHandler* ptr): root(ptr){}
+MiraFather::MiraFather(Game* ptr): root(ptr){}
 
 void MiraFather::start(QString arg)
 {
     if(root->vStatus(cumFace) > 0 || root->vStatus(cumFrot) > 0)
-        root->uVQuest(MiraFatherQW, -1);
-    if(root->gVQuest(MiraFatherQW) < 0)
-        root->sVQuest(MiraFatherQW,0);
+        root->vQuest(MiraFatherQW) -= 1;
+    if(root->vQuest(MiraFatherQW) < 0)
+        root->vQuest(MiraFatherQW) = 0;
     root->setImage(media(0));
-    root->setDesc(str(0));
-    if(root->vStatus(cumFace) > 0) root->addDesc(str(1));
-    if(root->vStatus(cumFrot) > 0) root->addDesc(str(2));
-    if(root->gVEvent(mirafatherday) != root->vStatus(daystart))
+    root->setText(str(0));
+    if(root->vStatus(cumFace) > 0) root->addText(str(1));
+    if(root->vStatus(cumFrot) > 0) root->addText(str(2));
+    if(root->vEvent(mirafatherday) != root->vStatus(daystart))
     {
-        root->sVEvent(mirafatherday,root->vStatus(daystart));
+        root->vEvent(mirafatherday) = root->vStatus(daystart);
         makeActBtn("welcome",act(0));
     }
     makeActBtn("miroslavahome",act(1));
@@ -27,75 +27,75 @@ void MiraFather::actionHandler(QString action)
 {
     if(action == "welcome")
     {
-        if(root->gVQuest(MiraFatherQW) < 10)
-            root->uVQuest(MiraFatherQW,1);
+        if(root->vQuest(MiraFatherQW) < 10)
+            root->vQuest(MiraFatherQW) += 1;
         root->incTime(2);
         makeActBtn("miroslavahome",act(1));
         root->setImage(media(0));
-        root->setDesc(str(3));
-        if(root->gVQuest(MiraFatherQW) >= 10)
+        root->setText(str(3));
+        if(root->vQuest(MiraFatherQW) >= 10)
             makeActBtn("talk",act(2));
-        if(root->gVQuest(MiraFatherQW) >= 20 && root->gVEvent(grandpa_mira_guest) == 0)
+        if(root->vQuest(MiraFatherQW) >= 20 && root->vEvent(grandpa_mira_guest) == 0)
             makeActBtn("flirt",act(3));
     }
     if(action == "talk")
     {
-        if(root->gVQuest(MiraFatherQW) < 20)
-            root->uVQuest(MiraFatherQW,1);
+        if(root->vQuest(MiraFatherQW) < 20)
+            root->vQuest(MiraFatherQW) += 1;
         root->incTime(5);
         root->setImage(media(0));
-        root->setDesc(str(4));
+        root->setText(str(4));
         makeActBtn("miroslavahome",act(1));
     }
     if(action == "flirt")
     {
-        if(root->gVQuest(MiraFatherQW) < 30)
-            root->uVQuest(MiraFatherQW,1);
+        if(root->vQuest(MiraFatherQW) < 30)
+            root->vQuest(MiraFatherQW) += 1;
         root->incTime(10);
-        root->uVStatus(horny,10);
+        root->vStatus(horny) += 10;
         root->setImage(media(0));
-        root->setDesc(str(5));
-        if(root->gVQuest(MiraFatherQW) == 30)
+        root->setText(str(5));
+        if(root->vQuest(MiraFatherQW) == 30)
             makeActBtn("seduce",act(4));
-        if(root->gVQuest(MiraFatherQW) > 30)
+        if(root->vQuest(MiraFatherQW) > 30)
             makeActBtn("wink",act(6));
     }
 
     if(action == "seduce")
     {
-        root->sVQuest(MiraFatherQW,31);
+        root->vQuest(MiraFatherQW) = 31;
         root->incTime(10);
-        root->uVStatus(horny,30);
+        root->vStatus(horny) += 30;
         root->setImage(media(0));
-        root->setDesc(str(6));
+        root->setText(str(6));
         makeActBtn("enjoy",act(5));
     }
 
     if(action == "enjoy")
     {
         root->incTime(10);
-        root->sVStatus(lust,0);
-        root->sVStatus(horny,0);
-        root->uVSC(getKuni,1);
-        root->uVSex(guy,1);
-        root->uVSC(orgasm,1);
+        root->vStatus(lust) = 0;
+        root->vStatus(horny) = 0;
+        root->vStatistics(getKuni) += 1;
+        root->vSex(guy) += 1;
+        root->vStatistics(orgasm) += 1;
         root->setImage(media(1));
-        root->setDesc(str(7));
+        root->setText(str(7));
         makeActBtn("give",act(7));
     }
 
     if(action == "give")
     {
         root->setBoyName(boy);
-        root->sVSex(silavag,sexSkill);
-        root->sVSex(dick,dickSize);
-        root->sVSex(pose,0);
+        root->vSex(silavag) = sexSkill;
+        root->vSex(dick) = dickSize;
+        root->vSex(pose) = 0;
         root->incTime(10);
-        root->uVStatus(horny,10);
+        root->vStatus(horny) += 10;
         root->setImage(media(2));
         if(!root->isMesec() || root->vBody(vagina) > 0)
         {
-            root->sVSex(protect,1);
+            root->vSex(protect) = 1;
             root->sexStart();
             root->vaginal(tDick);
             root->sex_cum();
@@ -111,28 +111,28 @@ void MiraFather::actionHandler(QString action)
     if(action == "wink")
     {
         root->setBoyName(boy);
-        root->sVSex(silavag,sexSkill);
-        root->sVSex(dick,dickSize);
-        root->sVSex(pose,0);
+        root->vSex(silavag) = sexSkill;
+        root->vSex(dick) = dickSize;
+        root->vSex(pose) = 0;
         root->incTime(5);
-        root->uVStatus(horny,10);
+        root->vStatus(horny) += 10;
         int tmp = getRandInt(0,5);
         root->setImage(media(0));
         if(tmp < 5)
         {
-            root->setDesc(str(8));
+            root->setText(str(8));
             makeActBtn("seduce2",act(8));
         }
         else
         {
-            root->setDesc(str(9));
+            root->setText(str(9));
             makeActBtn("miroslavahome",act(1));
         }
     }
     if(action == "seduce2")
     {
         root->incTime(10);
-        root->uVStatus(horny,10);
+        root->vStatus(horny) += 10;
         int tmp = getRandInt(0,9);
         if(tmp == 0) root->setImage(media(2));
         if(tmp == 1) root->setImage(media(3));
@@ -147,17 +147,17 @@ void MiraFather::actionHandler(QString action)
         if(tmp < 5)
         {
             root->incTime(10);
-            root->uVStatus(horny,10);
+            root->vStatus(horny) += 10;
             if(!root->isMesec() || root->vBody(vagina) > 0)
             {
-                root->sVSex(protect,1);
+                root->vSex(protect) = 1;
                 root->sexStart();
                 root->vaginal(tDick);
                 root->sex_cum();
             }
             else
             {
-                root->sVSex(protect,1);
+                root->vSex(protect) = 1;
                 root->analStart(tDick);
                 root->anal(tDick);
                 root->anal_cum();
@@ -167,19 +167,19 @@ void MiraFather::actionHandler(QString action)
         else
         {
             root->incTime(10);
-            root->uVStatus(horny,10);
+            root->vStatus(horny) += 10;
             makeActBtn("seduce2.1",act(8));
         }
     }
     if(action == "seduce2.1")
     {
         root->incTime(5);
-        root->uVStatus(horny,10);
-        root->uVSC(blowJob,1);
+        root->vStatus(horny) += 10;
+        root->vStatistics(blowJob) += 1;
         root->cum("lip");
         root->cum("belly");
         root->setImage(media(11));
-        root->setDesc(str(10));
+        root->setText(str(10));
         makeActBtn("miroslavahome",act(1));
     }
 }
@@ -188,7 +188,7 @@ void MiraFather::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action,"MiraFather");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &MiraFather::actionHandler);
-    root->addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString MiraFather::str(int id)
@@ -196,7 +196,7 @@ QString MiraFather::str(int id)
     QString str[11];
     str[0] = "Отец Миры. После смерти жены он сильно сдал и заметно постарел, хоть все еще и выглядит довольно сносно для своего возраста.";
     QString appeal;
-    if(root->gVQuest(MiraFatherQW) < 10)
+    if(root->vQuest(MiraFatherQW) < 10)
         appeal = "отец Миры";
     else
         appeal = "Афанасий";

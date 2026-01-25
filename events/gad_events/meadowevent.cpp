@@ -1,9 +1,9 @@
 #include "meadowevent.h"
 #include "../../menu/buttons.h"
-#include "../eventhandler.h"
+#include "../../game.h"
 #include "../../Functions.h"
 
-MeadowEvent::MeadowEvent(EventHandler* ptr): root(ptr) {}
+MeadowEvent::MeadowEvent(Game* ptr): root(ptr) {}
 
 void MeadowEvent::start(QString arg)
 {
@@ -30,198 +30,198 @@ void MeadowEvent::actionHandler(QString action)
     if(action == "mira_mitka_1")
     {
         root->incTime(5);
-        root->uVStatus(horny,25);
+        root->vStatus(horny) += 25;
         root->setImage(media(1));
-        root->setDesc(str(1));
+        root->setText(str(1));
         makeActBtn("mira_mitka_2",act(0));
     }
     if(action == "mira_mitka_2")
     {
         root->incTime(5);
-        root->uVStatus(horny,25);
-        if(root->gVQuest(miragopQW) == 2)
-            root->sVQuest(miragopQW,3);
-        root->uVEvent(mirasextimes,1);
+        root->vStatus(horny) += 25;
+        if(root->vQuest(miragopQW) == 2)
+            root->vQuest(miragopQW) =3;
+        root->vEvent(mirasextimes) += 1;
         root->setImage(media(2));
-        root->setDesc(str(2));
+        root->setText(str(2));
         makeActBtn("gaddvor",act(1));
     }
 
     if(action == "mira_leab_decline")
     {
         root->incTime(5);
-        root->uVStatus(horny,-5);
-        root->uVQuest(miraQW,-1);
+        root->vStatus(horny) -= 5;
+        root->vQuest(miraQW) -=1;
         root->setImage(media(21));
-        root->setDesc(str(7));
+        root->setText(str(7));
         makeActBtn("back_to_loc",act(2));
     }
 
     if(action == "mira_lesb_talk1_lesb0")
     {
         root->incTime(5);
-        root->uVStatus(horny,30);
+        root->vStatus(horny) += 30;
         root->setImage(media(21));
-        root->setDesc(str(16));
+        root->setText(str(16));
         makeActBtn("mira_lesb_talk1_lesb1",act(2));
     }
     if(action == "mira_lesb_talk1_lesb1")
     {
         root->incTime(5);
-        root->uVStatus(horny,10);
+        root->vStatus(horny) += 10;
         root->setImage(media(22));
-        root->setDesc(str(17));
+        root->setText(str(17));
         makeActBtn("lickmira_start",act(2));
     }
 
     if(action == "mira_mastr1")
     {
         root->incTime(2);
-        root->uVStatus(horny,5);
+        root->vStatus(horny) += 5;
         root->setImage(media(24));
-        root->setDesc(str(24));
+        root->setText(str(24));
         makeActBtn("mira_mastr2",act(0));
     }
     if(action == "mira_mastr2")
     {
         root->incTime(2);
-        root->uVStatus(horny,5);
+        root->vStatus(horny) += 5;
         root->setImage(media(25));
-        root->setDesc(str(25));
+        root->setText(str(25));
         makeActBtn("mira_mastr3",act(0));
     }
     if(action == "mira_mastr3")
     {
         root->incTime(2);
-        root->uVStatus(horny,5);
+        root->vStatus(horny) += 5;
         root->setImage(media(26));
-        root->setDesc(str(26));
+        root->setText(str(26));
         makeActBtn("mira_mastr4",act(0));
     }
     if(action == "mira_mastr4")
     {
         root->incTime(2);
-        root->uVStatus(horny,10);
+        root->vStatus(horny) += 10;
         root->setImage(media(27));
-        root->setDesc(str(27));
+        root->setText(str(27));
         makeActBtn("mira_mastr5",act(0));
     }
     if(action == "mira_mastr5")
     {
         root->incTime(2);
-        root->uVStatus(horny,10);
+        root->vStatus(horny) += 10;
         root->setImage(media(28));
-        root->setDesc(str(28));
+        root->setText(str(28));
         makeActBtn("mira_mastr6",act(0));
     }
     if(action == "mira_mastr6")
     {
         root->incTime(10);
-        root->uVStatus(horny,20);
+        root->vStatus(horny) += 20;
         root->setImage(media(29));
-        root->setDesc(str(29));
+        root->setText(str(29));
         makeActBtn("gaddvor",act(1));
     }
     if(action == "mira_mastr8")
     {
         root->incTime(5);
-        root->uVStatus(horny,10);
+        root->vStatus(horny) += 10;
         root->setImage(media(31));
-        root->setDesc(str(31));
+        root->setText(str(31));
         makeActBtn("mira_mastr9",act(0));
     }
     if(action == "mira_mastr9")
     {
         root->incTime(2);
-        root->uVStatus(horny,5);
+        root->vStatus(horny) += 5;
         root->setImage(media(32));
-        root->setDesc(str(32));
+        root->setText(str(32));
         makeActBtn("mira_mastr10",act(0));
     }
     if(action == "mira_mastr10")
     {
         root->incTime(1);
-        root->uVStatus(horny,5);
+        root->vStatus(horny) += 5;
         root->setImage(media(33));
-        root->setDesc(str(33));
+        root->setText(str(33));
         makeActBtn("mira_mastr11",act(0));
     }
     if(action == "mira_mastr11")
     {
         root->incTime(10);
-        root->uVStatus(horny,20);
+        root->vStatus(horny) += 20;
         root->setImage(media(34));
-        root->setDesc(str(34));
+        root->setText(str(34));
         makeActBtn("gaddvor",act(1));
     }
 
     if(action == "mira_mastr13")
     {
         root->incTime(2);
-        root->uVStatus(horny,10);
+        root->vStatus(horny) += 10;
         root->setImage(media(36));
-        root->setDesc(str(36));
+        root->setText(str(36));
         makeActBtn("mira_mastr14",act(0));
     }
     if(action == "mira_mastr14")
     {
         root->incTime(5);
-        root->uVStatus(horny,15);
+        root->vStatus(horny) += 15;
         root->setImage(media(37));
-        root->setDesc(str(37));
+        root->setText(str(37));
         makeActBtn("mira_mastr15",act(0));
     }
     if(action == "mira_mastr15")
     {
         root->incTime(1);
-        root->uVStatus(horny,5);
+        root->vStatus(horny) += 5;
         root->setImage(media(38));
-        root->setDesc(str(38));
+        root->setText(str(38));
         makeActBtn("mira_mastr16",act(0));
     }
     if(action == "mira_meadow16")
     {
         root->incTime(10);
-        root->uVStatus(horny,30);
+        root->vStatus(horny) += 30;
         root->setImage(media(39));
-        root->setDesc(str(39));
+        root->setText(str(39));
         makeActBtn("gaddvor",act(1));
     }
 
     if(action == "miragop1.1")
     {
         root->incTime(5);
-        root->uVStatus(horny,25);
+        root->vStatus(horny) += 25;
         root->setImage(media(1));
-        root->setDesc(str(41));
+        root->setText(str(41));
         makeActBtn("miragop1.2",act(0));
     }
     if(action == "miragop1.2")
     {
         root->incTime(5);
-        root->uVStatus(horny,15);
+        root->vStatus(horny) += 15;
         root->setImage(media(2));
-        root->setDesc(str(42));
+        root->setText(str(42));
         makeActBtn("gaddvor",act(1));
     }
 
     if(action == "miragop2.1")
     {
         root->incTime(5);
-        root->uVStatus(horny,getRandInt(15,30));
-        root->uVEvent(mirasextimes,1);
+        root->vStatus(horny) += getRandInt(15,30);
+        root->vEvent(mirasextimes) += 1;
         root->setImage(media(42));
-        root->setDesc(str(45));
+        root->setText(str(45));
         makeActBtn("gaddvor",act(1));
     }
 
     if(action == "miragop3.1")
     {
         root->incTime(5);
-        root->uVStatus(horny,getRandInt(15,30));
-        root->uVEvent(mirasextimes,1);
+        root->vStatus(horny) += getRandInt(15,30);
+        root->vEvent(mirasextimes) += 1;
         root->setImage(media(4));
-        root->setDesc(str(47));
+        root->setText(str(47));
         makeActBtn("gaddvor",act(1));
     }
 
@@ -246,7 +246,7 @@ void MeadowEvent::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action,"MeadowEvent");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &MeadowEvent::actionHandler);
-    root->addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString MeadowEvent::str(int id)
@@ -440,55 +440,55 @@ QString MeadowEvent::media(int id)
 void MeadowEvent::mira_mitka()
 {
     root->incTime(5);
-    root->uVStatus(horny,15);
-    root->uVSC(voyeurism,1);
+    root->vStatus(horny) += 15;
+    root->vStatistics(voyeurism) += 1;
     root->setImage(media(0));
-    root->setDesc(str(0));
+    root->setText(str(0));
     makeActBtn("mira_mitka_1",act(0));
 }
 
 void MeadowEvent::mira_gang()
 {
     root->incTime(30);
-    root->uVStatus(horny,25);
-    root->uVQuest(miragopQW,1);
-    root->uVEvent(mirasextimes,1);
-    root->uVSC(voyeurism,1);
+    root->vStatus(horny) += 25;
+    root->vQuest(miragopQW) += 1;
+    root->vEvent(mirasextimes) += 1;
+    root->vStatistics(voyeurism) += 1;
     root->setImage(media(15));
-    root->setDesc(str(3));
+    root->setText(str(3));
     makeActBtn("gaddvor",act(1));
 }
 
 void MeadowEvent::miragopQW11()
 {
     root->incTime(5);
-    root->uVStatus(horny,10);
-    root->sVQuest(miragopQW,12);
+    root->vStatus(horny) += 10;
+    root->vQuest(miragopQW) = 12;
     root->startEvent(eMiroslava,"miraclothes");
-    root->setDesc(str(4));
+    root->setText(str(4));
     makeActBtn("back_to_loc",act(1));
 }
 
 void MeadowEvent::lesb_mira()
 {
     root->incTime(5);
-    root->uVStatus(horny,5);
-    root->sVEvent(miraday,root->getDay());
-    root->sVEvent(mirahorny,getRandInt(0,80));
+    root->vStatus(horny) += 5;
+    root->vEvent(miraday) = root->getDay();
+    root->vEvent(mirahorny) = getRandInt(0,80);
     root->setImage(media(16));
-    root->setDesc(str(5));
-    if(root->gVEvent(mirahorny) < 20) makeActBtn("mirakiss",act(2));
-    if(root->gVEvent(mirahorny) >= 20) makeActBtn("foreplay",act(2));
+    root->setText(str(5));
+    if(root->vEvent(mirahorny) < 20) makeActBtn("mirakiss",act(2));
+    if(root->vEvent(mirahorny) >= 20) makeActBtn("foreplay",act(2));
 }
 
 void MeadowEvent::mira_lesb()
 {
     root->incTime(5);
-    root->uVStatus(horny,5);
-    root->sVEvent(miraday,root->getDay());
-    root->sVEvent(mirahorny,getRandInt(40,80));
+    root->vStatus(horny) += 5;
+    root->vEvent(miraday) = root->getDay();
+    root->vEvent(mirahorny) = getRandInt(40,80);
     root->setImage(media(19));
-    root->setDesc(str(6));
+    root->setText(str(6));
     if(root->vStatus(horny) < 20) makeActBtn("mirakiss",act(3));
     if(root->vStatus(horny) >= 20) makeActBtn("foreplay",act(3));
     if(root->vStatus(horny) < 40) makeActBtn("mira_leab_decline",act(4));
@@ -498,55 +498,55 @@ void MeadowEvent::lesb_talk_mira1()
 {
     root->incTime(5);
     if(root->vStatus(horny) < 40)
-        root->sVStatus(horny,40);
+        root->vStatus(horny) = 40;
     else
-        root->uVStatus(horny,5);
-    root->uVSkill(domination,1);
+        root->vStatus(horny) += 5;
+    root->vSkill(domination) += 1;
     root->startEvent(eMiroslava,"miraclothes");
-    root->setDesc(str(8));
+    root->setText(str(8));
     makeActBtn("miralick_first",act(2));
 }
 
 void MeadowEvent::lesb_talk_mira2()
 {
     root->incTime(5);
-    root->uVStatus(horny,5);
-    root->sVEvent(mirasex,2);
+    root->vStatus(horny) += 5;
+    root->vEvent(mirasex) = 2;
     root->startEvent(eMiroslava,"miraclothes");
-    root->addDesc(str(9));
+    root->addText(str(9));
     makeActBtn("miralick_first",act(2));
 }
 
 void MeadowEvent::lesb_talk_mira3()
 {
     root->incTime(5);
-    root->uVStatus(horny,5);
-    root->uVSkill(domination,1);
+    root->vStatus(horny) += 5;
+    root->vSkill(domination) += 1;
     root->startEvent(eMiroslava,"miraclothes");
-    root->setDesc(str(10));
+    root->setText(str(10));
     makeActBtn("miralick_first",act(2));
 }
 
 void MeadowEvent::mira_lesb_talk1()
 {
     root->incTime(5);
-    root->uVStatus(horny,5);
-    root->uVSkill(domination,-1);
-    root->sVEvent(mirahorny,getRandInt(0,80));
+    root->vStatus(horny) += 5;
+    root->vSkill(domination) -= 1;
+    root->vEvent(mirahorny) = getRandInt(0,80);
     root->setImage(media(20));
-    if(root->gVEvent(mirainmeadow) == 0)
-        root->setDesc(str(11));
-    if(root->gVEvent(mirainmeadow) == 1)
-        root->setDesc(str(12));
-    root->addDesc(str(13));
-    if(root->vSC(lesbianSex) == 0)
+    if(root->vEvent(mirainmeadow) == 0)
+        root->setText(str(11));
+    if(root->vEvent(mirainmeadow) == 1)
+        root->setText(str(12));
+    root->addText(str(13));
+    if(root->vStatistics(lesbianSex) == 0)
     {
-        root->addDesc(str(14));
+        root->addText(str(14));
         makeActBtn("mira_lesb_talk1_lesb0",act(2));
     }
     else
     {
-        root->addDesc(str(15));
+        root->addText(str(15));
         makeActBtn("lickmira_first",act(2));
     }
 }
@@ -554,221 +554,221 @@ void MeadowEvent::mira_lesb_talk1()
 void MeadowEvent::mira_lesb_talk2()
 {
     root->incTime(5);
-    root->uVStatus(horny,5);
-    root->sVEvent(mirasex,2);
-    root->sVEvent(mirahorny,getRandInt(0,80));
+    root->vStatus(horny) += 5;
+    root->vEvent(mirasex) = 2;
+    root->vEvent(mirahorny) = getRandInt(0,80);
     root->setImage(media(20));
-    root->setDesc(str(18));
+    root->setText(str(18));
     makeActBtn("lickmira_first",act(2));
 }
 
 void MeadowEvent::mira_lesb_talk3()
 {
     root->incTime(5);
-    root->uVStatus(horny,5);
-    root->uVSkill(domination,-1);
-    root->sVEvent(mirahorny,getRandInt(40,80));
-    root->sVEvent(miraday,root->getDay());
+    root->vStatus(horny) += 5;
+    root->vSkill(domination) -= 1;
+    root->vEvent(mirahorny) = getRandInt(40,80);
+    root->vEvent(miraday) = root->getDay();
     root->setImage(media(22));
-    if(root->gVEvent(mirainmeadow) == 0)
-        root->setDesc(str(19));
+    if(root->vEvent(mirainmeadow) == 0)
+        root->setText(str(19));
     else
-        root->setDesc(str(20));
-    root->addDesc(str(21));
+        root->setText(str(20));
+    root->addText(str(21));
     makeActBtn("lickmira_first",act(2));
 }
 
 void MeadowEvent::mira_lesb_talk4()
 {
     root->incTime(20);
-    root->uVStatus(horny,5);
-    root->sVEvent(mirahorny,getRandInt(40,80));
-    root->sVEvent(miraday,root->getDay());
-    root->uVSkill(domination,-1);
+    root->vStatus(horny) += 5;
+    root->vEvent(mirahorny) = getRandInt(40,80);
+    root->vEvent(miraday) = root->getDay();
+    root->vSkill(domination) -= 1;
     root->startEvent(eMiroslava,"miraclothes");
-    root->setDesc(str(22));
+    root->setText(str(22));
     makeActBtn("lickmira_first",act(2));
 }
 
 void MeadowEvent::mirameadow()
 {
     root->incTime(2);
-    root->uVSC(voyeurism,1);
+    root->vStatistics(voyeurism) += 1;
     int temp = getRandInt(0,9);
-    if(root->gVEvent(meadow) == 3 && root->gVEvent(mirainmeadow) == 0 && root->getSunWeather() >= 0)
+    if(root->vEvent(meadow) == 3 && root->vEvent(mirainmeadow) == 0 && root->getSunWeather() >= 0)
     {
-        if(root->gVEvent(mirasextimes) < 15 && temp == 0)
+        if(root->vEvent(mirasextimes) < 15 && temp == 0)
         {
             if(root->getTemp() >= 15 && root->getTemp() < 25)
             {
                 root->incTime(2);
                 root->setImage(media(23));
-                root->setDesc(str(23));
+                root->setText(str(23));
                 makeActBtn("mira_mastr1",act(0));
             }
             else if(root->getTemp() >= 25 && root->getTemp() < 30)
             {
                 root->incTime(2);
-                root->uVStatus(horny,10);
+                root->vStatus(horny) += 10;
                 root->setImage(media(30));
-                root->setDesc(str(30));
+                root->setText(str(30));
                 makeActBtn("mira_mastr8",act(0));
             }
             else if(root->getTemp() >= 30)
             {
                 root->incTime(2);
                 root->setImage(media(35));
-                root->setDesc(str(35));
+                root->setText(str(35));
                 makeActBtn("mira_mastr13",act(0));
             }
         }
         if(root->getTemp() >= 20)
         {
-            if(root->gVQuest(miragopQW) >= 2 && temp == 1)
+            if(root->vQuest(miragopQW) >= 2 && temp == 1)
             {
                 root->incTime(2);
-                root->uVStatus(horny,15);
+                root->vStatus(horny) += 15;
                 root->setImage(media(0));
-                root->setDesc(str(40));
+                root->setText(str(40));
                 makeActBtn("miragop1.1",act(0));
             }
-            else if(root->gVQuest(miragopQW) >= 8 && temp == 2)
+            else if(root->vQuest(miragopQW) >= 8 && temp == 2)
             {
                 root->incTime(2);
-                root->uVStatus(horny,getRandInt(15,30));
+                root->vStatus(horny) += getRandInt(15,30);
                 if(getRandInt(0,1) == 0)
                 {
                     root->setImage(media(40));
-                    root->setDesc(str(43));
+                    root->setText(str(43));
                 }
                 else
                 {
                     root->setImage(media(42));
-                    root->setDesc(str(44));
+                    root->setText(str(44));
                 }
                 makeActBtn("miragop2.1",act(0));
             }
-            else if(root->gVQuest(miragopQW) >= 11 && temp == 3)
+            else if(root->vQuest(miragopQW) >= 11 && temp == 3)
             {
                 root->incTime(2);
-                root->uVStatus(horny,15);
+                root->vStatus(horny) += 15;
                 if(root->getTemp() < 20)
                 {
                     root->setImage(media(3));
-                    root->setDesc(str(46));
+                    root->setText(str(46));
                     makeActBtn("miragop3.1",act(0));
                 }
                 else
                 {
                     root->incTime(5);
-                    root->uVStatus(horny,30);
-                    root->uVEvent(mirasextimes,1);
+                    root->vStatus(horny) += 30;
+                    root->vEvent(mirasextimes) += 1;
                     root->setImage(media(5));
-                    root->setDesc(str(48));
+                    root->setText(str(48));
                     makeActBtn("gaddvor",act(1));
                 }
             }
-            else if(root->gVQuest(miragopQW) >= 11 && temp == 4)
+            else if(root->vQuest(miragopQW) >= 11 && temp == 4)
             {
                 root->incTime(5);
-                root->uVStatus(horny,10);
+                root->vStatus(horny) += 10;
                 if(root->getTemp() < 25)
                 {
                     root->incTime(5);
-                    root->uVStatus(horny,50);
-                    root->uVEvent(mirasextimes,1);
+                    root->vStatus(horny) += 50;
+                    root->vEvent(mirasextimes) += 1;
                     root->setImage(media(8));
-                    root->setDesc(str(49));
+                    root->setText(str(49));
                     makeActBtn("gaddvor",act(1));
                 }
                 else
                 {
                     root->incTime(5);
-                    root->uVStatus(horny,40);
-                    root->uVEvent(mirasextimes,1);
+                    root->vStatus(horny) += 40;
+                    root->vEvent(mirasextimes) += 1;
                     root->setImage(media(9));
-                    root->setDesc(str(50));
+                    root->setText(str(50));
                     makeActBtn("gaddvor",act(1));
                 }
             }
-            else if(root->gVQuest(miragopQW) >= 11 && temp == 5)
+            else if(root->vQuest(miragopQW) >= 11 && temp == 5)
             {
                 root->incTime(5);
-                root->uVStatus(horny,20);
+                root->vStatus(horny) += 20;
                 if(root->getTemp() < 25)
                 {
                     root->incTime(5);
-                    root->uVStatus(horny,40);
-                    root->uVEvent(mirasextimes,1);
+                    root->vStatus(horny) += 40;
+                    root->vEvent(mirasextimes) += 1;
                     root->setImage(media(6));
-                    root->setDesc(str(51));
+                    root->setText(str(51));
                     makeActBtn("gaddvor",act(1));
                 }
                 else
                 {
                     root->incTime(5);
-                    root->uVStatus(horny,30);
+                    root->vStatus(horny) += 30;
                     root->setImage(media(7));
-                    root->setDesc(str(52));
+                    root->setText(str(52));
                     makeActBtn("gaddvor",act(1));
                 }
             }
-            else if(root->gVQuest(miragopQW) >= 11 && temp == 6)
+            else if(root->vQuest(miragopQW) >= 11 && temp == 6)
             {
                 root->incTime(5);
-                root->uVStatus(horny,40);
-                root->uVEvent(mirasextimes,1);
+                root->vStatus(horny) += 40;
+                root->vEvent(mirasextimes) += 1;
                 if(root->getTemp() < 25)
                 {
                     root->setImage(media(10));
-                    root->setDesc(str(53));
+                    root->setText(str(53));
                 }
                 else
                 {
                     root->setImage(media(11));
-                    root->setDesc(str(54));
+                    root->setText(str(54));
                 }
                 makeActBtn("gaddvor",act(1));
             }
-            else if(root->gVQuest(miragopQW) >= 11 && temp == 7)
+            else if(root->vQuest(miragopQW) >= 11 && temp == 7)
             {
                 root->incTime(5);
-                root->uVStatus(horny,25);
-                if(root->gVQuest(miragopQW) < 20)
-                    root->uVQuest(miragopQW,1);
+                root->vStatus(horny) += 25;
+                if(root->vQuest(miragopQW) < 20)
+                    root->vQuest(miragopQW) += 1;
                 if(root->getTemp() < 25)
                 {
                     root->setImage(media(14));
-                    root->setDesc(str(55));
+                    root->setText(str(55));
                 }
                 else if(root->getTemp() >=25 && root->getTemp() < 30)
                 {
                     root->setImage(media(13));
-                    root->setDesc(str(56));
+                    root->setText(str(56));
                 }
                 else
                 {
                     root->setImage(media(12));
-                    root->setDesc(str(57));
+                    root->setText(str(57));
                 }
                 makeActBtn("gaddvor",act(1));
             }
-            else if(root->gVQuest(miragopQW) > 33 && temp == 8)
+            else if(root->vQuest(miragopQW) > 33 && temp == 8)
             {
                 root->incTime(5);
-                root->uVStatus(horny,25);
-                root->uVQuest(miragopQW,1);
-                root->uVEvent(mirasextimes,1);
+                root->vStatus(horny) += 25;
+                root->vQuest(miragopQW) += 1;
+                root->vEvent(mirasextimes) += 1;
                 root->setImage(media(15));
-                root->setDesc(str(58));
+                root->setText(str(58));
                 makeActBtn("gaddvor",act(1));
             }
-            else if(root->gVQuest(miragopQW) >= 20 && temp == 9)
+            else if(root->vQuest(miragopQW) >= 20 && temp == 9)
             {
                 root->incTime(10);
-                root->uVStatus(horny,25);
+                root->vStatus(horny) += 25;
                 root->setImage(media(43));
-                root->setDesc(str(59));
+                root->setText(str(59));
                 makeActBtn("gaddvor",act(1));
             }
         }

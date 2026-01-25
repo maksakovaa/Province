@@ -1,45 +1,45 @@
 #include "shop.h"
-#include "../locationhandler.h"
+#include "../../game.h"
 #include "../../Functions.h"
 #include <QDirIterator>
 #include "../../items/itemform.h"
 #include "../../menu/buttons.h"
 
-Shop::Shop(LocationHandler *parent): Location(parent)
+Shop::Shop(Game *parent):  root(parent)
 {
     initClothArray();
 }
 
 void Shop::show(QString arg)
 {
-    rendImagePage();
-    setImage("data/locations/common/supermarket.jpg");
-    setDesc(getStr(0));
-    if (getHour() >= 8 && getHour() <= 20)
+    root->rendImagePage(this);
+    root->setImage("data/locations/common/supermarket.jpg");
+    root->setText(getStr(0));
+    if (root->getHour() >= 8 && root->getHour() <= 20)
     {
-        addText(getStr(1));
-        addText(getStr(2));
+        root->addText(getStr(1));
+        root->addText(getStr(2));
     }
     if(getLocIn() == lgorodok)
     {
-        int week = getWeekNum();
-        int hour = getHour();
+        int week = root->getWeek();
+        int hour = root->getHour();
         if (week > 1 && week < 7 && hour >= 8 && hour < 16)
         {
-            addText(getStr(3));
+            root->addText(getStr(3));
             //gs zz_family mother_sheduler
         }
     }
-    if (getHour() >= 8 && getHour() <= 20)
+    if (root->getHour() >= 8 && root->getHour() <= 20)
     {
-        addText(getStr(4));
+        root->addText(getStr(4));
         //south
     }
     else
     {
-        addText(getStr(8));
+        root->addText(getStr(8));
     }
-    connect(getTextPtr(), &QLabel::linkActivated, this, &Shop::actionHandler);
+    connect(root->getTextPtr(), &QLabel::linkActivated, this, &Shop::actionHandler);
 }
 
 LocId Shop::getLocId()
@@ -49,12 +49,12 @@ LocId Shop::getLocId()
 
 LocId Shop::getParId()
 {
-    return getPrevId();
+    return root->getPrevLoc();
 }
 
 LocId Shop::getLocIn()
 {
-    return getPrevIn();
+    return root->getMainLoc();
 }
 
 QString Shop::getLocName()
@@ -98,37 +98,37 @@ void Shop::actionHandler(const QString link)
     }
     else if(link == "back_to_loc")
     {
-        changeLoc(getLocId(),1);
+        root->changeLoc(getLocId(),1);
     }
 }
 
 void Shop::slotBuyItem(Items id)
 {
-    uVStatus(money, - itemPrice(id));
-    addItem(id,1);
-    sendNotif("<img src='data/img/icons/money.png'></img> -" + intQStr(itemPrice(id)));
-    sendNotif(itemName(id) + " добавлено");
+    root->vStatus(money) -= itemPrice(id);
+    root->addItem(id,1);
+    root->sendNotif("<img src='data/img/icons/money.png'></img> -" + intQStr(itemPrice(id)));
+    root->sendNotif(itemName(id) + " добавлено");
     actionHandler(current);
 }
 
 void Shop::slotBuyCloth(int id, ClothGroup group)
 {
     ClothMain* ptr = new ClothMain(id, group,clothName(group));
-    addCloth(ptr);
-    uVStatus(money, -clothPrice(group));
-    sendNotif("<img src='data/img/icons/money.png'></img> -" + intQStr(clothPrice(group)));
-    sendNotif(clothName(group) + " добавлен в гардероб");
+    root->storeCloth(ptr);
+    root->vStatus(money) -= clothPrice(group);
+    root->sendNotif("<img src='data/img/icons/money.png'></img> -" + intQStr(clothPrice(group)));
+    root->sendNotif(clothName(group) + " добавлен в гардероб");
     actionHandler(current);
 }
 
 void Shop::makeShop()
 {
-    incTime(1);
-    rendObjPage();
+    root->incTime(1);
+    root->rendObjPage(this);
     layoutMain = new QVBoxLayout;
     m_layouts.clear();
-    clearActions();
-    addLayoutInObjPage(layoutMain);
+    root->clearActions();
+    root->addLayoutsInObjPage(layoutMain);
     makeActBtn("back_to_loc","Назад");
 }
 
@@ -137,7 +137,7 @@ void Shop::makeActBtn(QString act, QString actName)
     QActButton* btn = new QActButton(act, "shop");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Shop::actionHandler);
-    addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString Shop::getStr(int id)
@@ -516,8 +516,8 @@ void Shop::createHLayoyt()
 void Shop::makeItemForm(Items id, itemType type)
 {
     QString image = "<img src='data/img/items/" + intQStr(type)+"/" + intQStr(id) + ".png'></img>";
-    ItemFormShop* item = new ItemFormShop(id, image,getItemName(id), intQStr(itemPrice(id)));
-    if(itemPrice(id) > gVStatus(money))
+    ItemFormShop* item = new ItemFormShop(id, image, root->getItemName(id), intQStr(itemPrice(id)));
+    if(itemPrice(id) > root->vStatus(money))
     {
         item->setUnavailable("Недостаточно средств");
     }
@@ -533,7 +533,7 @@ void Shop::makeClothForm(int clothId, ClothGroup group)
 {
     QString imagePath = "<img style='max-width: 200px; max-height: 200px' src='data/img/clothing/" + intQStr(group) + "/" + intQStr(clothId) + ".jpg'></img>";
     ItemFormCloth* item = new ItemFormCloth(clothId,group,imagePath, clothName(group), intQStr(clothPrice(group)));
-    if(clothPrice(group) > gVStatus(money))
+    if(clothPrice(group) > root->vStatus(money))
     {
         item->setUnavailable("Недостаточно средств");
     }

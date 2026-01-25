@@ -15,7 +15,7 @@ struct Book
 class Books: public GameObj
 {
 public:
-    Books(ObjectHandler* ptr);
+    Books(Game* ptr);
     ~Books(){};
     QString getName() override;
     QString getImage() override;
@@ -46,7 +46,7 @@ private:
     QString str(int id);
     QString act(int id);
     QString media(int id);
-    ObjectHandler* root;
+    Game* root;
     int curBook{-1};
     std::vector<Book> m_books;
     QLabel* lbl = nullptr;

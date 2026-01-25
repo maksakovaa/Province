@@ -1,227 +1,187 @@
 #include "ccalko.h"
 #include "../Functions.h"
-#include "../menu/mainwindow.h"
+#include "../game.h"
 
-CC_Alko::CC_Alko(QWidget *ptr): root(ptr){}
+CC_Alko::CC_Alko(Game *ptr): root(ptr){}
 
 void CC_Alko::anti_hangover()
 {
-    setVAlco(hangoverDay,0);
-    setVAlco(alkoAbstainDay, getVStatus(daystart));
-    setVAlco(alkoAbstainCount,1);
+    root->vAddict(hangoverDay) =0;
+    root->vAddict(alkoAbstainDay) = root->vStatus(daystart);
+    root->vAddict(alkoAbstainCount) =1;
 }
 
 void CC_Alko::slotHangOver()
 {
     slotDataInitAlko();
-    if (getVAlco(alko) > getVAlco(maxAlko) && getVAlco(hangoverDay) == 0)
+    if (root->vAddict(alko) > root->vAddict(maxAlko) && root->vAddict(hangoverDay) == 0)
     {
         emit sigIncreaseRiscs(getRandInt(1,3));
-        setVAlco(hangoverDay, getVStatus(daystart) + 1);
+        root->vAddict(hangoverDay) = root->vStatus(daystart) + 1;
     }
-    if (getVAlco(alko) == getVAlco(maxAlko))
+    if (root->vAddict(alko) == root->vAddict(maxAlko))
     {
-        updVAlco(hangoverDay, getVAlco(max_hangoverDay));
+        root->vAddict(hangoverDay) += root->vAddict(max_hangoverDay);
     }
-    if (getVAlco(alko) > getVAlco(maxAlko))
+    if (root->vAddict(alko) > root->vAddict(maxAlko))
     {
-        updVAlco(hangoverDay, getVAlco(max_hangoverDay) + 1);
+        root->vAddict(hangoverDay) += root->vAddict(max_hangoverDay) + 1;
     }
     //Опохмелка - увеличиваем алкоголизм
-    if (getVAlco(alko) > 0 && getVAlco(hangoverDay) != 0 && getVStatus(daystart) > getVAlco(lenghangoverday))
+    if (root->vAddict(alko) > 0 && root->vAddict(hangoverDay) != 0 && root->vStatus(daystart) > root->vAddict(lenghangoverday))
     {
-        updVAlco(alkoholism, 1);
-        setVAlco(hangoverDay,0);
-        setVAlco(lenghangoverday,0);
-        setVStatus(mood, 100);
-        setVStatus(health, 100);
+        root->vAddict(alkoholism) += 1;
+        root->vAddict(hangoverDay) =0;
+        root->vAddict(lenghangoverday) = 0;
+        root->vStatus(mood) = 100;
+        root->vStatus(health) = 100;
     }
-    if (getVStatus(daystart) > getVAlco(lenghangoverday))
+    if (root->vStatus(daystart) > root->vAddict(lenghangoverday))
     {
-        setVAlco(hangoverDay, 0);
-        setVAlco(lenghangoverday,0);
+        root->vAddict(hangoverDay) = 0;
+        root->vAddict(lenghangoverday) = 0;
     }
-    if(getVAlco(hangoverDay) != 0 && getVStatus(daystart) >= getVAlco(lenghangoverday))
+    if(root->vAddict(hangoverDay) != 0 && root->vStatus(daystart) >= root->vAddict(lenghangoverday))
     {
-        updVStatus(Status::water, -3);
-        if (getVStatus(Status::water) < 8)
+        root->vStatus(Status::water) -= 3;
+        if (root->vStatus(water) < 8)
         {
-            updVStatus(Status::mood, -3);
+            root->vStatus(mood) -= 3;
         }
-        if (getVStatus(Status::mood) < 30)
+        if (root->vStatus(mood) < 30)
         {
-            updVStatus(Status::health, -3);
+            root->vStatus(health) -= 3;
         }
     }
-    if (getVAlco(hangoverDay) != 0 && getVStatus(daystart) >= getVAlco(hangoverDay))
+    if (root->vAddict(hangoverDay) != 0 && root->vStatus(daystart) >= root->vAddict(hangoverDay))
     {
-        updVStatus(Status::mood, getRandInt(1,3));
+        root->vStatus(mood) += getRandInt(1,3);
     }
     
 }
 
 void CC_Alko::slotAlkoholism()
 {
-    if (getVAlco(hangoverDay) != 0)
+    if (root->vAddict(hangoverDay) != 0)
     {
-        setVAlco(hangVneshAlko, 3);
+        root->vAddict(hangVneshAlko) = 3;
     }
     else
     {
-        setVAlco(hangVneshAlko,0);
+        root->vAddict(hangVneshAlko) =0;
     }
-    if (getVAlco(alkoholism) > 45)
+    if (root->vAddict(alkoholism) > 45)
     {
-        setVStatus(vneshAlko, 10 + getVAlco(hangVneshAlko));
+        root->vStatus(vneshAlko) = 10 + root->vAddict(hangVneshAlko);
     }
-    else if (getVAlco(alkoholism) > 35)
+    else if (root->vAddict(alkoholism) > 35)
     {
-        setVStatus(vneshAlko, 7 + getVAlco(hangVneshAlko));
+        root->vStatus(vneshAlko) = 7 + root->vAddict(hangVneshAlko);
     }
-    else if (getVAlco(alkoholism) > 25)
+    else if (root->vAddict(alkoholism) > 25)
     {
-        setVStatus(vneshAlko, 5 + getVAlco(hangVneshAlko));
+        root->vStatus(vneshAlko) = 5 + root->vAddict(hangVneshAlko);
     }
-    else if (getVAlco(alkoholism) > 15)
+    else if (root->vAddict(alkoholism) > 15)
     {
-        setVStatus(vneshAlko, 3 + getVAlco(hangVneshAlko));
+        root->vStatus(vneshAlko) = 3 + root->vAddict(hangVneshAlko);
     }
     else
     {
-        setVStatus(vneshAlko, getVAlco(hangVneshAlko));
+        root->vStatus(vneshAlko) = root->vAddict(hangVneshAlko);
     }
-}
-
-int CC_Alko::getVAlco(Addiction param)
-{
-    return ((MainWindow*)root)->m_player->getVAddict(param);
-}
-
-void CC_Alko::setVAlco(Addiction param, int value)
-{
-    ((MainWindow*)root)->m_player->setVAddict(param, value);
-}
-
-void CC_Alko::updVAlco(Addiction param, int value)
-{
-    ((MainWindow*)root)->m_player->updVAddict(param,value);
 }
 
 void CC_Alko::slotDataInitAlko()
 {
-    if (getVAlco(alkoholism) > 45)
+    if (root->vAddict(alkoholism) > 45)
     {
-        setVAlco(maxAlko, 4);
-        setVAlco(max_hangoverDay, 3);
+        root->vAddict(maxAlko) = 4;
+        root->vAddict(max_hangoverDay) = 3;
     }
-    else if (getVAlco(alkoholism) > 35)
+    else if (root->vAddict(alkoholism) > 35)
     {
-        setVAlco(maxAlko, 6);
-        setVAlco(max_hangoverDay,2);
+        root->vAddict(maxAlko) = 6;
+        root->vAddict(max_hangoverDay) =2;
     }
-    else if (getVAlco(alkoholism) > 25)
+    else if (root->vAddict(alkoholism) > 25)
     {
-        setVAlco(maxAlko, getRandInt(6,8));
-        setVAlco(max_hangoverDay, getRandInt(1,2));
+        root->vAddict(maxAlko) = getRandInt(6,8);
+        root->vAddict(max_hangoverDay) = getRandInt(1,2);
     }
-    else if (getVAlco(alkoholism) > 15)
+    else if (root->vAddict(alkoholism) > 15)
     {
-        setVAlco(maxAlko, 8);
-        setVAlco(max_hangoverDay,1);
+        root->vAddict(maxAlko) = 8;
+        root->vAddict(max_hangoverDay) =1;
     }
     else
     {
-        setVAlco(maxAlko, 12);
-        setVAlco(max_hangoverDay, 0);
+        root->vAddict(maxAlko) = 12;
+        root->vAddict(max_hangoverDay) = 0;
     }    
-}
-
-int CC_Alko::getVStatus(Status param)
-{
-    return ((MainWindow*)root)->m_player->getVStatus(param);
-}
-
-void CC_Alko::updVStatus(Status param, int value)
-{
-    ((MainWindow*)root)->m_player->updVStatus(param, value);
-}
-
-void CC_Alko::setVStatus(Status param, int value)
-{
-    ((MainWindow*)root)->m_player->setVStatus(param, value);
-}
-
-void CC_Alko::incTime(int min)
-{
-    ((MainWindow*)root)->m_time.increaseTime(min);
-}
-
-void CC_Alko::updSkin(char c, int value)
-{
-    ((MainWindow*)root)->m_player->updSkin(c,value);
 }
 
 void CC_Alko::alkoAbstain()
 {
-    if (getVAlco(alkoholism) <= 0)
+    if (root->vAddict(alkoholism) <= 0)
     {
-        setVAlco(alkoholism,0);
-        setVAlco(alkoAbstainDay,0);
+        root->vAddict(alkoholism) =0;
+        root->vAddict(alkoAbstainDay) =0;
         return;
     }
-    if (getVAlco(alko) == 0 && getVAlco(hangoverDay) == 0 && getVAlco(alkoAbstainDay) == 0)
+    if (root->vAddict(alko) == 0 && root->vAddict(hangoverDay) == 0 && root->vAddict(alkoAbstainDay) == 0)
     {
-        setVAlco(alkoAbstainDay, getVStatus(daystart));
-        setVAlco(alkoAbstainCount, 1);
+        root->vAddict(alkoAbstainDay) = root->vStatus(daystart);
+        root->vAddict(alkoAbstainCount) = 1;
         return;
     }
-    if (getVAlco(alko) != 0 || getVAlco(hangoverDay) != 0)
+    if (root->vAddict(alko) != 0 || root->vAddict(hangoverDay) != 0)
     {
-        setVAlco(alkoAbstainDay, 0);
-        setVAlco(alkoAbstainCount, 0);
+        root->vAddict(alkoAbstainDay) = 0;
+        root->vAddict(alkoAbstainCount) = 0;
     }
-    if (getVAlco(alkoAbstainCount) != 0 && getVStatus(daystart) >= getVAlco(alkoAbstainDay) + 3)
+    if (root->vAddict(alkoAbstainCount) != 0 && root->vStatus(daystart) >= root->vAddict(alkoAbstainDay) + 3)
     {
-        if (getVAlco(alko) != 0 && getVAlco(hangoverDay) != 0)
+        if (root->vAddict(alko) != 0 && root->vAddict(hangoverDay) != 0)
         {
-            setVAlco(alkoAbstainDay, 0);
+            root->vAddict(alkoAbstainDay) = 0;
             return;
         }
-        updVAlco(alkoholism, -getRandInt(0,1));
-        setVAlco(alkoAbstainDay, daystart);
+        root->vAddict(alkoholism) += -getRandInt(0,1);
+        root->vAddict(alkoAbstainDay) = root->vStatus(daystart);
     }    
 }
 
 void CC_Alko::fnAlko(int val)
 {
-    setVStatus(frost,0);
-    incTime(getRandInt(5,15));
-    updVStatus(mood,10*val);
-    setVStatus(cumLips,0);
+    root->vStatus(frost) = 0;
+    root->incTime(getRandInt(5,15));
+    root->vStatus(mood) += 10*val;
+    root->vStatus(cumLips) = 0;
     if(val <= 0)
-        updVAlco(alko,1);
+        root->vAddict(alko) += 1;
     else
-        updVAlco(alko,val);
-    if(getVStatus(energy) > 20)
-        updVStatus(day_weight,1);
+        root->vAddict(alko) += val;
+    if(root->vStatus(energy) > 20)
+        root->vStatus(day_weight) += 1;
     if(val > 2)
-        updSkin('-',1);
-    if(getVAlco(alko) >= 6)
-        updVStatus(vidageday,-1);
+        root->updSkin('-',1);
+    if(root->vAddict(alko) >= 6)
+        root->vStatus(vidageday) -= 1;
 }
 
 int CC_Alko::alkoBlock()
 {
-    qDebug() << "alko :" << getVAlco(alko) << getVAlco(maxAlko); 
-    if (getVAlco(alko) >= getVAlco(maxAlko))
+    qDebug() << "alko :" << root->vAddict(alko) << root->vAddict(maxAlko);
+    if (root->vAddict(alko) >= root->vAddict(maxAlko))
     {
         return 1;
     }
-    else if (getVAlco(hangoverDay) != 0)
+    else if (root->vAddict(hangoverDay) != 0)
     {
         return 2;
     }
-    else if (getVAlco(alkoholism) > 15)
+    else if (root->vAddict(alkoholism) > 15)
     {
         return 3;
     }

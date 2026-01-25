@@ -2,12 +2,12 @@
 #define PIRAT_H
 
 #include "../event.h"
-class EventHandler;
+class Game;
 
 class Pirat: public Event
 {
 public:
-    Pirat(EventHandler* ptr);
+    Pirat(Game* ptr);
     void start(QString arg = "") override;
     void makeActBtn(QString action, QString actName);
 private slots:
@@ -38,7 +38,7 @@ private:
     //
     void pirPirat();
 private:
-    EventHandler* root;
+    Game* root;
 };
 
 #endif // PIRAT_H

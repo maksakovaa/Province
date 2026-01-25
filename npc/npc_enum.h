@@ -53,11 +53,11 @@ enum NPCId
     PetrKirorov,
     KatyaCat,
     GiviKarapetovich,
-    VladimirSkryabin, //otchim
+    father, //otchim
     SergeiShulgin,
-    NatalyaLebedeva,
-    AnyaLebedeva, //sister
-    KolyaSkryabin, // brother
+    mother,
+    sister, //sister
+    brother, // brother
     Artur,
     AlekseiKatalkin,
     MihailGrobov,

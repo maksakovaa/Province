@@ -1,9 +1,9 @@
 #include "gadriver.h"
 #include "../../Functions.h"
-#include "../locationhandler.h"
+#include "../../game.h"
 #include "../../menu/buttons.h"
 
-Gadriver::Gadriver(LocationHandler *ptr): Location(ptr) {}
+Gadriver::Gadriver(Game *ptr):  root(ptr) {}
 
 void Gadriver::show(QString arg)
 {
@@ -40,41 +40,41 @@ void Gadriver::actionHandler(QString action)
     if(action == "gadriver")
     {
         int i = getRandInt(0,20);
-        int month = getMonth();
-        int sunWeather = getSunWeather();
+        int month = root->getMonth();
+        int sunWeather = root->getSunWeather();
         if(i > 10 && month >= 5 && month <= 9 && sunWeather >= 0)
-            sVEvent(fishers,1);
-        setImage(makeImage(media(0),isDay(),month));
-        setDesc(str(0));
-        if(gVEvent(fishers) == 1 && isDay())
-            addText(str(1));
-        if(i <= 5 && getHour() <= 8 && month <= 9 && gVQuest(miragopQW) >= 20)
-            addText(str(2));
-        if(getCloth(ClothType::Main) == nullptr)
-            startEvent(eGadukinoEvents, "gadriver_nude");
-        if(gVEvent(mitkasextimes) == 20 && isDay() && month >=5 && month <= 9 && sunWeather >= 0 && getTemp() >= 20)
-            startEvent(eGadukinoEvents, "gadriver_gang");
-        if(i < 5 && gVEvent(mirainriver) == 0 && gVEvent(mitkasextimes) >= 13 && getHour() > 8 && getHour() < 20 && gVSkill(domination) < 0 && gVEvent(guysriver) != getDay())
-            startEvent(eRiverEvents, "guys_river");
+            root->vEvent(fishers) = 1;
+        root->setImage(makeImage(media(0),root->isDay(),month));
+        root->setText(str(0));
+        if(root->vEvent(fishers) == 1 && root->isDay())
+            root->addText(str(1));
+        if(i <= 5 && root->getHour() <= 8 && month <= 9 && root->vQuest(miragopQW) >= 20)
+            root->addText(str(2));
+        if(root->getCloth(ClothType::Main) == nullptr)
+            root->startEvent(eGadukinoEvents, "gadriver_nude");
+        if(root->vEvent(mitkasextimes) == 20 && root->isDay() && month >=5 && month <= 9 && sunWeather >= 0 && root->getTemp() >= 20)
+            root->startEvent(eGadukinoEvents, "gadriver_gang");
+        if(i < 5 && root->vEvent(mirainriver) == 0 && root->vEvent(mitkasextimes) >= 13 && root->getHour() > 8 && root->getHour() < 20 && root->vSkill(domination) < 0 && root->vEvent(guysriver) != root->getDay())
+            root->startEvent(eRiverEvents, "guys_river");
         makeActBtn("gadbeach",act(0));
         makeActBtn("gadukino",act(1));
     }
     if(action == "gadukino")
     {
-        sVEvent(mirainriver,0);
-        changeLoc(lgadukino,10);
+        root->vEvent(mirainriver) = 0;
+        root->changeLoc(lgadukino,10);
     }
     if(action == "gadbeach")
     {
-        changeLoc(lgadbeach,5);
+        root->changeLoc(lgadbeach,5);
     }
     if(action == "mira_punish")
     {
-        startEvent(eRiverEvents,"mira_punish");
+        root->startEvent(eRiverEvents,"mira_punish");
     }
     if(action == "fishers")
     {
-        startEvent(eRiverEvents,"fishers");
+        root->startEvent(eRiverEvents,"fishers");
     }
 }
 
@@ -83,7 +83,7 @@ void Gadriver::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action, "gadriver");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Gadriver::actionHandler);
-    addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString Gadriver::str(int id)

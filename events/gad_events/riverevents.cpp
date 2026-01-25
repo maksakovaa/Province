@@ -1,11 +1,11 @@
 #include "riverevents.h"
 #include "../../Functions.h"
-#include "../eventhandler.h"
+#include "../../game.h"
 #include "../../menu/buttons.h"
 
 #include "../../locations/common/bathroom.h"
 
-RiverEvents::RiverEvents(EventHandler *ptr): root(ptr) {}
+RiverEvents::RiverEvents(Game *ptr): root(ptr) {}
 
 void RiverEvents::start(QString arg)
 {
@@ -43,7 +43,7 @@ void RiverEvents::actionHandler(QString action)
     if(action == "stand_in_pose")
     {
         root->incTime(5);
-        root->uVSkill(domination,-1);
+        root->vSkill(domination) -= 1;
         g = getRandInt(4,5);
         root->setImage(media(0));
         if(g == 5)
@@ -62,14 +62,14 @@ void RiverEvents::actionHandler(QString action)
     {
         root->incTime(5);
         root->setBoyName("Васян");
-        root->sVSex(dick,14);
+        root->vSex(dick) = 14;
         g = getRandInt(5,14);
         if (g == 8)
-            root->sVSex(pose,2);
+            root->vSex(pose) = 2;
         else if(g < 8 || g > 11)
-            root->sVSex(pose,1);
+            root->vSex(pose) = 1;
         else
-            root->sVSex(pose,0);
+            root->vSex(pose) = 0;
         root->setImage(media(0));
         if(g < 10)
         {
@@ -87,14 +87,14 @@ void RiverEvents::actionHandler(QString action)
     {
         root->incTime(5);
         root->setBoyName("Колямба");
-        root->sVSex(dick,15);
+        root->vSex(dick) = 15;
         g = getRandInt(5,14);
         if (g == 8)
-            root->sVSex(pose,2);
+            root->vSex(pose) = 2;
         else if(g < 8 || g > 11)
-            root->sVSex(pose,1);
+            root->vSex(pose) = 1;
         else
-            root->sVSex(pose,0);
+            root->vSex(pose) = 0;
         root->setImage(media(0));
         if(g < 10)
         {
@@ -112,14 +112,14 @@ void RiverEvents::actionHandler(QString action)
     {
         root->incTime(5);
         root->setBoyName("Васян");
-        root->sVSex(dick,14);
+        root->vSex(dick) = 14;
         g = getRandInt(5,14);
         if (g == 8)
-            root->sVSex(pose,2);
+            root->vSex(pose) = 2;
         else if(g < 8 || g > 11)
-            root->sVSex(pose,1);
+            root->vSex(pose) = 1;
         else
-            root->sVSex(pose,0);
+            root->vSex(pose) = 0;
         root->setImage(media(0));
         if(g < 10)
         {
@@ -137,14 +137,14 @@ void RiverEvents::actionHandler(QString action)
     {
         root->incTime(5);
         root->setBoyName("Митька");
-        root->sVSex(dick, 16);
+        root->vSex(dick) = 16;
         g = getRandInt(5,14);
         if (g == 8)
-            root->sVSex(pose,2);
+            root->vSex(pose) = 2;
         else if(g < 8 || g > 11)
-            root->sVSex(pose,1);
+            root->vSex(pose) = 1;
         else
-            root->sVSex(pose,0);
+            root->vSex(pose) = 0;
         root->setImage(media(0));
         if(g < 10)
         {
@@ -162,20 +162,20 @@ void RiverEvents::actionHandler(QString action)
     {
         root->incTime(5);
         root->setBoyName("Васян");
-        root->sVSex(dick,14);
-        root->sVSex(silavag,0);
-        root->uVSkill(domination,-1);
+        root->vSex(dick) = 14;
+        root->vSex(silavag) = 0;
+        root->vSkill(domination) -= 1;
 
         g = getRandInt(17,24);
         if (g < 19 || g > 22)
-            root->sVSex(pose,1);
+            root->vSex(pose) = 1;
         else
-            root->sVSex(pose,0);
+            root->vSex(pose) = 0;
         root->setImage(media(0));
-        root->setDesc(str(13));
+        root->setText(str(13));
         if(g < 21)
         {
-            root->sVSex(protect,1);
+            root->vSex(protect) = 1;
             root->sexStart();
             root->vaginal(tDick);
             root->sex_cum();
@@ -192,16 +192,16 @@ void RiverEvents::actionHandler(QString action)
     {
         root->incTime(5);
         root->setBoyName("Митяй");
-        root->sVSex(dick,16);
+        root->vSex(dick) = 16;
         g = getRandInt(17,24);
         if (g < 19 || g > 22)
-            root->sVSex(pose,1);
+            root->vSex(pose) = 1;
         else
-            root->sVSex(pose,0);
+            root->vSex(pose) = 0;
         root->setImage(media(0));
         if(g < 21)
         {
-            root->sVSex(protect,1);
+            root->vSex(protect) = 1;
             root->sexStart();
             root->vaginal(tDick);
             root->sex_cum();
@@ -218,16 +218,16 @@ void RiverEvents::actionHandler(QString action)
     {
         root->incTime(5);
         root->setBoyName("Колямба");
-        root->sVSex(dick,15);
+        root->vSex(dick) = 15;
         g = getRandInt(17,24);
         if (g < 19 || g > 22)
-            root->sVSex(pose,1);
+            root->vSex(pose) = 1;
         else
-            root->sVSex(pose,0);
+            root->vSex(pose) = 0;
         root->setImage(media(0));
         if(g < 21)
         {
-            root->sVSex(protect,1);
+            root->vSex(protect) = 1;
             root->sexStart();
             root->vaginal(tDick);
             root->sex_cum();
@@ -250,17 +250,17 @@ void RiverEvents::actionHandler(QString action)
         QString boys[] {"Митька", "Колямба", "Васян"};
         int dicks[] {16,15,14};
         root->setBoyName(boys[i]);
-        root->sVSex(dick,dicks[i]);
-        root->sVSex(silavag,0);
+        root->vSex(dick) = dicks[i];
+        root->vSex(silavag) = 0;
         if(root->vBody(makeup) > 1)
         {
-            root->sVBody(makeup,0);
-            root->uVStatus(vidageday,-1);
+            root->vBody(makeup) = 0;
+            root->vStatus(vidageday) -= 1;
         }
         if(root->vBody(throat) < root->vSex(dick))
-            root->uVBody(throat,1);
+            root->vBody(throat) += 1;
         root->setImage(media(1));
-        root->setDesc(str(14));
+        root->setText(str(14));
         makeActBtn("guy_river1",act(0));
     }
     if(action == "guy_river1")
@@ -268,13 +268,13 @@ void RiverEvents::actionHandler(QString action)
         root->incTime(5);
         g = getRandInt(17,24);
         if (g < 19 || g > 22)
-            root->sVSex(pose,1);
+            root->vSex(pose) = 1;
         else
-            root->sVSex(pose,0);
+            root->vSex(pose) = 0;
         root->setImage(media(0));
         if(g < 21)
         {
-            root->sVSex(protect,1);
+            root->vSex(protect) = 1;
             root->sexStart();
             root->vaginal(tDick);
             root->sex_cum();
@@ -294,15 +294,15 @@ void RiverEvents::actionHandler(QString action)
     if(action == "guys_beach0")
     {
         root->setBoyName("Колямба");
-        root->sVSex(silavag,0);
-        root->sVSex(pose,2);
-        root->sVSex(dick,15);
+        root->vSex(silavag) = 0;
+        root->vSex(pose) = 2;
+        root->vSex(dick) = 15;
         root->incTime(5);
-        root->uVStatus(horny,10);
+        root->vStatus(horny) += 10;
         g = getRandInt(0,2);
         root->setImage(media(2));
-        root->setDesc(str(19));
-        root->sVSex(protect,1);
+        root->setText(str(19));
+        root->vSex(protect) = 1;
         root->sexStart();
         root->vaginal(tDick);
         root->sex_cum();
@@ -311,33 +311,33 @@ void RiverEvents::actionHandler(QString action)
     if(action == "guys_beach01")
     {
         root->setBoyName("Васян");
-        root->sVSex(silavag,0);
-        root->sVSex(dick,14);
+        root->vSex(silavag) = 0;
+        root->vSex(dick) = 14;
         root->incTime(5);
-        root->uVStatus(horny,10);
+        root->vStatus(horny) += 10;
         if(i == 0)
         {
-            root->sVSex(pose,0);
+            root->vSex(pose) = 0;
             root->setImage(media(3));
-            root->setDesc(str(20));
-            root->sVSex(protect,1);
+            root->setText(str(20));
+            root->vSex(protect) = 1;
             root->sexStart();
             root->vaginal(tDick);
             root->sex_cum();
         }
         else if(i == 1)
         {
-            root->uVSC(blowJob,1);
+            root->vStatistics(blowJob) += 1;
             root->setImage(media(4));
-            root->setDesc(str(21));
+            root->setText(str(21));
             root->blow_job();
             root->fnswallow();
         }
         else
         {
-            root->sVSex(pose,1);
+            root->vSex(pose) = 1;
             root->setImage(media(5));
-            root->setDesc(str(22));
+            root->setText(str(22));
             root->analStart(tDick);
             root->anal(tDick);
             root->anal_cum();
@@ -347,12 +347,12 @@ void RiverEvents::actionHandler(QString action)
     if(action == "guys_beach1")
     {
         root->setBoyName("Колямба");
-        root->uVStatus(horny,10);
+        root->vStatus(horny) += 10;
         root->incTime(5);
-        root->sVSex(dick,15);
-        root->uVSC(blowJob,1);
+        root->vSex(dick) = 15;
+        root->vStatistics(blowJob) += 1;
         root->setImage(media(6));
-        root->setDesc(str(23));
+        root->setText(str(23));
         root->blow_job();
         root->fnswallow();
         makeActBtn("guys_beach11",act(8));
@@ -360,34 +360,34 @@ void RiverEvents::actionHandler(QString action)
     if(action == "guys_beach11")
     {
         root->setBoyName("Васян");
-        root->sVSex(dick,14);
-        root->sVSex(silavag,0);
+        root->vSex(dick) = 14;
+        root->vSex(silavag) = 0;
         root->incTime(5);
-        root->uVStatus(horny,10);
+        root->vStatus(horny) += 10;
         i = getRandInt(0,2);
         if(i == 0)
         {
             root->setImage(media(3));
-            root->setDesc(str(24));
-            root->sVSex(protect,1);
+            root->setText(str(24));
+            root->vSex(protect) = 1;
             root->sexStart();
             root->vaginal(tDick);
             root->sex_cum();
         }
         else if(i == 1)
         {
-            root->uVSC(blowJob,1);
+            root->vStatistics(blowJob) += 1;
             root->setImage(media(4));
-            root->setDesc(str(25));
+            root->setText(str(25));
             root->blow_job();
             root->fnswallow();
 
         }
         else
         {
-            root->sVSex(pose,1);
+            root->vSex(pose) = 1;
             root->setImage(media(7));
-            root->setDesc(str(26));
+            root->setText(str(26));
             root->analStart(tDick);
             root->anal(tDick);
             root->anal_cum();
@@ -397,10 +397,10 @@ void RiverEvents::actionHandler(QString action)
     if(action == "guys_beach2")
     {
         root->setBoyName("Колямба");
-        root->uVStatus(horny,10);
+        root->vStatus(horny) += 10;
         root->incTime(5);
-        root->sVSex(dick,15);
-        root->sVSex(pose,1);
+        root->vSex(dick) = 15;
+        root->vSex(pose) = 1;
         root->setImage(media(8));
         root->analStart(tDick);
         root->anal(tDick);
@@ -410,34 +410,34 @@ void RiverEvents::actionHandler(QString action)
     if(action == "guys_beach21")
     {
         root->setBoyName("Васян");
-        root->sVSex(dick,14);
-        root->sVSex(silavag,0);
+        root->vSex(dick) = 14;
+        root->vSex(silavag) = 0;
         root->incTime(5);
-        root->uVStatus(horny,10);
+        root->vStatus(horny) += 10;
         i = getRandInt(0,2);
         if(i == 0)
         {
-            root->sVSex(pose,0);
+            root->vSex(pose) = 0;
             root->setImage(media(3));
-            root->setDesc(str(24));
-            root->sVSex(protect,1);
+            root->setText(str(24));
+            root->vSex(protect) = 1;
             root->sexStart();
             root->vaginal(tDick);
             root->sex_cum();
         }
         else if(i == 1)
         {
-            root->uVSC(blowJob,1);
+            root->vStatistics(blowJob) += 1;
             root->setImage(media(4));
-            root->setDesc(str(25));
+            root->setText(str(25));
             root->blow_job();
             root->fnswallow();
         }
         else
         {
-            root->sVSex(pose,1);
+            root->vSex(pose) = 1;
             root->setImage(media(5));
-            root->setDesc(str(26));
+            root->setText(str(26));
             root->analStart(tDick);
             root->anal(tDick);
             root->anal_cum();
@@ -449,48 +449,48 @@ void RiverEvents::actionHandler(QString action)
     {
         root->incTime(30);
         ((BathRoom*)root->getLocPtr(lbathroom))->cleanMe();
-        root->uVStatus(mood,5);
-        root->sVJob(JobStatus::horse_river,3);
-        root->uVStatus(horny,getRandInt(5,15));
+        root->vStatus(mood) += 5;
+        root->vJob(JobStatus::horse_river) = 3;
+        root->vStatus(horny) += getRandInt(5,15);
         QString txt;
-        if(root->gVEvent(mirainriver) == 1)
+        if(root->vEvent(mirainriver) == 1)
             txt = str(29);
         if(root->getClothGroup() == swimsuit)
         {
             root->setImage(media(10));
-            root->setDesc(str(28) + txt + str(30));
+            root->setText(str(28) + txt + str(30));
         }
         else if(root->isNude())
         {
             root->setImage(media(11));
-            root->setDesc(str(28) + txt + str(31));
+            root->setText(str(28) + txt + str(31));
         }
         else
         {
             root->setImage(media(9));
-            root->setDesc(str(32));
-            root->decCondition(1);
+            root->setText(str(32));
+            root->decreaseClothCond(1);
         }
         makeActBtn("gadbeach",act(1));
     }
     if(action == "horse_home")
     {
-        if(root->isCloth() || (root->getClothGroup() > 0 && root->vSC(exhibi) > 0))
+        if(root->isCloth() || (root->getClothGroup() > 0 && root->vStatistics(exhibi) > 0))
         {
             root->incTime(30);
-            root->sVJob(JobStatus::horse_river,0);
-            root->sVEvent(mirainriver,0);
-            root->uVEvent(grandmahelp,1);
-            root->uVQuest(grandpaQW,1);
-            root->sVStatus(inriver,0);
+            root->vJob(JobStatus::horse_river) = 0;
+            root->vEvent(mirainriver) = 0;
+            root->vEvent(grandmahelp) += 1;
+            root->vQuest(grandpaQW) +=1;
+            root->vStatus(inriver) = 0;
             root->setImage(media(12));
-            root->setDesc(str(33));
+            root->setText(str(33));
             makeActBtn("gadsarai",act(0));
         }
         else
         {
             root->setImage(media(12));
-            root->setDesc(str(34));
+            root->setText(str(34));
             makeActBtn("horse_river",act(0));
         }
 
@@ -498,41 +498,41 @@ void RiverEvents::actionHandler(QString action)
 
     if(action == "fishers_hello")
     {
-        root->sVEvent(fishersday, root->vStatus(daystart));
+        root->vEvent(fishersday) = root->vStatus(daystart);
         root->incTime(5);
-        if(root->gVQuest(fishersQW) < 3)
-            root->uVQuest(fishersQW,1);
+        if(root->vQuest(fishersQW) < 3)
+            root->vQuest(fishersQW) += 1;
         root->setImage(media(13));
-        if(root->gVQuest(fishersQW) >= 3)
+        if(root->vQuest(fishersQW) >= 3)
             makeActBtn("talk_fishers",act(12));
-        if(root->gVQuest(fishersQW) == 4)
+        if(root->vQuest(fishersQW) == 4)
             makeActBtn("fish_please",act(13));
-        if(root->gVQuest(fishersQW) == 5)
+        if(root->vQuest(fishersQW) == 5)
             makeActBtn("fishing_with_fishers",act(14));
         makeActBtn("gadriver",act(6));
     }
     if(action == "talk_fishers")
     {
         root->incTime(30);
-        if(root->gVQuest(fishersQW) == 3)
-            root->sVQuest(fishersQW,4);
+        if(root->vQuest(fishersQW) == 3)
+            root->vQuest(fishersQW) = 4;
         root->setImage(media(14));
-        root->setDesc(str(35));
+        root->setText(str(35));
         makeActBtn("gadriver",act(6));
     }
     if(action == "fish_please")
     {
         root->incTime(5);
-        root->sVQuest(fishersQW,5);
+        root->vQuest(fishersQW) = 5;
         root->setImage(media(14));
-        root->setDesc(str(36));
+        root->setText(str(36));
         makeActBtn("fishing",act(15));
     }
     if(action == "fishing_with_fishers")
     {
         root->incTime(5);
         root->setImage(media(14));
-        root->setDesc(str(37));
+        root->setText(str(37));
         makeActBtn("fishing",act(15));
     }
     if(action == "gadriver")
@@ -551,16 +551,16 @@ void RiverEvents::actionHandler(QString action)
             f = getRandInt(5,20);
 
         root->setImage(media(15));
-        root->setDesc(str(40));
+        root->setText(str(40));
         if(f > 15)
         {
             root->incTime(1);
-            root->addDesc(str(41));
+            root->addText(str(41));
             makeActBtn("pull_rod",act(17));
         }
         else
         {
-            root->addDesc(str(42));
+            root->addText(str(42));
             makeActBtn("fishing",act(18));
         }
     }
@@ -569,20 +569,20 @@ void RiverEvents::actionHandler(QString action)
         root->incTime(1);
         f = getRandInt(0,120);
         if(getRandInt(0,100) < 30)
-            root->uVSkill(react,1);
+            root->vSkill(react) += 1;
         if(root->vSkill(react) > f)
         {
-            root->uVStatus(mood,20);
-            root->uVSkill(react,1);
-            root->uVStatus(fish,1);
+            root->vStatus(mood) += 20;
+            root->vSkill(react) += 1;
+            root->vStatus(fish) += 1;
             root->setImage(media(16));
-            root->setDesc(str(43));
+            root->setText(str(43));
         }
         else
         {
-            root->uVStatus(mood,-10);
+            root->vStatus(mood) -= 10;
             root->setImage(makeImage(media(17),root->isDay(),root->getMonth()));
-            root->setDesc(str(44));
+            root->setText(str(44));
         }
         makeActBtn("fishing",act(18));
     }
@@ -590,7 +590,7 @@ void RiverEvents::actionHandler(QString action)
     {
         root->incTime(5);
         root->setImage(media(14));
-        root->setDesc(str(45));
+        root->setText(str(45));
         if(root->vStatus(fish) > 0)
             root->startEvent(eRiverEvents,"fishing_end");
         else
@@ -599,29 +599,29 @@ void RiverEvents::actionHandler(QString action)
     if(action == "free_fish")
     {
         root->incTime(5);
-        root->sVStatus(fish,0);
-        root->sVStatus(mood,100);
+        root->vStatus(fish) = 0;
+        root->vStatus(mood) = 100;
         root->setImage(media(14));
-        root->setDesc(str(46));
+        root->setText(str(46));
         makeActBtn("gadriver",act(6));
     }
     if(action == "give_fish_fishers")
     {
         root->incTime(5);
-        root->sVStatus(fish,0);
+        root->vStatus(fish) = 0;
         root->setImage(media(14));
-        root->setDesc(str(47));
+        root->setText(str(47));
         makeActBtn("gadriver",act(6));
     }
     if(action == "take_for_cat")
     {
         root->incTime(25);
-        root->uVStatus(fish,-1);
-        root->uVStatus(mood,20);
+        root->vStatus(fish) -= 1;
+        root->vStatus(mood) += 20;
         root->setImage(media(18));
-        root->setDesc(str(48));
-        root->uVEvent(grandmahelp,root->vStatus(fish));
-        root->sVStatus(fish,0);
+        root->setText(str(48));
+        root->vEvent(grandmahelp) += root->vStatus(fish);
+        root->vStatus(fish) = 0;
         makeActBtn("gadhouse",act(1));
     }
     if(action == "gadhouse")
@@ -631,10 +631,10 @@ void RiverEvents::actionHandler(QString action)
     if(action == "savefish_for_myself")
     {
         root->incTime(5);
-        root->uVStatus(eda,root->vStatus(fish));
+        root->vStatus(eda) += root->vStatus(fish);
         root->setImage(media(19));
-        root->setDesc(str(49));
-        root->sVStatus(fish,0);
+        root->setText(str(49));
+        root->vStatus(fish) = 0;
         makeActBtn("gadriver",act(1));
     }
 }
@@ -643,43 +643,43 @@ void RiverEvents::mira_in_river()
 {
     int m = getRandInt(1,10);
     int hour = root->getHour();
-    int mira_in_river = root->gVEvent(mirainriver);
-    int quest_mira = root->gVQuest(miraQW);
+    int mira_in_river = root->vEvent(mirainriver);
+    int quest_mira = root->vQuest(miraQW);
     int temper = root->getTemp();
-    int no_mira = root->gVEvent(Mira_no);
+    int no_mira = root->vEvent(Mira_no);
     int sunWeather = root->getSunWeather();
-    if(root->gVEvent(mira_go_blok) == 0 && mira_in_river == 1 && (m == 5 || hour == 20))
+    if(root->vEvent(mira_go_blok) == 0 && mira_in_river == 1 && (m == 5 || hour == 20))
     {
         root->clearActions();
-        root->sVEvent(mirainriver,2);
+        root->vEvent(mirainriver) = 2;
         root->incTime(5);
-        root->sVEvent(mira_go_blok,2);
-        root->sVEvent(mira_no_home,0);
+        root->vEvent(mira_go_blok) = 2;
+        root->vEvent(mira_no_home) = 0;
         root->setImage(media(20));
-        root->setDesc(str(0));
+        root->setText(str(0));
         makeActBtn("gadbeach",act(0));
     }
     if(quest_mira > 0 && root->vStatus(inriver) == 1 && no_mira == 0 && mira_in_river == 0 && m > 7 && hour > 8 && hour < 20 && sunWeather >= 0 && temper >= 20)
     {
         root->clearActions();
-        root->sVEvent(mirainriver,1);
-        root->sVEvent(mira_go_river,1);
+        root->vEvent(mirainriver) = 1;
+        root->vEvent(mira_go_river) = 1;
         root->incTime(5);
-        root->sVEvent(mira_go_blok,2);
+        root->vEvent(mira_go_blok) = 2;
         root->setImage(media(21));
-        root->setDesc(str(1));
-        if(root->isNude() && root->gVEvent(miratalkforest) < 3 && root->vStatus(shamelessFlag) == 0)
+        root->setText(str(1));
+        if(root->isNude() && root->vEvent(miratalkforest) < 3 && root->vStatus(shamelessFlag) == 0)
             root->redress(ClothType::Main,new ClothMain(2,swimsuit,"Купальник"));
         makeActBtn("gadbeach",act(0));
     }
     if(quest_mira > 0 && root->vStatus(inriver) == 0 && no_mira == 0 && mira_in_river == 0 && m < 3 && hour > 8 && hour < 20 && sunWeather >= 0 && temper >= 20)
     {
         root->clearActions();
-        root->sVEvent(mirainriver,1);
+        root->vEvent(mirainriver) = 1;
         root->incTime(5);
-        root->sVEvent(mira_go_blok,2);
+        root->vEvent(mira_go_blok) = 2;
         root->setImage(media(22));
-        root->setDesc(str(2));
+        root->setText(str(2));
         makeActBtn("gadbeach",act(0));
     }
 }
@@ -688,34 +688,34 @@ void RiverEvents::mira_punish()
 {
     root->clearActions();
     root->incTime(10);
-    root->uVStatus(horny,getRandInt(25,75));
+    root->vStatus(horny) += getRandInt(25,75);
     root->setImage(media(23));
-    root->setDesc(str(3));
+    root->setText(str(3));
     makeActBtn("gadbeach",act(0));
 }
 
 void RiverEvents::swim_guys()
 {
     g = getRandInt(0,15);
-    if(root->gVEvent(guysriver) != root->getDay())
+    if(root->vEvent(guysriver) != root->getDay())
     {
-        root->sVEvent(guysriver,root->getDay());
-        int mira_in_river = root->gVEvent(mirainriver);
-        int mitka_sex_times = root->gVEvent(mitkasextimes);
+        root->vEvent(guysriver) = root->getDay();
+        int mira_in_river = root->vEvent(mirainriver);
+        int mitka_sex_times = root->vEvent(mitkasextimes);
         int hour = root->getHour();
         if(root->getClothGroup() == swimsuit)
         {
             if(mira_in_river == 0 && mitka_sex_times >= 13 && hour >= 8 && hour < 20)
             {
                 root->incTime(10);
-                root->uVSkill(domination,-1);
+                root->vSkill(domination) -= 1;
                 root->cum("lip");
                 root->cum("face");
-                root->uVSC(gangBang,1);
-                root->uVSC(blowJob,1);
-                root->uVSC(swallow, getRandInt(1,3));
+                root->vStatistics(gangBang) += 1;
+                root->vStatistics(blowJob) += 1;
+                root->vStatistics(swallow) += getRandInt(1,3);
                 root->setImage(media(24));
-                root->setDesc(str(4));
+                root->setText(str(4));
                 makeActBtn("gadbeach", act(1));
             }
             else if(mira_in_river == 0 && mitka_sex_times >= 13 && hour >= 8 && hour < 20 && root->vSkill(domination) < 0)
@@ -726,18 +726,18 @@ void RiverEvents::swim_guys()
                 int dicks[] {16,15,14};
 
                 root->setBoyName(boys[i]);
-                root->sVSex(dick, dicks[i]);
-                root->sVSex(silavag,0);
-                root->sVSex(pose,1);
+                root->vSex(dick) = dicks[i];
+                root->vSex(silavag) = 0;
+                root->vSex(pose) = 1;
                 if(i == 0)
                     root->setImage(media(26));
                 else if(i == 1)
                     root->setImage(media(27));
                 else if(i == 2)
                     root->setImage(media(28));
-                root->setDesc(str(5));
-                root->addDesc(boys2[i]);
-                root->addDesc(str(6));
+                root->setText(str(5));
+                root->addText(boys2[i]);
+                root->addText(str(6));
                 makeActBtn("stand_in_pose", act(2));
             }
         }
@@ -747,19 +747,19 @@ void RiverEvents::swim_guys()
             {
                 root->incTime(5);
                 root->setBoyName("Митька");
-                root->sVSex(dick, 16);
-                root->sVSex(silavag,0);
-                root->uVSC(gangBang,1);
-                root->uVSkill(domination,-1);
+                root->vSex(dick) = 16;
+                root->vSex(silavag) = 0;
+                root->vStatistics(gangBang) += 1;
+                root->vSkill(domination) -= 1;
                 g = getRandInt(5,14);
                 if (g == 8)
-                    root->sVSex(pose,2);
+                    root->vSex(pose) = 2;
                 else if(g < 8 || g > 11)
-                    root->sVSex(pose,1);
+                    root->vSex(pose) = 1;
                 else
-                    root->sVSex(pose,0);
+                    root->vSex(pose) = 0;
                 root->setImage(media(0));
-                root->setDesc(str(7));
+                root->setText(str(7));
                 if(g < 10)
                 {
                     root->vaginal(tDick);
@@ -779,30 +779,30 @@ void RiverEvents::swim_guys()
 void RiverEvents::sunbathe_guys()
 {
     g = getRandInt(0,15);
-    if(root->gVEvent(guysriver) != root->getDay())
+    if(root->vEvent(guysriver) != root->getDay())
     {
-        root->sVEvent(guysriver,root->getDay());
-        int mira_in_river = root->gVEvent(mirainriver);
-        int mitka_sex_times = root->gVEvent(mitkasextimes);
+        root->vEvent(guysriver) = root->getDay();
+        int mira_in_river = root->vEvent(mirainriver);
+        int mitka_sex_times = root->vEvent(mitkasextimes);
         int hour = root->getHour();
         ClothMain* ptr = (ClothMain*)root->getCloth(ClothType::Main);
         if(mira_in_river == 0 && mitka_sex_times >= 13 && g == 0 && hour >= 8 && hour < 20)
         {
             root->incTime(5);
             root->setBoyName("Колямба");
-            root->sVSex(silavag,0);
-            root->sVSex(dick,15);
-            root->uVSkill(domination,-1);
-            root->uVSC(gangBang,1);
+            root->vSex(silavag) = 0;
+            root->vSex(dick) = 15;
+            root->vSkill(domination) -= 1;
+            root->vStatistics(gangBang) += 1;
             g = getRandInt(5,14);
             if (g == 8)
-                root->sVSex(pose,2);
+                root->vSex(pose) = 2;
             else if(g < 8 || g > 11)
-                root->sVSex(pose,1);
+                root->vSex(pose) = 1;
             else
-                root->sVSex(pose,0);
+                root->vSex(pose) = 0;
             root->setImage(media(0));
-            root->setDesc(str(8));
+            root->setText(str(8));
             if(g < 10)
             {
                 root->vaginal(tDick);
@@ -815,13 +815,13 @@ void RiverEvents::sunbathe_guys()
             }
             makeActBtn("sunbathe_guys0",act(0));
         }
-        else if(mira_in_river == 1 && ptr->getClothGroup() == swimsuit && root->gVQuest(miragopQW) >= 15 && g == 1 && hour >= 8 && hour < 20)
+        else if(mira_in_river == 1 && ptr->getClothGroup() == swimsuit && root->vQuest(miragopQW) >= 15 && g == 1 && hour >= 8 && hour < 20)
         {
             root->incTime(15);
-            root->uVStatus(horny,20);
-            root->uVSkill(domination,5);
+            root->vStatus(horny) += 20;
+            root->vSkill(domination) += 5;
             root->setImage(media(25));
-            root->setDesc(str(9));
+            root->setText(str(9));
             makeActBtn("gadbeach",act(1));
         }
     }
@@ -830,15 +830,15 @@ void RiverEvents::sunbathe_guys()
 
 void RiverEvents::guys_river()
 {
-    root->sVEvent(guysriver,root->getDay());
+    root->vEvent(guysriver) = root->getDay();
     root->incTime(10);
-    root->uVStatus(horny,10);
-    root->uVSkill(domination,-1);
+    root->vStatus(horny) += 10;
+    root->vSkill(domination) -= 1;
     i = getRandInt(1,2);
     if(i == 1)
     {
         root->setImage(media(29));
-        root->setDesc(str(10));
+        root->setText(str(10));
         makeActBtn("guys_river0",act(3));
     }
     else
@@ -851,9 +851,9 @@ void RiverEvents::guys_river()
             root->setImage(media(27));
         else if(i == 2)
             root->setImage(media(28));
-        root->setDesc(str(11));
-        root->addDesc(boys2[i]);
-        root->addDesc(str(12));
+        root->setText(str(11));
+        root->addText(boys2[i]);
+        root->addText(str(12));
         makeActBtn("guy_river0",act(4));
     }
     if(root->vSkill(domination) > 0)
@@ -862,25 +862,25 @@ void RiverEvents::guys_river()
 
 void RiverEvents::guys_beach()
 {
-    root->sVEvent(guysriver,root->getDay());
+    root->vEvent(guysriver) = root->getDay();
     root->incTime(5);
-    root->uVStatus(horny,10);
+    root->vStatus(horny) += 10;
     g = getRandInt(1,3);
     root->setImage(media(30));
-    root->setDesc(str(15));
+    root->setText(str(15));
     if(g == 1)
     {
-        root->addDesc(str(16));
+        root->addText(str(16));
         makeActBtn("guys_beach0",act(7));
     }
     else if(g == 2)
     {
-        root->addDesc(str(17));
+        root->addText(str(17));
         makeActBtn("guys_beach1",act(7));
     }
     else
     {
-        root->addDesc(str(18));
+        root->addText(str(18));
         makeActBtn("guys_beach2",act(7));
     }
     if(root->vSkill(domination) > 0)
@@ -890,12 +890,12 @@ void RiverEvents::guys_beach()
 void RiverEvents::horse_river()
 {
     root->incTime(5);
-    root->sVStatus(inriver,1);
+    root->vStatus(inriver) = 1;
     root->setImage(media(31));
-    root->setDesc(str(27));
-    if(root->gVJob(JobStatus::horse_river) == 2)
+    root->setText(str(27));
+    if(root->vJob(JobStatus::horse_river) == 2)
         makeActBtn("wash_horse",act(9));
-    if(root->gVJob(JobStatus::horse_river) == 3)
+    if(root->vJob(JobStatus::horse_river) == 3)
         makeActBtn("horse_home",act(10));
     makeActBtn("gadbeach",act(6));
 }
@@ -905,7 +905,7 @@ void RiverEvents::fishers()
     root->clearActions();
     root->incTime(5);
     root->setImage(media(32));
-    if(root->gVEvent(fishersday) != root->vStatus(daystart) || root->vStatus(daystart) == 0)
+    if(root->vEvent(fishersday) != root->vStatus(daystart) || root->vStatus(daystart) == 0)
         makeActBtn("fishers_hello",act(11));
     makeActBtn("gadriver",act(6));
 }
@@ -913,7 +913,7 @@ void RiverEvents::fishers()
 void RiverEvents::fishing()
 {
     root->setImage(makeImage(media(17),root->isDay(),root->getMonth()));
-    root->setDesc(str(38));
+    root->setText(str(38));
     if(root->getHour() < root->getSunset())
     {
         makeActBtn("Cast_a_fishing_rod",act(16));
@@ -922,9 +922,9 @@ void RiverEvents::fishing()
     else
     {
         root->incTime(5);
-        root->uVStatus(mood,-10);
+        root->vStatus(mood) -= 10;
         root->setImage(media(14));
-        root->setDesc(str(39));
+        root->setText(str(39));
         if(root->vStatus(fish) > 0)
             root->startEvent(eRiverEvents,"fishing_end");
         else
@@ -945,7 +945,7 @@ void RiverEvents::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action,"riverevents");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &RiverEvents::actionHandler);
-    root->addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString RiverEvents::str(int id)
@@ -953,7 +953,7 @@ QString RiverEvents::str(int id)
     QString str[50];
     str[0] = "- Светик, мне пора домой, - сказала вам Мира и стала собираться.";
     str[1] = "Вы загорали, когда на речке появилась Мира.";
-    if(root->getCloth(ClothType::Main) == nullptr && root->gVEvent(miratalkforest) < 3 && root->vStatus(shamelessFlag) == 0)
+    if(root->getCloth(ClothType::Main) == nullptr && root->vEvent(miratalkforest) < 3 && root->vStatus(shamelessFlag) == 0)
         str[1] += " Покраснев, вы быстренько натянули свой купальник, и улеглись загорать дальше.";
     str[1] += "Улыбнувшись вам, она разделась и принялась растилать свое покрывало рядом с вашим.";
     str[2] = "Придя на пляж, вы увидели загорающую на покрывале Мирославу.";
@@ -1090,7 +1090,7 @@ QString RiverEvents::media(int id)
     med[8] = "data/sex/gadriver/12.gif";
     med[9] = "data/npc/horse/wash.jpg";
     QString add;
-    if(root->gVEvent(mirainriver) == 1)
+    if(root->vEvent(mirainriver) == 1)
         add = "_mira";
     med[10] = "data/npc/horse/wash_swim" + add + ".jpg";
     med[11] = "data/npc/horse/wash_nude" + add + ".jpg";

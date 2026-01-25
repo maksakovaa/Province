@@ -4,13 +4,13 @@
 #include <QString>
 #include <QObject>
 
-class LocationHandler;
+class Game;
 
 class KitchenActs: public QObject
 {
     Q_OBJECT
 public:
-    KitchenActs(LocationHandler* ptr);
+    KitchenActs(Game* ptr);
     void drink(QString napitokType);
     void drink_all();
     void eat(QString foodtype = "", QString image = "", QString text = "");
@@ -30,7 +30,7 @@ private:
     QString act(int id);
     int vitaminday{0};
     int lekarday{0};
-    LocationHandler* root;
+    Game* root;
 };
 
 #endif // KITCHENACTS_H

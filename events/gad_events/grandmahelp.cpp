@@ -1,9 +1,9 @@
 #include "grandmahelp.h"
 #include "../../menu/buttons.h"
-#include "../eventhandler.h"
+#include "../../game.h"
 #include "../../Functions.h"
 
-GrandmaHelp::GrandmaHelp(EventHandler* ptr) {}
+GrandmaHelp::GrandmaHelp(Game* ptr) {}
 
 void GrandmaHelp::start(QString arg)
 {
@@ -14,28 +14,28 @@ void GrandmaHelp::actionHandler(QString action)
 {
     if(action == "grandmahelp")
     {
-        root->sVStatus(frost,0);
+        root->vStatus(frost) =0;
         root->setImage(media(0));
-        root->setDesc(str(0));
+        root->setText(str(0));
         if(root->getMonth() <= 4 || root->getMonth() >= 10)
-            root->sVEvent(grandmahelping,getRandInt(0,2));
+            root->vEvent(grandmahelping) = getRandInt(0,2);
         if(root->getMonth() == 5 || root->getMonth() == 6)
-            root->sVEvent(grandmahelping,getRandInt(0,5));
+            root->vEvent(grandmahelping) = getRandInt(0,5);
         if(root->getMonth() == 7)
-            root->sVEvent(grandmahelping,getRandInt(0,6));
+            root->vEvent(grandmahelping) = getRandInt(0,6);
         if(root->getMonth() == 8)
-            root->sVEvent(grandmahelping,getRandInt(7,13));
+            root->vEvent(grandmahelping) = getRandInt(7,13);
         if(root->getMonth() == 9)
-            root->sVEvent(grandmahelping,getRandInt(14,19));
+            root->vEvent(grandmahelping) = getRandInt(14,19);
         fnGrandmaHelping();
     }
     if(action == "wash_floor")
     {
         root->incTime(60);
-        root->uVEvent(grandmahelp,1);
-        root->uVQuest(grandmaQW,1);
+        root->vEvent(grandmahelp) += 1;
+        root->vQuest(grandmaQW) += 1;
         root->setImage(media(1));
-        root->setDesc(str(2));
+        root->setText(str(2));
         makeActBtn("gadhouse",act(1));
     }
     if(action == "gadhouse")
@@ -45,17 +45,17 @@ void GrandmaHelp::actionHandler(QString action)
     if(action == "wash_clothes")
     {
         root->incTime(60);
-        root->uVEvent(grandmahelp,1);
-        root->uVQuest(grandmaQW,1);
+        root->vEvent(grandmahelp) += 1;
+        root->vQuest(grandmaQW) += 1;
         root->setImage(media(2));
-        root->setDesc(str(4));
+        root->setText(str(4));
         makeActBtn("bringup_cloth",act(3));
     }
     if(action == "bringup_cloth")
     {
         root->incTime(10);
         root->setImage(media(3));
-        root->setDesc(str(5));
+        root->setText(str(5));
         makeActBtn("gaddvor",act(1));
     }
     if(action == "gaddvor")
@@ -65,33 +65,33 @@ void GrandmaHelp::actionHandler(QString action)
     if(action == "milk_a_cow")
     {
         root->incTime(10);
-        root->sVJob(milk_cow,1);
+        root->vJob(milk_cow) =1;
         root->setImage(media(4));
-        root->setDesc(str(7));
+        root->setText(str(7));
         makeActBtn("gadsarai",act(5));
     }
     if(action == "take_food_for_chicken")
     {
-        root->sVJob(feed_chickens,1);
+        root->vJob(feed_chickens) =1;
         root->incTime(30);
         root->setImage(media(5));
-        root->setDesc(str(9));
+        root->setText(str(9));
         makeActBtn("gaddvor",act(1));
     }
     if(action == "work_garden")
     {
-        root->sVJob(workGarden,1);
+        root->vJob(workGarden) = 1;
         root->incTime(10);
         root->setImage(media(4));
-        root->setDesc(str(11));
+        root->setText(str(11));
         makeActBtn("in_garden",act(5));
     }
     if(action == "water_garden")
     {
-        root->sVJob(waterGarden,1);
+        root->vJob(waterGarden) =1;
         root->incTime(10);
         root->setImage(media(4));
-        root->setDesc(str(11));
+        root->setText(str(11));
         makeActBtn("in_garden",act(5));
     }
     if(action == "in_garden")
@@ -100,10 +100,10 @@ void GrandmaHelp::actionHandler(QString action)
     }
     if(action == "coolect_straw")
     {
-        root->sVJob(collect_strawberries,1);
+        root->vJob(collect_strawberries) = 1;
         root->incTime(15);
         root->setImage(media(4));
-        root->setDesc(str(14));
+        root->setText(str(14));
         makeActBtn("in_strawberry",act(5));
     }
     if(action == "in_strawberry")
@@ -112,10 +112,10 @@ void GrandmaHelp::actionHandler(QString action)
     }
     if(action == "collect_fruits")
     {
-        root->sVJob(fruit_collect,1);
+        root->vJob(fruit_collect) = 1;
         root->incTime(15);
         root->setImage(media(4));
-        root->setDesc(str(16));
+        root->setText(str(16));
         makeActBtn("in_fruitgarden",act(5));
     }
     if(action == "in_fruitgarden")
@@ -124,10 +124,10 @@ void GrandmaHelp::actionHandler(QString action)
     }
     if(action == "harvest_garden")
     {
-        root->sVJob(harvest_garden,1);
+        root->vJob(harvest_garden) = 1;
         root->incTime(10);
         root->setImage(media(4));
-        root->setDesc(str(11));
+        root->setText(str(11));
         makeActBtn("in_garden",act(5));
     }
     if(action == "back_to_loc")
@@ -141,7 +141,7 @@ void GrandmaHelp::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action,"GrandmaHelp");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &GrandmaHelp::actionHandler);
-    root->addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString GrandmaHelp::str(int id)
@@ -199,55 +199,55 @@ QString GrandmaHelp::media(int id)
 
 void GrandmaHelp::fnGrandmaHelping()
 {
-    int val = root->gVEvent(grandmahelping);
+    int val = root->vEvent(grandmahelping);
     if(val == 0 || val == 7 || val == 14)
     {
-        root->setDesc(str(1));
+        root->setText(str(1));
         makeActBtn("wash_floor",act(0));
     }
     else if (val == 1 || val == 8 || val == 15)
     {
-        root->setDesc(str(3));
+        root->setText(str(3));
         makeActBtn("wash_clothes",act(2));
     }
     else if((val == 2 || val == 10 || val == 17) && root->getHour() < 9 && root->getHour() > 20)
     {
-        root->setDesc(str(6));
+        root->setText(str(6));
         makeActBtn("milk_a_cow",act(4));
     }
     else if(val == 3 || val == 9 || val == 16)
     {
-        root->setDesc(str(8));
+        root->setText(str(8));
         makeActBtn("take_food_for_chicken",act(6));
     }
     else if((val == 4 || val == 11 || val == 18) && root->getSunWeather() >= 0)
     {
-        root->setDesc(str(10));
+        root->setText(str(10));
         makeActBtn("work_garden",act(7));
     }
     else if((val == 5 || val == 12) && root->getSunWeather() >= 0)
     {
-        root->setDesc(str(12));
+        root->setText(str(12));
         makeActBtn("water_garden",act(7));
     }
     else if(val == 6 && root->getSunWeather() >= 0)
     {
-        root->setDesc(str(13));
+        root->setText(str(13));
         makeActBtn("coolect_straw",act(8));
     }
     else if(val == 13 && root->getSunWeather() >= 0)
     {
-        root->setDesc(str(15));
+        root->setText(str(15));
         makeActBtn("collect_fruits",act(9));
     }
     else if(val == 19 && root->getSunWeather() >= 0)
     {
-        root->setDesc(str(17));
+        root->setText(str(17));
         makeActBtn("harvest_garden",act(7));
     }
     else
     {
-        root->setDesc(str(18));
+        root->setText(str(18));
         makeActBtn("back_to_loc",act(1));
     }
 }

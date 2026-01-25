@@ -1,9 +1,9 @@
 #include "mirror.h"
-#include "objecthandler.h"
+#include "../game.h"
 #include "../Functions.h"
 #include "../menu/buttons.h"
 
-Mirror::Mirror(ObjectHandler* ptr): root(ptr)
+Mirror::Mirror(Game *ptr): root(ptr)
 {
     m_name = "mirror";
 }
@@ -25,14 +25,14 @@ QString Mirror::getName()
 
 QString Mirror::getImage()
 {
-    return root->player()->getPlayerFace();
+    return root->getPlayerFace();
 }
 
 QString Mirror::getDesc()
 {
-    QString text = root->player()->getHairDesc() + "<br>";
-    text += root->player()->getMakeupDesc() + "<br>";
-    text += root->player()->getLipsDesc() + "<br>";
+    QString text = root->getHairDesc() + "<br>";
+    text += root->getMakeupDesc() + "<br>";
+    text += root->getLipsDesc() + "<br>";
     if(root->getItmCount(iCosmetic) > 0 || root->getItmCount(iCosmeticBig) > 0)
     {
         text += "Косметика " + intQStr(root->getItmCount(iCosmetic) + root->getItmCount(iCosmeticBig)) + "<br>";
@@ -53,46 +53,46 @@ void Mirror::viewMirror()
 void Mirror::slotMirrorActHandler(MirrorActs act)
 {
     current = act;
-    ClearLayout(root->m_actions);
+    root->clearActions();
     switch (act)
     {
     case actMirr0:
         {
-            root->m_render->rendImagePage(root);
-            root->m_render->getImagePtr()->setText(getImage());
-            root->m_render->setText(str(actMirr0));
+            root->rendImagePage(root);
+            root->getImagePtr()->setText(getImage());
+            root->setText(str(actMirr0));
             makeButtons();
         }
         break;
     case actMirr1:
         {
             emit root->incTime(3);
-            root->setVBody(hairStatus, 1);
+            root->vBody(hairStatus) = 1;
             root->updateParams();
-            root->m_render->setText(str(actMirr1));
+            root->setText(str(actMirr1));
             makeButtons();            
         }
         break;
     case actMirr2:
         {
-            ClearLayout(root->m_actions);
+            root->clearActions();
             root->incTime(3);
-            root->setVBody(makeup, 1);
+            root->vBody(makeup) = 1;
             root->updateParams();
-            root->m_render->setImage("data/img/objects/mirror/mop_2.jpg");
-            root->m_render->setText(str(actMirr2));
+            root->setImage("data/img/objects/mirror/mop_2.jpg");
+            root->setText(str(actMirr2));
             makeButtons();
         }
         break;
     case actMirr3:
         {
-            ClearLayout(root->m_actions);
+            root->clearActions();
             makeButtons();
         }
         break;
     case actMirr4:
         {
-            ClearLayout(root->m_actions);
+            root->clearActions();
             root->incTime(3);
             if(root->getItmCount(iCosmeticBig) >= 1)
             {
@@ -103,16 +103,16 @@ void Mirror::slotMirrorActHandler(MirrorActs act)
                 root->useItem(iCosmetic,1);
             }
 
-            root->setVBody(makeup, 2);
+            root->vBody(makeup) = 2;
             root->updateParams();
-            root->m_render->setImage("data/img/objects/mirror/mop_2.jpg");
-            root->m_render->setText(str(actMirr4));
+            root->setImage("data/img/objects/mirror/mop_2.jpg");
+            root->setText(str(actMirr4));
             makeButtons();
         }
         break;
     case actMirr5:
         {
-            ClearLayout(root->m_actions);
+            root->clearActions();
             root->incTime(5);
             if(root->getItmCount(iCosmeticBig) >= 2)
             {
@@ -122,16 +122,16 @@ void Mirror::slotMirrorActHandler(MirrorActs act)
             {
                 root->useItem(iCosmetic, 2);
             }
-            root->setVBody(makeup, 3);
+            root->vBody(makeup) = 3;
             emit root->updateParams();
-            root->m_render->setImage("data/img/objects/mirror/mop_3.jpg");
-            root->m_render->setText(str(actMirr5));
+            root->setImage("data/img/objects/mirror/mop_3.jpg");
+            root->setText(str(actMirr5));
             makeButtons();
         }
         break;
     case actMirr6:
         {
-            ClearLayout(root->m_actions);
+            root->clearActions();
             root->incTime(3);
             if(root->getItmCount(iCosmeticBig) >= 3)
             {
@@ -141,47 +141,47 @@ void Mirror::slotMirrorActHandler(MirrorActs act)
             {
                 root->useItem(iCosmetic, 3);
             }
-            root->setVBody(makeup, 4);
+            root->vBody(makeup) = 4;
             emit root->updateParams();
-            root->m_render->setImage("data/img/objects/mirror/mop_4.jpg");
-            root->m_render->setText(str(actMirr6));
+            root->setImage("data/img/objects/mirror/mop_4.jpg");
+            root->setText(str(actMirr6));
             makeButtons();
         }
         break;
     case actMirr7:
         {
-            ClearLayout(root->m_actions);
+            root->clearActions();
             root->incTime(10);
-            root->setVBody(Body::eyeBrows, 19);
-            root->updVStatus(Status::mood, -5);
+            root->vBody(Body::eyeBrows) = 19;
+            root->vStatus(Status::mood) -= 5;
             emit root->updateParams();
-            root->m_render->setImage("data/img/objects/mirror/eyebrows.jpg");
-            root->m_render->setText(str(actMirr7));
+            root->setImage("data/img/objects/mirror/eyebrows.jpg");
+            root->setText(str(actMirr7));
             makeButtons();
         }
         break;
     case actMirr8:
         {
-            ClearLayout(root->m_actions);
+            root->clearActions();
             root->incTime(10);
             root->useItem(iLipBalm, 1);
-            root->updVBody(Body::lipbalmstat, 8);
-            root->updVStatus(Status::lipkoef, 5);
-            if (root->getVStatus(Status::lipkoef) >= 50)
+            root->vBody(Body::lipbalmstat) += 8;
+            root->vStatus(Status::lipkoef) += 5;
+            if (root->vStatus(Status::lipkoef) >= 50)
             {
-                root->setVStatus(Status::lipkoef, 0);
-                root->updVBody(Body::lip, 1);
+                root->vStatus(Status::lipkoef) = 0;
+                root->vBody(Body::lip) += 1;
             }
             emit root->updateParams();
-            root->m_render->setImage("data/img/objects/mirror/wet_lips.jpg");
-            root->m_render->setText(str(actMirr8));
+            root->setImage("data/img/objects/mirror/wet_lips.jpg");
+            root->setText(str(actMirr8));
             makeButtons();
         }
         break;
     case actMirr9:
         {
 //            disconnect(root, &ObjViewForm::sigReload, this, &Mirror::reloadActions);
-            root->changeLoc(root->getCurLoc()->getLocId());
+            root->changeLoc(root->getCurLoc());
         }
         break;
     }
@@ -191,23 +191,23 @@ void Mirror::makeButtons()
 {
     if (current == MirrorActs::actMirr0)
     {
-        if (root->getVBody(hairStatus) == 0 && root->isHapri())
+        if (root->vBody(hairStatus) == 0 && root->isHapri())
         {
             makeMirrorActBtn(actMirr1);
         }
-        if (root->getVBody(makeup) != 1)
+        if (root->vBody(makeup) != 1)
         {
             makeMirrorActBtn(actMirr2);
         }
-        if (root->getVBody(makeup) == 1 && (root->getItmCount(iCosmetic) + root->getItmCount(iCosmeticBig)) > 0)
+        if (root->vBody(makeup) == 1 && (root->getItmCount(iCosmetic) + root->getItmCount(iCosmeticBig)) > 0)
         {
             makeMirrorActBtn(actMirr3);
         }
-        if (root->getVBody(Body::eyeBrows) >= 0 && root->getVBody(Body::eyeBrows) <= 10)
+        if (root->vBody(Body::eyeBrows) >= 0 && root->vBody(Body::eyeBrows) <= 10)
         {
             makeMirrorActBtn(actMirr7);
         }
-        if (root->getItmCount(iLipBalm) > 0 && root->getVBody(Body::lipbalmstat) <= 0)
+        if (root->getItmCount(iLipBalm) > 0 && root->vBody(Body::lipbalmstat) <= 0)
         {
             makeMirrorActBtn(actMirr8);
         }
@@ -239,7 +239,7 @@ void Mirror::makeMirrorActBtn(MirrorActs act)
 {
     MirrActionButton* btn = new MirrActionButton(actStr(act), act);
     connect(btn, &MirrActionButton::sigAction, this, &Mirror::slotMirrorActHandler);
-    root->m_actions->addWidget(btn);
+    root->addActions(btn);
 }
 
 QString Mirror::actStr(MirrorActs type)

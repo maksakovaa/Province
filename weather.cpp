@@ -1,8 +1,8 @@
 #include "weather.h"
 #include "Functions.h"
-#include "menu/mainwindow.h"
+#include "../game.h"
 
-Weather::Weather(QWidget* ptr): root(ptr)
+Weather::Weather(Game* ptr): root(ptr)
 {
     initTemperatureArray();
     m_weather[_forecast_flag] = 0;
@@ -176,22 +176,22 @@ void Weather::mainFunc()
 
 int Weather::getHour()
 {
-    return ((MainWindow*)root)->m_time.getHour();
+    return root->getHour();
 }
 
 int Weather::getMonth()
 {
-    return ((MainWindow*)root)->m_time.getMonth();
+    return root->getMonth();
 }
 
 int Weather::getDay()
 {
-    return ((MainWindow*)root)->m_time.getDay();
+    return root->getDay();
 }
 
 int Weather::getYear()
 {
-    return ((MainWindow*)root)->m_time.getYear();
+    return root->getYear();
 }
 
 int Weather::getSunrise(int month)

@@ -2,12 +2,12 @@
 #define HANTERSLOVESEX_H
 
 #include "../event.h"
-class EventHandler;
+class Game;
 
 class HantersLoveSex: public Event
 {
 public:
-    HantersLoveSex(EventHandler* ptr);
+    HantersLoveSex(Game* ptr);
     void start(QString arg = "") override;
     void makeActBtn(QString action, QString actName);
 private slots:
@@ -143,7 +143,7 @@ private:
     QString media(int id);
     void setVideo(QString path);
 private:
-    EventHandler* root;
+    Game* root;
 };
 
 #endif // HANTERSLOVESEX_H

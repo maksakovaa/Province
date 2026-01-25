@@ -3,12 +3,12 @@
 
 #include "../location.h"
 
-class LocationHandler;
+class Game;
 
 class Gadroad: public Location
 {
 public:
-    Gadroad(LocationHandler* ptr);
+    Gadroad(Game* ptr);
     void show(QString arg = "") override;
     LocId getLocId() override;
     LocId getParId() override;
@@ -22,6 +22,8 @@ private:
     QString str(int id);
     QString act(int id);
     QString media(int id);
+private:
+    Game* root;
 };
 
 #endif // GADROAD_H

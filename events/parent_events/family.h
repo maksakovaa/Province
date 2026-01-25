@@ -3,12 +3,12 @@
 
 #include "../event.h"
 
-class EventHandler;
+class Game;
 
 class Family: public Event
 {
 public:
-    Family(EventHandler* parent);
+    Family(Game* parent);
     void start(QString arg = 0) override;
 private:
     void checkTrip();
@@ -22,7 +22,7 @@ private:
     void sister_act();
     QString media(int id);
     QString str(int id);
-    EventHandler* root;
+    Game* root;
 };
 
 #endif // FAMILY_H

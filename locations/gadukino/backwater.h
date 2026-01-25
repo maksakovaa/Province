@@ -4,14 +4,14 @@
 #include "../location.h"
 #include "../loc_enums.h"
 
-class LocationHandler;
+class Game;
 class SwampEvents;
 
 class Backwater: public Location
 {
     friend SwampEvents;
 public:
-    Backwater(LocationHandler* ptr);
+    Backwater(Game* ptr);
     void show(QString arg = "") override;
     LocId getLocId() override;
     LocId getParId() override;
@@ -26,6 +26,8 @@ private:
     QString act(int id);
     QString img(int id);
     bool checkBodyCum();
+private:
+    Game* root;
 };
 
 #endif // BACKWATER_H

@@ -1,10 +1,10 @@
 #include "kitchenacts.h"
 #include "../location.h"
-#include "../locationhandler.h"
+#include "../../game.h"
 #include "../../Functions.h"
 #include "../../menu/buttons.h"
 
-KitchenActs::KitchenActs(LocationHandler* ptr): root(ptr) {}
+KitchenActs::KitchenActs(Game* ptr): root(ptr) {}
 
 void KitchenActs::drink(QString napitokType)
 {
@@ -29,16 +29,16 @@ void KitchenActs::drink(QString napitokType)
         str0 = str(6);
         str1 = str(7);
     }
-    root->setVStatus(cumLips,0);
-    if(root->getVStatus(water) > 20)
+    root->vStatus(cumLips) = 0;
+    if(root->vStatus(water) > 20)
     {
-        root->setVStatus(water,24);
-        root->m_render->addText(str0 + str(8));
+        root->vStatus(water) = 24;
+        root->addText(str0 + str(8));
     }
     else
     {
-        root->updVStatus(water, 20);
-        root->m_render->addText(str(9) + str1);
+        root->vStatus(water) += 20;
+        root->addText(str(9) + str1);
     }
     root->updateParams();
 }
@@ -52,9 +52,9 @@ void KitchenActs::eat(QString foodtype, QString image, QString text)
 {
     QString eatStr;
     if(foodtype == "lunch" || foodtype == "diet")
-        root->updVStatus(mood,10);
+        root->vStatus(mood) += 10;
     else
-        root->updVStatus(mood, 20);
+        root->vStatus(mood) += 20;
 
     if(foodtype == "lunch")
         root->incTime(15);
@@ -62,22 +62,22 @@ void KitchenActs::eat(QString foodtype, QString image, QString text)
         root->incTime(30);
 
     if(foodtype == "lunch" || foodtype == "diet")
-        root->updVStatus(health, 5);
+        root->vStatus(health) += 5;
     else
-        root->updVStatus(health,10);
+        root->vStatus(health) += 10;
 
-    root->setVStatus(cumLips,0);
+    root->vStatus(cumLips) = 0;
     if(root->getCurLoc() == lkuhr)
     {
-        root->updVStatus(edahot, -1);
-        root->updVStatus(dirttarelka, 1);
-        root->updVStatus(garbage,1);
-        root->updVStatus(clrtarelka, -1);
+        root->vStatus(edahot) -= 1;
+        root->vStatus(dirttarelka) += 1;
+        root->vStatus(garbage) += 1;
+        root->vStatus(clrtarelka) -= 1;
     }
-    int energ = root->getVStatus(energy);
+    int energ = root->vStatus(energy);
     if(energ >= 24)
     {
-        root->setVStatus(energy,24);
+        root->vStatus(energy) = 24;
         eatStr = str(10);
     }
     else if(energ >= 18 && energ < 18)
@@ -85,16 +85,16 @@ void KitchenActs::eat(QString foodtype, QString image, QString text)
         if(foodtype == "diet")
         {
             root->useItem(iDietFood,1);
-            root->updVStatus(day_weight,1);
+            root->vStatus(day_weight) += 1;
         }
         else if(foodtype == "lunch")
         {
-            root->updVStatus(day_weight,2);
+            root->vStatus(day_weight) += 2;
         }
         else
-            root->updVStatus(day_weight,3);
+            root->vStatus(day_weight) += 3;
 
-        root->setVStatus(energy,24);
+        root->vStatus(energy) = 24;
         eatStr = str(11);
     }
     else if(energ >= 8 && energ < 18)
@@ -102,13 +102,13 @@ void KitchenActs::eat(QString foodtype, QString image, QString text)
         if(foodtype == "diet")
             root->useItem(iDietFood,1);
         else if(foodtype == "lunch")
-            root->updVStatus(day_weight,1);
+            root->vStatus(day_weight) += 1;
         else
-            root->updVStatus(day_weight,2);
+            root->vStatus(day_weight) += 2;
         if(foodtype == "lunch")
-            root->updVStatus(energy,10);
+            root->vStatus(energy) += 10;
         else
-            root->updVStatus(energy,20);
+            root->vStatus(energy) += 20;
         eatStr = str(12);
     }
     else
@@ -116,16 +116,16 @@ void KitchenActs::eat(QString foodtype, QString image, QString text)
         if(foodtype == "diet")
         {
             root->useItem(iDietFood,1);
-            root->updVStatus(day_weight,-1);
+            root->vStatus(day_weight) -= 1;
         }
         else if(foodtype == "lunch")
-            root->updVStatus(day_weight,0);
+            root->vStatus(day_weight) += 0;
         else
-            root->updVStatus(day_weight,1);
+            root->vStatus(day_weight) += 1;
         if(foodtype == "lunch")
-            root->updVStatus(energy,10);
+            root->vStatus(energy) += 10;
         else
-            root->updVStatus(energy,20);
+            root->vStatus(energy) += 20;
         eatStr = str(13);
     }
 
@@ -134,12 +134,12 @@ void KitchenActs::eat(QString foodtype, QString image, QString text)
     else
         root->setImage(image);
     if(text.isEmpty())
-        root->setDesc(eatStr);
+        root->setText(eatStr);
     else
-        root->setDesc(text);
+        root->setText(text);
 
-    if(root->getVStatus(energy) >= 24)
-        root->setVStatus(energy,24);
+    if(root->vStatus(energy) >= 24)
+        root->vStatus(energy) = 24;
     root->updateParams();
 }
 
@@ -152,7 +152,7 @@ void KitchenActs::eat_diet()
 {
     if(root->getItmCount(iDietFood) > 0)
     {
-        root->m_render->addText(str(14));
+        root->addText(str(14));
         makeActBtn("eat_diet",act(2));
     }
 }
@@ -166,7 +166,7 @@ void KitchenActs::vitamin()
 {
     if(root->getItmCount(iVitamins) > 0)
     {
-        root->m_render->addText(str(15));
+        root->addText(str(15));
         if(vitaminday != root->getDay())
         {
             makeActBtn("vitamin", act(6));
@@ -178,8 +178,8 @@ void KitchenActs::pills()
 {
     if(root->getItmCount(iAntibiotics) > 0)
     {
-        root->m_render->addText(str(17));
-        if(root->getVSick(sick) > 0 && lekarday != root->getDay())
+        root->addText(str(17));
+        if(root->vSick(sick) > 0 && lekarday != root->getDay())
         {
             makeActBtn("pills", act(8));
         }
@@ -196,14 +196,14 @@ void KitchenActs::cookie()
 {
     if(root->getItmCount(iCookies) > 0)
     {
-        root->m_render->addText(str(20));
+        root->addText(str(20));
         makeActBtn("cookies",act(10));
     }
 }
 
 void KitchenActs::all(int arg)
 {
-    if(arg != 1 || (arg == 1 && root->getVStatus(edahot) > 0 && root->getVStatus(clrtarelka) > 0))
+    if(arg != 1 || (arg == 1 && root->vStatus(edahot) > 0 && root->vStatus(clrtarelka) > 0))
     {
         eat_full();
         lunch();
@@ -220,7 +220,7 @@ void KitchenActs::actionHandler(QString action)
 {
     if(action == "tea")
     {
-        root->setVStatus(cumLips,0);
+        root->vStatus(cumLips) = 0;
         root->incTime(1);
         drink(action);
     }
@@ -232,7 +232,7 @@ void KitchenActs::actionHandler(QString action)
     }
     if(action == "goCurLoc")
     {
-        root->slotChangeLoc(root->getCurLoc(),0);
+        root->changeLoc(root->getCurLoc(),0);
     }
     if(action == "eat_diet")
     {
@@ -249,19 +249,19 @@ void KitchenActs::actionHandler(QString action)
     if(action == "vitamin")
     {
         root->incTime(2);
-        root->updVStatus(water,5);
+        root->vStatus(water) += 5;
         vitaminday = root->getDay();
         root->useItem(iVitamins,1);
-        if(root->getVSick(KandidozOnce) == 1)
-            root->updVSick(Kandidoz, -2);
-        if(root->getVSick(GerpesOnce) == 1)
-            root->updVSick(Gerpes,-2);
-        if(root->getVSick(SifacOnce) == 1 && root->getVSick(Sifilis) > 10)
-            root->updVSick(Sifilis, -getRandInt(0,1));
+        if(root->vSick(KandidozOnce) == 1)
+            root->vSick(Kandidoz) -= 2;
+        if(root->vSick(GerpesOnce) == 1)
+            root->vSick(Gerpes) -= 2;
+        if(root->vSick(SifacOnce) == 1 && root->vSick(Sifilis) > 10)
+            root->vSick(Gerpes) -= getRandInt(0,1);
         root->updSkin('+',1);
-        root->setVStatus(cumLips,0);
-        root->m_render->setImage("data/actions/eat/vitamin.jpg");
-        root->m_render->setText(str(16));
+        root->vStatus(cumLips) = 0;
+        root->setImage("data/actions/eat/vitamin.jpg");
+        root->setText(str(16));
         makeActBtn("goCurLoc",act(7));
     }
     if(action == "pills")
@@ -269,36 +269,36 @@ void KitchenActs::actionHandler(QString action)
         root->incTime(5);
         lekarday = root->getDay();
         root->useItem(iAntibiotics,1);
-        root->updVSick(sick, -root->getVSick(sick)/5);
-        root->setVStatus(cumLips,0);
-        root->m_render->setImage("data/actions/inBed/lekr" + intQStr(getRandInt(1,9)) + ".jpg");
-        root->m_render->setText(str(18));
+        root->vSick(sick) -= root->vSick(sick)/5;
+        root->vStatus(cumLips) = 0;
+        root->setImage("data/actions/inBed/lekr" + intQStr(getRandInt(1,9)) + ".jpg");
+        root->setText(str(18));
         makeActBtn("goCurLoc",act(7));
     }
     if(action == "faburn")
     {
         root->useItem(iFatBurners,1);
-        root->updVStatus(fatdel_day,10);
-        root->setVStatus(cumLips,0);
-        root->m_render->setImage("data/actions/eat/fat_burner.jpg");
-        root->m_render->setText(str(19));
+        root->vStatus(fatdel_day) += 10;
+        root->vStatus(cumLips) = 0;
+        root->setImage("data/actions/eat/fat_burner.jpg");
+        root->setText(str(19));
         makeActBtn("goCurLoc", "...");
     }
     if(action == "cookies")
     {
         root->incTime(5);
         root->useItem(iCookies,1);
-        root->updVStatus(health,5);
-        root->updVStatus(mood,10);
-        root->updVStatus(energy,10);
-        root->updVStatus(water,10);
-        root->setVStatus(cumLips,0);
-        if(root->getVStatus(energy) > 24)
-            root->updVStatus(day_weight,2);
-        else if(root->getVStatus(energy) > 15 && root->getVStatus(energy) < 24)
-            root->updVStatus(day_weight,1);
-        root->m_render->setImage("data/actions/eat/food.jpg");
-        root->m_render->setText(str(21));
+        root->vStatus(health) += 5;
+        root->vStatus(mood) += 10;
+        root->vStatus(energy) += 10;
+        root->vStatus(water) += 10;
+        root->vStatus(cumLips) = 0;
+        if(root->vStatus(energy) > 24)
+            root->vStatus(day_weight) += 2;
+        else if(root->vStatus(energy) > 15 && root->vStatus(energy) < 24)
+            root->vStatus(day_weight) += 1;
+        root->setImage("data/actions/eat/food.jpg");
+        root->setText(str(21));
         makeActBtn("goCurLoc",act(6));
     }
     root->updateParams();
@@ -309,7 +309,7 @@ void KitchenActs::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action, "kitchActs");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &KitchenActs::actionHandler);
-    root->m_actions->addWidget(btn);
+    root->addActions(btn);
 }
 
 QString KitchenActs::str(int id)

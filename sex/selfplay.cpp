@@ -1,9 +1,9 @@
 #include "selfplay.h"
 #include "../player/enums.h"
 #include "../Functions.h"
-#include "sexhandler.h"
+#include "../game.h"
 
-SelfPlay::SelfPlay(SexHandler* parent): root(parent) {}
+SelfPlay::SelfPlay(Game* parent): root(parent) {}
 
 void SelfPlay::start()
 {
@@ -13,197 +13,204 @@ void SelfPlay::start()
 void SelfPlay::slotActionHandler(SelfPlayActs act)
 {
     current = act;
-    ClearLayout(root->m_actions);
+    root->clearActions();
     switch (act) {
     case actSP0:
     case actSP4:
         {
-            root->m_render->rendImagePage(root);
-            if(root->getVSexVar(mastrOnce) == 0)
+            root->rendImagePage(root);
+            if(root->vSex(mastrOnce) == 0)
             {
-                root->updVSC(SC::masturbation,1);
-                root->setVSexVar(mastrOnce, 1);
+                root->vStatistics(masturbation) += 1;
+                root->vSex(mastrOnce) = 1;
             }
 
             if(root->getCurLoc() == lbathroom)
-                root->m_render->setImage("data/sex/selfplay/startvann.jpg");
+                root->setImage("data/sex/selfplay/startvann.jpg");
             else
-                root->m_render->setImage("data/sex/selfplay/start.jpg");
+                root->setImage("data/sex/selfplay/start.jpg");
 
             if(root->getCurLoc() == lbedrpar)
             {
-                // gs 'zz_family','sister_sheduler'
-                // if $sister['location'] = 'bedrPar':
-                //     *clr & cla
-                //     gs 'stat'
-                //     gs 'zz_render','','qwest/selfplay/start'
-                //     SisterKnowMastr += 1
-                //     gs 'zz_render', '', '', func('selfplay_strings'+$lang, 'txt_18')
-                // end
+                root->startEvent(eFamily, "sister_sheduler");
+                if(root->gNPC(sister).location == lbedrpar)
+                {
+                    root->setImage("data/sex/selfplay/start.jpg");
+                    root->vEvent(sisterKnowMastr) += 1;
+                    root->setText(getActDesc(descSP18));
+                }
             }
 
-            // gs 'gadukino_event', 'gadsarai_check'
+            root->startEvent(eGadukinoEvents,"gadsarai_check");
+            if(root->getCurLoc() == lgadsarai && root->vEvent(grandma_ingadsarai) == 1)
+            {
+                root->vSex(grandmaknowmastr) = 1;
+                root->addText(getActDesc(descSP51));
+            }
+            if(root->getCurLoc() == lgadsarai && root->vEvent(grandpa_ingadsarai) == 1)
+            {
+                root->vSex(grandpaknowmastr) = 1;
+                root->addText(getActDesc(descSP52));
+            }
             // gs 'apartment_south_event','husband_check'
             // if selfplaytime > 5 and husband_inhouse > 0 and husband_know_mastr = 0:gt 'apartment_south_event','selfplay_husband'
-            // if $loc = 'Gadsarai' and grandma_ingadsarai = 1:grandmaknowmastr = 1 & func('selfplay_strings'+$lang, 'txt_51')
-            // if $loc = 'Gadsarai' and grandpa_ingadsarai = 1:grandpaknowmastr = 1 & func('selfplay_strings'+$lang, 'txt_52')
 
-            if(root->getItemCount(iDildo) >= 1) root->m_render->addText(getActDesc(descSP53));
-            if(root->getItemCount(iMidDildo) >= 1) root->m_render->addText(getActDesc(descSP54));
-            if(root->getItemCount(iLargeDildo)>=1) root->m_render->addText(getActDesc(descSP55));
-            if(root->getItemCount(iBigDildo)>=1) root->m_render->addText(getActDesc(descSP56));
-            if(root->getItemCount(iExtraDildo)>=1) root->m_render->addText(getActDesc(descSP57));
-            if(root->getItemCount(iSuperDildo)>=1) root->m_render->addText(getActDesc(descSP58));
-            if(root->getItemCount(iMadDildo)>=1) root->m_render->addText(getActDesc(descSP59));
+            if(root->getItmCount(iDildo) >= 1) root->addText(getActDesc(descSP53));
+            if(root->getItmCount(iMidDildo) >= 1) root->addText(getActDesc(descSP54));
+            if(root->getItmCount(iLargeDildo)>=1) root->addText(getActDesc(descSP55));
+            if(root->getItmCount(iBigDildo)>=1) root->addText(getActDesc(descSP56));
+            if(root->getItmCount(iExtraDildo)>=1) root->addText(getActDesc(descSP57));
+            if(root->getItmCount(iSuperDildo)>=1) root->addText(getActDesc(descSP58));
+            if(root->getItmCount(iMadDildo)>=1) root->addText(getActDesc(descSP59));
 
-            if (root->getVStatus(Status::horny) > 25 && root->getVSexVar(grandmaknowmastr) == 0 && root->getVSexVar(grandpaknowmastr) == 0)
+            if (root->vStatus(Status::horny) > 25 && root->vSex(grandmaknowmastr) == 0 && root->vSex(grandpaknowmastr) == 0)
             {
                 if(root->getCurLoc() == lbedrpar2 ||
-                        root->getItemCount(Items::iDildo) >= 1 ||
-                        root->getItemCount(Items::iBigDildo) >= 1 ||
-                        root->getItemCount(Items::iExtraDildo) >= 1||
-                        root->getItemCount(Items::iLargeDildo) >= 1||
-                        root->getItemCount(Items::iMadDildo) >= 1||
-                        root->getItemCount(Items::iMidDildo) >=1 ||
-                        root->getItemCount(Items::iSuperDildo) >= 1)
+                        root->getItmCount(Items::iDildo) >= 1 ||
+                        root->getItmCount(Items::iBigDildo) >= 1 ||
+                        root->getItmCount(Items::iExtraDildo) >= 1||
+                        root->getItmCount(Items::iLargeDildo) >= 1||
+                        root->getItmCount(Items::iMadDildo) >= 1||
+                        root->getItmCount(Items::iMidDildo) >=1 ||
+                        root->getItmCount(Items::iSuperDildo) >= 1)
                 {
-                    if(root->getCurLoc() == lbedrpar2 && root->getVSexVar(selfmomtoyplay) == 1)
+                    if(root->getCurLoc() == lbedrpar2 && root->vSex(selfmomtoyplay) == 1)
                     {
-                        root->setVSexVar(dildoHand, 10);
+                        root->vSex(dildoHand) = 10;
                     }
-                    if(root->getVSexVar(dildoHand) > 0)
+                    if(root->vSex(dildoHand) > 0)
                     {
-                        root->m_render->addText(getActDesc(descSP45));
+                        root->addText(getActDesc(descSP45));
                     }
                 }
             }
             makeButtons();
-            if(root->getPrevLoc() == lkorrpar && root->getVSexVar(selfplaytime) >= 60) bathInvasion();
+            if(root->getPrevLoc() == lkorrpar && root->vSex(selfplaytime) >= 60) bathInvasion();
         }
         break;
     case actSP1:
         {
             root->incTime(2);
-            root->updVSexVar(selfplaytime, 2);
-            if(root->getVBody(vagina) == 0 && root->getVStatus(mesec) <= 0)
+            root->vSex(selfplaytime) += 2;
+            if(root->vBody(vagina) == 0 && root->vStatus(mesec) <= 0)
             {
-                root->m_render->setImage("data/sex/selfplay/finger.jpg");
-                root->m_render->setText(getActDesc(descSP1));
+                root->setImage("data/sex/selfplay/finger.jpg");
+                root->setText(getActDesc(descSP1));
             }
-            else if (root->getVBody(vagina) > 0)
+            else if (root->vBody(vagina) > 0)
             {
-                emit root->setGape(vagina, root->getVStatus(horny), 3, 1);
-                root->m_render->setText(getActDesc(descSP3));
-                if (root->getVBody(vagina) < 5)
+                emit root->setGape(vagina, root->vStatus(horny), 3, 1);
+                root->setText(getActDesc(descSP3));
+                if (root->vBody(vagina) < 5)
                 {
-                    root->updVStatus(horny, getRandInt(2,5));
-                    root->m_render->addText("<br>" + getActDesc(descSP4));
+                    root->vStatus(horny) += getRandInt(2,5);
+                    root->addText("<br>" + getActDesc(descSP4));
                 }
-                else if (root->getVBody(vagina) >= 5 && root->getVBody(vagina) < 10)
+                else if (root->vBody(vagina) >= 5 && root->vBody(vagina) < 10)
                 {
-                    root->updVStatus(horny, getRandInt(5,10));
-                    root->m_render->addText("<br>" + getActDesc(descSP5));
+                    root->vStatus(horny) += getRandInt(5,10);
+                    root->addText("<br>" + getActDesc(descSP5));
                 }
-                else if (root->getVBody(vagina) >= 10)
+                else if (root->vBody(vagina) >= 10)
                 {
-                    root->updVStatus(horny, getRandInt(2,5));
-                    root->m_render->addText("<br>" + getActDesc(descSP6));
+                    root->vStatus(horny) += getRandInt(2,5);
+                    root->addText("<br>" + getActDesc(descSP6));
                 }
-                if (root->getVBody(vagina) < 5)
+                if (root->vBody(vagina) < 5)
                 {
                     m_vagTemp += 1;
                 }
             }
-            else if (root->getVStatus(mesec) > 0)
+            else if (root->vStatus(mesec) > 0)
             {
-                root->updVStatus(mood, -5);
-                root->m_render->setText(getActDesc(descSP9));
+                root->vStatus(mood) -= 5;
+                root->setText(getActDesc(descSP9));
             }
             makeButtons();
         }
         break;
     case actSP2:
         {
-            root->updVStatus(horny, -25);
-            root->updVBody(vagina, 1);
-            root->updVSexVar(selfplaytime, 5);
-            root->updVStatus(mood, -100);
+            root->vStatus(mood) -= 25;
+            root->vBody(vagina) += 1;
+            root->vSex(selfplaytime) += 5;
+            root->vStatus(mood) -= 100;
             root->incTime(5);
-            root->m_render->setImage("data/sex/selfplay/finger.jpg");
-            root->m_render->setText(getActDesc(descSP2));
+            root->setImage("data/sex/selfplay/finger.jpg");
+            root->setText(getActDesc(descSP2));
             makeButtons();
         }
         break;
     case actSP3:
         {
-            emit root->setGape(vagina, root->getVStatus(horny), 10, 1);
+            emit root->setGape(vagina, root->vStatus(horny), 10, 1);
             root->incTime(5);
-            root->updVSexVar(selfplaytime, 5);
-            if (root->getVBody(vagina) <= 10)
+            root->vSex(selfplaytime) += 5;
+            if (root->vBody(vagina) <= 10)
             {
-                root->updVStatus(horny, getRandInt(5,10));
+                root->vStatus(horny) += getRandInt(5,10);
             }
             else
             {
-                root->updVStatus(horny, getRandInt(2,5));
+                root->vStatus(horny) += getRandInt(2,5);
             }
-            root->m_render->setImage("data/sex/selfplay/finger.jpg");
-            root->m_render->setText(getActDesc(descSP7));
-            if (root->getVBody(vagina) <= 10)
+            root->setImage("data/sex/selfplay/finger.jpg");
+            root->setText(getActDesc(descSP7));
+            if (root->vBody(vagina) <= 10)
             {
-                root->m_render->addText("<br>" + getActDesc(descSP47));
+                root->addText("<br>" + getActDesc(descSP47));
             }
-            if (root->getVBody(vagina) > 10)
+            if (root->vBody(vagina) > 10)
             {
-                root->m_render->addText("<br>" + getActDesc(descSP48));
+                root->addText("<br>" + getActDesc(descSP48));
             }
-            if (root->getVBody(vagina) < 10)
+            if (root->vBody(vagina) < 10)
             {
                 m_vagTemp += 1;
             }
-            if (root->getVStatus(horny) >= 100)
+            if (root->vStatus(horny) >= 100)
             {
-                root->updVSC(SC::orgasm, 1);
-                root->setVStatus(mood, 100);
-                root->setVStatus(horny,0);
-                root->setVStatus(lust, 0);
+                root->vStatistics(orgasm) += 1;
+                root->vStatus(mood) = 100;
+                root->vStatus(horny) = 0;
+                root->vStatus(lust) = 0;
                 selfPlayEnding();
-                root->m_render->addText(getActDesc(descSP8));
+                root->addText(getActDesc(descSP8));
             }
             makeButtons();
         }
         break;
     case actSP5:
         {
-            emit root->setGape(vagina, root->getVStatus(horny), 15, 1);
+            emit root->setGape(vagina, root->vStatus(horny), 15, 1);
             root->incTime(2);
-            root->updVSexVar(selfplaytime, 2);
-            root->m_render->setImage("data/sex/selfplay/hand.jpg");
-            if (root->getVBody(vagina) > 0)
+            root->vSex(selfplaytime) += 2;
+            root->setImage("data/sex/selfplay/hand.jpg");
+            if (root->vBody(vagina) > 0)
             {
-                root->m_render->setText(getActDesc(descSP10));
-                if (root->getVBody(vagina) < 10)
+                root->setText(getActDesc(descSP10));
+                if (root->vBody(vagina) < 10)
                 {
-                    root->updVStatus(horny, -10);
-                    root->updVStatus(mood, -10);
-                    root->m_render->addText("<br>" + getActDesc(descSP11));
+                    root->vStatus(horny) -= 10;
+                    root->vStatus(mood) -= 10;
+                    root->addText("<br>" + getActDesc(descSP11));
                 }
-                else if (root->getVBody(vagina) >= 10 && root->getVBody(vagina) < 15)
+                else if (root->vBody(vagina) >= 10 && root->vBody(vagina) < 15)
                 {
-                    root->updVStatus(horny, getRandInt(1,3));
-                    root->m_render->addText("<br>" + getActDesc(descSP12));
+                    root->vStatus(horny) += getRandInt(1,3);
+                    root->addText("<br>" + getActDesc(descSP12));
                 }
-                else if (root->getVBody(vagina) >= 15 && root->getVBody(vagina) < 20)
+                else if (root->vBody(vagina) >= 15 && root->vBody(vagina) < 20)
                 {
-                    root->updVStatus(horny, getRandInt(3,6));
-                    root->m_render->addText("<br>" + getActDesc(descSP13));
+                    root->vStatus(horny) += getRandInt(3,6);
+                    root->addText("<br>" + getActDesc(descSP13));
                 }
-                else if (root->getVBody(vagina) >= 20)
+                else if (root->vBody(vagina) >= 20)
                 {
-                    root->updVStatus(horny, getRandInt(6,12));
-                    root->m_render->addText("<br>" + getActDesc(descSP14));
+                    root->vStatus(horny) += getRandInt(6,12);
+                    root->addText("<br>" + getActDesc(descSP14));
                 }
-                if (root->getVBody(vagina) < 15)
+                if (root->vBody(vagina) < 15)
                 {
                     m_vagTemp += 1;
                 }              
@@ -213,37 +220,37 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
         break;
     case actSP6:
         {
-            emit root->setGape(vagina, root->getVStatus(horny), 15, 1);
+            emit root->setGape(vagina, root->vStatus(horny), 15, 1);
             root->incTime(5);
-            root->updVSexVar(selfplaytime, 5);
-            if (root->getVBody(vagina) < 10)
+            root->vSex(selfplaytime) += 5;
+            if (root->vBody(vagina) < 10)
             {
-                root->updVStatus(horny, -10);
-                root->updVStatus(mood, -10);
+                root->vStatus(horny) -= 10;
+                root->vStatus(mood) -= 10;
             }
-            root->m_render->setImage("data/sex/selfplay/hand.jpg");
-            root->m_render->setText(getActDesc(descSP15));
-            if (root->getVBody(vagina) <= 15)
+            root->setImage("data/sex/selfplay/hand.jpg");
+            root->setText(getActDesc(descSP15));
+            if (root->vBody(vagina) <= 15)
             {
-                root->updVStatus(horny, -10);
-                root->updVStatus(mood, -10);
-                root->m_render->addText("<br>" + getActDesc(descSP49));
+                root->vStatus(horny) -= 10;
+                root->vStatus(mood) -= 10;
+                root->addText("<br>" + getActDesc(descSP49));
             }
-            if (root->getVBody(vagina) > 10)
+            if (root->vBody(vagina) > 10)
             {
-                root->updVStatus(horny, getRandInt(10,20));
-                root->m_render->addText("<br>" + getActDesc(descSP50));
+                root->vStatus(horny) += getRandInt(10,20);
+                root->addText("<br>" + getActDesc(descSP50));
             }
-            if (root->getVBody(vagina) < 20)
+            if (root->vBody(vagina) < 20)
             {
                 m_vagTemp += 1;
             }
-            if (root->getVStatus(horny) >= 100)
+            if (root->vStatus(horny) >= 100)
             {
-                root->updVSC(SC::orgasm, 1);
-                root->setVStatus(mood, 100);
-                root->setVStatus(horny,0);
-                root->setVStatus(lust, 0);
+                root->vStatistics(orgasm) += 1;
+                root->vStatus(mood) = 100;
+                root->vStatus(horny) = 0;
+                root->vStatus(lust) = 0;
                 selfPlayEnding();
             }
             makeButtons();
@@ -251,12 +258,12 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
         break;
     case actSP7:
         {
-            root->setVSexVar(analplay, 0);
-            root->setVSexVar(selfplaytime, 0);
-            root->setVSexVar(mastrOnce, 0);
-            if(m_vagTemp > root->getVBody(vagina)*2)
+            root->vSex(analplay) = 0;
+            root->vSex(selfplaytime) = 0;
+            root->vSex(mastrOnce) = 0;
+            if(m_vagTemp > root->vBody(vagina)*2)
             {
-                root->updVBody(vagina, 1);
+                root->vBody(vagina) += 1;
                 m_vagTemp = 0;
             }
             root->changeLoc(root->getCurLoc(),1);
@@ -265,33 +272,33 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
     case actSP8:
         {
             root->incTime(5);
-            root->updVSexVar(selfplaytime, 5);
+            root->vSex(selfplaytime) += 5;
             if(root->getCurLoc() == lbathroom)
             {
-                root->m_render->setImage("data/sex/selfplay/klitvann.jpg");
+                root->setImage("data/sex/selfplay/klitvann.jpg");
             }
             else
             {
-                root->m_render->setImage("data/sex/selfplay/klit.jpg");
+                root->setImage("data/sex/selfplay/klit.jpg");
             }
-            if(root->getVStatus(mood) >= 50)
+            if(root->vStatus(mood) >= 50)
             {
-                root->updVStatus(horny, getRandInt(5,10));
-                root->m_render->setText(getActDesc(descSP19));
+                root->vStatus(horny) += getRandInt(5,10);
+                root->setText(getActDesc(descSP19));
             }
             else
             {
-                root->updVStatus(horny, getRandInt(0,1));
-                root->m_render->setText(getActDesc(descSP20));
+                root->vStatus(horny) += getRandInt(0,1);
+                root->setText(getActDesc(descSP20));
             }
-            if(root->getVStatus(horny) >= 100)
+            if(root->vStatus(horny) >= 100)
             {
-                root->updVSC(orgasm, 1);
-                root->setVStatus(mood, 100);
-                root->setVStatus(horny, 0);
-                root->setVStatus(lust, 0);
+                root->vStatistics(orgasm) += 1;
+                root->vStatus(mood) = 100;
+                root->vStatus(horny) = 0;
+                root->vStatus(lust) = 0;
                 selfPlayEnding();
-                root->m_render->addText(getActDesc(descSP21));
+                root->addText(getActDesc(descSP21));
             }
             makeButtons();
         }
@@ -299,18 +306,18 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
     case actSP9:
         {
             root->incTime(5);
-            root->updVSexVar(selfplaytime, 5);
-            root->m_render->setImage("data/sex/selfplay/1.jpg");
-            if(root->getVBody(anus) >= 3)
+            root->vSex(selfplaytime) += 5;
+            root->setImage("data/sex/selfplay/1.jpg");
+            if(root->vBody(anus) >= 3)
             {
-                root->updVStatus(horny,1);
-                root->m_render->setText(getActDesc(descSP22));
+                root->vStatus(horny) += 1;
+                root->setText(getActDesc(descSP22));
             }
-            else if (root->getVBody(anus) < 3)
+            else if (root->vBody(anus) < 3)
             {
-                root->m_render->setText(getActDesc(descSP23));
+                root->setText(getActDesc(descSP23));
             }
-            if(root->getItemCount(iLubri) > 0)
+            if(root->getItmCount(iLubri) > 0)
             {
                 emit root->setGape(anus, 10, 3, 0);
             }
@@ -318,7 +325,7 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
             {
                 emit root->setGape(anus, 0, 3, 0);
             }
-            if(root->getPrevLoc() == lkorrpar && root->getVSexVar(selfplaytime) >= 60)
+            if(root->getPrevLoc() == lkorrpar && root->vSex(selfplaytime) >= 60)
             {
                 bathInvasion();
             }
@@ -328,32 +335,32 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
     case actSP10:
         {
             root->incTime(5);
-            root->updVSexVar(selfplaytime,5);
-            root->m_render->setImage("data/sex/selfplay/2.jpg");
-            if(root->getVBody(anus) >= 5)
+            root->vSex(selfplaytime) += 5;
+            root->setImage("data/sex/selfplay/2.jpg");
+            if(root->vBody(anus) >= 5)
             {
-                root->updVStatus(horny, 1);
-                root->m_render->setText(getActDesc(descSP25));
-                if(root->getVSexVar(stat_agape) > 0)
+                root->vStatus(horny) += 1;
+                root->setText(getActDesc(descSP25));
+                if(root->vSex(stat_agape) > 0)
                 {
-                    root->m_render->setText(getActDesc(descSP26));
+                    root->setText(getActDesc(descSP26));
                 }
             }
-            else if (root->getVBody(anus) >= 3 && root->getVBody(anus) < 5)
+            else if (root->vBody(anus) >= 3 && root->vBody(anus) < 5)
             {
-                root->updVStatus(horny, getRandInt(3,5));
-                root->m_render->setText(getActDesc(descSP27));
-                if(root->getVSexVar(agape) > 0)
+                root->vStatus(horny) += getRandInt(3,5);
+                root->setText(getActDesc(descSP27));
+                if(root->vSex(agape) > 0)
                 {
-                    root->m_render->setText(getActDesc(descSP28));
+                    root->setText(getActDesc(descSP28));
                 }
             }
-            else if (root->getVBody(anus) >= 1 && root->getVBody(anus) < 3)
+            else if (root->vBody(anus) >= 1 && root->vBody(anus) < 3)
             {
-                root->updVStatus(horny, -50);
-                root->m_render->setText(getActDesc(descSP29));
+                root->vStatus(horny) -= 50;
+                root->setText(getActDesc(descSP29));
             }
-            if(root->getItemCount(iLubri) > 0)
+            if(root->getItmCount(iLubri) > 0)
             {
                 emit root->setGape(anus, 10, 5, 0);
             }
@@ -361,17 +368,17 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
             {
                 emit root->setGape(anus, 0, 5, 0);
             }
-            if(root->getVStatus(horny) >= 100)
+            if(root->vStatus(horny) >= 100)
             {
-                root->updVSC(analOrgasm, 1);
-                root->setVStatus(mood, 100);
-                root->setVStatus(lust, 0);
-                root->setVStatus(horny, 0);
+                root->vStatistics(analOrgasm) += 1;
+                root->vStatus(mood) = 100;
+                root->vStatus(lust) = 0;
+                root->vStatus(horny) = 0;
                 selfPlayEnding();
-                root->m_render->setText(getActDesc(descSP16));
+                root->setText(getActDesc(descSP16));
             }
             makeButtons();            
-            if(root->getPrevLoc() == lkorrpar && root->getVSexVar(selfplaytime) >= 60)
+            if(root->getPrevLoc() == lkorrpar && root->vSex(selfplaytime) >= 60)
             {
                 bathInvasion();
             }
@@ -380,32 +387,32 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
     case actSP11:
         {
             root->incTime(5);
-            root->updVSexVar(selfplaytime,5);
-            root->m_render->setImage("data/sex/selfplay/3.jpg");
-            if(root->getVBody(anus) >= 10)
+            root->vSex(selfplaytime) += 5;
+            root->setImage("data/sex/selfplay/3.jpg");
+            if(root->vBody(anus) >= 10)
             {
-                root->updVStatus(horny, 1);
-                root->m_render->setText(getActDesc(descSP30));
-                if(root->getVSexVar(stat_agape) > 0)
+                root->vStatus(horny) += 1;
+                root->setText(getActDesc(descSP30));
+                if(root->vSex(stat_agape) > 0)
                 {
-                    root->m_render->setText(getActDesc(descSP31));
+                    root->setText(getActDesc(descSP31));
                 }
             }
-            else if(root->getVBody(anus) >= 5 && root->getVBody(anus) < 10)
+            else if(root->vBody(anus) >= 5 && root->vBody(anus) < 10)
             {
-                root->updVStatus(horny, getRandInt(2,5));
-                root->m_render->setText(getActDesc(descSP32));
-                if(root->getVSexVar(stat_agape) > 0)
+                root->vStatus(horny) += getRandInt(2,5);
+                root->setText(getActDesc(descSP32));
+                if(root->vSex(stat_agape) > 0)
                 {
-                    root->m_render->setText(getActDesc(descSP33));
+                    root->setText(getActDesc(descSP33));
                 }
             }
-            else if(root->getVBody(anus) < 5)
+            else if(root->vBody(anus) < 5)
             {
-                root->updVStatus(horny, -50);
-                root->m_render->setText(getActDesc(descSP34));
+                root->vStatus(horny) -= 50;
+                root->setText(getActDesc(descSP34));
             }
-            if(root->getItemCount(iLubri) > 0)
+            if(root->getItmCount(iLubri) > 0)
             {
                 emit root->setGape(anus, 10, 10, 0);
             }
@@ -413,17 +420,17 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
             {
                 emit root->setGape(anus, 0, 10, 0);
             }
-            if(root->getVStatus(horny) >= 100)
+            if(root->vStatus(horny) >= 100)
             {
-                root->updVSC(analOrgasm, 1);
-                root->setVStatus(mood, 100);
-                root->setVStatus(lust, 0);
-                root->setVStatus(horny, 0);
+                root->vStatistics(analOrgasm) += 1;
+                root->vStatus(mood) = 100;
+                root->vStatus(lust) = 0;
+                root->vStatus(horny) = 0;
                 selfPlayEnding();
-                root->m_render->setText(getActDesc(descSP16));
+                root->setText(getActDesc(descSP16));
             }
             
-            if(root->getPrevLoc() == lkorrpar && root->getVSexVar(selfplaytime) >= 60)
+            if(root->getPrevLoc() == lkorrpar && root->vSex(selfplaytime) >= 60)
             {
                 bathInvasion();
             }
@@ -433,32 +440,32 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
     case actSP12:
         {
             root->incTime(5);
-            root->updVSexVar(selfplaytime,5);
-            root->m_render->setImage("data/sex/selfplay/4.jpg");
-            if(root->getVBody(anus) >= 15)
+            root->vSex(selfplaytime) += 5;
+            root->setImage("data/sex/selfplay/4.jpg");
+            if(root->vBody(anus) >= 15)
             {
-                root->m_render->setText(getActDesc(descSP35));
-                if(root->getVSexVar(stat_agape) > 0)
+                root->setText(getActDesc(descSP35));
+                if(root->vSex(stat_agape) > 0)
                 {
-                    root->updVStatus(horny,1);
-                    root->m_render->setText(getActDesc(descSP36));
+                    root->vStatus(horny) += 1;
+                    root->setText(getActDesc(descSP36));
                 }
             }
-            else if (root->getVBody(anus) >= 10 && root->getVBody(anus) < 15)
+            else if (root->vBody(anus) >= 10 && root->vBody(anus) < 15)
             {
-                root->updVStatus(horny, getRandInt(2,5));
-                root->m_render->setText(getActDesc(descSP37));
-                if(root->getVSexVar(stat_agape) > 0)
+                root->vStatus(horny) += getRandInt(2,5);
+                root->setText(getActDesc(descSP37));
+                if(root->vSex(stat_agape) > 0)
                 {
-                    root->m_render->setText(getActDesc(descSP38));
+                    root->setText(getActDesc(descSP38));
                 }
             }
-            else if(root->getVBody(anus) < 10)
+            else if(root->vBody(anus) < 10)
             {
-                root->updVStatus(horny, -50);
-                root->m_render->setText(getActDesc(descSP39));
+                root->vStatus(horny) -= 50;
+                root->setText(getActDesc(descSP39));
             }
-            if(root->getItemCount(iLubri) > 0)
+            if(root->getItmCount(iLubri) > 0)
             {
                 emit root->setGape(anus, 10, 15, 0);
             }
@@ -466,17 +473,17 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
             {
                 emit root->setGape(anus, 0, 15, 0);
             }
-            if(root->getVStatus(horny) >= 100)
+            if(root->vStatus(horny) >= 100)
             {
-                root->updVSC(analOrgasm, 1);
-                root->setVStatus(mood, 100);
-                root->setVStatus(lust, 0);
-                root->setVStatus(horny, 0);
+                root->vStatistics(analOrgasm) += 1;
+                root->vStatus(mood) = 100;
+                root->vStatus(lust) = 0;
+                root->vStatus(horny) = 0;
                 selfPlayEnding();
-                root->m_render->setText(getActDesc(descSP16));
+                root->setText(getActDesc(descSP16));
             }
             
-            if(root->getPrevLoc() == lkorrpar && root->getVSexVar(selfplaytime) >= 60)
+            if(root->getPrevLoc() == lkorrpar && root->vSex(selfplaytime) >= 60)
             {
                 bathInvasion();
             }
@@ -485,33 +492,33 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
         break;
     case actSP13:
         {
-            root->updVSexVar(SelfFisting, 1);
+            root->vSex(SelfFisting) += 1;
             root->incTime(5);
-            root->updVSexVar(selfplaytime, 5);
-            root->m_render->setImage("data/sex/selfplay/5.jpg");
-            if(root->getVBody(anus) >= 20)
+            root->vSex(selfplaytime) += 5;
+            root->setImage("data/sex/selfplay/5.jpg");
+            if(root->vBody(anus) >= 20)
             {
-                root->updVStatus(horny, getRandInt(5,10));
-                root->m_render->setText(getActDesc(descSP40));
-                if(root->getVSexVar(stat_agape) > 0)
+                root->vStatus(horny) += getRandInt(5,10);
+                root->setText(getActDesc(descSP40));
+                if(root->vSex(stat_agape) > 0)
                 {
-                    root->m_render->setText(getActDesc(descSP41));
+                    root->setText(getActDesc(descSP41));
                 }
-                else if (root->getVBody(anus) >= 15 && root->getVBody(anus) < 20)
+                else if (root->vBody(anus) >= 15 && root->vBody(anus) < 20)
                 {
-                    root->updVStatus(horny, getRandInt(2,5));
-                    root->m_render->setText(getActDesc(descSP42));
-                    if(root->getVSexVar(stat_agape) > 0)
+                    root->vStatus(horny) += getRandInt(2,5);
+                    root->setText(getActDesc(descSP42));
+                    if(root->vSex(stat_agape) > 0)
                     {
-                        root->m_render->setText(getActDesc(descSP43));
+                        root->setText(getActDesc(descSP43));
                     }
                 }
-                else if(root->getVBody(anus) < 15)
+                else if(root->vBody(anus) < 15)
                 {
-                    root->updVStatus(horny, -50);
-                    root->m_render->setText(getActDesc(descSP44));
+                    root->vStatus(horny) -= 50;
+                    root->setText(getActDesc(descSP44));
                 }
-                if(root->getItemCount(iLubri) > 0)
+                if(root->getItmCount(iLubri) > 0)
                 {
                     emit root->setGape(anus, 10, 15, 0);
                 }
@@ -519,18 +526,18 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
                 {
                     emit root->setGape(anus, 0, 15, 0);
                 }
-                if(root->getPrevLoc() == lkorrpar && root->getVSexVar(selfplaytime) >= 60)
+                if(root->getPrevLoc() == lkorrpar && root->vSex(selfplaytime) >= 60)
                 {
                     bathInvasion();
                 }
-                if(root->getVStatus(horny) >= 100)
+                if(root->vStatus(horny) >= 100)
                 {
-                    root->updVSC(analOrgasm, 1);
-                    root->setVStatus(mood, 100);
-                    root->setVStatus(lust, 0);
-                    root->setVStatus(horny, 0);
+                    root->vStatistics(analOrgasm) += 1;
+                    root->vStatus(mood) = 100;
+                    root->vStatus(lust) = 0;
+                    root->vStatus(horny) = 0;
                     selfPlayEnding();
-                    root->m_render->setText(getActDesc(descSP16));
+                    root->setText(getActDesc(descSP16));
                 }
                 makeButtons();
             }
@@ -539,17 +546,16 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
     case actSP14:
         {
             root->incTime(15);
-            root->updVSexVar(selfplaytime,15);
-            root->setVSexVar(dick, root->getVSexVar(dildoHand));
-            //protect = 1;
+            root->vSex(selfplaytime) += 15;
+            root->vSex(dick) = root->vSex(dildoHand);
             if(root->getPrevLoc() == lkorrpar)
-                root->m_render->setImage("data/sex/selfplay/dildovann.jpg");
+                root->setImage("data/sex/selfplay/dildovann.jpg");
             else
-                root->m_render->setImage("data/sex/selfplay/dildo.jpg");
-            root->setVSexVar(protect,1);
-            root->m_sex->sexStart();
-            root->m_sex->vaginal(tDildo);
-            if(root->getVStatus(horny) == 0 || root->getVStatus(horny) < 35)
+                root->setImage("data/sex/selfplay/dildo.jpg");
+            root->vSex(protect) = 1;
+            root->sexStart();
+            root->vaginal(tDildo);
+            if(root->vStatus(horny) == 0 || root->vStatus(horny) < 35)
                 selfPlayEnding();
             //if husband > 0 and husbandrink ! 10 and $loc = 'bedr': dynamic $husb_mastr_vtor
             makeButtons();
@@ -558,14 +564,14 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
     case actSP15:
         {
             root->incTime(15);
-            root->updVSexVar(selfplaytime,15);
-            root->setVSexVar(dick, root->getVSexVar(dildoHand));
+            root->vSex(selfplaytime) += 15;
+            root->vSex(dick) = root->vSex(dildoHand);
             if(root->getPrevLoc() == lkorrpar)
-                root->m_render->setImage("data/sex/selfplay/dildovann.jpg");
+                root->setImage("data/sex/selfplay/dildovann.jpg");
             else
-                root->m_render->setImage("data/sex/selfplay/dildo.jpg");
-            root->m_sex->analStart(tDildo);
-            root->m_sex->anal(tDildo);
+                root->setImage("data/sex/selfplay/dildo.jpg");
+            root->analStart(tDildo);
+            root->anal(tDildo);
             makeButtons();
         }
         break;
@@ -573,60 +579,60 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
         break;
     case actSP17:
         {
-            root->setVSexVar(dildoHand, 0);
+            root->vSex(dildoHand) = 0;
             slotActionHandler(actSP0);
         }
         break;
     case actSP18:
         {
-            root->setVSexVar(dildoHand, 10);
+            root->vSex(dildoHand) = 10;
             slotActionHandler(actSP0);
         }
         break;
     case actSP19:
         {
-            root->setVSexVar(dildoHand, 15);
+            root->vSex(dildoHand) = 15;
             slotActionHandler(actSP0);
         }
         break;
     case actSP20:
         {
-            root->setVSexVar(dildoHand,20);
+            root->vSex(dildoHand) = 20;
             slotActionHandler(actSP0);
         }
         break;
     case actSP21:
         {
-            root->setVSexVar(dildoHand,25);
+            root->vSex(dildoHand) = 25;
             slotActionHandler(actSP0);
         }
         break;
     case actSP22:
         {
-            root->setVSexVar(dildoHand,30);
+            root->vSex(dildoHand) = 30;
             slotActionHandler(actSP0);
         }
         break;
     case actSP23:
         {
-            root->setVSexVar(dildoHand,35);
+            root->vSex(dildoHand) = 35;
             slotActionHandler(actSP0);
         }
         break;
     case actSP24:
         {
-            root->setVSexVar(dildoHand,40);
+            root->vSex(dildoHand) = 40;
             slotActionHandler(actSP0);
         }
         break;
     case actSP25:
         {
-            root->setVSexVar(analplay, 0);
-            root->setVSexVar(selfplaytime, 0);
-            root->setVSexVar(mastrOnce, 0);
-            if(m_vagTemp > root->getVBody(vagina)*2)
+            root->vSex(analplay) = 0;
+            root->vSex(selfplaytime) = 0;
+            root->vSex(mastrOnce) = 0;
+            if(m_vagTemp > root->vBody(vagina)*2)
             {
-                root->updVBody(vagina, 1);
+                root->vBody(vagina) += 1;
                 m_vagTemp = 0;
             }
             root->changeLoc(root->getCurLoc(),1);
@@ -634,12 +640,12 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
         break;
     case actSP26:
         {
-            root->setVSexVar(analplay, 0);
-            root->setVSexVar(selfplaytime, 0);
-            root->setVSexVar(mastrOnce, 0);
-            if(m_vagTemp > root->getVBody(vagina)*2)
+            root->vSex(analplay) = 0;
+            root->vSex(selfplaytime) = 0;
+            root->vSex(mastrOnce) = 0;
+            if(m_vagTemp > root->vBody(vagina)*2)
             {
-                root->updVBody(vagina, 1);
+                root->vBody(vagina) += 1;
                 m_vagTemp = 0;
             }
             root->changeLoc(root->getCurLoc(),1);
@@ -648,60 +654,60 @@ void SelfPlay::slotActionHandler(SelfPlayActs act)
     default:
         break;
     }
-    root->updParams();
+    root->updateParams();
 }
 
 void SelfPlay::makeButtons()
 {
     if (current == actSP0 || current == actSP4)
     {
-        if (root->getVStatus(Status::horny) > 0 && root->getVSexVar(grandmaknowmastr) == 0 && root->getVSexVar(grandpaknowmastr) == 0)
+        if (root->vStatus(Status::horny) > 0 && root->vSex(grandmaknowmastr) == 0 && root->vSex(grandpaknowmastr) == 0)
         {
             makeActBtn(actSP8);
         }
-        if (root->getVStatus(Status::horny) > 0 && root->getVSexVar(stat_agape) < 3 && root->getVSexVar(grandmaknowmastr) == 0 && root->getVSexVar(grandpaknowmastr) == 0)
+        if (root->vStatus(Status::horny) > 0 && root->vSex(stat_agape) < 3 && root->vSex(grandmaknowmastr) == 0 && root->vSex(grandpaknowmastr) == 0)
         {
             makeActBtn(actSP9);
         }
-        if (root->getVStatus(Status::horny) > 25 && root->getVSexVar(grandmaknowmastr) == 0 && root->getVSexVar(grandpaknowmastr) == 0)
+        if (root->vStatus(Status::horny) > 25 && root->vSex(grandmaknowmastr) == 0 && root->vSex(grandpaknowmastr) == 0)
         {
             if (root->getCurLoc() == lbedrpar2 ||
-                root->getItemCount(Items::iDildo) >= 1 ||
-                root->getItemCount(Items::iBigDildo) >= 1 ||
-                root->getItemCount(Items::iExtraDildo) >= 1 ||
-                root->getItemCount(Items::iLargeDildo) >= 1 ||
-                root->getItemCount(Items::iMadDildo) >= 1 ||
-                root->getItemCount(Items::iMidDildo) >= 1 ||
-                root->getItemCount(Items::iSuperDildo) >= 1)
+                root->getItmCount(Items::iDildo) >= 1 ||
+                root->getItmCount(Items::iBigDildo) >= 1 ||
+                root->getItmCount(Items::iExtraDildo) >= 1 ||
+                root->getItmCount(Items::iLargeDildo) >= 1 ||
+                root->getItmCount(Items::iMadDildo) >= 1 ||
+                root->getItmCount(Items::iMidDildo) >= 1 ||
+                root->getItmCount(Items::iSuperDildo) >= 1)
             {
-                if (root->getVSexVar(dildoHand) > 0)
+                if (root->vSex(dildoHand) > 0)
                 {
-                    if (root->getVSexVar(stat_vgape) <= 0)
+                    if (root->vSex(stat_vgape) <= 0)
                         makeActBtn(actSP14);
-                    if (root->getVSexVar(stat_agape) <= 0)
+                    if (root->vSex(stat_agape) <= 0)
                         makeActBtn(actSP15);
                     makeActBtn(actSP17);
                 }
                 else
                 {
-                    if (root->getItemCount(iDildo) >= 1)
+                    if (root->getItmCount(iDildo) >= 1)
                         makeActBtn(actSP18);
-                    if (root->getItemCount(iMidDildo) >= 1)
+                    if (root->getItmCount(iMidDildo) >= 1)
                         makeActBtn(actSP19);
-                    if (root->getItemCount(iLargeDildo) >= 1)
+                    if (root->getItmCount(iLargeDildo) >= 1)
                         makeActBtn(actSP20);
-                    if (root->getItemCount(iBigDildo) >= 1)
+                    if (root->getItmCount(iBigDildo) >= 1)
                         makeActBtn(actSP21);
-                    if (root->getItemCount(iExtraDildo) >= 1)
+                    if (root->getItmCount(iExtraDildo) >= 1)
                         makeActBtn(actSP22);
-                    if (root->getItemCount(iSuperDildo) >= 1)
+                    if (root->getItmCount(iSuperDildo) >= 1)
                         makeActBtn(actSP23);
-                    if (root->getItemCount(iMadDildo) >= 1)
+                    if (root->getItmCount(iMadDildo) >= 1)
                         makeActBtn(actSP24);
                 }
             }
         }
-        if (root->getVStatus(Status::horny) > 0 && root->getVSexVar(grandmaknowmastr) == 0 && root->getVSexVar(grandpaknowmastr) == 0)
+        if (root->vStatus(Status::horny) > 0 && root->vSex(grandmaknowmastr) == 0 && root->vSex(grandpaknowmastr) == 0)
         {
             makeActBtn(actSP1);
         }
@@ -709,11 +715,11 @@ void SelfPlay::makeButtons()
     }
     else if (current == actSP1)
     {
-        if(root->getVBody(vagina) == 0 && root->getVStatus(mesec) <= 0)
+        if(root->vBody(vagina) == 0 && root->vStatus(mesec) <= 0)
         {
             makeActBtn(actSP2);
         }
-        else if (root->getVBody(vagina) > 0)
+        else if (root->vBody(vagina) > 0)
         {
             makeActBtn(actSP3);
         }
@@ -725,7 +731,7 @@ void SelfPlay::makeButtons()
     }
     else if (current == actSP3)
     {
-        if (root->getVStatus(horny) > 0)
+        if (root->vStatus(horny) > 0)
         {
             makeActBtn(actSP5);
         }
@@ -733,7 +739,7 @@ void SelfPlay::makeButtons()
     }
     else if(current == actSP5)
     {
-        if (root->getVBody(vagina) > 0)
+        if (root->vBody(vagina) > 0)
         {
             makeActBtn(actSP6); 
         }
@@ -741,7 +747,7 @@ void SelfPlay::makeButtons()
     }
     else if (current == actSP6)
     {
-        if (root->getVStatus(horny) > 0)
+        if (root->vStatus(horny) > 0)
         {
             makeActBtn(actSP5);
         }
@@ -750,7 +756,7 @@ void SelfPlay::makeButtons()
     else if(current == actSP8)
     {
         makeActBtn(actSP4);
-        if (root->getVStatus(horny) > 0)
+        if (root->vStatus(horny) > 0)
         {
             makeActBtn(actSP1);
         }
@@ -763,7 +769,7 @@ void SelfPlay::makeButtons()
     else if (current == actSP10)
     {
         makeActBtn(actSP4);
-        if (root->getVStatus(horny) > 0 && root->getVSexVar(stat_agape) < 3)
+        if (root->vStatus(horny) > 0 && root->vSex(stat_agape) < 3)
         {
             makeActBtn(actSP11);
         }
@@ -771,7 +777,7 @@ void SelfPlay::makeButtons()
     else if (current == actSP11)
     {
         makeActBtn(actSP4);
-        if (root->getVStatus(horny) > 0 && root->getVSexVar(stat_agape) < 3)
+        if (root->vStatus(horny) > 0 && root->vSex(stat_agape) < 3)
         {
             makeActBtn(actSP12);
         }
@@ -779,7 +785,7 @@ void SelfPlay::makeButtons()
     else if (current == actSP12)
     {
         makeActBtn(actSP4);
-        if (root->getVStatus(horny) > 0 && root->getVSexVar(stat_agape) < 3)
+        if (root->vStatus(horny) > 0 && root->vSex(stat_agape) < 3)
         {
             makeActBtn(actSP13);
         }
@@ -790,23 +796,23 @@ void SelfPlay::makeActBtn(SelfPlayActs act)
 {
     SexActionButton* btnx = new SexActionButton(act, getActName(act));
     connect(btnx, &SexActionButton::sigAction, this, &SelfPlay::slotActionHandler);
-    root->m_actions->addWidget(btnx);
+    root->addActions(btnx);
 }
 
 void SelfPlay::bathInvasion()
 {
-    if(/*$father['location'] = 'korrPar' or $mother['location'] = 'korrPar' or $sister['location'] = 'korrPar' or $brother['location'] = 'korrPar'*/false)
+    if(root->gNPC(father).location == lkorrpar || root->gNPC(mother).location == lkorrpar || root->gNPC(sister).location == lkorrpar || root->gNPC(brother).location == lkorrpar)
     {
-        root->updVStatus(mood, -10);
-        root->updVStatus(horny, -50);
-        root->m_render->setText(getActDesc(descSP17));
+        root->vStatus(mood) -= 10;
+        root->vStatus(horny) -= 50;
+        root->setText(getActDesc(descSP17));
         makeActBtn(actSP7);
     }
 }
 
 void SelfPlay::selfPlayEnding()
 {
-    root->m_render->setText(getActDesc(descSP16));
+    root->setText(getActDesc(descSP16));
     makeActBtn(actSP26);
 }
 
@@ -890,7 +896,7 @@ QString SelfPlay::getActDesc(SelfPlayDesc desc)
     strings[descSP42] = "Вы засунули руку в свою попу и ваш анус туго ее обхватил.";
     strings[descSP43] = "У вас уже болит попа и засунув руку вы еще сильнее ее повредили.";
     strings[descSP44] = "Вы засунули руку в свою попу и почувствовали резкую боль в вашем анусе.";
-    strings[descSP45] = "У вас в руках " + intQStr(root->getVSexVar(dildoHand)) + "ти сантиметровый дилдо";
+    strings[descSP45] = "У вас в руках " + intQStr(root->vSex(dildoHand)) + "ти сантиметровый дилдо";
     strings[descSP46] = "У вас нет дилдо в руках";
     strings[descSP47] = "Ваша киска нежно обхватывает ваши пальчики и вы чувствуете приятно тепло разливающееся внизу живота.";
     strings[descSP48] = "Вагина довольно просторная и вам приходится довольно сильно потрудиться, что бы хоть что-то ощущать от своих пальцев.";

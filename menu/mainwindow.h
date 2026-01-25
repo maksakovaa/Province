@@ -1,26 +1,27 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+// #include "../player/player.h"
+// #include "../player/pregnancy.h"
+// #include "../sex/ccsex.h"
+// #include "../player/ccalko.h"
+// #include "../timeServer.h"
+// #include "../weather.h"
+// #include "../locations/locationhandler.h"
+// #include "../objects/objecthandler.h"
+// #include "../sex/sexhandler.h"
+// #include "../npc/npc_editor.h"
+// #include "../player/drugs.h"
+
 #include <QMainWindow>
-#include "../player/player.h"
-#include "../player/pregnancy.h"
-#include "../sex/ccsex.h"
-#include "../player/ccalko.h"
 #include "settingsform.h"
-#include "../timeServer.h"
-#include "../weather.h"
 #include "overlaystatus.h"
 #include "notificationqueue.h"
 #include "bagform.h"
 #include "saveform.h"
 #include "loadform.h"
-
 #include "../render.h"
-#include "../locations/locationhandler.h"
-#include "../objects/objecthandler.h"
-#include "../sex/sexhandler.h"
-#include "../npc/npc.h"
-#include "../npc/npc_editor.h"
+#include "../game.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -31,10 +32,7 @@ QT_END_NAMESPACE
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-    friend LoadForm; friend NPC_Editor;
-    friend Render; friend LocationHandler; friend ObjectHandler; friend SexHandler;
-    friend Player; friend TimeServer; friend OverlayStatus; friend CC_Alko;
-    friend Weather; friend Pregnancy; friend CCSex; friend SaveForm;
+    friend LoadForm; friend Render; friend OverlayStatus; friend SaveForm; friend Game;
 public:
     MainWindow(SettingsForm* settingsForm, int year, int month, int day, QWidget *parent = nullptr);
     MainWindow(SettingsForm* settingsForm, QWidget *parent = nullptr);
@@ -59,11 +57,8 @@ private slots:
     void on_labelMoney_linkActivated(const QString &link);
     void slotUpdPlayerIcon();
     void on_pushButtonSave_clicked();
-
     void on_pushButtonLoad_clicked();
-
     void on_pushButton_clicked();
-
 private: //methods
     void setupMainWindow(SettingsForm* settingsForm);
     void connections();
@@ -75,24 +70,15 @@ private: //methods
     void saveActions();
     void reloadActions();
 private: //members
-    NotificationQueue* m_que;
-    SettingsForm* page4;
-    Weather* m_weather;
     Ui::MainWindow* ui;
-    TimeServer m_time;
-    Player* m_player;
-    Pregnancy m_reproductSys;
+    NotificationQueue* m_que;
+    SettingsForm* m_settings; // m_settings
     OverlayStatus* m_overlayStatus;
-    CCSex m_ccsex;
-    CC_Alko m_ccalko;
     BagForm* m_bag;
     std::vector<QLayoutItem*> Layoutitems;
-    Render* pageRender;
-    LocationHandler* locHandler;
-    ObjectHandler* objHandler;
-    SexHandler* sexHandler;
-    SaveForm SavePage;
-    LoadForm LoadPage;
-    NPC_Editor* m_npc;
+    Render* m_render;
+    SaveForm m_savePage;
+    LoadForm m_loadPage;
+    Game* m_game;
 };
 #endif // MAINWINDOW_H

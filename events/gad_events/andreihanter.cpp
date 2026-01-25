@@ -1,9 +1,9 @@
 #include "andreihanter.h"
 #include "../../menu/buttons.h"
-#include "../eventhandler.h"
+#include "../../game.h"
 #include "../../Functions.h"
 
-AndreiHanter::AndreiHanter(EventHandler* ptr): root(ptr) {}
+AndreiHanter::AndreiHanter(Game* ptr): root(ptr) {}
 
 void AndreiHanter::start(QString arg)
 {
@@ -18,69 +18,69 @@ void AndreiHanter::actionHandler(QString action)
     if(action == "AndreiHanter")
     {
         root->setBoyName(str(0));
-        root->sVSex(dick,20);
-        root->sVSex(silavag,0);
-        root->sVSex(harakBoy,2);
-        root->sVSex(boyage, root->getAge() + 21);
+        root->vSex(dick) = 20;
+        root->vSex(silavag) = 0;
+        root->vSex(harakBoy) = 2;
+        root->vSex(boyage) = root->getAge() + 21;
         root->setImage(media(0));
-        root->setDesc(str(1));
-        int rel = root->gVQuest(hantersAndreiQW);
+        root->setText(str(1));
+        int rel = root->vQuest(hantersAndreiQW);
 
         if(rel < 0)
-            root->addDesc(str(2));
+            root->addText(str(2));
         if(rel >= 0 && rel < 10)
-            root->addDesc(str(3));
+            root->addText(str(3));
         if(rel >= 10 && rel < 15)
-            root->addDesc(str(4));
+            root->addText(str(4));
         if(rel >= 15 && rel < 25)
-            root->addDesc(str(5));
+            root->addText(str(5));
         if(rel >= 25)
-            root->addDesc(str(6));
-        if(root->gVEvent(hantersAndreiLove) == 1)
-            root->addDesc(str(7));
+            root->addText(str(6));
+        if(root->vEvent(hantersAndreiLove) == 1)
+            root->addText(str(7));
         makeActBtn("talk",act(0));
         if(rel >= 10)
         {
-            if(root->gVEvent(hantersAndreiLove) == 0)
+            if(root->vEvent(hantersAndreiLove) == 0)
                 makeActBtn("flirt",act(2));
             else
                 makeActBtn("take_time",act(3));
         }
-        if(root->gVEvent(hantersAndreiLove) > 0 && root->vStatus(horny) >= 60)
+        if(root->vEvent(hantersAndreiLove) > 0 && root->vStatus(horny) >= 60)
             makeActBtn("pester",act(9));
-        if(root->gVEvent(hantersAndreiLove) > 0 && root->vStatus(horny) < 60 && root->gVQuest(hantersAndreiQW) >= 10 && root->gVEvent(hantersAndreisex) == 0)
+        if(root->vEvent(hantersAndreiLove) > 0 && root->vStatus(horny) < 60 && root->vQuest(hantersAndreiQW) >= 10 && root->vEvent(hantersAndreisex) == 0)
         {
             root->incTime(5);
-            root->uVStatus(horny,5);
-            root->uVEvent(hantersAndreisex,getRandInt(6,24));
+            root->vStatus(horny) += 5;
+            root->vEvent(hantersAndreisex) += getRandInt(6,24);
             root->setImage(media(1));
-            root->setDesc(str(18));
+            root->setText(str(18));
             makeActBtn("go_with_a",act(10));
             makeActBtn("dont_go_with_a",act(11));
         }
-        if(root->gVEvent(hantersAndreiLove) > 0)
+        if(root->vEvent(hantersAndreiLove) > 0)
             makeActBtn("break_up_the_guy",act(12));
         makeActBtn("back_to_loc",act(4));
-        if(rel < 10 && root->gVEvent(hantersAndreiLove) > 0)
+        if(rel < 10 && root->vEvent(hantersAndreiLove) > 0)
         {
             root->incTime(5);
-            root->sVEvent(hantersAndreiLove,0);
-            root->uVQuest(hantersAndreiQW,-10);
+            root->vEvent(hantersAndreiLove) = 0;
+            root->vQuest(hantersAndreiQW) -= 10;
             root->setImage(media(2));
-            root->setDesc(str(22));
+            root->setText(str(22));
             makeActBtn("back_to_loc",act(7));
         }
     }
     if(action == "talk")
     {
         root->incTime(60);
-        if(root->gVQuest(hantersAndreiQW) < 10)
-            root->uVQuest(hantersAndreiQW,1);
+        if(root->vQuest(hantersAndreiQW) < 10)
+            root->vQuest(hantersAndreiQW) += 1;
         root->setImage(media(3));
-        if(root->gVQuest(hantersAndreiQW) >= 0)
-            root->setDesc(str(8));
-        if(root->gVQuest(hantersAndreiQW) < 0)
-            root->setDesc(str(9));
+        if(root->vQuest(hantersAndreiQW) >= 0)
+            root->setText(str(8));
+        if(root->vQuest(hantersAndreiQW) < 0)
+            root->setText(str(9));
         makeActBtn("back_to_loc",act(1));
     }
     if(action == "back_to_loc")
@@ -90,24 +90,24 @@ void AndreiHanter::actionHandler(QString action)
     if(action == "flirt")
     {
         root->incTime(120);
-        root->uVStatus(horny,10);
-        if(root->gVEvent(hantersKnowSlut) == 0)
+        root->vStatus(horny)+=10;
+        if(root->vEvent(hantersKnowSlut) == 0)
         {
-            if(root->gVQuest(hantersAndreiQW) <= 35)
-                root->uVQuest(hantersAndreiQW,1);
-            if(root->gVQuest(hantersSergeiQW) >= 10)
-                root->uVQuest(hantersSergeiQW,-1);
-            if(root->gVQuest(hantersIgorQW) >= 10)
-                root->uVQuest(hantersIgorQW,-1);
+            if(root->vQuest(hantersAndreiQW) <= 35)
+                root->vQuest(hantersAndreiQW)+=1;
+            if(root->vQuest(hantersSergeiQW) >= 10)
+                root->vQuest(hantersSergeiQW)-=1;
+            if(root->vQuest(hantersIgorQW) >= 10)
+                root->vQuest(hantersIgorQW)-=1;
         }
         root->setImage(media(4));
-        root->setDesc(str(10));
-        if(root->gVEvent(hantersAndreiLove) == 0 && root->gVQuest(hantersAndreiQW) >= 25 && root->gVEvent(hantersKnowSlut) == 0 && root->vStatus(vnesh) >= 20)
+        root->setText(str(10));
+        if(root->vEvent(hantersAndreiLove) == 0 && root->vQuest(hantersAndreiQW) >= 25 && root->vEvent(hantersKnowSlut) == 0 && root->vStatus(vnesh) >= 20)
         {
             root->incTime(5);
-            root->uVStatus(horny,5);
+            root->vStatus(horny) += 5;
             root->setImage(media(5));
-            root->setDesc(str(11));
+            root->setText(str(11));
             makeActBtn("answer_kiss",act(5));
             makeActBtn("dont_answer_kiss",act(6));
         }
@@ -119,12 +119,12 @@ void AndreiHanter::actionHandler(QString action)
     if(action == "answer_kiss")
     {
         root->incTime(5);
-        root->uVStatus(horny,5);
-        root->sVEvent(hantersAndreiLove,1);
-        root->uVQuest(hantersAndreiQW,1);
-        root->sVStatus(mood,100);
+        root->vStatus(horny) += 5;
+        root->vEvent(hantersAndreiLove) = 1;
+        root->vQuest(hantersAndreiQW) +=1;
+        root->vStatus(mood) = 100;
         root->setImage(media(6));
-        root->setDesc(str(12));
+        root->setText(str(12));
         if(root->vStatus(horny) >= 40)
             makeActBtn("kiss_next1",act(1));
         else
@@ -134,47 +134,47 @@ void AndreiHanter::actionHandler(QString action)
     {
         root->incTime(5);
         root->setImage(media(7));
-        root->setDesc(str(13));
+        root->setText(str(13));
         makeActBtn("HanterLoveSex",act(7));
     }
     if(action == "kiss_next2")
     {
         root->incTime(5);
         root->setImage(media(7));
-        root->setDesc(str(14));
+        root->setText(str(14));
         makeActBtn("back_to_loc",act(1));
     }
     if(action == "dont_answer_kiss")
     {
         root->incTime(5);
-        root->uVEvent(hanterslut,1);
-        root->uVQuest(hantersAndreiQW,-50);
+        root->vEvent(hanterslut) += 1;
+        root->vQuest(hantersAndreiQW) -= 50;
         root->setImage(media(8));
-        root->setDesc(str(15));
+        root->setText(str(15));
         makeActBtn("back_to_loc",act(8));
     }
     if(action == "take_time")
     {
         root->incTime(120);
-        root->uVStatus(horny,10);
-        root->uVQuest(hantersAndreiQW,1);
-        if(root->gVEvent(hantersIgorLove) > 0 || root->gVEvent(hantersSergeiLove) > 0)
-            root->uVEvent(hanterslut,1);
-        if(root->gVEvent(hantersIgorLove) == 0 && root->gVEvent(hantersSergeiLove) == 0)
-            root->uVEvent(hanterslut,-1);
-        root->sVStatus(mood,100);
+        root->vStatus(horny) += 10;
+        root->vQuest(hantersAndreiQW) += 1;
+        if(root->vEvent(hantersIgorLove) > 0 || root->vEvent(hantersSergeiLove) > 0)
+            root->vEvent(hanterslut) +=1;
+        if(root->vEvent(hantersIgorLove) == 0 && root->vEvent(hantersSergeiLove) == 0)
+            root->vEvent(hanterslut) -= 1;
+        root->vStatus(mood) = 100;
         root->setImage(media(9));
-        root->setDesc(str(16));
+        root->setText(str(16));
         makeActBtn("back_to_loc",act(4));
     }
     if(action == "pester")
     {
         root->incTime(10);
-        root->uVStatus(horny,5);
-        root->uVQuest(hantersAndreiQW,1);
-        root->uVEvent(hantersAndreisex,getRandInt(6,24));
+        root->vStatus(horny) += 5;
+        root->vQuest(hantersAndreiQW) +=1;
+        root->vEvent(hantersAndreisex) += getRandInt(6,24);
         root->setImage(media(10));
-        root->setDesc(str(17));
+        root->setText(str(17));
         makeActBtn("HanterLoveSex",act(7));
     }
     if(action == "HanterLoveSex")
@@ -184,27 +184,27 @@ void AndreiHanter::actionHandler(QString action)
     if(action == "go_with_a")
     {
         root->incTime(5);
-        root->uVStatus(horny,5);
-        root->uVQuest(hantersAndreiQW,1);
+        root->vStatus(horny) += 5;
+        root->vQuest(hantersAndreiQW) += 1;
         root->setImage(media(11));
-        root->setDesc(str(19));
+        root->setText(str(19));
         makeActBtn("HanterLoveSex",act(1));
     }
     if(action == "dont_go_with_a")
     {
         root->incTime(5);
-        root->uVQuest(hantersAndreiQW,-1);
+        root->vQuest(hantersAndreiQW)-=1;
         root->setImage(media(8));
-        root->setDesc(str(20));
+        root->setText(str(20));
         makeActBtn("back_to_loc",act(7));
     }
     if(action == "break_up_the_guy")
     {
         root->incTime(5);
-        root->sVEvent(hantersAndreiLove,0);
-        root->uVQuest(hantersAndreiQW,-100);
+        root->vEvent(hantersAndreiLove) = 0;
+        root->vQuest(hantersAndreiQW) -= 100;
         root->setImage(media(12));
-        root->setDesc(str(21));
+        root->setText(str(21));
         makeActBtn("back_to_loc",act(7));
     }
 }
@@ -214,7 +214,7 @@ void AndreiHanter::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action,"AndreiHanter");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &AndreiHanter::actionHandler);
-    root->addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString AndreiHanter::str(int id)

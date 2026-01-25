@@ -3,8 +3,9 @@
 #include "../menu/buttons.h"
 #include "../Functions.h"
 #include "../npc/npc_enum.h"
+#include "../game.h"
 
-Books::Books(ObjectHandler* ptr): root(ptr) {}
+Books::Books(Game *ptr): root(ptr) {}
 
 QString Books::getName()
 {
@@ -28,13 +29,13 @@ QString Books::getBookName(int id)
 
 void Books::viewBooks()
 {
-    ClearLayout(root->m_actions);
+    root->clearActions();
     if(m_books.empty())
         initBooks();
-    root->m_render->rendObjPage(this);
+    root->rendObjPage(this);
     for (int i = 0; i < m_books.size(); ++i)
     {
-        if(m_books[i].exist && i != root->gVEvent(sister_book) && i != root->gVEvent(book_in_bag))
+        if(m_books[i].exist && i != root->vEvent(sister_book) && i != root->vEvent(book_in_bag))
         {
             makeBookWgt(m_books[i].id,m_books[i].name,m_books[i].page);
         }
@@ -69,19 +70,19 @@ int Books::sisBook()
 
 void Books::readBook(int id)
 {
-    ClearLayout(root->m_actions);
-    root->m_render->rendObjPage(this);
+    root->clearActions();
+    root->rendObjPage(this);
     layout = new QVBoxLayout;
     lbl = new QLabel;
     layout->addWidget(lbl);
     layout->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
-    root->m_render->addLayoutsInObjPage(layout);
+    root->addLayoutsInObjPage(layout);
     curBook = id;
     QString page = "<img src='" + getImage() + "'></img>";
     page += "<br>" + str(40) + intQStr(m_books[id].page * 20) +  str(41);
     lbl->setText(page);
     qDebug() << m_books[id].page/20 << "  alko block: " << root->alkoBlock();
-    if(m_books[id].page/20 == 0 && root->alkoBlock() == 0 /* && root->drugBlock() == 0*/)
+    if(m_books[id].page/20 == 0 && root->alkoBlock() == 0 && root->drugBlock() == false)
         makeActBtn("readBook_act",act(1));
     makeActBtn("back_to_books",act(2));
 }
@@ -90,60 +91,60 @@ void Books::read_procedure()
 {
     root->sendNotif(str(44));
     m_books[curBook].page += 1;
-    root->uVEvent(read_per_day,1);
+    root->vEvent(read_per_day) += 1;
     root->incTime(getRandInt(50,70));
-    if(root->gVEvent(read_per_day) > 1)
-        root->updVBody(blizoruk,1);
-    if(root->getVStatus(nerdism) > 0)
+    if(root->vEvent(read_per_day) > 1)
+        root->vBody(blizoruk) += 1;
+    if(root->vStatus(nerdism) > 0)
     {
-        root->updVStatus(nerdism,20);
-        root->updVStatus(mood,30);
+        root->vStatus(nerdism) += 20;
+        root->vStatus(mood) += 30 ;
     }
     else
     {
         if(curBook >= 10 && curBook < 20)
         {
             if(m_books[curBook].page < 20)
-                root->updVStatus(mood,10);
+                root->vStatus(mood) += 10 ;
             else
-                root->updVStatus(mood,5);
+                root->vStatus(mood) += 5;
         }
         if(curBook >= 20 && curBook < 30)
         {
             if(m_books[curBook].page < 20)
             {
-                root->updVStatus(horny,5);
-                root->updVStatus(mood,5);
+                root->vStatus(horny) += 5;
+                root->vStatus(mood) += 5;
             }
             else
             {
-                root->updVStatus(horny,3);
-                root->updVStatus(mood,3);
+                root->vStatus(horny) += 3;
+                root->vStatus(mood) += 3;
             }
-            if(root->getVBody(blizoruk) == 200 && root->gVQuest(glassQW) == 0)
+            if(root->vBody(blizoruk) == 200 && root->vQuest(glassQW) == 0)
             {
-                root->sVQuest(glassQW,1);
+                root->vQuest(glassQW) = 1;
                 lbl->setText(lbl->text() + "<br>" + str(42));
             }
         }
         if(curBook >= 30 && curBook < 40)
         {
             if(m_books[curBook].page < 20)
-                root->updVStatus(horny,10);
+                root->vStatus(horny) += 10;
             else
-                root->updVStatus(horny,5);
+                root->vStatus(horny) += 5;
         }
     }
 }
 
 void Books::readed()
 {
-    root->m_render->rendObjPage(this);
+    root->rendObjPage(this);
     QString page = "<img src='" + getImage() + "'></img>";
     page += m_books[curBook].name + "<br>" + str(45);
     lbl = new QLabel;
     lbl->setText(page);
-    root->m_render->addQWidgetInObjPage(lbl);
+    root->addQWidgetInObjPage(lbl);
     makeActBtn("back_to_books",act(4));
 }
 
@@ -154,15 +155,15 @@ void Books::erotic_enable()
     // ! сестра в курсе, что ГГ дает
     // ! ГГ прочла хоть один дамский роман
     // ! обязательное условие - отличные отношения с сестрой
-    root->m_render->rendImagePage(this);
-    root->m_render->setImage(media(1));
-    if(root->gVEvent(sisterKnowMastr) + root->gVEvent(sisterKnowSlut) > 0)
-        root->m_render->setText(str(46) + str(47));
+    root->rendImagePage(this);
+    root->setImage(media(1));
+    if(root->vEvent(sisterKnowMastr) + root->vEvent(sisterKnowSlut) > 0)
+        root->setText(str(46) + str(47));
     else
-        root->m_render->setText(str(46) + str(48));
-    root->sVEvent(pornmarkonce,1);
-    root->sVEvent(sister_book,34);
-    root->sVEvent(reading_erotic_enable,1);
+        root->setText(str(46) + str(48));
+    root->vEvent(pornmarkonce) = 1;
+    root->vEvent(sister_book) = 34;
+    root->vEvent(reading_erotic_enable) = 1;
     m_books[34].exist = true;
     makeActBtn("bedrPar",act(0));
 }
@@ -192,19 +193,19 @@ int Books::ero_readed()
 void Books::erotic_block()
 {
     QString string = str(49);
-    if(root->gNPC(NatalyaLebedeva).relation < 40)
+    if(root->gNPC(mother).relation < 40)
     {
-        //gs 'npc_editor','change_rep','-', 37, 20
+        root->changeRep('-',mother,20);
         string += str(50);
-        root->sVEvent(reading_erotic_enable,-1);
+        root->vEvent(reading_erotic_enable) = -1;
         remove_ero();
-        root->m_render->setText(string);
+        root->setText(string);
         makeActBtn("bedrPar",act(4));
     }
     else
     {
         string += str(51);
-        root->m_render->setText(string);
+        root->setText(string);
         root->incTime(5);
         makeActBtn("silent",act(5));
         makeActBtn("interrupt",act(6));
@@ -221,12 +222,12 @@ void Books::remove_ero()
 
 void Books::shop(QString arg)
 {
-    root->m_render->rendObjPage(this);
+    root->rendObjPage(this);
     lbl = new QLabel;
     layout = new QVBoxLayout;
     layout->addWidget(lbl);
     layout->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
-    root->m_render->addLayoutsInObjPage(layout);
+    root->addLayoutsInObjPage(layout);
     if(m_books.empty())
         initBooks();
     int size, i;
@@ -273,7 +274,7 @@ void Books::shop(QString arg)
             table += "<tr><td width=600>" + m_books[i].name + "</td>";
             table += "<td>";
             int price = getPrice(i);
-            if(root->getVStatus(money) > price)
+            if(root->vStatus(money) > price)
                 table += "<a href='buy" +intQStr(i) + "'>" + act(8) + "</a>";
             else
                 table += act(8);
@@ -297,61 +298,61 @@ void Books::book2bag()
     std::vector<int> freeBooks;
     for (int i = 0; i < m_books.size(); ++i)
     {
-        if(m_books[i].exist == true && i != root->gVEvent(sister_book))
+        if(m_books[i].exist == true && i != root->vEvent(sister_book))
             freeBooks.push_back(i);
     }
-    root->sVEvent(book_in_bag,freeBooks[(getRandInt(0,freeBooks.size() - 1))]);
+    root->vEvent(book_in_bag) = freeBooks[(getRandInt(0,freeBooks.size() - 1))];
 }
 
 void Books::readOnWalk()
 {
-    curBook = root->gVEvent(book_in_bag);
+    curBook = root->vEvent(book_in_bag);
     if(m_books[curBook].page/20 != 0)
     {
-        root->m_render->setImage(getImage());
-        root->m_render->setText(str(54));
+        root->setImage(getImage());
+        root->setText(str(54));
         makeActBtn("back_to_loc",act(7));
     }
-    else if(root->gVQuest(glassQW) == 1)
+    else if(root->vQuest(glassQW) == 1)
     {
-        root->m_render->setImage(media(2));
-        root->m_render->setText(str(42));
+        root->setImage(media(2));
+        root->setText(str(42));
         makeActBtn("back_to_loc",act(3));
     }
     else
     {
         makeActBtn("back_to_loc",act(7));
         QString string;
-        if((root->gVEvent(read_per_day) >= 3 && root->getVStatus(nerdism) == 0) ||
-            (root->gVEvent(read_per_day) >= 5 && root->getVStatus(nerdism) != 0))
+        if((root->vEvent(read_per_day) >= 3 && root->vStatus(nerdism) == 0) ||
+            (root->vEvent(read_per_day) >= 5 && root->vStatus(nerdism) != 0))
             string = str(43);
         else
         {
             read_procedure();
             string = m_books[curBook].name + "<br>" + str(40) + intQStr(m_books[curBook].page * 20) + str(41) + "<br>" + str(55);
-            if(root->getCurLoc()->getLocId() == lpark)
+            if(root->getCurLoc() == lpark)
                 string += str(56);
             else
                 string += str(57);
             string += str(58);
-            if(root->getCurLoc()->getLocId() != lpark)
+            if(root->getCurLoc() != lpark)
             {
-                root->setVBody(hairStatus,1);
+                root->vBody(hairStatus) = 1;
                 if(root->getTemp() < 22)
-                    root->updVStatus(sweat,1);
+                    root->vStatus(sweat) += 1;
                 else if(root->getTemp() < 30)
-                    root->updVStatus(sweat,2);
+                    root->vStatus(sweat) += 2;
                 else
-                    root->updVStatus(sweat,3);
+                    root->vStatus(sweat) += 3;
                 if(root->getSunWeather() <= 2)
                 {
-                    if(root->isNude()) root->updVBody(skinTan,2);
-                    else root->updVBody(skinTan,1);
+                    if(root->isNude()) root->vBody(skinTan) += 2;
+                    else root->vBody(skinTan) += 1;
                 }
                 else
                 {
-                    if(root->isNude()) root->updVBody(skinTan,4);
-                    else root->updVBody(skinTan,2);
+                    if(root->isNude()) root->vBody(skinTan) += 4;
+                    else root->vBody(skinTan) += 2;
                 }
             }
             if(m_books[curBook].page >= 20 && m_books[curBook].page % 20 == 0)
@@ -359,49 +360,49 @@ void Books::readOnWalk()
                 if(curBook < 10)
                 {
                     if(m_books[curBook].page / 20 < 1)
-                        root->updVSkill(intellect,3);
+                        root->vSkill(intellect) += 3;
                     else
-                        root->updVSkill(intellect,1);
+                        root->vSkill(intellect) += 1;
                 }
                 string += "<br>" + str(45);
             }
-            LocId id = root->getCurLoc()->getLocId();
+            LocId id = root->getCurLoc();
             if(id == lpark)
             {
-                if(root->getMonth() < 9) root->m_render->setImage(media(35));
-                else root->m_render->setImage(media(36));
+                if(root->getMonth() < 9) root->setImage(media(35));
+                else root->setImage(media(36));
             }
             else if(id == lgadfield)
-                root->m_render->setImage(media(getRandInt(3,4)));
+                root->setImage(media(getRandInt(3,4)));
             else
             {
                 if(id == lgadbeach)
                 {
-                    if(root->isNude()) root->m_render->setImage(media(getRandInt(8,10)));
-                    else root->m_render->setImage(media(getRandInt(5,7)));
+                    if(root->isNude()) root->setImage(media(getRandInt(8,10)));
+                    else root->setImage(media(getRandInt(5,7)));
                 }
                 if(id == lglake)
                 {
-                    if(root->isNude()) root->m_render->setImage(media(getRandInt(14,16)));
-                    else root->m_render->setImage(media(getRandInt(11,13)));
+                    if(root->isNude()) root->setImage(media(getRandInt(14,16)));
+                    else root->setImage(media(getRandInt(11,13)));
                 }
                 if(id == lglakenude)
                 {
-                    if(root->isNude()) root->m_render->setImage(media(getRandInt(20,22)));
-                    else root->m_render->setImage(media(getRandInt(17,19)));
+                    if(root->isNude()) root->setImage(media(getRandInt(20,22)));
+                    else root->setImage(media(getRandInt(17,19)));
                 }
                 if(id == llake)
                 {
-                    if(root->isNude()) root->m_render->setImage(media(getRandInt(26,28)));
-                    else root->m_render->setImage(media(getRandInt(23,25)));
+                    if(root->isNude()) root->setImage(media(getRandInt(26,28)));
+                    else root->setImage(media(getRandInt(23,25)));
                 }
                 if(id == lnudelake)
                 {
-                    if(root->isNude()) root->m_render->setImage(media(getRandInt(32,34)));
-                    else root->m_render->setImage(media(getRandInt(29,31)));
+                    if(root->isNude()) root->setImage(media(getRandInt(32,34)));
+                    else root->setImage(media(getRandInt(29,31)));
                 }
             }
-            root->m_render->setText(string);
+            root->setText(string);
         }
     }
 }
@@ -414,28 +415,28 @@ void Books::slotActionHandler(QString action, int id)
     }
     if(action == "putInBag" && id >= 0)
     {
-        root->sVEvent(book_in_bag,id);
+        root->vEvent(book_in_bag) = id;
         viewBooks();
     }
     if(action == "sale" && id >= 0)
     {
-        root->updVStatus(money,300);
+        root->vStatus(money) += 300;
         m_books[id].exist = false;
         viewBooks();
     }
 
     if(action == "readBook_act")
     {
-        ClearLayout(root->m_actions);
-        if(root->gVQuest(glassQW) == 1)
+        root->clearActions();
+        if(root->vQuest(glassQW) == 1)
         {
-            root->m_render->rendImagePage(this);
-            root->m_render->setImage(media(0));
-            root->m_render->setText(str(42));
+            root->rendImagePage(this);
+            root->setImage(media(0));
+            root->setText(str(42));
             makeActBtn("back_to_loc",act(3));
         }
-        else if((root->getVStatus(nerdism) >= 40 && root->gVEvent(read_per_day) >= 5) ||
-            (root->getVStatus(nerdism) < 40 && root->gVEvent(read_per_day) >= 3))
+        else if((root->vStatus(nerdism) >= 40 && root->vEvent(read_per_day) >= 5) ||
+            (root->vStatus(nerdism) < 40 && root->vEvent(read_per_day) >= 3))
         {
             lbl->setText(lbl->text() + "<br>" + str(43));
             makeActBtn("back_to_loc",act(4));
@@ -448,9 +449,9 @@ void Books::slotActionHandler(QString action, int id)
                 if(curBook < 10)
                 {
                     if(m_books[curBook].page/20 < 1)
-                        root->updVSkill(intellect,3);
+                        root->vSkill(intellect) += 3;
                     else
-                        root->updVSkill(intellect,1);
+                        root->vSkill(intellect) += 1;
                 }
                 readed();
             }
@@ -462,22 +463,22 @@ void Books::slotActionHandler(QString action, int id)
     if(action == "back_to_books")
         viewBooks();
     if(action == "back_to_loc")
-        root->changeLoc(root->getCurLoc()->getLocId());
+        root->changeLoc(root->getCurLoc());
     if(action == "silent")
     {
-        ClearLayout(root->m_actions);
-        root->updVSkill(domination,-1);
-        root->sVEvent(reading_erotic_enable, -1);
-        root->m_render->setText(str(52));
+        root->clearActions();
+        root->vSkill(domination) -= 1;
+        root->vEvent(reading_erotic_enable) = -1;
+        root->setText(str(52));
         remove_ero();
         makeActBtn("bedrPar",act(4));
     }
     if(action == "interrupt")
     {
-        ClearLayout(root->m_actions);
-        root->updVSkill(domination,1);
-        root->sVEvent(reading_erotic_enable,2);
-        root->m_render->setText(str(53));
+        root->clearActions();
+        root->vSkill(domination) += 1;
+        root->vEvent(reading_erotic_enable) = 2;
+        root->setText(str(53));
         makeActBtn("bedrPar",act(4));
     }
 }
@@ -486,7 +487,7 @@ void Books::makeBookWgt(int id, QString name, int read)
 {
     BookForm* book = new BookForm();
     book->setBook(id,name,read);
-    root->m_render->addQWidgetInObjPage(book);
+    root->addQWidgetInObjPage(book);
     connect(book, &BookForm::sigBookAct, this, &Books::slotActionHandler);
 }
 
@@ -495,7 +496,7 @@ void Books::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action, "books");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, [this,action]() {this->slotActionHandler(action);});
-    root->m_actions->addWidget(btn);
+    root->addActions(btn);
 }
 
 QString Books::str(int id)

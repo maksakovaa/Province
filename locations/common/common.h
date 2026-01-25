@@ -4,13 +4,13 @@
 #include <QString>
 #include <QObject>
 
-class LocationHandler;
+class Game;
 
 class Common: public QObject
 {
     Q_OBJECT
 public:
-    Common(LocationHandler* ptr);
+    Common(Game* ptr);
     void icecream();
     void coffee();
     void go_back();
@@ -25,7 +25,7 @@ public:
     void watch_tv_on_sofa();
     void run_competition(QString arg);
     void fancywork();
-    void check_inhome();
+    bool check_inhome();
     void wet_wipes();
     int getClothDecreaseLevel();
     void fnsport(int arg = 0);
@@ -40,7 +40,7 @@ private:
     QString act(int id);
     QString media(int id);
 private:
-    LocationHandler* root;
+    Game* root;
     int watch_tv_count{0};
 };
 

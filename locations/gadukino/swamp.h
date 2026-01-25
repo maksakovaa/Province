@@ -3,12 +3,12 @@
 
 #include "../location.h"
 
-class LocationHandler;
+class Game;
 
 class Swamp: public Location
 {
 public:
-    Swamp(LocationHandler* ptr);
+    Swamp(Game* ptr);
     void show(QString arg = "") override;
     LocId getLocId() override;
     LocId getParId() override;
@@ -24,6 +24,8 @@ private:
     QString media(int id);
 private:
     int new_bilbery;
+private:
+    Game* root;
 };
 
 #endif // SWAMP_H

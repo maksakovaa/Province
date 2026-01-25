@@ -3,12 +3,12 @@
 
 #include "../location.h"
 
-class LocationHandler;
+class Game;
 
 class MiroslavaHome: public Location
 {
 public:
-    MiroslavaHome(LocationHandler* ptr);
+    MiroslavaHome(Game* ptr);
     void show(QString arg = "") override;
     LocId getLocId() override;
     LocId getParId() override;
@@ -25,6 +25,8 @@ private:
 private:
     int mira_temp;
     int grandpa_guest;
+private:
+    Game* root;
 };
 
 #endif // MIROSLAVAHOME_H

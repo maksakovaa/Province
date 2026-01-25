@@ -1,9 +1,9 @@
 #include "gadforestrelax.h"
 #include "../../menu/buttons.h"
 #include "../../Functions.h"
-#include "../eventhandler.h"
+#include "../../game.h"
 
-GadforestRelax::GadforestRelax(EventHandler* ptr): root(ptr) {}
+GadforestRelax::GadforestRelax(Game* ptr): root(ptr) {}
 
 void GadforestRelax::start(QString arg)
 {
@@ -22,14 +22,14 @@ void GadforestRelax::actionHandler(QString action)
         {
             if(!root->isSkirt())
             {
-                if(root->gVEvent(bonfire) == 0)
+                if(root->vEvent(bonfire) == 0)
                     root->setImage(media(0));
                 else
                     root->setImage(media(1));
             }
             else
             {
-                if(root->gVEvent(bonfire) == 0)
+                if(root->vEvent(bonfire) == 0)
                     root->setImage(media(2));
                 else if(root->isPanties())
                     root->setImage(media(3));
@@ -41,15 +41,15 @@ void GadforestRelax::actionHandler(QString action)
         {
             root->setImage(media(5));
         }
-        root->setDesc(str(0));
+        root->setText(str(0));
         int hour = root->getHour();
-        if(root->gVEvent(lost) >= getRandInt(1,5) && root->gVEvent(bonfire) == 0 && (hour < root->getSunrise() || hour > root->getSunset()))
+        if(root->vEvent(lost) >= getRandInt(1,5) && root->vEvent(bonfire) == 0 && (hour < root->getSunrise() || hour > root->getSunset()))
         {
             root->startEvent(eGadForestEvent,"relax");
         }
-        if(root->isCloth() && root->gVEvent(bonfire) == 0)
+        if(root->isCloth() && root->vEvent(bonfire) == 0)
             makeActBtn("light_bonfire",act(0));
-        if(root->isCloth() && root->gVEvent(bonfire) == 1)
+        if(root->isCloth() && root->vEvent(bonfire) == 1)
         {
             if(root->vStatus(boletus_hot) == 1)
                 makeActBtn("eat_boletus_hot",act(2));
@@ -58,7 +58,7 @@ void GadforestRelax::actionHandler(QString action)
             if(root->vStatus(boletus) > 0)
                 makeActBtn("make_hot_boletus",act(6));
         }
-        if(root->gVEvent(bonfire) == 0)
+        if(root->vEvent(bonfire) == 0)
         {
             makeActBtn("sit_grass",act(7));
             makeActBtn("sleep_grass",act(8));
@@ -70,73 +70,73 @@ void GadforestRelax::actionHandler(QString action)
     if(action == "light_bonfire")
     {
         root->incTime(10);
-        root->sVEvent(bonfire,1);
+        root->vEvent(bonfire) = 1;
         root->setImage(media(6));
-        root->setDesc(str(1));
+        root->setText(str(1));
         makeActBtn("gadforestrelax",act(1));
     }
     if(action == "eat_boletus_hot")
     {
         root->incTime(15);
-        root->uVStatus(boletus_hot,-1);
-        root->uVStatus(health,10);
-        root->uVStatus(mood,20);
+        root->vStatus(boletus_hot)-=1;
+        root->vStatus(health) +=10;
+        root->vStatus(mood) += 20;
         root->eat("",media(7));
         makeActBtn("gadforestrelax",act(1));
     }
     if(action == "warm_bonfire")
     {
         root->incTime(60);
-        root->uVStatus(son,3);
-        root->uVStatus(health,10);
-        root->sVStatus(frost,0);
-        root->uVStatus(mood,10);
+        root->vStatus(son) += 3;
+        root->vStatus(health) += 10;
+        root->vStatus(frost) += 0;
+        root->vStatus(mood) += 10;
         QString add;
         if(root->isDay())
             root->setImage(media(8));
         else
             root->setImage(media(9));
-        root->setDesc(str(2));
+        root->setText(str(2));
         makeActBtn("gadforestrelax",act(1));
     }
     if(action == "sleep_bonfire")
     {
         if(root->vStatus(son) < 20)
         {
-            root->uVStatus(son,10);
-            root->uVStatus(health,20);
+            root->vStatus(son) += 10;
+            root->vStatus(health) += 20;
             root->incTime(180);
-            root->sVStatus(frost,0);
-            root->uVStatus(mood,50);
+            root->vStatus(frost) =0;
+            root->vStatus(mood) +=50;
             root->setImage(media(10));
-            root->setDesc(str(3));
+            root->setText(str(3));
             makeActBtn("gadforestrelax",act(5));
         }
         if(root->vStatus(son) >= 20)
         {
             root->incTime(5);
-            root->sVStatus(frost,0);
+            root->vStatus(frost) = 0;
             root->setImage(media(10));
-            root->setDesc(str(4));
+            root->setText(str(4));
             makeActBtn("gadforestrelax",act(1));
         }
     }
     if(action == "make_hot_boletus")
     {
         root->incTime(30);
-        root->uVStatus(boletus_hot,1);
-        root->uVStatus(boletus,-1);
-        root->sVStatus(frost,0);
+        root->vStatus(boletus_hot)+=1;
+        root->vStatus(boletus)-=1;
+        root->vStatus(frost) =0;
         root->setImage(media(11));
         makeActBtn("gadforestrelax",act(1));
     }
     if(action == "sit_grass")
     {
         if(root->getTemp() < 15)
-            root->uVStatus(health,-5);
+            root->vStatus(health) -=5;
         root->incTime(60);
-        root->uVStatus(son,2);
-        root->uVStatus(mood,10);
+        root->vStatus(son) +=2;
+        root->vStatus(mood) +=10;
         if(!root->isNude())
         {
             if(!root->isSkirt())
@@ -151,18 +151,18 @@ void GadforestRelax::actionHandler(QString action)
         }
         else
             root->setImage(media(15));
-        root->setDesc(str(5));
+        root->setText(str(5));
         makeActBtn("gadforestrelax",act(1));
     }
     if(action == "sleep_grass")
     {
         if(root->vStatus(son) < 24)
         {
-            root->uVStatus(son,8);
+            root->vStatus(son) += 8;
             if(root->getTemp() < 15)
-                root->uVStatus(health,-10);
+                root->vStatus(health) -= 10;
             root->incTime(180);
-            root->uVStatus(mood,20);
+            root->vStatus(mood) += 20;
             if(!root->isNude())
             {
                 if(!root->isSkirt())
@@ -177,27 +177,27 @@ void GadforestRelax::actionHandler(QString action)
             }
             else
                 root->setImage(media(19));
-            root->setDesc(str(3));
+            root->setText(str(3));
             makeActBtn("gadforestrelax",act(5));
         }
         else
         {
             root->incTime(5);
             root->setImage(media(20));
-            root->setDesc(str(4));
+            root->setText(str(4));
             makeActBtn("gadforestrelax",act(1));
         }
     }
     if(action == "eat_bilbery")
     {
         root->incTime(10);
-        root->uVStatus(energy,5);
-        root->uVStatus(water,10);
-        root->uVStatus(bilberry,-1);
-        root->uVStatus(health,5);
-        root->uVStatus(mood,10);
+        root->vStatus(energy) += 5;
+        root->vStatus(water) += 10;
+        root->vStatus(bilberry) += -1;
+        root->vStatus(health) += 5;
+        root->vStatus(mood) += 10;
         root->setImage(media(21));
-        root->setDesc(str(6));
+        root->setText(str(6));
         makeActBtn("gadforestrelax",act(1));
     }
     if(action == "search_road")
@@ -211,7 +211,7 @@ void GadforestRelax::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action,"GadforestRelax");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &GadforestRelax::actionHandler);
-    root->addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString GadforestRelax::str(int id)

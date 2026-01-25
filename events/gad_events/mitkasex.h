@@ -2,12 +2,12 @@
 #define MITKASEX_H
 
 #include "../event.h"
-class EventHandler;
+class Game;
 
 class MitkaSex: public Event
 {
 public:
-    MitkaSex(EventHandler* ptr);
+    MitkaSex(Game* ptr);
     void start(QString arg = "") override;
     void makeActBtn(QString action, QString actName);
 private slots:
@@ -112,7 +112,7 @@ private:
     void setVasyan();
     void setKolyamba();
 private:
-    EventHandler* root;
+    Game* root;
     int boyAsex;
     int boyAsexa;
     int boyAhorny;

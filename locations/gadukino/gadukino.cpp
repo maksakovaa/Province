@@ -1,8 +1,8 @@
 #include "gadukino.h"
-#include "../locationhandler.h"
+#include "../../game.h"
 #include "../../Functions.h"
 #include "../../menu/buttons.h"
-Gadukino::Gadukino(LocationHandler *ptr): Location(ptr){}
+Gadukino::Gadukino(Game *ptr): root(ptr){}
 
 void Gadukino::show(QString arg)
 {
@@ -36,99 +36,99 @@ bool Gadukino::isParent()
 
 void Gadukino::actionHandler(QString action)
 {
-    clearActions();
+    root->clearActions();
     if(action == "gadukino")
     {
-        int month = getMonth();
-        int hour = getHour();
-        int week = getWeekNum();
-        if(gVEvent(gadukino_blok) == 1) sVEvent(gad_offense,1);
-        setImage(makeImage(media(0), isDay(), getMonth()));
-        setDesc(str(0));
-        if(getHour() >= 17 && getHour() < 20 && gVEvent(mitkaday) != gVStatus(daystart))
-            addText(str(1));
-        if(getSunWeather() >= 0)
+        int month = root->getMonth();
+        int hour = root->getHour();
+        int week = root->getWeek();
+        if(root->vEvent(gadukino_blok) == 1) root->vEvent(gad_offense) = 1;
+        root->setImage(makeImage(media(0), root->isDay(), root->getMonth()));
+        root->setText(str(0));
+        if(root->getHour() >= 17 && root->getHour() < 20 && root->vEvent(mitkaday) != root->vStatus(daystart))
+            root->addText(str(1));
+        if(root->getSunWeather() >= 0)
         {
             if(month >= 4 && month <= 10 && hour >= 20)
-                addText(str(2));
+                root->addText(str(2));
             if(month >= 5 && month <= 9 && hour > 14 && hour < 18 && (week == 6 || week == 0))
-                addText(str(3));
-            if(month >= 6 && month <= 8 && hour > 7 && hour < 13 && gVJob(graze_cow) == 0 && week == 0)
-                addText(str(4));
-            if(month >= 5 && month <= 9 && hour > 13 && hour < 18 && gVJob(graze_cow) == 0 && week == 6)
-                addText(str(5));
+                root->addText(str(3));
+            if(month >= 6 && month <= 8 && hour > 7 && hour < 13 && root->vJob(graze_cow) == 0 && week == 0)
+                root->addText(str(4));
+            if(month >= 5 && month <= 9 && hour > 13 && hour < 18 && root->vJob(graze_cow) == 0 && week == 6)
+                root->addText(str(5));
         }
 //gs 'car', 'check'
 //if _taxi_time >= 0: gs 'taxi', 'check'
         if(hour >= 8 && hour < 18)
             makeActBtn("gadmarket", act(0));
-        if(isDay() && getSunWeather() >= 0 && getSnow() <= 0)
+        if(root->isDay() && root->getSunWeather() >= 0 && root->getSnow() <= 0)
             makeActBtn("gadevent_walk",act(1));
         makeActBtn("Gadriver",act(2));
         makeActBtn("gadroad",act(3));
         makeActBtn("road_main_2",act(4));
 
-        if(gVEvent(onlooker) == 1)
+        if(root->vEvent(onlooker) == 1)
         {
-            sVEvent(onlooker,0);
-            startEvent(eGadukinoEvents,"gadukino_onlooker");
+            root->vEvent(onlooker) = 0;
+            root->startEvent(eGadukinoEvents,"gadukino_onlooker");
         }
 
-        if(getCloth(ClothType::Main) == nullptr)
+        if(root->getCloth(ClothType::Main) == nullptr)
         {
-            startEvent(eGadukinoEvents, "gadukino_nude");
+            root->startEvent(eGadukinoEvents, "gadukino_nude");
         }
 
-        if((gVEvent(mitka) == 0 && hour >= 7 && hour < 20) || (gVEvent(mitka) == 1 && hour >= 17 && hour < 20 && getRandInt(1,3) == 1 && gVEvent(mitkaday) != gVStatus(daystart) && gVEvent(mitkasextimes) < 13))
+        if((root->vEvent(mitka) == 0 && hour >= 7 && hour < 20) || (root->vEvent(mitka) == 1 && hour >= 17 && hour < 20 && getRandInt(1,3) == 1 && root->vEvent(mitkaday) != root->vStatus(daystart) && root->vEvent(mitkasextimes) < 13))
         {
-            clearActions();
-            incTime(5);
-            setImage(media(1));
-            setDesc(str(6));
+            root->clearActions();
+            root->incTime(5);
+            root->setImage(media(1));
+            root->setText(str(6));
             makeActBtn("mitka",act(5));
         }
         int mitkarand = getRandInt(1,20);
-        if(gVEvent(gadriver_gang) < 3 && month >= 4 && month <= 10)
+        if(root->vEvent(gadriver_gang) < 3 && month >= 4 && month <= 10)
         {
-            if(gVEvent(mitkasextimes) > 13 && hour >= 7 && hour <= 16)
+            if(root->vEvent(mitkasextimes) > 13 && hour >= 7 && hour <= 16)
             {
-                if(mitkarand == 1 && gVEvent(mitkaday) != gVStatus(daystart))
+                if(mitkarand == 1 && root->vEvent(mitkaday) != root->vStatus(daystart))
                 {
-                    startEvent(eGadukinoEvents, "gadukino_mitka");
+                    root->startEvent(eGadukinoEvents, "gadukino_mitka");
                 }
-                if(mitkarand == 2 && gVEvent(kolyambaday) != gVStatus(daystart))
+                if(mitkarand == 2 && root->vEvent(kolyambaday) != root->vStatus(daystart))
                 {
-                    startEvent(eGadukinoEvents, "gadukino_kolyamba");
+                    root->startEvent(eGadukinoEvents, "gadukino_kolyamba");
                 }
-                if(mitkarand == 3 && gVEvent(vasyanday) != gVStatus(daystart))
+                if(mitkarand == 3 && root->vEvent(vasyanday) != root->vStatus(daystart))
                 {
-                    startEvent(eGadukinoEvents, "gadukino_vasyan");
+                    root->startEvent(eGadukinoEvents, "gadukino_vasyan");
                 }
             }
-            if(mitkarand == 4 && gVEvent(mitkasextimes) > 15 && hour >= 17 && hour <= 19 && gVEvent(gadboyday) != gVStatus(daystart) && week > 0 && week <= 5)
+            if(mitkarand == 4 && root->vEvent(mitkasextimes) > 15 && hour >= 17 && hour <= 19 && root->vEvent(gadboyday) != root->vStatus(daystart) && week > 0 && week <= 5)
             {
-                startEvent(eGadukinoEvents, "gadukino_2boys");
+                root->startEvent(eGadukinoEvents, "gadukino_2boys");
             }
-            if(mitkarand <= 5 && gVEvent(mitkasextimes) > 15 && hour >= 7 && hour <= 19 && gVEvent(gadboyday) != gVStatus(daystart) && (week == 0 || week == 6))
+            if(mitkarand <= 5 && root->vEvent(mitkasextimes) > 15 && hour >= 7 && hour <= 19 && root->vEvent(gadboyday) != root->vStatus(daystart) && (week == 0 || week == 6))
             {
-                startEvent(eGadukinoEvents, "gadukino_2boys");
+                root->startEvent(eGadukinoEvents, "gadukino_2boys");
             }
         }
-        if(gVEvent(gadriver_gang) == 1 && hour >= 6 && hour <= 21 && gVEvent(gadboyday) != gVStatus(daystart))
+        if(root->vEvent(gadriver_gang) == 1 && hour >= 6 && hour <= 21 && root->vEvent(gadboyday) != root->vStatus(daystart))
         {
-            startEvent(eGadukinoEvents, "gang_apologise");
+            root->startEvent(eGadukinoEvents, "gang_apologise");
         }
-        if(gVEvent(gadriver_gang) == 3 && hour >= 6 && hour <= 21 && gVEvent(gadboyday) != gVStatus(daystart))
+        if(root->vEvent(gadriver_gang) == 3 && hour >= 6 && hour <= 21 && root->vEvent(gadboyday) != root->vStatus(daystart))
         {
-            startEvent(eGadukinoEvents, "mitka_apologise");
+            root->startEvent(eGadukinoEvents, "mitka_apologise");
         }
-        if(gVEvent(gadriver_gang) == 4 && gVEvent(mirasex) == 1 && gVEvent(miralick) == 0 && hour >= 8 && hour <= 20 && gVEvent(gadboyday) != gVStatus(daystart))
+        if(root->vEvent(gadriver_gang) == 4 && root->vEvent(mirasex) == 1 && root->vEvent(miralick) == 0 && hour >= 8 && hour <= 20 && root->vEvent(gadboyday) != root->vStatus(daystart))
         {
-            startEvent(eGadukinoEvents, "mira_apologise");
+            root->startEvent(eGadukinoEvents, "mira_apologise");
         }
-        if(gVEvent(mitkasextimes) > 13 && gVEvent(mirasex) == 1 && gVQuest(miragopQW) < 11 && mitkarand >= 15 && gVEvent(miraday) != getDay())
+        if(root->vEvent(mitkasextimes) > 13 && root->vEvent(mirasex) == 1 && root->vQuest(miragopQW) < 11 && mitkarand >= 15 && root->vEvent(miraday) != root->getDay())
         {
-            startEvent(eMeadowEvent, "mira_lesb_talk4");
+            root->startEvent(eMeadowEvent, "mira_lesb_talk4");
         }
 
         //Логистика
@@ -136,48 +136,48 @@ void Gadukino::actionHandler(QString action)
     }
     if(action == "Gaddvor")
     {
-        changeLoc(lgaddvor,5);
+        root->changeLoc(lgaddvor,5);
     }
     if(action == "MiroslavaHome")
     {
-        changeLoc(lmirahome,5);
+        root->changeLoc(lmirahome,5);
     }
     if(action == "gadevent_collection_point")
     {
-        startEvent(eGadukinoEvents, "collection_point");
+        root->startEvent(eGadukinoEvents, "collection_point");
     }
     if(action == "mitka")
     {
-        startEvent(eMitka);
+        root->startEvent(eMitka);
     }
     if(action == "mitkabuh")
     {
-        sVEvent(miraingop,0);
-        startEvent(eMitkaBuh);
+        root->vEvent(miraingop) = 0;
+        root->startEvent(eMitkaBuh);
     }
     if(action == "grandma")
     {
-        startEvent(eGrandMa);
+        root->startEvent(eGrandMa);
     }
     if(action == "grandpa")
     {
-        startEvent(eGrandPa);
+        root->startEvent(eGrandPa);
     }
     if(action == "gadmarket")
     {
-        changeLoc(lgadmarket,5);
+        root->changeLoc(lgadmarket,5);
     }
     if(action == "gadevent_walk")
     {
-        startEvent(eGadukinoEvents, "walk");
+        root->startEvent(eGadukinoEvents, "walk");
     }
     if(action == "Gadriver")
     {
-        changeLoc(lgadriver,20);
+        root->changeLoc(lgadriver,20);
     }
     if(action == "gadroad")
     {
-        changeLoc(lgadroad,20);
+        root->changeLoc(lgadroad,20);
     }
     if(action == "road_main_2")
     {
@@ -190,28 +190,28 @@ void Gadukino::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action, "gadukino");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Gadukino::actionHandler);
-    addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString Gadukino::str(int id)
 {
     QString add1, add2,add3, bab, ded;
-    if(gVEvent(gadukino_blok) == 0)
+    if(root->vEvent(gadukino_blok) == 0)
         add1 = "<a href='Gaddvor'>дедушка и бабушка</a>";
     else
         add1 = "дедушка и бабушка";
-    if(gVQuest(miraQW) > 0)
+    if(root->vQuest(miraQW) > 0)
         add2 = "<br>Через тройку домов находится дом <a href='MiroslavaHome'>Мирославы</a>.";
-    if(getHour() >= 9 && getHour() <= 11 && getMonth() >= 6 && getMonth() <= 9)
+    if(root->getHour() >= 9 && root->getHour() <= 11 && root->getMonth() >= 6 && root->getMonth() <= 9)
         add3 = "<a href='gadevent_collection_point'>пункт</a>";
     else
         add3 = "пункт";
-    if(gVEvent(grandma_notalk) == 0)
+    if(root->vEvent(grandma_notalk) == 0)
         bab = "<a href='grandma'>бабушка</a>";
     else
         bab = "сердитая бабушка";
 
-    if(gVEvent(grandpa_notalk) == 0)
+    if(root->vEvent(grandpa_notalk) == 0)
         ded = "<a href='grandpa'>дедушка</a>";
     else
         ded = "дедушка";

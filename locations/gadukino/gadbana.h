@@ -3,13 +3,13 @@
 
 #include "../location.h"
 
-class LocationHandler;
+class Game;
 
 class Gadbana: public Location
 {
     Q_OBJECT
 public:
-    Gadbana(LocationHandler* ptr);
+    Gadbana(Game* ptr);
     void show(QString arg = "") override;
     LocId getLocId() override;
     LocId getParId() override;
@@ -26,6 +26,8 @@ private:
     QString act(int id);
     QString media(int id);
     bool isCanPar();
+private:
+    Game* root;
 };
 
 #endif // GADBANA_H

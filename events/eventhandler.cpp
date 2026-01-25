@@ -1,9 +1,7 @@
 #include "eventhandler.h"
 #include "EventHeaders.h"
-#include "../locations/locationhandler.h"
-#include "../Functions.h"
 
-EventHandler::EventHandler(LocationHandler* ptr): root(ptr) 
+EventHandler::EventHandler(Game* ptr): root(ptr)
 {
     initEvents();
 }
@@ -11,61 +9,6 @@ EventHandler::EventHandler(LocationHandler* ptr): root(ptr)
 void EventHandler::startEvent(Events event, QString arg)
 {
     m_events[event]->start(arg);
-}
-
-void EventHandler::rendImagePage()
-{
-    root->m_render->rendImagePage(root);
-}
-
-void EventHandler::rendVideoPage()
-{
-    root->m_render->rendVideoPage(root);
-}
-
-void EventHandler::setImage(QString path)
-{
-    root->setImage(path);
-}
-
-void EventHandler::setVideo(QString path, int width, int height)
-{
-    root->m_render->setVideo(path,width,height);
-}
-
-void EventHandler::setDesc(QString text)
-{
-    root->setDesc(text);
-}
-
-void EventHandler::addDesc(QString text)
-{
-    root->addDesc(text);
-}
-
-void EventHandler::addActBtn(QPushButton *btn)
-{
-    root->m_actions->addWidget(btn);
-}
-
-void EventHandler::clearActions()
-{
-    ClearLayout(root->m_actions);
-}
-
-QLabel *EventHandler::getTextPtr()
-{
-    return root->m_render->getTextPtr();
-}
-
-void EventHandler::eat(QString foodtype, QString image, QString text)
-{
-    root->m_kitchenActs->eat(foodtype,image,text);
-}
-
-int EventHandler::getAge()
-{
-    return root->getAge();
 }
 
 void EventHandler::initEvents()
@@ -79,433 +22,54 @@ void EventHandler::initEvents()
         m_questval[static_cast<QuestParams>(i)] = 0;
     }
     m_eventval[know_no_pirat] = 1;
-    m_events[eAndreiHanter] = new AndreiHanter(this);
-    m_events[eBicycle] = new Bicycle(this);
-    m_events[eGadForestEvent] = new GadforestEvent(this);
-    m_events[eGadForestLost] = new GadforestLost(this);
-    m_events[eGadForestRelax] = new GadforestRelax(this);
-    m_events[eGadukinoEvents] = new GadukinoEvent(this);
-    m_events[eGrandMa] = new Grandma(this);
-    m_events[eGrandMaHelp] = new GrandmaHelp(this);
-    m_events[eGrandPa] = new Grandpa(this);
-    m_events[eGrandPaHelp] = new GrandpaHelp(this);
-    m_events[eGrandParentEvents] = new GrandparentsEvents(this);
-    m_events[eHanterSex] = new HanterSex(this);
-    m_events[eHanters] = new Hanters(this);
-    m_events[eHantersLoveSex] = new HantersLoveSex(this);
-    m_events[eIgorHanter] = new IgorHanter(this);
-    m_events[eMeadowEvent] = new MeadowEvent(this);
-    m_events[eMiraFather] = new MiraFather(this);
-    m_events[eMiraSex] = new MiraSex(this);
-    m_events[eMiroslava] = new Miroslava(this);
-    m_events[eMitkaBuhGroup] = new MitkaBuhGroup(this);
-    m_events[eMitkaBuh] = new MitkaBuh(this);
-    m_events[eMitka] = new Mitka(this);
-    m_events[eMitkaSex] = new MitkaSex(this);
-    m_events[ePirat] = new Pirat(this);
-    m_events[eRiverEvents] = new RiverEvents(this);
-    m_events[eSergeiHanter] = new SergeiHanter(this);
-    m_events[eSwampEvents] = new SwampEvents(this);
-
-    m_events[eFamily] = new Family(this);
-}
-
-int EventHandler::getMonth()
-{
-    return root->getMonth();
-}
-
-int EventHandler::getSunWeather()
-{
-    return root->getSunWeather();
-}
-
-int EventHandler::getSunset()
-{
-    return root->getSunset();
-}
-
-int EventHandler::getSunrise()
-{
-    return root->getSunrise();
-}
-
-int EventHandler::getDay()
-{
-    return root->getDay();
-}
-
-bool EventHandler::isDay()
-{
-    return root->isDay();
-}
-
-int EventHandler::getHour()
-{
-    return root->getHour();
-}
-
-int EventHandler::getMin()
-{
-    return root->getMin();
-}
-
-int EventHandler::getWeekNum()
-{
-    return root->getWeekNum();
-}
-
-int EventHandler::getTemp()
-{
-    return root->getTemp();
-}
-
-int EventHandler::getSnow()
-{
-    return root->getSnow();
-}
-
-int EventHandler::getItmCount(Items id)
-{
-    return root->getItmCount(id);
-}
-
-void EventHandler::addItem(Items id, int count)
-{
-    root->addItem(id,count);
-}
-
-void EventHandler::useItem(Items id, int count)
-{
-    root->useItem(id,count);
-}
-
-int EventHandler::vStatus(Status param)
-{
-    return root->getVStatus(param);
-}
-
-int EventHandler::vBody(Body param)
-{
-    return root->getVBody(param);
-}
-
-int EventHandler::vSkill(Skills param)
-{
-    return root->getVSkill(param);
-}
-
-int EventHandler::vSC(SC param)
-{
-    return root->getVStatistic(param);
-}
-
-int EventHandler::vAddict(Addiction param)
-{
-    return root->getVAddict(param);
-}
-
-int EventHandler::vSex(SexVar param)
-{
-    return root->getSexVar(param);
-}
-
-int EventHandler::vSick(Sickness param)
-{
-    return root->getVSick(param);
-}
-
-bool EventHandler::isMesec()
-{
-    return root->getVStatus(mesec) > 0;
-}
-
-void EventHandler::uVStatus(Status param, int val)
-{
-    root->updVStatus(param,val);
-}
-
-void EventHandler::uVBody(Body param, int val)
-{
-    root->updVBody(param,val);
-}
-
-void EventHandler::uVSkill(Skills param, int val)
-{
-    root->updVSkill(param,val);
-}
-
-void EventHandler::uVSC(SC param, int val)
-{
-    root->updVStatistic(param,val);
-}
-
-void EventHandler::uVSex(SexVar param, int val)
-{
-    root->updVSex(param,val);
-}
-
-void EventHandler::sVStatus(Status param, int val)
-{
-    root->setVStatus(param,val);
-}
-
-void EventHandler::sVSex(SexVar param, int val)
-{
-    root->setSexVar(param,val);
-}
-
-void EventHandler::sVBody(Body param, int val)
-{
-    root->setVBody(param,val);
-}
-
-void EventHandler::setBoyName(QString name)
-{
-    root->setBoyName(name);
-}
-
-void EventHandler::setBoy2Name(QString name)
-{
-    root->setBoy2Name(name);
-}
-
-void EventHandler::fnAlko(int val)
-{
-    root->fnAlko(val);
-}
-
-QString EventHandler::getLipTalk()
-{
-    return root->getLipTalk();
-}
-
-QString EventHandler::getLipTalk3()
-{
-    return root->getLipTalk3();
-}
-
-QString EventHandler::getAnusTipe()
-{
-    return root->getAnusTipe();
-}
-
-QString EventHandler::getAnusTipe2()
-{
-    return root->getAnusTipe2();
-}
-
-QString EventHandler::getVaginaTipe2()
-{
-    return root->getVaginaTipe2();
-}
-
-QString EventHandler::getBoyName()
-{
-    return root->getBoyName();
-}
-
-QString EventHandler::getBoy2Name()
-{
-    return root->getBoy2Name();
-}
-
-Cloth *EventHandler::getCloth(ClothType type)
-{
-    return root->getCloth(type);
-}
-
-void EventHandler::redress(ClothType type, Cloth *newCloth)
-{
-    root->redress(type, newCloth);
-}
-
-void EventHandler::redressOld()
-{
-    root->redressOld();
-}
-
-bool EventHandler::isNude()
-{
-    return root->isNude();
-}
-
-bool EventHandler::isCloth()
-{
-    return root->isCloth();
-}
-
-bool EventHandler::isSkirt()
-{
-    return root->isSkirt();
-}
-
-bool EventHandler::isPanties()
-{
-    return root->isPanties();
-}
-
-int EventHandler::getClothGroup()
-{
-    return root->getClothGroup();
-}
-
-void EventHandler::decCondition(int val)
-{
-    root->decreaseCondition(val);
-}
-
-void EventHandler::startSelfPlay()
-{
-    root->startSelfPlay();
-}
-
-void EventHandler::sexStart()
-{
-    root->sexStart();
-}
-
-void EventHandler::analStart(ToolType type)
-{
-    root->analStart(type);
-}
-
-void EventHandler::vaginal(ToolType type, QString pos)
-{
-    root->vaginal(type,pos);
-}
-
-void EventHandler::anal(ToolType type)
-{
-    root->anal(type);
-}
-
-void EventHandler::sex_cum()
-{
-    root->sex_cum();
-}
-
-void EventHandler::cum(QString target)
-{
-    root->cum(target);
-}
-
-void EventHandler::blow_job()
-{
-    root->blow_job();
-}
-
-void EventHandler::anal_cum()
-{
-    root->anal_cum();
-}
-
-void EventHandler::fnswallow()
-{
-    root->fnswallow();
-}
-
-void EventHandler::dp_start()
-{
-    root->dp_start();
-}
-
-void EventHandler::double_penetration()
-{
-    root->double_penetration();
-}
-
-void EventHandler::changeLoc(LocId locId, int min, QString arg)
-{
-    root->slotChangeLoc(locId,min,arg);
-}
-
-LocId EventHandler::getCurLoc()
-{
-    return root->getCurLoc();
-}
-
-Location *EventHandler::getLocPtr()
-{
-    return root->getLocPtr(root->getCurLoc());
-}
-
-Location *EventHandler::getLocPtr(LocId loc)
-{
-    return root->getLocPtr(loc);
-}
-
-NPC &EventHandler::gNPC(int id)
-{
-    return root->gNPC(id);
-}
-
-void EventHandler::sleep()
-{
-    root->sleepInBed();
-}
-
-int EventHandler::gVSchool(SchoolVar param)
+    m_eventval[book_in_bag] = -1;
+    m_events[eAndreiHanter] = new AndreiHanter(root);
+    m_events[eBicycle] = new Bicycle(root);
+    m_events[eGadForestEvent] = new GadforestEvent(root);
+    m_events[eGadForestLost] = new GadforestLost(root);
+    m_events[eGadForestRelax] = new GadforestRelax(root);
+    m_events[eGadukinoEvents] = new GadukinoEvent(root);
+    m_events[eGrandMa] = new Grandma(root);
+    m_events[eGrandMaHelp] = new GrandmaHelp(root);
+    m_events[eGrandPa] = new Grandpa(root);
+    m_events[eGrandPaHelp] = new GrandpaHelp(root);
+    m_events[eGrandParentEvents] = new GrandparentsEvents(root);
+    m_events[eHanterSex] = new HanterSex(root);
+    m_events[eHanters] = new Hanters(root);
+    m_events[eHantersLoveSex] = new HantersLoveSex(root);
+    m_events[eIgorHanter] = new IgorHanter(root);
+    m_events[eMeadowEvent] = new MeadowEvent(root);
+    m_events[eMiraFather] = new MiraFather(root);
+    m_events[eMiraSex] = new MiraSex(root);
+    m_events[eMiroslava] = new Miroslava(root);
+    m_events[eMitkaBuhGroup] = new MitkaBuhGroup(root);
+    m_events[eMitkaBuh] = new MitkaBuh(root);
+    m_events[eMitka] = new Mitka(root);
+    m_events[eMitkaSex] = new MitkaSex(root);
+    m_events[ePirat] = new Pirat(root);
+    m_events[eRiverEvents] = new RiverEvents(root);
+    m_events[eSergeiHanter] = new SergeiHanter(root);
+    m_events[eSwampEvents] = new SwampEvents(root);
+
+    m_events[eFamily] = new Family(root);
+}
+
+int &EventHandler::vSchool(SchoolVar param)
 {
     return m_schoolVal[param];
 }
 
-void EventHandler::uVSchool(SchoolVar param, int val)
-{
-    m_schoolVal[param] += val;
-}
-
-void EventHandler::sVSchool(SchoolVar param, int val)
-{
-    m_schoolVal[param] = val;
-}
-
-int EventHandler::gVEvent(EventParams param)
+int &EventHandler::vEvent(EventParams param)
 {
     return m_eventval[param];
 }
 
-void EventHandler::sVEvent(EventParams param, int val)
+int &EventHandler::vQuest(QuestParams param)
 {
-    m_eventval[param] = val;
-}
-
-void EventHandler::uVEvent(EventParams param, int val)
-{
-    m_eventval[param] += val;
+    return m_questval[param];
 }
 
 bool EventHandler::isHanters()
 {
     return m_eventval[hanters] > 0;
-}
-
-int EventHandler::gVJob(JobStatus param)
-{
-    return root->getVJob(param);
-}
-
-void EventHandler::sVJob(JobStatus param, int val)
-{
-    root->setVJob(param,val);
-}
-
-int EventHandler::gVQuest(QuestParams param)
-{
-    return m_questval[param];
-}
-
-void EventHandler::sVQuest(QuestParams param, int val)
-{
-    m_questval[param] = val;
-}
-
-void EventHandler::uVQuest(QuestParams param, int val)
-{
-    m_questval[param] += val;
-}
-
-void EventHandler::incTime(int min)
-{
-    root->incTime(min);
 }

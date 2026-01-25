@@ -7,14 +7,13 @@
 #include "../../items/cloth.h"
 #include "../location.h"
 
-class LocationHandler;
+class Game;
 
 class Shop: public Location
 {
     Q_OBJECT
-    friend LocationHandler;
 public:
-    Shop(LocationHandler* parent);
+    Shop(Game* parent);
     void show(QString arg = "") override;
     LocId getLocId() override;
     LocId getParId() override;
@@ -48,6 +47,7 @@ private:
     QVBoxLayout* layoutMain;
     std::vector<QHBoxLayout*> m_layouts;
     std::unordered_map<ClothGroup, std::vector<int>> m_cloth;
+    Game* root;
 };
 
 #endif

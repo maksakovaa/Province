@@ -1,9 +1,9 @@
 #include "gadforest.h"
 #include "../../menu/buttons.h"
-#include "../locationhandler.h"
+#include "../../game.h"
 #include "../../Functions.h"
 
-Gadforest::Gadforest(LocationHandler* ptr): Location(ptr) {}
+Gadforest::Gadforest(Game* ptr): root(ptr) {}
 
 void Gadforest::show(QString arg)
 {
@@ -40,279 +40,279 @@ bool Gadforest::isParent()
 
 void Gadforest::actionHandler(QString action)
 {
-    clearActions();
+    root->clearActions();
     if(action == "1")
     {
-        sVEvent(edge_forestday_current,1);
-        if(gVEvent(goforestday) != gVStatus(daystart))
+        root->vEvent(edge_forestday_current) = 1;
+        if(root->vEvent(goforestday) != root->vStatus(daystart))
         {
-            if(!isJeans())
-                decrease_condition();
-            if(isGlamour())
-                decrease_condition(4);
+            if(!root->isJeans())
+                root->decreaseClothCond();
+            if(root->isGlamour())
+                root->decreaseClothCond(4);
         }
-        if(gVEvent(goforest) < 20)
-            uVEvent(goforest, getRandInt(0,1));
-        sVEvent(lost,1);
-        sVEvent(foresteventrand,getRandInt(1,20));
-        sVEvent(new_bilberry,0);
-        sVEvent(new_boletus,0);
-        if(getSnow() <= 0)
+        if(root->vEvent(goforest) < 20)
+            root->vEvent(goforest) += getRandInt(0,1);
+        root->vEvent(lost) = 1;
+        root->vEvent(foresteventrand) = getRandInt(1,20);
+        root->vEvent(new_bilberry) = 0;
+        root->vEvent(new_boletus) = 0;
+        if(root->getSnow() <= 0)
         {
-            if(isDay())
+            if(root->isDay())
             {
-                setImage(media(0));
-                setDesc(str(0));
+                root->setImage(media(0));
+                root->setText(str(0));
             }
             else
             {
-                setImage(media(1));
-                setDesc(str(1));
+                root->setImage(media(1));
+                root->setText(str(1));
             }
         }
         else
         {
-            if(isDay())
+            if(root->isDay())
             {
-                setImage(media(2));
-                setDesc(str(2));
+                root->setImage(media(2));
+                root->setText(str(2));
             }
             else
             {
-                setImage(media(3));
-                setDesc(str(3));
+                root->setImage(media(3));
+                root->setText(str(3));
             }
         }
-        if(gVEvent(forestpicnic) == 1)
-            addText(str(4));
-        if(gVEvent(mirainforest) == 1)
-            addText(str(5));
-        if(gVStatus(clothesforest) == 1)
-            addText(str(6));
-        if(gVEvent(findvel) == 2)
-            addText(str(7));
-        if(gVEvent(goforest) < 20)
-            addText(str(8));
-        if(getTemp() >= 20 && getSunWeather() >= 0 && getHour() >= 6 && getHour() <= 20 && gVEvent(miratalkforest) == 1)
-            startEvent(eGadForestEvent, "nude_event");
-        if(gVEvent(foresteventrand) < 3 && getMonth() >= 6 && getMonth() <= 9 && gVEvent(mushroom_pickersday) != gVStatus(daystart))
+        if(root->vEvent(forestpicnic) == 1)
+            root->addText(str(4));
+        if(root->vEvent(mirainforest) == 1)
+            root->addText(str(5));
+        if(root->vStatus(clothesforest) == 1)
+            root->addText(str(6));
+        if(root->vEvent(findvel) == 2)
+            root->addText(str(7));
+        if(root->vEvent(goforest) < 20)
+            root->addText(str(8));
+        if(root->getTemp() >= 20 && root->getSunWeather() >= 0 && root->getHour() >= 6 && root->getHour() <= 20 && root->vEvent(miratalkforest) == 1)
+            root->startEvent(eGadForestEvent, "nude_event");
+        if(root->vEvent(foresteventrand) < 3 && root->getMonth() >= 6 && root->getMonth() <= 9 && root->vEvent(mushroom_pickersday) != root->vStatus(daystart))
         {
-            sVEvent(mushroom_pickers,1);
-            startEvent(eGadForestEvent,"mushroom_pickers1");
+            root->vEvent(mushroom_pickers) = 1;
+            root->startEvent(eGadForestEvent,"mushroom_pickers1");
         }
-        if(gVEvent(foresteventrand) == 3 && getMonth() >= 5 && getMonth() <= 9 && getTemp() >= 20 && getSunWeather() >= 0 && (getWeekNum() == 0 || getWeekNum() > 5) && gVEvent(forestpicnic) == 0)
+        if(root->vEvent(foresteventrand) == 3 && root->getMonth() >= 5 && root->getMonth() <= 9 && root->getTemp() >= 20 && root->getSunWeather() >= 0 && (root->getWeek() == 0 || root->getWeek() > 5) && root->vEvent(forestpicnic) == 0)
         {
-            sVEvent(forestpicnic,1);
-            startEvent(eGadForestEvent,"picnic");
+            root->vEvent(forestpicnic) = 1;
+            root->startEvent(eGadForestEvent,"picnic");
         }
-        if(gVEvent(foresteventrand) == 4 && getMonth() >= 6 && getMonth() <= 9)
-            startEvent(eGadForestEvent,"mushroom_pickers2");
-        if(getMonth() >= 4 && getMonth() <= 10 && gVEvent(gadboyday) != gVStatus(daystart))
+        if(root->vEvent(foresteventrand) == 4 && root->getMonth() >= 6 && root->getMonth() <= 9)
+            root->startEvent(eGadForestEvent,"mushroom_pickers2");
+        if(root->getMonth() >= 4 && root->getMonth() <= 10 && root->vEvent(gadboyday) != root->vStatus(daystart))
         {
-            if(gVEvent(foresteventrand) == 5 && getHour() >= 8 && getHour() <= 15 && getWeekNum() > 0 && getWeekNum() <= 5)
-                startEvent(eGadForestEvent, "gopforest_mitka");
-            if(gVEvent(foresteventrand) == 6 && getHour() >= 8 && getHour() <= 18 && getWeekNum() > 0 && getWeekNum() <= 5)
-                startEvent(eGadForestEvent,"gopforest_kolyamba");
-            if(gVEvent(foresteventrand) == 7 && getHour() >= 8 && getHour() <= 18 && getWeekNum() > 0 && getWeekNum() <= 5)
-                startEvent(eGadForestEvent,"gopforest_vasyan");
-            if(gVEvent(foresteventrand) == 8 && getHour() >= 8 && getHour() <= 15 && (getWeekNum() == 0 || getWeekNum() > 5))
-                startEvent(eGadForestEvent,"gopforest_2boys");
-            if(gVEvent(foresteventrand) == 9 && getHour() >= 8 && getHour() <= 15 && (getWeekNum() == 0 || getWeekNum() > 5))
-                startEvent(eGadForestEvent,"gopforest_3boys");
+            if(root->vEvent(foresteventrand) == 5 && root->getHour() >= 8 && root->getHour() <= 15 && root->getWeek() > 0 && root->getWeek() <= 5)
+                root->startEvent(eGadForestEvent, "gopforest_mitka");
+            if(root->vEvent(foresteventrand) == 6 && root->getHour() >= 8 && root->getHour() <= 18 && root->getWeek() > 0 && root->getWeek() <= 5)
+                root->startEvent(eGadForestEvent,"gopforest_kolyamba");
+            if(root->vEvent(foresteventrand) == 7 && root->getHour() >= 8 && root->getHour() <= 18 && root->getWeek() > 0 && root->getWeek() <= 5)
+                root->startEvent(eGadForestEvent,"gopforest_vasyan");
+            if(root->vEvent(foresteventrand) == 8 && root->getHour() >= 8 && root->getHour() <= 15 && (root->getWeek() == 0 || root->getWeek() > 5))
+                root->startEvent(eGadForestEvent,"gopforest_2boys");
+            if(root->vEvent(foresteventrand) == 9 && root->getHour() >= 8 && root->getHour() <= 15 && (root->getWeek() == 0 || root->getWeek() > 5))
+                root->startEvent(eGadForestEvent,"gopforest_3boys");
         }
-        if(gVStatus(clothesforest) == 1 && isNude())
+        if(root->vStatus(clothesforest) == 1 && root->isNude())
             makeActBtn("wear_clothes",act(0));
-        if(gVStatus(clothesforest) == 1 && !isNude())
+        if(root->vStatus(clothesforest) == 1 && !root->isNude())
             makeActBtn("collect_clothes",act(1));
-        if(getHour() >= getSunrise() && getHour() < getSunset())
+        if(root->getHour() >= root->getSunrise() && root->getHour() < root->getSunset())
         {
-            if(isCloth() && gVStatus(clothesforest) == 0 && getTemp() >= 20 && getSunWeather() >= 0 && gVEvent(miratalkforest) > 1 && gVEvent(mirainforest) == 0)
+            if(root->isCloth() && root->vStatus(clothesforest) == 0 && root->getTemp() >= 20 && root->getSunWeather() >= 0 && root->vEvent(miratalkforest) > 1 && root->vEvent(mirainforest) == 0)
             {
                 makeActBtn("undress_all",act(3));
             }
-            if(getSunWeather() >= 0)
+            if(root->getSunWeather() >= 0)
                 makeActBtn("walk_in_forest",act(6));
-            if(getMonth() >= 6 && getMonth() <= 9 && gVStatus(boletus) + gVStatus(bilberry) < 10 && gVEvent(edge_forestday1) != gVStatus(daystart) + action.toInt())
+            if(root->getMonth() >= 6 && root->getMonth() <= 9 && root->vStatus(boletus) + root->vStatus(bilberry) < 10 && root->vEvent(edge_forestday1) != root->vStatus(daystart) + action.toInt())
                 makeActBtn("search_bb",act(8));
-            if(gVEvent(mirainforest) == 0)
+            if(root->vEvent(mirainforest) == 0)
                 makeActBtn("deep_in_forest",act(9));
         }
 
-        if(gVEvent(goswamp) == 1 && gVEvent(mirainforest) == 0)
+        if(root->vEvent(goswamp) == 1 && root->vEvent(mirainforest) == 0)
             makeActBtn("swamp",act(4));
 
         makeActBtn("gadroad",act(5));
     }
     if(action == "wear_clothes")
     {
-        redressOld();
-        sVStatus(swamp_clothes,0);
-        sVStatus(clothesforest,0);
-        incTime(5);
-        if(isSkirt())
-            setImage(media(4));
+        root->redressOld();
+        root->vStatus(swamp_clothes) = 0;
+        root->vStatus(clothesforest) = 0;
+        root->incTime(5);
+        if(root->isSkirt())
+            root->setImage(media(4));
         else
-            setImage(media(5));
-        setDesc(str(9));
+            root->setImage(media(5));
+        root->setText(str(9));
         makeActBtn("1",act(2));
     }
     if(action == "collect_clothes")
     {
-        storeOldToWardrobe();
-        sVStatus(clothesforest,0);
-        addText(str(10));
+        root->storeOldToWardrobe();
+        root->vStatus(clothesforest) =0;
+        root->addText(str(10));
         makeActBtn("1",act(2));
     }
     if(action == "undress_all")
     {
-        if(gVEvent(forestpicnic) == 0)
+        if(root->vEvent(forestpicnic) == 0)
         {
-            sVStatus(clothesforest,1);
-            incTime(5);
-            if(isSkirt())
-                setImage(media(4));
+            root->vStatus(clothesforest) = 1;
+            root->incTime(5);
+            if(root->isSkirt())
+                root->setImage(media(4));
             else
-                setImage(media(5));
-            setDesc(str(11));
-            redress(ClothType::Main, nullptr);
+                root->setImage(media(5));
+            root->setText(str(11));
+            root->redress(ClothType::Main, nullptr);
             makeActBtn("1",act(2));
         }
         else
         {
-            setImage(media(6));
-            setDesc(str(12));
+            root->setImage(media(6));
+            root->setText(str(12));
             makeActBtn("1",act(2));
         }
     }
     if(action == "swamp")
     {
-        if(isDay())
-            changeLoc(lswamp,75);
+        if(root->isDay())
+            root->changeLoc(lswamp,75);
         else
-            startEvent(eGadForestEvent,"swamp_road");
-        sVEvent(edge_forestday_current,1);
+            root->startEvent(eGadForestEvent,"swamp_road");
+        root->vEvent(edge_forestday_current) = 1;
     }
     if(action == "gadroad")
     {
-        sVEvent(mirainforest,0);
-        changeLoc(lgadroad,30);
-        sVEvent(edge_forestday_current,1);
+        root->vEvent(mirainforest) = 0;
+        root->changeLoc(lgadroad,30);
+        root->vEvent(edge_forestday_current) = 1;
     }
     if(action == "walk_in_forest")
     {
-        incTime(30);
-        if(isNude())
+        root->incTime(30);
+        if(root->isNude())
         {
-            uVStatus(mood,30);
-            uVStatus(health,20);
-            uVStatus(horny,5);
+            root->vStatus(mood) += 30;
+            root->vStatus(health) += 20;
+            root->vStatus(horny) += 5;
         }
         else
-            uVStatus(mood,20);
-        if(getMonth() >= 4 && getMonth() <= 10)
+            root->vStatus(mood) += 20;
+        if(root->getMonth() >= 4 && root->getMonth() <= 10)
         {
-            if(gVEvent(mirainforest) == 0)
+            if(root->vEvent(mirainforest) == 0)
             {
-                if(isCloth() && !isSkirt())
-                    setImage(media(7));
-                if(isCloth() && isPanties() && isSkirt())
-                    setImage(media(8));
-                if(isCloth() && !isPanties() && isSkirt())
-                    setImage(media(9));
-                if(isNude())
-                    setImage(media(10));
-                setDesc(str(13));
+                if(root->isCloth() && !root->isSkirt())
+                    root->setImage(media(7));
+                if(root->isCloth() && root->isPanties() && root->isSkirt())
+                    root->setImage(media(8));
+                if(root->isCloth() && !root->isPanties() && root->isSkirt())
+                    root->setImage(media(9));
+                if(root->isNude())
+                    root->setImage(media(10));
+                root->setText(str(13));
             }
             else
             {
-                if(isNude())
-                    setImage(media(11));
+                if(root->isNude())
+                    root->setImage(media(11));
                 else
-                    setImage(media(12));
-                setDesc(str(14));
+                    root->setImage(media(12));
+                root->setText(str(14));
             }
         }
         else
         {
-            if(gVEvent(mirainforest) == 0)
+            if(root->vEvent(mirainforest) == 0)
             {
-                setImage(media(13));
-                setDesc(str(15));
+                root->setImage(media(13));
+                root->setText(str(15));
             }
             else
             {
-                setImage(media(14));
-                setDesc(str(16));
+                root->setImage(media(14));
+                root->setText(str(16));
             }
         }
         makeActBtn("1",act(7));
     }
     if(action == "deep_in_forest")
     {
-        if (gVEvent(goforest) >= getRandInt(1,30))
+        if (root->vEvent(goforest) >= getRandInt(1,30))
         {
-            incTime(30);
+            root->incTime(30);
             actionHandler("2");
         }
         else
         {
-            startEvent(eGadForestEvent, "gadforest_lost_start");
+            root->startEvent(eGadForestEvent, "gadforest_lost_start");
         }
         
     }
     if(action == "2")
     {
-        sVEvent(edge_forestday_current,2);
-        if(gVEvent(goforest) < 40)
-            uVEvent(goforest, getRandInt(0,1));
-        sVEvent(lost, 2);
-        sVEvent(foresteventrand, getRandInt(1,10));
-        sVEvent(new_bilberry,0);
-        sVEvent(new_boletus,0);
-        if(getSnow() == 0)
+        root->vEvent(edge_forestday_current) = 2;
+        if(root->vEvent(goforest) < 40)
+            root->vEvent(goforest) += getRandInt(0,1);
+        root->vEvent(lost) = 2;
+        root->vEvent(foresteventrand) = getRandInt(1,10);
+        root->vEvent(new_bilberry) = 0;
+        root->vEvent(new_boletus) = 0;
+        if(root->getSnow() == 0)
         {
-            if(isDay())
+            if(root->isDay())
             {
-                setImage(media(15));
-                setDesc(str(17));
+                root->setImage(media(15));
+                root->setText(str(17));
             }
             else
             {
-                setImage(media(16));
-                setDesc(str(18));
+                root->setImage(media(16));
+                root->setText(str(18));
             }
         }
         else
         {
-            if(isDay())
+            if(root->isDay())
             {
-                setImage(media(17));
-                setDesc(str(19));
+                root->setImage(media(17));
+                root->setText(str(19));
             }
             else
             {
-                setImage(media(18));
-                setDesc(str(20));
+                root->setImage(media(18));
+                root->setText(str(20));
             }
         }
-        if(gVEvent(goforest) < 40)
-            addText(str(21));
-        if(gVEvent(foresteventrand) == 1 && getMonth() >= 6 && getMonth() <= 9 && gVEvent(mushroom_pickersday) != gVStatus(daystart))
+        if(root->vEvent(goforest) < 40)
+            root->addText(str(21));
+        if(root->vEvent(foresteventrand) == 1 && root->getMonth() >= 6 && root->getMonth() <= 9 && root->vEvent(mushroom_pickersday) != root->vStatus(daystart))
         {
-            sVEvent(mushroom_pickers,2);
-            startEvent(eGadForestEvent, "mushroom_pickers1");
+            root->vEvent(mushroom_pickers) = 2;
+            root->startEvent(eGadForestEvent, "mushroom_pickers1");
         }
-        if(gVEvent(foresteventrand) == 2 && getHour() > 8 && getHour() < 20 && gVEvent(foresteventday) != gVStatus(daystart))
-            startEvent(eGadForestEvent, "forest_hanters");
-        if(gVEvent(foresteventrand) > 7 && getMonth() >= 6 && getMonth() <= 9 && gVEvent(foresteventday) != gVStatus(daystart))
+        if(root->vEvent(foresteventrand) == 2 && root->getHour() > 8 && root->getHour() < 20 && root->vEvent(foresteventday) != root->vStatus(daystart))
+            root->startEvent(eGadForestEvent, "forest_hanters");
+        if(root->vEvent(foresteventrand) > 7 && root->getMonth() >= 6 && root->getMonth() <= 9 && root->vEvent(foresteventday) != root->vStatus(daystart))
         {
-            sVEvent(mushroom_pickers,2);
-            startEvent(eGadForestEvent,"mushroom_pickers3");
+            root->vEvent(mushroom_pickers) = 2;
+            root->startEvent(eGadForestEvent,"mushroom_pickers3");
         }
         makeActBtn("go_back",act(10));
-        if(getHour() >= getSunrise() && getHour() < getSunset())
+        if(root->getHour() >= root->getSunrise() && root->getHour() < root->getSunset())
         {
-            if (getMonth() >= 6 && getMonth() <= 9 && gVStatus(boletus) + gVStatus(bilberry) < 10 && gVEvent(edge_forestday2) != gVStatus(daystart) + action.toInt())
+            if (root->getMonth() >= 6 && root->getMonth() <= 9 && root->vStatus(boletus) + root->vStatus(bilberry) < 10 && root->vEvent(edge_forestday2) != root->vStatus(daystart) + action.toInt())
             {
                 makeActBtn("search_bb",act(8));
             }
@@ -321,203 +321,203 @@ void Gadforest::actionHandler(QString action)
     }
     if(action == "go_back")
     {
-        if(gVEvent(goforest) >= getRandInt(1,30))
+        if(root->vEvent(goforest) >= getRandInt(1,30))
         {
-            incTime(30);
+            root->incTime(30);
             actionHandler("1");
         }
         else
         {
-            sVEvent(lost, 1);
-            startEvent(eGadForestEvent, "gadforest_lost_start");
+            root->vEvent(lost) = 1;
+            root->startEvent(eGadForestEvent, "gadforest_lost_start");
         }
     }
     if(action == "search_bb")
     {
-        startEvent(eGadForestEvent, "search");
+        root->startEvent(eGadForestEvent, "search");
     }
     if(action == "deep_in_forest2")
     {
-        if(gVEvent(goforest) >= getRandInt(1,60))
+        if(root->vEvent(goforest) >= getRandInt(1,60))
         {
-            incTime(30);
+            root->incTime(30);
             actionHandler("3");
         }
         else
         {
-            startEvent(eGadForestEvent, "gadforest_lost_start");
+            root->startEvent(eGadForestEvent, "gadforest_lost_start");
         }
     }
     if(action == "3")
     {
-        sVEvent(edge_forestday_current,3);
-        if(gVEvent(goforest) < 60)
-            uVEvent(goforest, getRandInt(0,1));
-        sVEvent(lost, 3);
-        sVEvent(foresteventrand,getRandInt(1,10));
-        sVEvent(new_bilberry,0);
-        sVEvent(new_boletus,0);
-        if(getSnow() == 0)
+        root->vEvent(edge_forestday_current) = 3;
+        if(root->vEvent(goforest) < 60)
+            root->vEvent(goforest) += getRandInt(0,1);
+        root->vEvent(lost) = 3;
+        root->vEvent(foresteventrand) = getRandInt(1,10);
+        root->vEvent(new_bilberry) = 0;
+        root->vEvent(new_boletus) = 0;
+        if(root->getSnow() == 0)
         {
-            if(isDay())
+            if(root->isDay())
             {
-                setImage(media(19));
-                setDesc(str(22));
+                root->setImage(media(19));
+                root->setText(str(22));
             }
             else
             {
-                setImage(media(20));
-                setDesc(str(23));
+                root->setImage(media(20));
+                root->setText(str(23));
             }
         }
         else
         {
-            if(isDay())
+            if(root->isDay())
             {
-                setImage(media(21));
-                setDesc(str(24));
+                root->setImage(media(21));
+                root->setText(str(24));
             }
             else
             {
-                setImage(media(22));
-                setDesc(str(25));
+                root->setImage(media(22));
+                root->setText(str(25));
             }
         }
-        if(gVEvent(goforest) < 60)
-            addText(str(21));
-        if(gVEvent(foresteventrand) == 1 && getMonth() >= 6 && getMonth() <= 9 && gVEvent(foresteventday) != gVStatus(daystart))
-            startEvent(eGadForestEvent, "basket");
-        if(gVEvent(foresteventrand) == 2 && getMonth() >= 6 && getMonth() <= 9 && gVEvent(foresteventday) != gVStatus(daystart))
-            startEvent(eGadForestEvent,"billberry");
-        if(gVEvent(foresteventrand) == 3 && gVEvent(foresteventday) != gVStatus(daystart))
-            startEvent(eGadForestEvent, "mushroom");
-        if(gVEvent(foresteventrand) == 4 && getHour() > 8 && getHour() < 20 && gVEvent(foresteventday) != gVStatus(daystart))
-            startEvent(eGadForestEvent, "forest_hanters");
+        if(root->vEvent(goforest) < 60)
+            root->addText(str(21));
+        if(root->vEvent(foresteventrand) == 1 && root->getMonth() >= 6 && root->getMonth() <= 9 && root->vEvent(foresteventday) != root->vStatus(daystart))
+            root->startEvent(eGadForestEvent, "basket");
+        if(root->vEvent(foresteventrand) == 2 && root->getMonth() >= 6 && root->getMonth() <= 9 && root->vEvent(foresteventday) != root->vStatus(daystart))
+            root->startEvent(eGadForestEvent,"billberry");
+        if(root->vEvent(foresteventrand) == 3 && root->vEvent(foresteventday) != root->vStatus(daystart))
+            root->startEvent(eGadForestEvent, "mushroom");
+        if(root->vEvent(foresteventrand) == 4 && root->getHour() > 8 && root->getHour() < 20 && root->vEvent(foresteventday) != root->vStatus(daystart))
+            root->startEvent(eGadForestEvent, "forest_hanters");
         makeActBtn("go_back2",act(10));
-        if(getHour() >= getSunrise() && getHour() < getSunset())
+        if(root->getHour() >= root->getSunrise() && root->getHour() < root->getSunset())
         {
-            if(getMonth() >= 6 && getMonth() <= 9 && gVStatus(boletus) + gVStatus(bilberry) < 10 && gVEvent(edge_forestday3) != gVStatus(daystart) + action.toInt())
+            if(root->getMonth() >= 6 && root->getMonth() <= 9 && root->vStatus(boletus) + root->vStatus(bilberry) < 10 && root->vEvent(edge_forestday3) != root->vStatus(daystart) + action.toInt())
                 makeActBtn("search_bb",act(8));
         }
         makeActBtn("deep_in_forest3",act(9));
     }
     if(action == "go_back2")
     {
-        if (gVEvent(goforest) >= getRandInt(1,60))
+        if (root->vEvent(goforest) >= getRandInt(1,60))
         {
-            incTime(30);
+            root->incTime(30);
             actionHandler("2");
         }
         else
         {
-            sVEvent(lost, 2);
-            startEvent(eGadForestEvent, "gadforest_lost_start");
+            root->vEvent(lost) = 2;
+            root->startEvent(eGadForestEvent, "gadforest_lost_start");
         }
     }
     if(action == "deep_in_forest3")
     {
-        if(gVEvent(goforest) >= getRandInt(1,100))
+        if(root->vEvent(goforest) >= getRandInt(1,100))
         {
-            incTime(30);
+            root->incTime(30);
             actionHandler("4");
         }
         else
         {
-            startEvent(eGadForestEvent, "gadforest_lost_start");
+            root->startEvent(eGadForestEvent, "gadforest_lost_start");
         }
     }
     if(action == "4")
     {
-        sVEvent(edge_forestday_current,4);
-        if(gVEvent(goforest) < 80)
-            uVEvent(goforest, getRandInt(0,1));
-        sVEvent(lost, 4);
-        sVEvent(lostrand, getRandInt(1,120));
-        sVEvent(foresteventrand,getRandInt(1,10));
-        sVStatus(dirty, 0);
-        sVEvent(new_bilberry,0);
-        sVEvent(new_boletus,0);
-        if(getSnow() == 0)
+        root->vEvent(edge_forestday_current) = 4;
+        if(root->vEvent(goforest) < 80)
+            root->vEvent(goforest) += getRandInt(0,1);
+        root->vEvent(lost) = 4;
+        root->vEvent(lostrand) = getRandInt(1,120);
+        root->vEvent(foresteventrand) = getRandInt(1,10);
+        root->vStatus(dirty) = 0;
+        root->vEvent(new_bilberry) = 0;
+        root->vEvent(new_boletus) = 0;
+        if(root->getSnow() == 0)
         {
-            if(isDay())
+            if(root->isDay())
             {
-                setImage(media(23));
-                setDesc(str(22));
+                root->setImage(media(23));
+                root->setText(str(22));
             }
             else
             {
-                setImage(media(24));
-                setDesc(str(23));
+                root->setImage(media(24));
+                root->setText(str(23));
             }
         }
         else
         {
-            if(isDay())
+            if(root->isDay())
             {
-                setImage(media(25));
-                setDesc(str(24));
+                root->setImage(media(25));
+                root->setText(str(24));
             }
             else
             {
-                setImage(media(26));
-                setDesc(str(25));
+                root->setImage(media(26));
+                root->setText(str(25));
             }
         }
-        if(gVEvent(goforest) < 80)
-            addText(str(21));
-        if(gVEvent(foresteventrand) < 2 && getMonth() >= 6 && getMonth() <= 9 && gVEvent(foresteventday) != gVStatus(daystart))
-            startEvent(eGadForestEvent, "billberry");
-        if(gVEvent(foresteventrand) > 7 && getMonth() >= 6 && getMonth() <= 9 && gVEvent(foresteventday) != gVStatus(daystart))
-            startEvent(eGadForestEvent, "mushroom");
-        if(gVEvent(foresteventrand) == 5 && getHour() > 8 && getHour() < 20 && gVEvent(foresteventday) != gVStatus(daystart))
-            startEvent(eGadForestEvent, "forest_hanters");
+        if(root->vEvent(goforest) < 80)
+            root->addText(str(21));
+        if(root->vEvent(foresteventrand) < 2 && root->getMonth() >= 6 && root->getMonth() <= 9 && root->vEvent(foresteventday) != root->vStatus(daystart))
+            root->startEvent(eGadForestEvent, "billberry");
+        if(root->vEvent(foresteventrand) > 7 && root->getMonth() >= 6 && root->getMonth() <= 9 && root->vEvent(foresteventday) != root->vStatus(daystart))
+            root->startEvent(eGadForestEvent, "mushroom");
+        if(root->vEvent(foresteventrand) == 5 && root->getHour() > 8 && root->getHour() < 20 && root->vEvent(foresteventday) != root->vStatus(daystart))
+            root->startEvent(eGadForestEvent, "forest_hanters");
         makeActBtn("go_back3",act(10));
-        if(getHour() >= getSunrise() && getHour() < getSunset())
+        if(root->getHour() >= root->getSunrise() && root->getHour() < root->getSunset())
         {
-            if(getMonth() >= 6 && getMonth() <= 9 && gVStatus(boletus) + gVStatus(bilberry) < 10 && gVEvent(edge_forestday4) != gVStatus(daystart) + action.toInt())
+            if(root->getMonth() >= 6 && root->getMonth() <= 9 && root->vStatus(boletus) + root->vStatus(bilberry) < 10 && root->vEvent(edge_forestday4) != root->vStatus(daystart) + action.toInt())
                 makeActBtn("search_bb",act(8));
         }
         makeActBtn("deep_in_forest4",act(9));
     }
     if(action == "go_back3")
     {
-        if(gVEvent(goforest) >= getRandInt(1,100))
+        if(root->vEvent(goforest) >= getRandInt(1,100))
         {
-            incTime(30);
+            root->incTime(30);
             actionHandler("3");
         }
         else
         {
-            sVEvent(lost, 3);
-            startEvent(eGadForestEvent, "gadforest_lost_start");
+            root->vEvent(lost) = 3;
+            root->startEvent(eGadForestEvent, "gadforest_lost_start");
         }
     }
     if(action == "deep_in_forest4")
     {
-        if(gVEvent(goforest) >= gVEvent(lostrand) && (gVEvent(goswamp) == 1 || getSnow() > 0))
+        if(root->vEvent(goforest) >= root->vEvent(lostrand) && (root->vEvent(goswamp) == 1 || root->getSnow() > 0))
         {
-            changeLoc(lswamp,30);
+            root->changeLoc(lswamp,30);
         }
-        else if(gVEvent(goforest) >= gVEvent(lostrand) && gVEvent(goswamp) == 0)
+        else if(root->vEvent(goforest) >= root->vEvent(lostrand) && root->vEvent(goswamp) == 0)
         {
-            changeLoc(lgadforestswamp,30);
+            root->changeLoc(lgadforestswamp,30);
         }
         else
         {
-            startEvent(eGadForestEvent, "gadforest_lost_start");
+            root->startEvent(eGadForestEvent, "gadforest_lost_start");
         }
     }
     if(action == "picnic")
     {
-        startEvent(eGadForestEvent,"picnic");
+        root->startEvent(eGadForestEvent,"picnic");
     }
     if(action == "Miroslava")
     {
-        startEvent(eMiroslava);
+        root->startEvent(eMiroslava);
     }
     if(action == "bicycle")
     {
-        startEvent(eBicycle,"forest");
+        root->startEvent(eBicycle,"forest");
     }
 }
 
@@ -526,7 +526,7 @@ void Gadforest::makeActBtn(QString act, QString actName)
     QActButton* btn = new QActButton(act, "gadforest");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Gadforest::actionHandler);
-    addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString Gadforest::str(int id)

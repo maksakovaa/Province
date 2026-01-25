@@ -1,9 +1,9 @@
 #include "hanterslovesex.h"
-#include "../eventhandler.h"
+#include "../../game.h"
 #include "../../menu/buttons.h"
 #include "../../Functions.h"
 
-HantersLoveSex::HantersLoveSex(EventHandler* ptr): root(ptr) {}
+HantersLoveSex::HantersLoveSex(Game* ptr): root(ptr) {}
 
 void HantersLoveSex::start(QString arg)
 {
@@ -12,27 +12,27 @@ void HantersLoveSex::start(QString arg)
         actionHandler(arg);
         return;
     }
-    if(root->gVEvent(hantersIgorLove) > 0 && root->gVQuest(hantersIgorQW) <= 50)
+    if(root->vEvent(hantersIgorLove) > 0 && root->vQuest(hantersIgorQW) <= 50)
     {
-        root->rendImagePage();
-        root->sVSex(dick,16);
-        root->sVSex(silavag,2);
-        root->sVSex(harakBoy,0);
+        root->rendImagePage(this);
+        root->vSex(dick) = 16;
+        root->vSex(silavag) = 2;
+        root->vSex(harakBoy) = 0;
         root->setBoyName(str(185));
         root->incTime(5);
-        // if(root->gVEvent(hantersIgorLove) == 2) bfa += 1;
-        if(root->gVEvent(hantersIgorsex) == 0)
+        // if(root->vEvent(hantersIgorLove) == 2) bfa += 1;
+        if(root->vEvent(hantersIgorsex) == 0)
         {
-            root->uVSex(guy,1);
-            root->sVEvent(hantersIgorsex,1);
+            root->vSex(guy) += 1;
+            root->vEvent(hantersIgorsex) = 1;
         }
-        root->sVEvent(boyonceA,1);
-        root->sVEvent(hanters_bj_times,0);
+        root->vEvent(boyonceA) = 1;
+        root->vEvent(hanters_bj_times) = 0;
         root->setImage(media(184));
-        root->setDesc(str(188));
-        if(root->vBody(vagina) == 0 && root->vSC(vaginalSex) == 0)
+        root->setText(str(188));
+        if(root->vBody(vagina) == 0 && root->vStatistics(vaginalSex) == 0)
         {
-            if(root->gVSchool(vacation) == 0)
+            if(root->vSchool(vacation) == 0)
                 makeActBtn("virgin_schoolgirl",act(35));
             else
                 makeActBtn("virgin",act(35));
@@ -40,40 +40,40 @@ void HantersLoveSex::start(QString arg)
         else
             makeActBtn("undress",act(34));
     }
-    else if(root->gVEvent(hantersIgorLove) > 0 && root->gVQuest(hantersIgorQW) > 50)
+    else if(root->vEvent(hantersIgorLove) > 0 && root->vQuest(hantersIgorQW) > 50)
     {
-        root->rendVideoPage();
-        root->sVSex(dick,16);
-        root->sVSex(silavag,2);
-        root->sVSex(harakBoy,0);
+        root->rendVideoPage(this);
+        root->vSex(dick) = 16;
+        root->vSex(silavag) = 2;
+        root->vSex(harakBoy) = 0;
         root->setBoyName(str(185));
-        // if(root->gVEvent(hantersIgorLove) == 2) bfa += 1;
-        if(root->gVEvent(hantersIgorsex) == 0)
+        // if(root->vEvent(hantersIgorLove) == 2) bfa += 1;
+        if(root->vEvent(hantersIgorsex) == 0)
         {
-            root->uVSex(guy,1);
-            root->sVEvent(hantersIgorsex,1);
+            root->vSex(guy) += 1;
+            root->vEvent(hantersIgorsex) = 1;
         }
-        root->sVEvent(boyonceA,1);
-        root->sVEvent(hanters_bj_times,0);
+        root->vEvent(boyonceA) = 1;
+        root->vEvent(hanters_bj_times) = 0;
         root->incTime(5);
-        root->uVStatus(horny,getRandInt(10,20));
+        root->vStatus(horny) += getRandInt(10,20);
         int i = getRandInt(1,3);
         if(root->vStatus(horny) >= 60)
         {
             setVideo(media(getRandInt(92,113)));
-            root->setDesc(str(195));
+            root->setText(str(195));
             if(root->isMesec())
-                root->addDesc(str(194));
+                root->addText(str(194));
             makeActBtn("jumpOnIt",act(39));
             makeActBtn("undress_v2",act(34));
         }
         else if(root->vStatus(horny) < 60 && i == 1)
         {
             setVideo(media(108));
-            root->setDesc(str(198));
+            root->setText(str(198));
             if(root->isMesec())
             {
-                root->addDesc(str(194));
+                root->addText(str(194));
                 bj();
             }
             else
@@ -82,10 +82,10 @@ void HantersLoveSex::start(QString arg)
         else if(root->vStatus(horny) < 60 && i == 2 && root->vSex(hanters_kuni) == 1)
         {
             setVideo(media(112));
-            root->setDesc(str(199));
+            root->setText(str(199));
             if(root->isMesec())
             {
-                root->addDesc(str(194));
+                root->addText(str(194));
                 bj();
             }
             else
@@ -94,10 +94,10 @@ void HantersLoveSex::start(QString arg)
         else if(root->vStatus(horny) < 60 && i == 2 && root->vSex(hanters_kuni) == 0)
         {
             setVideo(media(113));
-            root->setDesc(str(200));
+            root->setText(str(200));
             if(root->isMesec())
             {
-                root->addDesc(str(194));
+                root->addText(str(194));
                 bj();
             }
             else
@@ -106,66 +106,66 @@ void HantersLoveSex::start(QString arg)
         else if(root->vStatus(horny) < 60 && i == 3)
         {
             setVideo(media(getRandInt(109,111)));
-            root->setDesc(str(201));
+            root->setText(str(201));
             if(root->isMesec())
             {
-                root->addDesc(str(194));
+                root->addText(str(194));
                 bj();
             }
             else
                 makeActBtn("sex_dog",act(5));
         }
     }
-    if(root->gVEvent(hantersAndreiLove) > 0 && root->vBody(vagina) == 0)
+    if(root->vEvent(hantersAndreiLove) > 0 && root->vBody(vagina) == 0)
     {
-        root->rendImagePage();
-        root->sVSex(dick,20);
-        root->sVSex(silavag,0);
-        root->sVSex(harakBoy,2);
+        root->rendImagePage(this);
+        root->vSex(dick) = 20;
+        root->vSex(silavag) = 0;
+        root->vSex(harakBoy) = 2;
         root->setBoyName(str(186));
         root->incTime(5);
-        root->sVEvent(hanters_bj_times,0);
-        if(root->gVEvent(hantersAndreisex) == 0)
+        root->vEvent(hanters_bj_times) = 0;
+        if(root->vEvent(hantersAndreisex) == 0)
         {
-            root->sVEvent(hantersAndreisex,1);
-            root->sVSex(guy,1);
+            root->vEvent(hantersAndreisex) = 1;
+            root->vSex(guy) += 1;
         }
         root->setImage(media(185));
-        root->setDesc(str(188));
+        root->setText(str(188));
         makeActBtn("virginA",act(35));
     }
-    else if(root->gVEvent(hantersAndreiLove) > 0 && root->vBody(vagina) > 0)
+    else if(root->vEvent(hantersAndreiLove) > 0 && root->vBody(vagina) > 0)
     {
-        root->rendVideoPage();
-        root->sVSex(dick,20);
-        root->sVSex(silavag,0);
-        root->sVSex(harakBoy,2);
+        root->rendVideoPage(this);
+        root->vSex(dick) = 20;
+        root->vSex(silavag) = 0;
+        root->vSex(harakBoy) = 2;
         root->setBoyName(str(186));
         root->incTime(5);
-        root->sVEvent(hanters_bj_times,0);
-        root->uVStatus(horny,getRandInt(10,20));
-        if(root->gVEvent(hantersAndreisex) == 0)
+        root->vEvent(hanters_bj_times) = 0;
+        root->vStatus(horny) += getRandInt(10,20);
+        if(root->vEvent(hantersAndreisex) == 0)
         {
-            root->sVEvent(hantersAndreisex,1);
-            root->sVSex(guy,1);
+            root->vEvent(hantersAndreisex) = 1;
+            root->vSex(guy) += 1;
         }
         int i = getRandInt(1,3);
         if(root->vStatus(horny) >= 60)
         {
             setVideo(media(getRandInt(92,113)));
-            root->setDesc(str(195));
+            root->setText(str(195));
             if(root->isMesec())
-                root->addDesc(str(194));
+                root->addText(str(194));
             makeActBtn("jumpOnIt",act(39));
             makeActBtn("undress_v2",act(34));
         }
         else if(root->vStatus(horny) < 60 && i == 1)
         {
             setVideo(media(108));
-            root->setDesc(str(198));
+            root->setText(str(198));
             if(root->isMesec())
             {
-                root->addDesc(str(194));
+                root->addText(str(194));
                 bj();
             }
             else
@@ -174,10 +174,10 @@ void HantersLoveSex::start(QString arg)
         else if(root->vStatus(horny) < 60 && i == 2 && root->vSex(hanters_kuni) == 1)
         {
             setVideo(media(112));
-            root->setDesc(str(199));
+            root->setText(str(199));
             if(root->isMesec())
             {
-                root->addDesc(str(194));
+                root->addText(str(194));
                 bj();
             }
             else
@@ -186,10 +186,10 @@ void HantersLoveSex::start(QString arg)
         else if(root->vStatus(horny) < 60 && i == 2 && root->vSex(hanters_kuni) == 0)
         {
             setVideo(media(113));
-            root->setDesc(str(200));
+            root->setText(str(200));
             if(root->isMesec())
             {
-                root->addDesc(str(194));
+                root->addText(str(194));
                 bj();
             }
             else
@@ -198,36 +198,36 @@ void HantersLoveSex::start(QString arg)
         else if(root->vStatus(horny) < 60 && i == 3)
         {
             setVideo(media(getRandInt(109,111)));
-            root->setDesc(str(201));
+            root->setText(str(201));
             if(root->isMesec())
             {
-                root->addDesc(str(194));
+                root->addText(str(194));
                 bj();
             }
             else
                 makeActBtn("sex_dog",act(5));
         }
     }
-    if(root->gVEvent(hantersSergeiLove) > 0 && root->gVQuest(hantersSergeiQW) <= 40)
+    if(root->vEvent(hantersSergeiLove) > 0 && root->vQuest(hantersSergeiQW) <= 40)
     {
-        root->rendImagePage();
-        root->sVSex(dick,18);
-        root->sVSex(silavag,1);
-        root->sVSex(harakBoy,1);
+        root->rendImagePage(this);
+        root->vSex(dick) = 18;
+        root->vSex(silavag) = 1;
+        root->vSex(harakBoy) = 1;
         root->setBoyName(str(187));
         root->incTime(5);
-        if(root->gVEvent(hantersSergeisex) == 0)
+        if(root->vEvent(hantersSergeisex) == 0)
         {
-            root->sVEvent(hantersSergeisex,1);
-            root->uVSex(guy,1);
+            root->vEvent(hantersSergeisex) = 1;
+            root->vSex(guy) += 1;
         }
-        root->sVEvent(boyonceA,1);
-        root->sVEvent(hanters_bj_times,0);
+        root->vEvent(boyonceA) = 1;
+        root->vEvent(hanters_bj_times) = 0;
         root->setImage(media(186));
-        root->setDesc(str(188));
-        if(root->vBody(vagina) == 0 && root->vSC(vaginalSex) == 0)
+        root->setText(str(188));
+        if(root->vBody(vagina) == 0 && root->vStatistics(vaginalSex) == 0)
         {
-            if(root->gVSchool(vacation) == 0)
+            if(root->vSchool(vacation) == 0)
                 makeActBtn("virgin_schoolgirl2",act(35));
             else
                 makeActBtn("virgin",act(35));
@@ -235,39 +235,39 @@ void HantersLoveSex::start(QString arg)
         else
             makeActBtn("undress",act(34));
     }
-    else if(root->gVEvent(hantersSergeiLove) > 0 && root->gVQuest(hantersSergeiQW) > 40)
+    else if(root->vEvent(hantersSergeiLove) > 0 && root->vQuest(hantersSergeiQW) > 40)
     {
-        root->rendVideoPage();
-        root->sVSex(dick,18);
-        root->sVSex(silavag,1);
-        root->sVSex(harakBoy,1);
+        root->rendVideoPage(this);
+        root->vSex(dick) = 18;
+        root->vSex(silavag) = 1;
+        root->vSex(harakBoy) = 1;
         root->setBoyName(str(187));
         root->incTime(5);
-        if(root->gVEvent(hantersSergeisex) == 0)
+        if(root->vEvent(hantersSergeisex) == 0)
         {
-            root->sVEvent(hantersSergeisex,1);
-            root->uVSex(guy,1);
+            root->vEvent(hantersSergeisex) = 1;
+            root->vSex(guy) += 1;
         }
-        root->sVEvent(boyonceA,1);
-        root->sVEvent(hanters_bj_times,0);
-        root->uVStatus(horny,getRandInt(10,20));
+        root->vEvent(boyonceA) = 1;
+        root->vEvent(hanters_bj_times) = 0;
+        root->vStatus(horny) += getRandInt(10,20);
         int i = getRandInt(1,3);
         if(root->vStatus(horny) >= 60)
         {
             setVideo(media(getRandInt(92,96)));
-            root->setDesc(str(195));
+            root->setText(str(195));
             if(root->isMesec())
-                root->addDesc(str(194));
+                root->addText(str(194));
             makeActBtn("jumpOnIt",act(39));
             makeActBtn("undress_v2",act(34));
         }
         else if(root->vStatus(horny) < 60 && i == 1)
         {
             setVideo(media(108));
-            root->setDesc(str(198));
+            root->setText(str(198));
             if(root->isMesec())
             {
-                root->addDesc(str(194));
+                root->addText(str(194));
                 bj();
             }
             else
@@ -276,10 +276,10 @@ void HantersLoveSex::start(QString arg)
         else if(root->vStatus(horny) < 60 && i == 2 && root->vSex(hanters_kuni) == 1)
         {
             setVideo(media(112));
-            root->setDesc(str(199));
+            root->setText(str(199));
             if(root->isMesec())
             {
-                root->addDesc(str(194));
+                root->addText(str(194));
                 bj();
             }
             else
@@ -288,10 +288,10 @@ void HantersLoveSex::start(QString arg)
         else if(root->vStatus(horny) < 60 && i == 2 && root->vSex(hanters_kuni) == 0)
         {
             setVideo(media(113));
-            root->setDesc(str(200));
+            root->setText(str(200));
             if(root->isMesec())
             {
-                root->addDesc(str(194));
+                root->addText(str(194));
                 bj();
             }
             else
@@ -300,10 +300,10 @@ void HantersLoveSex::start(QString arg)
         else if(root->vStatus(horny) < 60 && i == 3)
         {
             setVideo(media(getRandInt(109,111)));
-            root->setDesc(str(201));
+            root->setText(str(201));
             if(root->isMesec())
             {
-                root->addDesc(str(194));
+                root->addText(str(194));
                 bj();
             }
             else
@@ -316,49 +316,49 @@ void HantersLoveSex::actionHandler(QString action)
 {
     if(action == "virgin_schoolgirl")
     {
-        root->rendVideoPage();
+        root->rendVideoPage(this);
         root->incTime(5);
         setVideo(media(91));
-        if(root->gVQuest(hantersIgorQW) <= 45)
+        if(root->vQuest(hantersIgorQW) <= 45)
         {
-            root->setDesc(str(189));
+            root->setText(str(189));
             bj();
         }
-        if(root->gVQuest(hantersIgorQW) > 45)
+        if(root->vQuest(hantersIgorQW) > 45)
         {
-            root->setDesc(str(190));
+            root->setText(str(190));
             makeActBtn("first_sex",act(36));
             makeActBtn("breakUpWithGuy",act(37));
         }
     }
     if(action == "breakUpWithGuy")
     {
-        root->rendVideoPage();
+        root->rendVideoPage(this);
         root->incTime(5);
         //if hantersIgorLove = 2: bfA = 0
-        root->sVEvent(hantersIgorLove,0);
-        root->sVQuest(hantersIgorQW,-100);
-        root->uVSkill(domination,1);
+        root->vEvent(hantersIgorLove) = 0;
+        root->vQuest(hantersIgorQW) -= 100;
+        root->vSkill(domination) += 1;
         setVideo(media(91));
-        root->setDesc(str(191));
+        root->setText(str(191));
         makeActBtn("back_to_loc",act(38));
     }
     if(action == "virgin")
     {
         root->incTime(5);
-        root->addDesc(str(192));
+        root->addText(str(192));
         bj();
         makeActBtn("first_sex",act(36));
     }
     if(action == "undress")
     {
-        root->rendVideoPage();
+        root->rendVideoPage(this);
         root->incTime(5);
         setVideo(media(getRandInt(97,103)));
-        root->setDesc(str(193));
+        root->setText(str(193));
         if(root->isMesec())
         {
-            root->addDesc(str(194));
+            root->addText(str(194));
             bj();
         }
         if(!root->isMesec())
@@ -367,10 +367,10 @@ void HantersLoveSex::actionHandler(QString action)
 
     if(action == "jumpOnIt")
     {
-        root->rendVideoPage();
+        root->rendVideoPage(this);
         root->incTime(5);
         setVideo(media(getRandInt(104,107)));
-        root->setDesc(str(196));
+        root->setText(str(196));
         if(root->vStatus(horny) >= 80 && !root->isMesec())
             makeActBtn("sex_cow",act(40));
         if(root->vStatus(horny) < 80 && !root->isMesec())
@@ -380,10 +380,10 @@ void HantersLoveSex::actionHandler(QString action)
     }
     if(action == "undress_v2")
     {
-        root->rendVideoPage();
+        root->rendVideoPage(this);
         root->incTime(5);
         setVideo(media(getRandInt(97,103)));
-        root->setDesc(str(197));
+        root->setText(str(197));
         int dom = root->vSkill(domination);
         if(dom > 50 && !root->isMesec())
             makeActBtn("sex_cow",act(4));
@@ -398,38 +398,38 @@ void HantersLoveSex::actionHandler(QString action)
 
     if(action == "virginA")
     {
-        root->rendVideoPage();
+        root->rendVideoPage(this);
         root->incTime(5);
         setVideo(media(91));
-        root->setDesc(str(202));
+        root->setText(str(202));
         makeActBtn("first_sex",act(36));
         makeActBtn("breakUpWithGuyA",act(37));
     }
     if(action == "breakUpWithGuyA")
     {
-        root->rendVideoPage();
+        root->rendVideoPage(this);
         root->incTime(5);
-        root->sVEvent(hantersAndreiLove,0);
-        root->uVQuest(hantersAndreiQW,-1);
-        root->uVSkill(domination,1);
+        root->vEvent(hantersAndreiLove) = 0;
+        root->vQuest(hantersAndreiQW) -= 1;
+        root->vSkill(domination) += 1;
         setVideo(media(91));
-        root->setDesc(str(203));
+        root->setText(str(203));
         makeActBtn("back_to_loc",act(38));
     }
 
     if(action == "virgin_schoolgirl2")
     {
-        root->rendVideoPage();
+        root->rendVideoPage(this);
         root->incTime(5);
         setVideo(media(91));
-        if(root->gVQuest(hantersSergeiQW) <= 35)
+        if(root->vQuest(hantersSergeiQW) <= 35)
         {
-            root->setDesc(str(189));
+            root->setText(str(189));
             bj();
         }
-        if(root->gVQuest(hantersSergeiQW) > 35)
+        if(root->vQuest(hantersSergeiQW) > 35)
         {
-            root->setDesc(str(204));
+            root->setText(str(204));
             makeActBtn("first_sex",act(36));
             makeActBtn("breakUpWithGuyS",act(37));
         }
@@ -437,13 +437,13 @@ void HantersLoveSex::actionHandler(QString action)
 
     if(action == "breakUpWithGuyS")
     {
-        root->rendVideoPage();
+        root->rendVideoPage(this);
         root->incTime(5);
-        root->sVEvent(hantersSergeiLove,0);
-        root->uVQuest(hantersSergeiQW,-1);
-        root->uVSkill(domination,1);
+        root->vEvent(hantersSergeiLove) = 0;
+        root->vQuest(hantersSergeiQW) -= 1;
+        root->vSkill(domination) += 1;
         setVideo(media(91));
-        root->setDesc(str(203));
+        root->setText(str(203));
         makeActBtn("back_to_loc",act(38));
     }
 
@@ -554,28 +554,28 @@ void HantersLoveSex::actionHandler(QString action)
     if(action == "first_sex") first_sex();
     if(action == "start_bj")
     {
-        root->rendVideoPage();
+        root->rendVideoPage(this);
         root->incTime(5);
-        root->uVSex(bj_temp,1);
+        root->vSex(bj_temp) += 1;
         setVideo(media(getRandInt(25,30)));
-        root->setDesc(str(44));
-        if(root->vSC(blowJob) > 10)
+        root->setText(str(44));
+        if(root->vStatistics(blowJob) > 10)
             makeActBtn("bjH2",act(10));
-        if(root->vSC(blowJob) > 5 && root->vSC(blowJob) <= 10)
+        if(root->vStatistics(blowJob) > 5 && root->vStatistics(blowJob) <= 10)
             makeActBtn("bjH1",act(11));
-        if(root->vSC(blowJob) > 2 && root->vSC(blowJob) <= 5)
+        if(root->vStatistics(blowJob) > 2 && root->vStatistics(blowJob) <= 5)
             makeActBtn("bjH3",act(12));
-        if(root->vSC(blowJob) <= 2)
+        if(root->vStatistics(blowJob) <= 2)
             makeActBtn("bjH4",act(13));
     }
     if(action == "want_more1.0")
     {
-        root->rendVideoPage();
-        root->uVSex(dikos,1);
+        root->rendVideoPage(this);
+        root->vSex(dikos) += 1;
         root->incTime(5);
-        root->sVEvent(hanters_bj_times,0);
+        root->vEvent(hanters_bj_times) = 0;
         setVideo(media(88));
-        root->setDesc(str(56));
+        root->setText(str(56));
         if(root->vBody(vagina) == 0) bj();
         if(root->vBody(vagina) > 0)
         {
@@ -590,12 +590,12 @@ void HantersLoveSex::actionHandler(QString action)
     }
     if(action == "want_more2.0")
     {
-        root->rendVideoPage();
-        root->uVSex(dikos,1);
+        root->rendVideoPage(this);
+        root->vSex(dikos) += 1;
         root->incTime(5);
-        root->sVEvent(hanters_bj_times,0);
+        root->vEvent(hanters_bj_times) = 0;
         setVideo(media(88));
-        root->setDesc(str(57));
+        root->setText(str(57));
         if(root->vBody(vagina) == 0) bj();
         if(root->vBody(vagina) > 0)
         {
@@ -611,53 +611,53 @@ void HantersLoveSex::actionHandler(QString action)
     }
     if(action == "exit_sex")
     {
-        root->sVEvent(hanters_bj_times,0);
-        root->sVSex(dikos,0);
+        root->vEvent(hanters_bj_times) = 0;
+        root->vSex(dikos) = 0;
         root->changeLoc(root->getCurLoc());
     }
     if(action == "swallow")
     {
-        root->rendImagePage();
+        root->rendImagePage(this);
         root->incTime(1);
-        root->uVSC(swallow,1);
+        root->vStatistics(swallow) += 1;
         root->setImage(media(getRandInt(181,182)));
-        root->setDesc(str(66));
-        if(root->vSex(harakBoy) == 2) root->addDesc(str(67));
+        root->setText(str(66));
+        if(root->vSex(harakBoy) == 2) root->addText(str(67));
         sex_cum_common();
     }
     if(action == "spit_it_out")
     {
-        root->rendImagePage();
+        root->rendImagePage(this);
         root->incTime(1);
         root->setImage(media(183));
-        root->setDesc(str(68));
-        if(root->vSex(harakBoy) == 2) root->addDesc(str(69));
+        root->setText(str(68));
+        if(root->vSex(harakBoy) == 2) root->addText(str(69));
         sex_cum_common();
     }
     if(action == "start_kuni")
     {
-        root->rendVideoPage();
+        root->rendVideoPage(this);
         root->incTime(5);
-        root->sVSex(hanters_kuni,1);
-        root->uVSC(getKuni,1);
-        root->uVSex(kuni_temp,1);
-        if(root->vSex(silavag) == 0) root->uVStatus(horny,15);
-        if(root->vSex(silavag) == 1) root->uVStatus(horny,20);
-        if(root->vSex(silavag) == 2) root->sVStatus(horny,25);
+        root->vSex(hanters_kuni) = 1;
+        root->vStatistics(getKuni) += 1;
+        root->vSex(kuni_temp) += 1;
+        if(root->vSex(silavag) == 0) root->vStatus(horny) += 15;
+        if(root->vSex(silavag) == 1) root->vStatus(horny) += 20;
+        if(root->vSex(silavag) == 2) root->vStatus(horny) = 25;
         setVideo(media(getRandInt(125,128)));
-        root->setDesc(str(135));
+        root->setText(str(135));
         if(root->vStatus(horny) >= 90)
         {
-            root->sVStatus(lust,0);
-            root->sVStatus(horny,0);
-            root->uVStatus(mood,15);
-            root->uVSC(orgasm,1);
-            root->addDesc(str(85));
+            root->vStatus(lust) = 0;
+            root->vStatus(horny) = 0;
+            root->vStatus(mood) += 15;
+            root->vStatistics(orgasm) += 1;
+            root->addText(str(85));
         }
         else
-            root->addDesc(str(86));
+            root->addText(str(86));
         if(root->vSkill(domination) >= 75)
-            root->addDesc(str(136));
+            root->addText(str(136));
         int i = getRandInt(1,5);
         if(i == 1) makeActBtn("sex_misionary",act(0));
         if(i == 2) makeActBtn("sex_cow",act(0));
@@ -669,13 +669,13 @@ void HantersLoveSex::actionHandler(QString action)
     {
         root->incTime(5);
         root->setImage(media(89));
-        if(root->vSex(harakBoy) == 2) root->addDesc(str(178));
-        if(root->vSex(harakBoy) == 1) root->addDesc(str(179));
-        if(root->vSex(harakBoy) == 0) root->addDesc(str(180));
-        root->addDesc(str(181));
-        if(root->vSex(harakBoy) == 2) root->addDesc(str(182));
-        if(root->vSex(harakBoy) == 1) root->addDesc(str(183));
-        if(root->vSex(harakBoy) == 0) root->addDesc(str(184));
+        if(root->vSex(harakBoy) == 2) root->addText(str(178));
+        if(root->vSex(harakBoy) == 1) root->addText(str(179));
+        if(root->vSex(harakBoy) == 0) root->addText(str(180));
+        root->addText(str(181));
+        if(root->vSex(harakBoy) == 2) root->addText(str(182));
+        if(root->vSex(harakBoy) == 1) root->addText(str(183));
+        if(root->vSex(harakBoy) == 0) root->addText(str(184));
         makeActBtn("back_to_loc",act(33));
     }
     if(action == "back_to_loc")
@@ -686,12 +686,12 @@ void HantersLoveSex::actionHandler(QString action)
 
 void HantersLoveSex::first_sex()
 {
-    root->rendImagePage();
+    root->rendImagePage(this);
     root->incTime(30);
-    root->uVEvent(hantersVagSex,1);
+    root->vEvent(hantersVagSex) += 1;
     root->setImage(media(90));
-    root->setDesc(str(177));
-    root->sVSex(protect,1);
+    root->setText(str(177));
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
     root->sex_cum();
@@ -712,52 +712,52 @@ void HantersLoveSex::bj_common()
 }
 void HantersLoveSex::bj_common1(int h)
 {
-    if(h < 3 && root->gVEvent(hanters_bj_times) == 3)
-        root->addDesc(str(7));
-    if(root->gVEvent(hanters_bj_times) < 3 && root->gVEvent(hanters_bj_times) >= 1)
+    if(h < 3 && root->vEvent(hanters_bj_times) == 3)
+        root->addText(str(7));
+    if(root->vEvent(hanters_bj_times) < 3 && root->vEvent(hanters_bj_times) >= 1)
     {
         int k = getRandInt(1,4);
-        if(k == 1) root->addDesc(str(8));
-        if(k == 2) root->addDesc(str(9));
-        if(k == 3) root->addDesc(str(10));
-        if(k == 4) root->addDesc(str(11));
+        if(k == 1) root->addText(str(8));
+        if(k == 2) root->addText(str(9));
+        if(k == 3) root->addText(str(10));
+        if(k == 4) root->addText(str(11));
     }
-    if(h == 3 && root->gVEvent(hanters_bj_times) >= 3)
-        root->addDesc(str(12));
+    if(h == 3 && root->vEvent(hanters_bj_times) >= 3)
+        root->addText(str(12));
 }
 void HantersLoveSex::bj_common1_alt(int h)
 {
-    if(h < 3 && root->gVEvent(hanters_bj_times) == 3)
-        root->addDesc(str(7));
-    if(root->gVEvent(hanters_bj_times) < 3 && root->gVEvent(hanters_bj_times) >= 1)
+    if(h < 3 && root->vEvent(hanters_bj_times) == 3)
+        root->addText(str(7));
+    if(root->vEvent(hanters_bj_times) < 3 && root->vEvent(hanters_bj_times) >= 1)
     {
         int k = getRandInt(1,4);
-        if(k == 1) root->addDesc(str(143));
-        if(k == 2) root->addDesc(str(144));
-        if(k == 3) root->addDesc(str(145));
-        if(k == 4) root->addDesc(str(146));
+        if(k == 1) root->addText(str(143));
+        if(k == 2) root->addText(str(144));
+        if(k == 3) root->addText(str(145));
+        if(k == 4) root->addText(str(146));
     }
-    if(h == 3 && root->gVEvent(hanters_bj_times) >= 3)
-        root->addDesc(str(12));
+    if(h == 3 && root->vEvent(hanters_bj_times) >= 3)
+        root->addText(str(12));
 }
 void HantersLoveSex::bj_common2()
 {
-    if(root->gVEvent(hanters_bj_times) < 3)
+    if(root->vEvent(hanters_bj_times) < 3)
     {
         int i = getRandInt(1,2);
-        if(root->vSC(blowJob) <= 10) makeActBtn("bjH7",act(1));
-        if(root->vSC(blowJob) > 10 && i == 1) makeActBtn("bjH7",act(1));
-        if(root->vSC(blowJob) > 10 && i == 2) makeActBtn("bjH8",act(2));
+        if(root->vStatistics(blowJob) <= 10) makeActBtn("bjH7",act(1));
+        if(root->vStatistics(blowJob) > 10 && i == 1) makeActBtn("bjH7",act(1));
+        if(root->vStatistics(blowJob) > 10 && i == 2) makeActBtn("bjH8",act(2));
     }
 }
 void HantersLoveSex::bj_common2_alt()
 {
-    if(root->gVEvent(hanters_bj_times) < 3)
+    if(root->vEvent(hanters_bj_times) < 3)
         makeActBtn("bjH6",act(8));
 }
 void HantersLoveSex::bj_common2_alt2()
 {
-    if(root->gVEvent(hanters_bj_times) < 3)
+    if(root->vEvent(hanters_bj_times) < 3)
     {
         int i = getRandInt(1,4);
         int j = getRandInt(1,4);
@@ -778,7 +778,7 @@ void HantersLoveSex::bj_common2_alt2()
 }
 void HantersLoveSex::bj_common2_alt3()
 {
-    if(root->gVEvent(hanters_bj_times) < 3)
+    if(root->vEvent(hanters_bj_times) < 3)
     {
         int i = getRandInt(1,3);
         int j = getRandInt(1,4);
@@ -798,7 +798,7 @@ void HantersLoveSex::bj_common2_alt3()
 
 void HantersLoveSex::bj_common2_alt4()
 {
-    if(root->gVEvent(hanters_bj_times) < 3)
+    if(root->vEvent(hanters_bj_times) < 3)
     {
         int i = getRandInt(1,3);
         int j = getRandInt(1,4);
@@ -820,7 +820,7 @@ void HantersLoveSex::bj_common2_alt4()
 
 void HantersLoveSex::bj_common2_alt5()
 {
-    if(root->gVEvent(hanters_bj_times) < 3)
+    if(root->vEvent(hanters_bj_times) < 3)
     {
         int i = getRandInt(1,3);
         int dom = root->vSkill(domination);
@@ -839,7 +839,7 @@ void HantersLoveSex::bj_common2_alt5()
 }
 void HantersLoveSex::bj_common3(int h)
 {
-    if(h < 3 && root->gVEvent(hanters_bj_times) >= 3)
+    if(h < 3 && root->vEvent(hanters_bj_times) >= 3)
     {
         int i = getRandInt(1,4);
         if(i == 1) makeActBtn("sex_misionary_analH",act(3));
@@ -847,14 +847,14 @@ void HantersLoveSex::bj_common3(int h)
         if(i == 3) makeActBtn("sex_dog_analH",act(5));
         if(i == 4) makeActBtn("sex_bell_analH",act(6));
         i = getRandInt(1,2);
-        if(root->vSC(blowJob) <= 10) makeActBtn("bjH7",act(1));
-        if(root->vSC(blowJob) > 10 && i == 1) makeActBtn("bjH7",act(1));
-        if(root->vSC(blowJob) > 10 && i == 2) makeActBtn("bjH8",act(2));
+        if(root->vStatistics(blowJob) <= 10) makeActBtn("bjH7",act(1));
+        if(root->vStatistics(blowJob) > 10 && i == 1) makeActBtn("bjH7",act(1));
+        if(root->vStatistics(blowJob) > 10 && i == 2) makeActBtn("bjH8",act(2));
     }
 }
 void HantersLoveSex::bj_common3_alt(int h)
 {
-    if(h < 3 && root->gVEvent(hanters_bj_times) >= 3)
+    if(h < 3 && root->vEvent(hanters_bj_times) >= 3)
     {
         int i = getRandInt(1,4);
         if(i == 1) makeActBtn("sex_misionary_analH",act(3));
@@ -865,7 +865,7 @@ void HantersLoveSex::bj_common3_alt(int h)
 }
 void HantersLoveSex::bj_common3_alt2(int h)
 {
-    if(h < 3 && root->gVEvent(hanters_bj_times) >= 3)
+    if(h < 3 && root->vEvent(hanters_bj_times) >= 3)
     {
         int i = getRandInt(1,5);
         if(i == 1) makeActBtn("sex_misionary",act(3));
@@ -877,7 +877,7 @@ void HantersLoveSex::bj_common3_alt2(int h)
 }
 void HantersLoveSex::bj_common4(int h)
 {
-    if(h == 3 && root->gVEvent(hanters_bj_times) >= 3)
+    if(h == 3 && root->vEvent(hanters_bj_times) >= 3)
     {
         int i = getRandInt(1,2);
         if(i == 1) makeActBtn("sex_cumface1",act(7));
@@ -886,7 +886,7 @@ void HantersLoveSex::bj_common4(int h)
 }
 void HantersLoveSex::bj_common4_alt(int h)
 {
-    if(h == 3 && root->gVEvent(hanters_bj_times) >= 3)
+    if(h == 3 && root->vEvent(hanters_bj_times) >= 3)
         makeActBtn("sex_cumface3",act(7));
 }
 
@@ -896,17 +896,17 @@ void HantersLoveSex::bj()
 }
 void HantersLoveSex::bj1()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVEvent(hanters_bj_times,1);
-    root->uVSex(bj_temp,1);
+    root->vEvent(hanters_bj_times) += 1;
+    root->vSex(bj_temp) += 1;
     setVideo(media(getRandInt(31,34)));
     int h = getRandInt(1,3);
-    if(root->vBody(piercingA) == 0) root->setDesc(str(3));
-    if(root->vBody(piercingA) > 0) root->setDesc(str(4));
-    root->addDesc(str(5));
-    if(root->gVEvent(hanters_bj_times) < 3)
-        root->addDesc(str(175));
+    if(root->vBody(piercingA) == 0) root->setText(str(3));
+    if(root->vBody(piercingA) > 0) root->setText(str(4));
+    root->addText(str(5));
+    if(root->vEvent(hanters_bj_times) < 3)
+        root->addText(str(175));
     bj_common1_alt(h);
     bj_common2_alt5();
     bj_common3_alt2(h);
@@ -914,17 +914,17 @@ void HantersLoveSex::bj1()
 }
 void HantersLoveSex::bj2()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVEvent(hanters_bj_times,1);
-    root->uVSex(bj_temp,1);
+    root->vEvent(hanters_bj_times) += 1;
+    root->vSex(bj_temp) += 1;
     setVideo(media(getRandInt(35,41)));
     int h = getRandInt(1,3);
-    if(root->vBody(piercingA) == 0) root->setDesc(str(17));
-    if(root->vBody(piercingA) > 0) root->setDesc(str(18));
-    root->addDesc(str(19));
-    if(root->gVEvent(hanters_bj_times) < 3)
-        root->addDesc(str(174));
+    if(root->vBody(piercingA) == 0) root->setText(str(17));
+    if(root->vBody(piercingA) > 0) root->setText(str(18));
+    root->addText(str(19));
+    if(root->vEvent(hanters_bj_times) < 3)
+        root->addText(str(174));
     bj_common1_alt(h);
     bj_common2_alt5();
     bj_common3_alt2(h);
@@ -932,15 +932,15 @@ void HantersLoveSex::bj2()
 }
 void HantersLoveSex::bj3()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVEvent(hanters_bj_times,1);
-    root->uVSex(bj_temp,1);
+    root->vEvent(hanters_bj_times) += 1;
+    root->vSex(bj_temp) += 1;
     setVideo(media(getRandInt(42,43)));
     int h = getRandInt(1,3);
-    root->setDesc(str(22));
-    if(root->gVEvent(hanters_bj_times) < 3)
-        root->addDesc(str(173));
+    root->setText(str(22));
+    if(root->vEvent(hanters_bj_times) < 3)
+        root->addText(str(173));
     bj_common1_alt(h);
     bj_common2_alt5();
     bj_common3_alt2(h);
@@ -948,15 +948,15 @@ void HantersLoveSex::bj3()
 }
 void HantersLoveSex::bj4()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVEvent(hanters_bj_times,1);
-    root->uVSex(bj_temp,1);
+    root->vEvent(hanters_bj_times) += 1;
+    root->vSex(bj_temp) += 1;
     setVideo(media(getRandInt(44,45)));
     int h = getRandInt(1,3);
-    root->setDesc(str(170));
-    if(root->gVEvent(hanters_bj_times) < 3 && root->vSkill(domination) < 30)
-        root->addDesc(str(171));
+    root->setText(str(170));
+    if(root->vEvent(hanters_bj_times) < 3 && root->vSkill(domination) < 30)
+        root->addText(str(171));
     bj_common1_alt(h);
     bj_common2_alt5();
     bj_common3_alt2(h);
@@ -964,15 +964,15 @@ void HantersLoveSex::bj4()
 }
 void HantersLoveSex::bj5()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVEvent(hanters_bj_times,1);
-    root->uVSex(bj_temp,1);
+    root->vEvent(hanters_bj_times) += 1;
+    root->vSex(bj_temp) += 1;
     setVideo(media(getRandInt(46,49)));
     int h = getRandInt(1,3);
-    root->setDesc(str(168));
-    if(root->gVEvent(hanters_bj_times) < 3 && root->vSC(blowJob) > 20)
-        root->addDesc(str(169));
+    root->setText(str(168));
+    if(root->vEvent(hanters_bj_times) < 3 && root->vStatistics(blowJob) > 20)
+        root->addText(str(169));
     bj_common1_alt(h);
     bj_common2_alt5();
     bj_common3_alt2(h);
@@ -980,17 +980,17 @@ void HantersLoveSex::bj5()
 }
 void HantersLoveSex::bj6()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVEvent(hanters_bj_times,1);
-    root->uVSex(hj_temp,1);
+    root->vEvent(hanters_bj_times) += 1;
+    root->vSex(hj_temp) += 1;
     setVideo(media(getRandInt(50,51)));
     int h = getRandInt(1,3);
-    root->setDesc(str(32));
-    if(root->vSex(harakBoy) > 0) root->addDesc(str(33));
-    if(root->vSex(harakBoy) == 0) root->addDesc(str(34));
-    if(root->gVEvent(hanters_bj_times) < 3 && root->vSC(blowJob) > 10)
-        root->addDesc(str(166));
+    root->setText(str(32));
+    if(root->vSex(harakBoy) > 0) root->addText(str(33));
+    if(root->vSex(harakBoy) == 0) root->addText(str(34));
+    if(root->vEvent(hanters_bj_times) < 3 && root->vStatistics(blowJob) > 10)
+        root->addText(str(166));
     bj_common1_alt(h);
     bj_common2_alt4();
     bj_common3_alt2(h);
@@ -998,15 +998,15 @@ void HantersLoveSex::bj6()
 }
 void HantersLoveSex::bj7()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVEvent(hanters_bj_times,1);
-    root->uVSex(bj_temp,1);
+    root->vEvent(hanters_bj_times) += 1;
+    root->vSex(bj_temp) += 1;
     setVideo(media(getRandInt(52,56)));
     int h = getRandInt(1,3);
-    root->setDesc(str(164));
-    if(root->gVEvent(hanters_bj_times) < 3 && root->vSC(blowJob) > 15)
-        root->addDesc(str(165));
+    root->setText(str(164));
+    if(root->vEvent(hanters_bj_times) < 3 && root->vStatistics(blowJob) > 15)
+        root->addText(str(165));
 
     bj_common1_alt(h);
     bj_common2_alt4();
@@ -1015,15 +1015,15 @@ void HantersLoveSex::bj7()
 }
 void HantersLoveSex::bj8()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVEvent(hanters_bj_times,1);
-    root->uVSex(bj_temp,1);
+    root->vEvent(hanters_bj_times) += 1;
+    root->vSex(bj_temp) += 1;
     setVideo(media(getRandInt(57,58)));
     int h = getRandInt(1,3);
-    root->setDesc(str(161));
-    if(root->gVEvent(hanters_bj_times) < 3 && root->vSkill(domination) > 0)
-        root->addDesc(str(162));
+    root->setText(str(161));
+    if(root->vEvent(hanters_bj_times) < 3 && root->vSkill(domination) > 0)
+        root->addText(str(162));
     bj_common1_alt(h);
     bj_common2_alt4();
     bj_common3_alt2(h);
@@ -1031,49 +1031,49 @@ void HantersLoveSex::bj8()
 }
 void HantersLoveSex::bj9()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
     if(root->vSex(dick) > root->vBody(throat))
-        root->uVBody(throat,1);
-    root->uVEvent(hanters_bj_times,1);
-    root->uVSex(bj_temp,1);
+        root->vBody(throat) += 1;
+    root->vEvent(hanters_bj_times) += 1;
+    root->vSex(bj_temp) += 1;
     setVideo(media(getRandInt(59,60)));
     int h = getRandInt(1,3);
-    root->setDesc(str(156));
+    root->setText(str(156));
     bj_common1_alt(h);
     bj_common2_alt3();
     bj_common3_alt2(h);
-    if(h == 3 && root->gVEvent(hanters_bj_times) >= 3)
+    if(h == 3 && root->vEvent(hanters_bj_times) >= 3)
         makeActBtn("sex_cumface6",act(7));
 }
 void HantersLoveSex::bj10()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
     if(root->vSex(dick) > root->vBody(throat))
-        root->uVBody(throat,1);
-    root->uVEvent(hanters_bj_times,1);
-    root->uVSex(bj_temp,1);
+        root->vBody(throat) += 1;
+    root->vEvent(hanters_bj_times) += 1;
+    root->vSex(bj_temp) += 1;
     setVideo(media(getRandInt(61,64)));
     int h = getRandInt(1,3);
-    root->setDesc(str(155));
+    root->setText(str(155));
     bj_common1_alt(h);
     bj_common2_alt3();
     bj_common3_alt2(h);
-    if(h == 3 && root->gVEvent(hanters_bj_times) >= 3)
+    if(h == 3 && root->vEvent(hanters_bj_times) >= 3)
         makeActBtn("sex_cumface6",act(7));
 }
 void HantersLoveSex::bj11()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVEvent(hanters_bj_times,1);
-    root->uVSex(bj_temp,1);
+    root->vEvent(hanters_bj_times) += 1;
+    root->vSex(bj_temp) += 1;
     setVideo(media(getRandInt(65,69)));
     int h = getRandInt(1,3);
-    root->setDesc(str(37));
-    if(root->gVEvent(hanters_bj_times) < 3 && root->vSC(blowJob) > 20)
-        root->addDesc(str(154));
+    root->setText(str(37));
+    if(root->vEvent(hanters_bj_times) < 3 && root->vStatistics(blowJob) > 20)
+        root->addText(str(154));
     bj_common1_alt(h);
     bj_common2_alt3();
     bj_common3_alt2(h);
@@ -1081,15 +1081,15 @@ void HantersLoveSex::bj11()
 }
 void HantersLoveSex::bj12()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVEvent(hanters_bj_times,1);
-    root->uVSex(bj_temp,1);
+    root->vEvent(hanters_bj_times) += 1;
+    root->vSex(bj_temp) += 1;
     setVideo(media(getRandInt(70,72)));
     int h = getRandInt(1,3);
-    root->setDesc(str(42));
-    if(root->gVEvent(hanters_bj_times) < 3)
-        root->addDesc(str(149));
+    root->setText(str(42));
+    if(root->vEvent(hanters_bj_times) < 3)
+        root->addText(str(149));
     bj_common1_alt(h);
     bj_common2_alt3();
     bj_common3_alt2(h);
@@ -1097,299 +1097,299 @@ void HantersLoveSex::bj12()
 }
 void HantersLoveSex::bj13()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVEvent(hanters_bj_times,1);
-    root->uVSex(bj_temp,1);
+    root->vEvent(hanters_bj_times) += 1;
+    root->vSex(bj_temp) += 1;
     setVideo(media(getRandInt(73,74)));
     int h = getRandInt(1,3);
-    root->setDesc(str(142));
+    root->setText(str(142));
     bj_common1_alt(h);
     bj_common2_alt2();
     bj_common3_alt2(h);
-    if(h == 3 && root->gVEvent(hanters_bj_times) >= 3)
+    if(h == 3 && root->vEvent(hanters_bj_times) >= 3)
         makeActBtn("sex_cumface4",act(7));
 }
 void HantersLoveSex::bj14()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVEvent(hanters_bj_times,1);
-    root->uVSex(bj_temp,1);
+    root->vEvent(hanters_bj_times) += 1;
+    root->vSex(bj_temp) += 1;
     setVideo(media(getRandInt(75,77)));
     int h = getRandInt(1,3);
-    root->setDesc(str(141));
+    root->setText(str(141));
     bj_common1_alt(h);
     bj_common2_alt2();
     bj_common3_alt2(h);
-    if(h == 3 && root->gVEvent(hanters_bj_times) >= 3)
+    if(h == 3 && root->vEvent(hanters_bj_times) >= 3)
         makeActBtn("sex_cumface5",act(7));
 }
 void HantersLoveSex::bj200()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
     setVideo(media(getRandInt(25,30)));
-    root->setDesc(str(44));
-    if(root->vSC(blowJob) >= 10 && root->vSC(blowJob) < 15) makeActBtn("bj1",act(11));
-    if(root->vSC(blowJob) >= 20) makeActBtn("bj2",act(10));
-    if(root->vSC(blowJob) >= 5 && root->vSC(blowJob) < 10) makeActBtn("bj3",act(12));
-    if(root->vSC(blowJob) < 5) makeActBtn("bj4",act(13));
-    if(root->vSC(blowJob) >= 15 && root->vSC(blowJob) < 20) makeActBtn("bj5",act(29));
+    root->setText(str(44));
+    if(root->vStatistics(blowJob) >= 10 && root->vStatistics(blowJob) < 15) makeActBtn("bj1",act(11));
+    if(root->vStatistics(blowJob) >= 20) makeActBtn("bj2",act(10));
+    if(root->vStatistics(blowJob) >= 5 && root->vStatistics(blowJob) < 10) makeActBtn("bj3",act(12));
+    if(root->vStatistics(blowJob) < 5) makeActBtn("bj4",act(13));
+    if(root->vStatistics(blowJob) >= 15 && root->vStatistics(blowJob) < 20) makeActBtn("bj5",act(29));
 }
 void HantersLoveSex::bj_bonus1()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVEvent(hanters_bj_times,-1);
+    root->vEvent(hanters_bj_times) -= 1;
     setVideo(media(78));
-    root->setDesc(str(0));
-    if(root->vSex(harakBoy) == 2) root->addDesc(str(1));
-    if(root->vSex(harakBoy) < 2) root->addDesc(str(2));
+    root->setText(str(0));
+    if(root->vSex(harakBoy) == 2) root->addText(str(1));
+    if(root->vSex(harakBoy) < 2) root->addText(str(2));
     makeActBtn("bj1",act(0));
 }
 void HantersLoveSex::bj_bonus2()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVEvent(hanters_bj_times,-1);
+    root->vEvent(hanters_bj_times) -= 1;
     setVideo(media(79));
-    root->setDesc(str(13));
-    if(root->vSex(harakBoy) == 2) root->addDesc(str(14));
-    if(root->vSex(harakBoy) < 2) root->addDesc(str(15));
-    root->addDesc(str(16));
+    root->setText(str(13));
+    if(root->vSex(harakBoy) == 2) root->addText(str(14));
+    if(root->vSex(harakBoy) < 2) root->addText(str(15));
+    root->addText(str(16));
     makeActBtn("bj2",act(0));
 }
 void HantersLoveSex::bj_bonus3()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVEvent(hanters_bj_times,-1);
+    root->vEvent(hanters_bj_times) -= 1;
     setVideo(media(80));
-    root->setDesc(str(172));
+    root->setText(str(172));
     makeActBtn("bj3",act(0));
 }
 void HantersLoveSex::bj_bonus4()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVSkill(domination,-1);
-    root->uVEvent(hanters_bj_times,-1);
+    root->vSkill(domination) -= 1;
+    root->vEvent(hanters_bj_times) -= 1;
     setVideo(media(81));
-    root->setDesc(str(24));
-    if(root->vSex(harakBoy) == 2) root->addDesc(str(25));
-    if(root->vSex(harakBoy) == 0) root->addDesc(str(26));
+    root->setText(str(24));
+    if(root->vSex(harakBoy) == 2) root->addText(str(25));
+    if(root->vSex(harakBoy) == 0) root->addText(str(26));
     makeActBtn("bj4",act(0));
 }
 void HantersLoveSex::bj_bonus5()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVEvent(hanters_bj_times,-1);
-    root->uVSex(lubonus,getRandInt(1,3));
+    root->vEvent(hanters_bj_times) -= 1;
+    root->vSex(lubonus) += getRandInt(1,3);
     setVideo(media(82));
-    root->setDesc(str(167));
+    root->setText(str(167));
     makeActBtn("bj5",act(0));
 }
 void HantersLoveSex::bj_bonus6()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVSkill(domination,1);
-    root->uVEvent(hanters_bj_times,-1);
+    root->vSkill(domination) += 1;
+    root->vEvent(hanters_bj_times) -= 1;
     setVideo(media(83));
-    root->setDesc(str(29));
-    if(root->vSex(harakBoy) == 2) root->addDesc(str(30));
-    if(root->vSex(harakBoy) < 2) root->addDesc(str(31));
+    root->setText(str(29));
+    if(root->vSex(harakBoy) == 2) root->addText(str(30));
+    if(root->vSex(harakBoy) < 2) root->addText(str(31));
     makeActBtn("bj6",act(0));
 }
 void HantersLoveSex::bj_bonus7()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVEvent(hanters_bj_times,-1);
+    root->vEvent(hanters_bj_times) -= 1;
     setVideo(media(84));
-    root->setDesc(str(163));
+    root->setText(str(163));
     makeActBtn("bj7",act(0));
 }
 void HantersLoveSex::bj_bonus8()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVSkill(domination,1);
-    if(root->vSex(harakBoy) > 0) root->uVEvent(hanters_bj_times,-1);
-    if(root->vSex(harakBoy) == 0) root->uVEvent(hanters_bj_times,1);
+    root->vSkill(domination) += 1;
+    if(root->vSex(harakBoy) > 0) root->vEvent(hanters_bj_times) -= 1;
+    if(root->vSex(harakBoy) == 0) root->vEvent(hanters_bj_times) += 1;
     setVideo(media(85));
-    root->setDesc(str(157));
-    if(root->vSex(harakBoy) == 2) root->addDesc(str(158));
-    if(root->vSex(harakBoy) == 1) root->addDesc(str(159));
-    if(root->vSex(harakBoy) == 0) root->addDesc(str(160));
+    root->setText(str(157));
+    if(root->vSex(harakBoy) == 2) root->addText(str(158));
+    if(root->vSex(harakBoy) == 1) root->addText(str(159));
+    if(root->vSex(harakBoy) == 0) root->addText(str(160));
     makeActBtn("bj8",act(0));
 }
 void HantersLoveSex::bj_bonus11()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVEvent(hanters_bj_times,1);
+    root->vEvent(hanters_bj_times) += 1;
     setVideo(media(86));
-    root->setDesc(str(150));
-    if(root->vSex(harakBoy) == 2) root->addDesc(str(151));
-    if(root->vSex(harakBoy) == 1) root->addDesc(str(152));
-    if(root->vSex(harakBoy) == 0) root->addDesc(str(153));
+    root->setText(str(150));
+    if(root->vSex(harakBoy) == 2) root->addText(str(151));
+    if(root->vSex(harakBoy) == 1) root->addText(str(152));
+    if(root->vSex(harakBoy) == 0) root->addText(str(153));
     makeActBtn("bj11",act(0));
 }
 void HantersLoveSex::bj_bonus12()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
     if(root->vSex(dick) > root->vBody(throat))
-        root->uVBody(throat,1);
-    root->uVEvent(hanters_bj_times,-1);
+        root->vBody(throat) += 1;
+    root->vEvent(hanters_bj_times) -= 1;
     setVideo(media(87));
-    root->setDesc(str(39));
-    if(root->vSex(harakBoy) == 2) root->addDesc(str(40));
-    if(root->vSex(harakBoy) == 1) root->addDesc(str(148));
-    if(root->vSex(harakBoy) == 0) root->addDesc(str(41));
+    root->setText(str(39));
+    if(root->vSex(harakBoy) == 2) root->addText(str(40));
+    if(root->vSex(harakBoy) == 1) root->addText(str(148));
+    if(root->vSex(harakBoy) == 0) root->addText(str(41));
     makeActBtn("bj12",act(0));
 }
 
 void HantersLoveSex::bj_bonusH1()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVEvent(hanters_bj_times,-1);
+    root->vEvent(hanters_bj_times) -= 1;
     setVideo(media(78));
-    root->setDesc(str(0));
+    root->setText(str(0));
     if(root->vSex(harakBoy) == 2)
-        root->addDesc(str(1));
+        root->addText(str(1));
     if(root->vSex(harakBoy) < 2)
-        root->addDesc(str(2));
+        root->addText(str(2));
     makeActBtn("bjH1",act(0));
 }
 void HantersLoveSex::bj_bonusH2()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVEvent(hanters_bj_times,-1);
+    root->vEvent(hanters_bj_times) -= 1;
     setVideo(media(79));
-    root->setDesc(str(13));
+    root->setText(str(13));
     if(root->vSex(harakBoy) == 2)
-        root->addDesc(str(14));
+        root->addText(str(14));
     if(root->vSex(harakBoy) < 2)
-        root->addDesc(str(15));
-    root->addDesc(str(16));
+        root->addText(str(15));
+    root->addText(str(16));
     makeActBtn("bjH2",act(0));
 }
 void HantersLoveSex::bj_bonusH3()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVEvent(hanters_bj_times,-1);
+    root->vEvent(hanters_bj_times) -= 1;
     setVideo(media(80));
-    root->setDesc(str(21));
+    root->setText(str(21));
     makeActBtn("bjH3",act(0));
 }
 void HantersLoveSex::bj_bonusH4()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVEvent(hanters_bj_times,-1);
+    root->vEvent(hanters_bj_times) -= 1;
     setVideo(media(81));
-    root->setDesc(str(24));
+    root->setText(str(24));
     if(root->vSex(harakBoy) == 2)
-        root->addDesc(str(25));
+        root->addText(str(25));
     if(root->vSex(harakBoy) < 2)
-        root->addDesc(str(26));
+        root->addText(str(26));
     makeActBtn("bjH4",act(0));
 }
 void HantersLoveSex::bj_bonusH6()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVEvent(hanters_bj_times,-1);
+    root->vEvent(hanters_bj_times) -= 1;
     setVideo(media(83));
-    root->setDesc(str(29));
+    root->setText(str(29));
     if(root->vSex(harakBoy) == 2)
-        root->addDesc(str(30));
+        root->addText(str(30));
     if(root->vSex(harakBoy) < 2)
-        root->addDesc(str(31));
+        root->addText(str(31));
     makeActBtn("bjH6",act(0));
 }
 void HantersLoveSex::bj_bonusH7()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVEvent(hanters_bj_times,-1);
+    root->vEvent(hanters_bj_times) -= 1;
     setVideo(media(86));
-    root->setDesc(str(36));
+    root->setText(str(36));
     makeActBtn("bjH7",act(0));
 }
 void HantersLoveSex::bj_bonusH8()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVBody(throat,1);
-    root->uVEvent(hanters_bj_times,-1);
+    root->vBody(throat) += 1;
+    root->vEvent(hanters_bj_times) -= 1;
     setVideo(media(87));
-    root->setDesc(str(39));
+    root->setText(str(39));
     if(root->vSex(harakBoy) == 2)
-        root->addDesc(str(40));
+        root->addText(str(40));
     if(root->vSex(harakBoy) < 2)
-        root->addDesc(str(41));
+        root->addText(str(41));
     makeActBtn("bjH8",act(0));
 }
 
 void HantersLoveSex::bjH1()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVEvent(hanters_bj_times,1);
-    root->uVSex(bj_temp,1);
+    root->vEvent(hanters_bj_times) += 1;
+    root->vSex(bj_temp) += 1;
     setVideo(media(getRandInt(31,34)));
     if(root->vBody(piercingA) == 0)
-        root->setDesc(str(3));
+        root->setText(str(3));
     if(root->vBody(piercingA) > 0)
-        root->setDesc(str(4));
-    root->addDesc(str(5));
-    if(root->gVEvent(hanters_bj_times) < 3)
-        root->addDesc(str(6));
+        root->setText(str(4));
+    root->addText(str(5));
+    if(root->vEvent(hanters_bj_times) < 3)
+        root->addText(str(6));
     bj_common();
 }
 void HantersLoveSex::bjH2()
 {
     root->incTime(5);
-    root->uVEvent(hanters_bj_times,1);
-    root->uVSex(bj_temp,1);
+    root->vEvent(hanters_bj_times) += 1;
+    root->vSex(bj_temp) += 1;
     setVideo(media(getRandInt(35,41)));
     if(root->vBody(piercingA) == 0)
-        root->addDesc(str(17));
+        root->addText(str(17));
     if(root->vBody(piercingA) > 0)
-        root->addDesc(str(18));
-    root->addDesc(str(19));
-    if(root->gVEvent(hanters_bj_times) < 3)
-        root->addDesc(str(20));
+        root->addText(str(18));
+    root->addText(str(19));
+    if(root->vEvent(hanters_bj_times) < 3)
+        root->addText(str(20));
     bj_common();
 }
 void HantersLoveSex::bjH3()
 {
     root->incTime(5);
-    root->uVEvent(hanters_bj_times,1);
-    root->uVSex(bj_temp,1);
+    root->vEvent(hanters_bj_times) += 1;
+    root->vSex(bj_temp) += 1;
     setVideo(media(getRandInt(42,43)));
-    root->addDesc(str(22));
-    if(root->gVEvent(hanters_bj_times) < 3)
-        root->addDesc(str(23));
+    root->addText(str(22));
+    if(root->vEvent(hanters_bj_times) < 3)
+        root->addText(str(23));
     bj_common();
 }
 void HantersLoveSex::bjH4()
 {
     root->incTime(5);
-    root->uVEvent(hanters_bj_times,1);
-    root->uVSex(bj_temp,1);
+    root->vEvent(hanters_bj_times) += 1;
+    root->vSex(bj_temp) += 1;
     setVideo(media(getRandInt(44,45)));
-    root->setDesc(str(27));
-    if(root->gVEvent(hanters_bj_times) < 3)
-        root->addDesc(str(28));
+    root->setText(str(27));
+    if(root->vEvent(hanters_bj_times) < 3)
+        root->addText(str(28));
 
     int h = getRandInt(1,3);
     bj_common1(h);
@@ -1400,14 +1400,14 @@ void HantersLoveSex::bjH4()
 void HantersLoveSex::bjH6()
 {
     root->incTime(5);
-    root->uVEvent(hanters_bj_times,1);
-    root->uVSex(bj_temp,1);
+    root->vEvent(hanters_bj_times) += 1;
+    root->vSex(bj_temp) += 1;
     setVideo(media(getRandInt(50,51)));
-    root->addDesc(str(32));
-    if(root->vSex(harakBoy) > 0) root->addDesc(str(33));
-    if(root->vSex(harakBoy) == 0) root->addDesc(str(34));
-    if(root->gVEvent(hanters_bj_times) < 3)
-        root->addDesc(str(35));
+    root->addText(str(32));
+    if(root->vSex(harakBoy) > 0) root->addText(str(33));
+    if(root->vSex(harakBoy) == 0) root->addText(str(34));
+    if(root->vEvent(hanters_bj_times) < 3)
+        root->addText(str(35));
     int h = getRandInt(1,3);
     bj_common1(h);
     bj_common2();
@@ -1417,30 +1417,30 @@ void HantersLoveSex::bjH6()
 void HantersLoveSex::bjH7()
 {
     root->incTime(5);
-    root->uVEvent(hanters_bj_times,1);
-    root->uVSex(bj_temp,1);
+    root->vEvent(hanters_bj_times) += 1;
+    root->vSex(bj_temp) += 1;
     setVideo(media(getRandInt(65,69)));
-    root->addDesc(str(37));
-    if(root->gVEvent(hanters_bj_times) < 3)
-        root->addDesc(str(38));
+    root->addText(str(37));
+    if(root->vEvent(hanters_bj_times) < 3)
+        root->addText(str(38));
     bj_common();
 }
 void HantersLoveSex::bjH8()
 {
     root->incTime(5);
-    root->uVEvent(hanters_bj_times,1);
-    root->uVSex(bj_temp,1);
+    root->vEvent(hanters_bj_times) += 1;
+    root->vSex(bj_temp) += 1;
     setVideo(media(getRandInt(70,72)));
-    root->addDesc(str(42));
-    if(root->gVEvent(hanters_bj_times) < 3)
-        root->addDesc(str(43));
+    root->addText(str(42));
+    if(root->vEvent(hanters_bj_times) < 3)
+        root->addText(str(43));
     bj_common();
 }
 
 void HantersLoveSex::sex_common1(int i, int j, int h)
 {
-    if(h < 3) root->addDesc(str(47));
-    if(h == 3) root->addDesc(str(46));
+    if(h < 3) root->addText(str(47));
+    if(h == 3) root->addText(str(46));
     if(h < 3 && j < 3 && i == 1) makeActBtn("sex_misionary",act(20));
     if(h < 3 && j < 3 && i == 2) makeActBtn("sex_dog",act(5));
     if(h < 3 && j < 3 && i == 3) makeActBtn("sex_cow",act(4));
@@ -1453,8 +1453,8 @@ void HantersLoveSex::sex_common1(int i, int j, int h)
 }
 void HantersLoveSex::sex_common2(int i, int j, int h)
 {
-    if(h < 3) root->addDesc(str(47));
-    if(h == 3) root->addDesc(str(46));
+    if(h < 3) root->addText(str(47));
+    if(h == 3) root->addText(str(46));
     if(h < 3 && j < 3 && i == 1) makeActBtn("sex_misionary",act(20));
     if(h < 3 && j < 3 && i == 2) makeActBtn("sex_dog",act(5));
     if(h < 3 && j < 3 && i == 3) makeActBtn("sex_cow",act(4));
@@ -1467,8 +1467,8 @@ void HantersLoveSex::sex_common2(int i, int j, int h)
 }
 void HantersLoveSex::sex_common3(int i, int j, int h)
 {
-    if(h < 3) root->addDesc(str(47));
-    if(h == 3) root->addDesc(str(46));
+    if(h < 3) root->addText(str(47));
+    if(h == 3) root->addText(str(46));
     if(h < 3 && j < 3 && i == 1) makeActBtn("sex_misionary",act(20));
     if(h < 3 && j < 3 && i == 2) makeActBtn("sex_dog",act(5));
     if(h < 3 && j < 3 && i == 3) makeActBtn("sex_bell",act(6));
@@ -1481,8 +1481,8 @@ void HantersLoveSex::sex_common3(int i, int j, int h)
 }
 void HantersLoveSex::sex_common4(int i, int j, int h)
 {
-    if(h < 3) root->addDesc(str(47));
-    if(h == 3) root->addDesc(str(46));
+    if(h < 3) root->addText(str(47));
+    if(h == 3) root->addText(str(46));
     if(h < 3 && j < 3 && i == 1) makeActBtn("sex_cow",act(4));
     if(h < 3 && j < 3 && i == 2) makeActBtn("sex_misionary",act(20));
     if(h < 3 && j < 3 && i == 3) makeActBtn("sex_bell",act(6));
@@ -1495,8 +1495,8 @@ void HantersLoveSex::sex_common4(int i, int j, int h)
 }
 void HantersLoveSex::sex_common5(int i, int j, int h)
 {
-    if(h < 3) root->addDesc(str(47));
-    if(h == 3) root->addDesc(str(46));
+    if(h < 3) root->addText(str(47));
+    if(h == 3) root->addText(str(46));
     if(h < 3 && j < 3 && i == 1) makeActBtn("sex_cow",act(4));
     if(h < 3 && j < 3 && i == 2) makeActBtn("sex_dog",act(5));
     if(h < 3 && j < 3 && i == 3) makeActBtn("sex_bell",act(6));
@@ -1510,23 +1510,23 @@ void HantersLoveSex::sex_common5(int i, int j, int h)
 
 void HantersLoveSex::sex_69()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVStatus(horny,getRandInt(10,20));
-    root->uVSex(bj_temp,1);
-    root->uVSex(kuni_temp,1);
+    root->vStatus(horny) += getRandInt(10,20);
+    root->vSex(bj_temp) += 1;
+    root->vSex(kuni_temp) += 1;
     setVideo(media(getRandInt(139,141)));
-    root->setDesc(str(84));
+    root->setText(str(84));
     if(root->vStatus(horny) >= 90)
     {
-        root->sVStatus(lust,0);
-        root->sVStatus(horny,0);
-        root->uVStatus(mood,15);
-        root->uVSC(orgasm,1);
-        root->addDesc(str(85));
+        root->vStatus(lust) = 0;
+        root->vStatus(horny) = 0;
+        root->vStatus(mood) += 15;
+        root->vStatistics(orgasm) +=1;
+        root->addText(str(85));
     }
     else
-        root->addDesc(str(86));
+        root->addText(str(86));
     int i,j,h;
     i = getRandInt(1,4);
     j = getRandInt(1,3);
@@ -1537,13 +1537,13 @@ void HantersLoveSex::sex_69()
 
 void HantersLoveSex::sex_bell()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVSex(sex_temp,1);
-    root->sVSex(pose,1);
+    root->vSex(sex_temp) += 1;
+    root->vSex(pose) = 1;
     setVideo(media(getRandInt(129,134)));
-    root->setDesc(str(94));
-    root->sVSex(protect,1);
+    root->setText(str(94));
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
     int i,j,h,g;
@@ -1551,8 +1551,8 @@ void HantersLoveSex::sex_bell()
     j = getRandInt(1,3);
     h = getRandInt(1,3);
     g = getRandInt(1,2);
-    if(g == 1 && h < 3 && root->vSC(vaginalSex) > 10) root->addDesc(str(95));
-    if(g == 2 && h < 3 && root->vSC(vaginalSex) > 20) root->addDesc(str(96));
+    if(g == 1 && h < 3 && root->vStatistics(vaginalSex) > 10) root->addText(str(95));
+    if(g == 2 && h < 3 && root->vStatistics(vaginalSex) > 20) root->addText(str(96));
     sex_common2(i,j,h);
     int k = getRandInt(1,2);
     if(k == 1 && h == 3) makeActBtn("sex_cum5",act(7));
@@ -1560,32 +1560,32 @@ void HantersLoveSex::sex_bell()
 }
 void HantersLoveSex::sex_bell_anal()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(10);
-    root->uVSex(anal_temp,1);
+    root->vSex(anal_temp) += 1;
     setVideo(media(146));
-    root->setDesc(str(83));
+    root->setText(str(83));
     root->analStart(tDick);
     root->anal(tDick);
-    root->addDesc(str(46));
+    root->addText(str(46));
     int i = getRandInt(1,2);
     if(i == 1) makeActBtn("sex_cum1",act(7));
     if(i == 2) makeActBtn("sex_cum5",act(7));
 }
 void HantersLoveSex::sex_bell_analH()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVSex(anal_temp,1);
+    root->vSex(anal_temp) += 1;
     setVideo(media(146));
-    root->setDesc(str(45));
+    root->setText(str(45));
     root->analStart(tDick);
     root->anal(tDick);
     int i = getRandInt(1,2);
     int j = getRandInt(1,3);
     int h = getRandInt(1,2);
-    if(h == 1) root->addDesc(str(46));
-    if(h == 2) root->addDesc(str(47));
+    if(h == 1) root->addText(str(46));
+    if(h == 2) root->addText(str(47));
     if(h == 1 && i == 1) makeActBtn("sex_cum1",act(7));
     if(h == 1 && i == 2) makeActBtn("sex_cum5",act(7));
     if(h == 2 && j == 1) makeActBtn("sex_missionary_analH",act(3));
@@ -1594,12 +1594,12 @@ void HantersLoveSex::sex_bell_analH()
 }
 void HantersLoveSex::sex_bell_bonus()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     setVideo(media(175));
-    root->setDesc(str(93));
-    root->sVSex(protect,1);
+    root->setText(str(93));
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
     int i,j,h;
@@ -1613,14 +1613,14 @@ void HantersLoveSex::sex_bell_bonus()
 }
 void HantersLoveSex::sex_bell_bonus1()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     setVideo(media(165));
-    root->setDesc(str(90));
-    if(root->vSex(harakBoy) == 2) root->addDesc(str(91));
-    if(root->vSex(harakBoy) < 2) root->addDesc(str(92));
-    root->sVSex(protect,1);
+    root->setText(str(90));
+    if(root->vSex(harakBoy) == 2) root->addText(str(91));
+    if(root->vSex(harakBoy) < 2) root->addText(str(92));
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
     int i,j,h;
@@ -1635,12 +1635,12 @@ void HantersLoveSex::sex_bell_bonus1()
 
 void HantersLoveSex::sex_cow()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->sVSex(pose,2);
+    root->vSex(pose) = 2;
     setVideo(media(getRandInt(123,124)));
-    root->setDesc(str(106));
-    root->sVSex(protect,1);
+    root->setText(str(106));
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
     int i,j,h,g;
@@ -1648,8 +1648,8 @@ void HantersLoveSex::sex_cow()
     j = getRandInt(1,3);
     h = getRandInt(1,3);
     g = getRandInt(1,2);
-    if(g == 1 && h < 3 && root->vSC(vaginalSex) > 20) root->addDesc(str(107));
-    if(g == 2 && h < 3 && root->vSC(vaginalSex) > 10) root->addDesc(str(108));
+    if(g == 1 && h < 3 && root->vStatistics(vaginalSex) > 20) root->addText(str(107));
+    if(g == 2 && h < 3 && root->vStatistics(vaginalSex) > 10) root->addText(str(108));
     sex_common3(i,j,h);
     int k = getRandInt(1,2);
     if(k == 1 && h == 3) makeActBtn("sex_cum4",act(7));
@@ -1657,60 +1657,60 @@ void HantersLoveSex::sex_cow()
 }
 void HantersLoveSex::sex_cow_anal()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(10);
-    root->uVSex(anal_temp,1);
+    root->vSex(anal_temp) += 1;
     setVideo(media(getRandInt(149,150)));
-    root->setDesc(str(83));
+    root->setText(str(83));
     root->analStart(tDick);
     root->anal(tDick);
-    root->addDesc(str(46));
+    root->addText(str(46));
     int i = getRandInt(1,2);
     if(i == 1) makeActBtn("sex_cum1",act(7));
     if(i == 2) makeActBtn("sex_cum4",act(7));
 }
 void HantersLoveSex::sex_cow_anal1()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(10);
-    root->uVSex(anal_temp,1);
+    root->vSex(anal_temp) += 1;
     setVideo(media(getRandInt(147,148)));
-    root->setDesc(str(83));
+    root->setText(str(83));
     root->analStart(tDick);
     root->anal(tDick);
-    root->addDesc(str(46));
+    root->addText(str(46));
     int i = getRandInt(1,2);
     if(i == 1) makeActBtn("sex_cum1",act(7));
     if(i == 2) makeActBtn("sex_cum4",act(7));
 }
 void HantersLoveSex::sex_cow_anal2()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(10);
-    root->uVSex(anal_temp,1);
+    root->vSex(anal_temp) += 1;
     setVideo(media(151));
-    root->setDesc(str(83));
+    root->setText(str(83));
     root->analStart(tDick);
     root->anal(tDick);
-    root->addDesc(str(46));
+    root->addText(str(46));
     int i = getRandInt(1,2);
     if(i == 1) makeActBtn("sex_cum1",act(7));
     if(i == 2) makeActBtn("sex_cum4",act(7));
 }
 void HantersLoveSex::sex_cow_analH()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVSex(anal_temp,1);
+    root->vSex(anal_temp) += 1;
     setVideo(media(getRandInt(147,151)));
-    root->setDesc(str(48));
+    root->setText(str(48));
     root->analStart(tDick);
     root->anal(tDick);
     int i = getRandInt(1,2);
     int j = getRandInt(1,3);
     int h = getRandInt(1,2);
-    if(h == 1) root->addDesc(str(46));
-    if(h == 2) root->addDesc(str(47));
+    if(h == 1) root->addText(str(46));
+    if(h == 2) root->addText(str(47));
     if(h == 1 && i == 1) makeActBtn("sex_cum1",act(7));
     if(h == 1 && i == 2) makeActBtn("sex_cum4",act(7));
     if(h == 2 && j == 1) makeActBtn("sex_missionary_analH",act(3));
@@ -1719,15 +1719,15 @@ void HantersLoveSex::sex_cow_analH()
 }
 void HantersLoveSex::sex_cow_bonus()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->sVSex(pose,2);
+    root->vSex(pose) = 2;
     setVideo(media(getRandInt(169,171)));
-    root->setDesc(str(104));
-    root->sVSex(protect,1);
+    root->setText(str(104));
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
-    if(root->vSC(vaginalSex) > 30) root->addDesc(str(105));
+    if(root->vStatistics(vaginalSex) > 30) root->addText(str(105));
     int i,j,h;
     i = getRandInt(1,4);
     j = getRandInt(1,3);
@@ -1739,14 +1739,14 @@ void HantersLoveSex::sex_cow_bonus()
 }
 void HantersLoveSex::sex_cow_bonus1()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->sVSex(pose,2);
+    root->vSex(pose) = 2;
     setVideo(media(getRandInt(172,174)));
-    root->setDesc(str(101));
-    if(root->vSex(harakBoy) == 2) root->addDesc(str(102));
-    if(root->vSex(harakBoy) < 2) root->addDesc(str(103));
-    root->sVSex(protect,1);
+    root->setText(str(101));
+    if(root->vSex(harakBoy) == 2) root->addText(str(102));
+    if(root->vSex(harakBoy) < 2) root->addText(str(103));
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
     int i,j,h;
@@ -1754,8 +1754,8 @@ void HantersLoveSex::sex_cow_bonus1()
     j = getRandInt(1,3);
     h = getRandInt(1,3);
 
-    if(h < 3) root->addDesc(str(47));
-    if(h == 3) root->addDesc(str(46));
+    if(h < 3) root->addText(str(47));
+    if(h == 3) root->addText(str(46));
     if(h < 3 && j < 3 && i == 1) makeActBtn("sex_misionary",act(20));
     if(h < 3 && j < 3 && i == 2) makeActBtn("sex_dog",act(5));
     if(h < 3 && j < 3 && i == 3) makeActBtn("sex_bell",act(6));
@@ -1772,16 +1772,16 @@ void HantersLoveSex::sex_cow_bonus1()
 }
 void HantersLoveSex::sex_cow_bonus2()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->sVSex(pose,2);
+    root->vSex(pose) = 2;
     setVideo(media(137));
-    root->setDesc(str(98));
-    if(root->vSex(harakBoy) == 2) root->addDesc(str(99));
-    root->sVSex(protect,1);
+    root->setText(str(98));
+    if(root->vSex(harakBoy) == 2) root->addText(str(99));
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
-    root->addDesc(str(100));
+    root->addText(str(100));
     int i,j,h;
     i = getRandInt(1,4);
     j = getRandInt(1,3);
@@ -1793,12 +1793,12 @@ void HantersLoveSex::sex_cow_bonus2()
 }
 void HantersLoveSex::sex_cow_bonus3()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->sVSex(pose,2);
+    root->vSex(pose) = 2;
     setVideo(media(138));
-    root->setDesc(str(97));
-    root->sVSex(protect,1);
+    root->setText(str(97));
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
     int i,j,h;
@@ -1813,11 +1813,11 @@ void HantersLoveSex::sex_cow_bonus3()
 
 void HantersLoveSex::sex_dog()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     setVideo(media(getRandInt(119,122)));
-    root->setDesc(str(115));
+    root->setText(str(115));
     root->sexStart();
     root->vaginal(tDick);
     int i,j,h,g;
@@ -1825,9 +1825,9 @@ void HantersLoveSex::sex_dog()
     j = getRandInt(1,3);
     h = getRandInt(1,3);
     g = getRandInt(1,2);
-    if(g == 1 && h < 3 && root->vSC(vaginalSex) > 20) root->addDesc(str(116));
-    if(g == 1 && h < 3 && root->vSC(vaginalSex) <= 20) root->addDesc(str(117));
-    if(g == 2 && h < 3 && root->vSC(vaginalSex) > 20) root->addDesc(str(118));
+    if(g == 1 && h < 3 && root->vStatistics(vaginalSex) > 20) root->addText(str(116));
+    if(g == 1 && h < 3 && root->vStatistics(vaginalSex) <= 20) root->addText(str(117));
+    if(g == 2 && h < 3 && root->vStatistics(vaginalSex) > 20) root->addText(str(118));
     sex_common4(i,j,h);
     int k = getRandInt(1,2);
     if(k == 1 && h == 3) makeActBtn("sex_cum3",act(7));
@@ -1835,32 +1835,32 @@ void HantersLoveSex::sex_dog()
 }
 void HantersLoveSex::sex_dog_anal()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVSex(anal_temp,1);
+    root->vSex(anal_temp) += 1;
     setVideo(media(getRandInt(144,145)));
-    root->setDesc(str(83));
+    root->setText(str(83));
     root->analStart(tDick);
     root->anal(tDick);
-    root->addDesc(str(46));
+    root->addText(str(46));
     int i = getRandInt(1,2);
     if(i == 1) makeActBtn("sex_cum1",act(7));
     if(i == 2) makeActBtn("sex_cum3",act(7));
 }
 void HantersLoveSex::sex_dog_analH()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVSex(anal_temp,1);
+    root->vSex(anal_temp) += 1;
     setVideo(media(getRandInt(144,145)));
-    root->setDesc(str(49));
+    root->setText(str(49));
     root->analStart(tDick);
     root->anal(tDick);
     int i = getRandInt(1,2);
     int j = getRandInt(1,3);
     int h = getRandInt(1,2);
-    if(h == 1) root->addDesc(str(46));
-    if(h == 2) root->addDesc(str(47));
+    if(h == 1) root->addText(str(46));
+    if(h == 2) root->addText(str(47));
     if(h == 1 && i == 1) makeActBtn("sex_cum1",act(7));
     if(h == 1 && i == 2) makeActBtn("sex_cum3",act(7));
     if(h == 2 && j == 1) makeActBtn("sex_missionary_analH",act(3));
@@ -1869,16 +1869,16 @@ void HantersLoveSex::sex_dog_analH()
 }
 void HantersLoveSex::sex_dog_bonus()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVSkill(domination,1);
-    root->sVSex(pose,1);
+    root->vSkill(domination) += 1;
+    root->vSex(pose) = 1;
     setVideo(media(getRandInt(166,168)));
-    root->setDesc(str(109));
-    if(root->vSex(harakBoy) == 2) root->addDesc(str(110));
-    if(root->vSex(harakBoy) == 1) root->addDesc(str(111));
-    if(root->vSex(harakBoy) == 0) root->addDesc(str(112));
-    root->sVSex(protect,1);
+    root->setText(str(109));
+    if(root->vSex(harakBoy) == 2) root->addText(str(110));
+    if(root->vSex(harakBoy) == 1) root->addText(str(111));
+    if(root->vSex(harakBoy) == 0) root->addText(str(112));
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
     int i,j,h;
@@ -1892,12 +1892,12 @@ void HantersLoveSex::sex_dog_bonus()
 }
 void HantersLoveSex::sex_dog_bonus1()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     setVideo(media(getRandInt(162,164)));
-    root->setDesc(str(113));
-    root->sVSex(protect,1);
+    root->setText(str(113));
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
     int i,j,h;
@@ -1911,11 +1911,11 @@ void HantersLoveSex::sex_dog_bonus1()
 }
 void HantersLoveSex::sex_dog_bonus2()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     setVideo(media(getRandInt(176,177)));
-    root->setDesc(str(114));
+    root->setText(str(114));
     root->sexStart();
     root->vaginal(tDick);
     int i,j,h;
@@ -1930,45 +1930,45 @@ void HantersLoveSex::sex_dog_bonus2()
 
 void HantersLoveSex::sex_kuni()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVSkill(domination,1);
+    root->vSkill(domination) += 1;
     if(root->vSex(hanters_kuni) == 0)
     {
         setVideo(media(88));
         if(root->vSkill(domination) <= 50)
         {
-            root->addDesc(str(129));
-            if(root->vSex(harakBoy) == 2) root->addDesc(str(130));
-            if(root->vSex(harakBoy) == 0) root->addDesc(str(131));
+            root->addText(str(129));
+            if(root->vSex(harakBoy) == 2) root->addText(str(130));
+            if(root->vSex(harakBoy) == 0) root->addText(str(131));
             makeActBtn("sex_misionary",act(0));
         }
         else
         {
-            if(root->vSex(harakBoy) == 2) root->addDesc(str(132));
-            if(root->vSex(harakBoy) == 1) root->addDesc(str(133));
-            if(root->vSex(harakBoy) == 0) root->addDesc(str(134));
+            if(root->vSex(harakBoy) == 2) root->addText(str(132));
+            if(root->vSex(harakBoy) == 1) root->addText(str(133));
+            if(root->vSex(harakBoy) == 0) root->addText(str(134));
             makeActBtn("start_kuni",act(23));
         }
     }
     else
     {
-        root->uVSC(getKuni,1);
-        root->uVSex(kuni_temp,1);
+        root->vStatistics(getKuni) += 1;
+        root->vSex(kuni_temp) += 1;
         setVideo(media(getRandInt(125,128)));
-        root->setDesc(str(135));
+        root->setText(str(135));
         if(root->vStatus(horny) >= 90)
         {
-            root->sVStatus(lust,0);
-            root->sVStatus(horny,0);
-            root->uVStatus(mood,15);
-            root->uVSC(orgasm,1);
-            root->addDesc(str(85));
+            root->vStatus(lust) = 0;
+            root->vStatus(horny) = 0;
+            root->vStatus(mood) += 15;
+            root->vStatistics(orgasm) = 1;
+            root->addText(str(85));
         }
         else
-            root->addDesc(str(86));
+            root->addText(str(86));
         if(root->vSkill(domination) >= 75)
-            root->addDesc(str(136));
+            root->addText(str(136));
         int i = getRandInt(1,5);
         if(i == 1) makeActBtn("sex_misionary",act(0));
         if(i == 2) makeActBtn("sex_cow",act(0));
@@ -1979,28 +1979,28 @@ void HantersLoveSex::sex_kuni()
 }
 void HantersLoveSex::sex_kuni_bonus()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    if(root->vSex(silavag) == 0) root->uVStatus(horny,15);
-    if(root->vSex(silavag) == 1) root->uVStatus(horny,20);
-    if(root->vSex(silavag) == 2) root->sVStatus(horny,25);
+    if(root->vSex(silavag) == 0) root->vStatus(horny) += 15;
+    if(root->vSex(silavag) == 1) root->vStatus(horny) += 20;
+    if(root->vSex(silavag) == 2) root->vStatus(horny) = 25;
     setVideo(media(getRandInt(178,179)));
-    if(root->vSex(harakBoy) == 2) root->setDesc(str(123));
-    root->setDesc(str(124));
-    if(root->vSex(harakBoy) > 0) root->addDesc(str(125));
-    if(root->vSex(harakBoy) == 0) root->addDesc(str(126));
+    if(root->vSex(harakBoy) == 2) root->setText(str(123));
+    root->setText(str(124));
+    if(root->vSex(harakBoy) > 0) root->addText(str(125));
+    if(root->vSex(harakBoy) == 0) root->addText(str(126));
     if(root->vStatus(horny) >= 90)
     {
-        root->sVStatus(lust,0);
-        root->sVStatus(horny,0);
-        root->uVStatus(mood,15);
-        root->uVSC(orgasm,1);
-        root->addDesc(str(85));
+        root->vStatus(lust) = 0;
+        root->vStatus(horny) = 0;
+        root->vStatus(mood) += 15;
+        root->vStatistics(orgasm) += 1;
+        root->addText(str(85));
     }
     else
-        root->addDesc(str(86));
-    root->addDesc(str(127));
-    if(root->vSex(harakBoy) > 0) root->addDesc(str(128));
+        root->addText(str(86));
+    root->addText(str(127));
+    if(root->vSex(harakBoy) > 0) root->addText(str(128));
     int i = getRandInt(1,5);
     if(i == 1) makeActBtn("sex_misionary",act(0));
     if(i == 2) makeActBtn("sex_cow",act(0));
@@ -2011,13 +2011,13 @@ void HantersLoveSex::sex_kuni_bonus()
 
 void HantersLoveSex::sex_misionary()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVSex(sex_temp,1);
-    root->sVSex(pose,0);
+    root->vSex(sex_temp) += 1;
+    root->vSex(pose) = 0;
     setVideo(media(getRandInt(115,118)));
-    root->setDesc(str(137));
-    root->sVSex(protect,1);
+    root->setText(str(137));
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
     int i,j,h,g;
@@ -2025,12 +2025,12 @@ void HantersLoveSex::sex_misionary()
     j = getRandInt(1,3);
     h = getRandInt(1,3);
     g = getRandInt(1,2);
-    if(g == 1 && h < 3 && root->vSC(vaginalSex) > 30) root->addDesc(str(138));
-    if(g == 2 && h < 3) root->addDesc(str(139));
+    if(g == 1 && h < 3 && root->vStatistics(vaginalSex) > 30) root->addText(str(138));
+    if(g == 2 && h < 3) root->addText(str(139));
     if(root->vSex(hanters_kuni) == 0 && root->vSkill(domination) > 30 && h < 3)
-        root->addDesc(str(140));
-    if(h < 3) root->addDesc(str(47));
-    if(h == 3) root->addDesc(str(46));
+        root->addText(str(140));
+    if(h < 3) root->addText(str(47));
+    if(h == 3) root->addText(str(46));
     if(h < 3 && j < 3 && root->vSex(hanters_kuni) == 0 && (i == 8 || i == 1 || i == 2))
         makeActBtn("sex_cow",act(4));
     if(h < 3 && j < 3 && root->vSex(hanters_kuni) == 0 && (i == 9 || i == 3 || i == 4))
@@ -2052,32 +2052,32 @@ void HantersLoveSex::sex_misionary()
 }
 void HantersLoveSex::sex_misionary_anal()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(10);
-    root->uVSex(anal_temp,1);
+    root->vSex(anal_temp) += 1;
     setVideo(media(getRandInt(142,143)));
-    root->setDesc(str(83));
+    root->setText(str(83));
     root->analStart(tDick);
     root->anal(tDick);
-    root->addDesc(str(46));
+    root->addText(str(46));
     int i = getRandInt(1,2);
     if(i == 1) makeActBtn("sex_cum1",act(7));
     if(i == 2) makeActBtn("sex_cum2",act(7));
 }
 void HantersLoveSex::sex_misionary_analH()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVSex(anal_temp,1);
+    root->vSex(anal_temp) += 1;
     setVideo(media(getRandInt(142,143)));
-    root->setDesc(str(50));
+    root->setText(str(50));
     root->analStart(tDick);
     root->anal(tDick);
     int i = getRandInt(1,2);
     int j = getRandInt(1,3);
     int h = getRandInt(1,2);
-    if(h == 1) root->addDesc(str(46));
-    if(h == 2) root->addDesc(str(47));
+    if(h == 1) root->addText(str(46));
+    if(h == 2) root->addText(str(47));
     if(h == 1 && i == 1) makeActBtn("sex_cum1",act(7));
     if(h == 1 && i == 2) makeActBtn("sex_cum2",act(7));
     if(h == 2 && j == 1) makeActBtn("sex_cow_analH",act(4));
@@ -2087,13 +2087,13 @@ void HantersLoveSex::sex_misionary_analH()
 }
 void HantersLoveSex::sex_misionary_bonus()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVSkill(domination,1);
-    root->sVSex(pose,0);
+    root->vSkill(domination) += 1;
+    root->vSex(pose) = 0;
     setVideo(media(getRandInt(155,158)));
-    root->setDesc(str(120));
-    root->sVSex(protect,1);
+    root->setText(str(120));
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
     int i,j,h;
@@ -2101,7 +2101,7 @@ void HantersLoveSex::sex_misionary_bonus()
     j = getRandInt(1,3);
     h = getRandInt(1,3);
     if(root->vSkill(agility) > 60 && root->vSkill(domination) > 30 && root->vBody(bodyGroup) < 2)
-        root->addDesc(str(121));
+        root->addText(str(121));
     sex_common5(i,j,h);
     int k = getRandInt(1,2);
     if(k == 1 && h == 3) makeActBtn("sex_cum2",act(7));
@@ -2110,14 +2110,14 @@ void HantersLoveSex::sex_misionary_bonus()
 }
 void HantersLoveSex::sex_misionary_bonus1()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVSkill(agility,1);
-    root->uVSkill(domination,1);
-    root->sVSex(pose,0);
+    root->vSkill(agility) += 1;
+    root->vSkill(domination) += 1;
+    root->vSex(pose) = 0;
     setVideo(media(159));
-    root->setDesc(str(120));
-    root->sVSex(protect,1);
+    root->setText(str(120));
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
     int i,j,h;
@@ -2131,12 +2131,12 @@ void HantersLoveSex::sex_misionary_bonus1()
 }
 void HantersLoveSex::sex_misionary_bonus2()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->sVSex(pose,0);
+    root->vSex(pose) = 0;
     setVideo(media(getRandInt(160,161)));
-    root->setDesc(str(119));
-    root->sVSex(protect,1);
+    root->setText(str(119));
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
     int i,j,h;
@@ -2151,19 +2151,19 @@ void HantersLoveSex::sex_misionary_bonus2()
 
 void HantersLoveSex::sex_hand()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVSex(sex_temp,1);
-    root->sVSex(pose,2);
+    root->vSex(sex_temp) += 1;
+    root->vSex(pose) = 2;
     setVideo(media(135));
-    root->setDesc(str(88));
+    root->setText(str(88));
     root->sexStart();
     root->vaginal(tDick);
     int i,j,h;
     i = getRandInt(1,4);
     j = getRandInt(1,3);
     h = getRandInt(1,3);
-    if(h < 3) root->addDesc(str(89));
+    if(h < 3) root->addText(str(89));
     sex_common1(i,j,h);
     int k = getRandInt(1,2);
     if(k == 1 && h == 3) makeActBtn("sex_cum10",act(7));
@@ -2171,12 +2171,12 @@ void HantersLoveSex::sex_hand()
 }
 void HantersLoveSex::sex_hand_bonus()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->sVSex(pose,2);
+    root->vSex(pose) = 2;
     setVideo(media(136));
-    root->setDesc(str(87));
-    root->sVSex(protect,1);
+    root->setText(str(87));
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
     int i,j,h;
@@ -2191,9 +2191,9 @@ void HantersLoveSex::sex_hand_bonus()
 
 void HantersLoveSex::sex_cum_common()
 {
-    if(root->vSex(silavag) == 0 && root->vSex(dikos) == 0) root->addDesc(str(53));
-    if(root->vSex(silavag) == 1 && root->vSex(dikos) == 1) root->addDesc(str(54));
-    if(root->vSex(silavag) == 2 && root->vSex(dikos) == 2) root->addDesc(str(55));
+    if(root->vSex(silavag) == 0 && root->vSex(dikos) == 0) root->addText(str(53));
+    if(root->vSex(silavag) == 1 && root->vSex(dikos) == 1) root->addText(str(54));
+    if(root->vSex(silavag) == 2 && root->vSex(dikos) == 2) root->addText(str(55));
     if(root->vSex(silavag) == 1 && root->vSex(dikos) < 1 && root->vStatus(horny) >= 60 && root->vBody(vagina) > 0)
         makeActBtn("want_more1.0",act(14));
     if(root->vSex(silavag) == 2 && root->vSex(dikos) < 2 && root->vStatus(horny) >= 60 && root->vBody(vagina) > 0)
@@ -2202,89 +2202,89 @@ void HantersLoveSex::sex_cum_common()
 }
 void HantersLoveSex::sex_cum1()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVStatus(sweat,1);
+    root->vStatus(sweat) += 1;
     resetCounters();
     root->cum("anus");
     setVideo(media(2));
-    root->setDesc(str(82));
+    root->setText(str(82));
     sex_cum_common();
 }
 void HantersLoveSex::sex_cum2()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVStatus(sweat,1);
+    root->vStatus(sweat) += 1;
     resetCounters();
     root->cum("belly");
     setVideo(media(3));
-    root->setDesc(str(80));
-    if(root->vSex(harakBoy) == 2) root->addDesc(str(81));
+    root->setText(str(80));
+    if(root->vSex(harakBoy) == 2) root->addText(str(81));
     sex_cum_common();
 }
 void HantersLoveSex::sex_cum3()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVStatus(sweat,1);
+    root->vStatus(sweat) += 1;
     resetCounters();
     root->cum("ass");
     setVideo(media(4));
-    root->setDesc(str(77));
-    if(root->vSex(harakBoy) == 2) root->addDesc(str(78));
-    if(root->vSex(harakBoy) == 0) root->addDesc(str(79));
+    root->setText(str(77));
+    if(root->vSex(harakBoy) == 2) root->addText(str(78));
+    if(root->vSex(harakBoy) == 0) root->addText(str(79));
     sex_cum_common();
 }
 void HantersLoveSex::sex_cum4()
 {
-    root->rendImagePage();
+    root->rendImagePage(this);
     root->incTime(5);
-    root->uVStatus(sweat,1);
+    root->vStatus(sweat) += 1;
     resetCounters();
     root->cum("ass");
     root->setImage(media(5));
-    root->setDesc(str(75));
+    root->setText(str(75));
     sex_cum_common();
 }
 void HantersLoveSex::sex_cum41()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVStatus(sweat,1);
+    root->vStatus(sweat) += 1;
     resetCounters();
     root->cum("belly");
     setVideo(media(11));
-    root->setDesc(str(76));
+    root->setText(str(76));
     sex_cum_common();
 }
 void HantersLoveSex::sex_cum5()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVStatus(sweat,1);
+    root->vStatus(sweat) += 1;
     resetCounters();
     root->cum("ass");
     setVideo(media(6));
-    root->setDesc(str(75));
+    root->setText(str(75));
     sex_cum_common();
 }
 void HantersLoveSex::sex_cum6()
 {
-    root->rendImagePage();
+    root->rendImagePage(this);
     root->incTime(5);
-    root->uVStatus(sweat,1);
+    root->vStatus(sweat) += 1;
     resetCounters();
     if(root->vSex(protect) == 1)
     {
         root->setImage(media(12));
-        root->setDesc(str(72));
+        root->setText(str(72));
         sex_cum_common();
     }
     else
     {
         root->setImage(media(7));
-        root->setDesc(str(73));
+        root->setText(str(73));
         root->cum("pussy");
         sex_cum_common();
     }
@@ -2292,20 +2292,20 @@ void HantersLoveSex::sex_cum6()
 void HantersLoveSex::sex_cum7()
 {
     root->incTime(5);
-    root->uVStatus(sweat,1);
+    root->vStatus(sweat) += 1;
     resetCounters();
     if(root->vSex(protect) == 1)
     {
-        root->rendImagePage();
+        root->rendImagePage(this);
         root->setImage(media(13));
-        root->setDesc(str(72));
+        root->setText(str(72));
         sex_cum_common();
     }
     else
     {
-        root->rendVideoPage();
+        root->rendVideoPage(this);
         setVideo(media(8));
-        root->setDesc(str(73));
+        root->setText(str(73));
         root->cum("pussy");
         sex_cum_common();
     }
@@ -2313,20 +2313,20 @@ void HantersLoveSex::sex_cum7()
 void HantersLoveSex::sex_cum8()
 {
     root->incTime(5);
-    root->uVStatus(sweat,1);
+    root->vStatus(sweat) += 1;
     resetCounters();
     if(root->vSex(protect) == 1)
     {
-        root->rendImagePage();
+        root->rendImagePage(this);
         root->setImage(media(14));
-        root->setDesc(str(72));
+        root->setText(str(72));
         sex_cum_common();
     }
     else
     {
-        root->rendVideoPage();
+        root->rendVideoPage(this);
         setVideo(media(9));
-        root->setDesc(str(73));
+        root->setText(str(73));
         root->cum("pussy");
         sex_cum_common();
     }
@@ -2334,70 +2334,70 @@ void HantersLoveSex::sex_cum8()
 void HantersLoveSex::sex_cum81()
 {
     root->incTime(5);
-    root->uVStatus(sweat,1);
+    root->vStatus(sweat) += 1;
     resetCounters();
     if(root->vSex(protect) == 1)
     {
-        root->rendImagePage();
+        root->rendImagePage(this);
         root->setImage(media(16));
-        root->setDesc(str(72));
+        root->setText(str(72));
         sex_cum_common();
     }
     else
     {
-        root->rendVideoPage();
+        root->rendVideoPage(this);
         setVideo(media(15));
-        root->setDesc(str(73));
+        root->setText(str(73));
         root->cum("pussy");
         sex_cum_common();
     }
 }
 void HantersLoveSex::sex_cum9()
 {
-    root->rendImagePage();
+    root->rendImagePage(this);
     root->incTime(5);
-    root->uVStatus(sweat,1);
+    root->vStatus(sweat) += 1;
     resetCounters();
     if(root->vSex(protect) == 1)
     {
         root->setImage(media(17));
-        root->setDesc(str(72));
+        root->setText(str(72));
         sex_cum_common();
     }
     else
     {
         root->setImage(media(10));
-        root->setDesc(str(73));
+        root->setText(str(73));
         sex_cum_common();
     }
 }
 void HantersLoveSex::sex_cum10()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVStatus(sweat,1);
+    root->vStatus(sweat) += 1;
     resetCounters();
     root->cum("belly");
     setVideo(media(0));
-    root->setDesc(str(74));
+    root->setText(str(74));
     sex_cum_common();
 }
 void HantersLoveSex::sex_cum11()
 {
-    root->rendImagePage();
+    root->rendImagePage(this);
     root->incTime(5);
-    root->uVStatus(sweat,1);
+    root->vStatus(sweat) += 1;
     resetCounters();
     if(root->vSex(protect) == 1)
     {
         root->setImage(media(12));
-        root->setDesc(str(72));
+        root->setText(str(72));
         sex_cum_common();
     }
     else
     {
         root->setImage(media(1));
-        root->setDesc(str(73));
+        root->setText(str(73));
         root->cum("pussy");
         sex_cum_common();
     }
@@ -2405,97 +2405,97 @@ void HantersLoveSex::sex_cum11()
 
 void HantersLoveSex::sex_cumface1()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVStatus(sweat,1);
+    root->vStatus(sweat) += 1;
     resetCounters();
     root->cum("face");
     setVideo(media(18));
-    root->setDesc(str(70));
-    if(root->vSex(harakBoy) > 0) root->addDesc(str(71));
+    root->setText(str(70));
+    if(root->vSex(harakBoy) > 0) root->addText(str(71));
     sex_cum_common();
 }
 void HantersLoveSex::sex_cumface2()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVStatus(sweat,1);
+    root->vStatus(sweat) += 1;
     resetCounters();
     root->cum("lip");
     setVideo(media(19));
-    root->setDesc(str(51));
+    root->setText(str(51));
     makeActBtn("swallow",act(18));
     makeActBtn("spit_it_out",act(19));
 }
 void HantersLoveSex::sex_cumface3()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVStatus(sweat,1);
-    root->uVSC(handJob,1);
+    root->vStatus(sweat) += 1;
+    root->vStatistics(handJob) += 1;
     resetCounters();
     setVideo(media(20));
-    root->setDesc(str(64));
-    if(root->vSex(harakBoy) > 0) root->addDesc(str(65));
+    root->setText(str(64));
+    if(root->vSex(harakBoy) > 0) root->addText(str(65));
     sex_cum_common();
 }
 void HantersLoveSex::sex_cumface4()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVStatus(sweat,1);
+    root->vStatus(sweat) += 1;
     resetCounters();
     root->cum("belly");
     setVideo(media(21));
-    root->setDesc(str(62));
-    if(root->vSex(harakBoy) == 2) root->addDesc(str(63));
+    root->setText(str(62));
+    if(root->vSex(harakBoy) == 2) root->addText(str(63));
     sex_cum_common();
 }
 void HantersLoveSex::sex_cumface5()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVStatus(sweat,1);
+    root->vStatus(sweat) += 1;
     resetCounters();
     root->cum("face");
     setVideo(media(22));
-    root->setDesc(str(60));
-    if(root->vSex(harakBoy) == 2) root->addDesc(str(61));
+    root->setText(str(60));
+    if(root->vSex(harakBoy) == 2) root->addText(str(61));
     sex_cum_common();
 }
 void HantersLoveSex::sex_cumface6()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVStatus(sweat,1);
+    root->vStatus(sweat) += 1;
     root->cum("lip");
-    root->uVSC(swallow,1);
+    root->vStatistics(swallow) += 1;
     resetCounters();
     setVideo(media(23));
-    root->setDesc(str(58));
-    if(root->vSex(harakBoy) == 2) root->addDesc(str(59));
+    root->setText(str(58));
+    if(root->vSex(harakBoy) == 2) root->addText(str(59));
     sex_cum_common();
 }
 void HantersLoveSex::sex_cumface7()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(5);
-    root->uVStatus(sweat,1);
+    root->vStatus(sweat) += 1;
     resetCounters();
     root->cum("lip");
     root->cum("face");
     setVideo(media(24));
-    root->setDesc(str(51));
-    if(root->vSex(harakBoy) < 2) root->addDesc(str(52));
+    root->setText(str(51));
+    if(root->vSex(harakBoy) < 2) root->addText(str(52));
     sex_cum_common();
 }
 
 void HantersLoveSex::sub()
 {
-    root->rendImagePage();
+    root->rendImagePage(this);
     root->incTime(5);
     root->setImage(media(180));
-    root->setDesc(str(176));
+    root->setText(str(176));
     int i = getRandInt(1,8);
     if(i == 1 || i == 7) makeActBtn("bj200",act(9));
     if(i == 2 || i == 8) makeActBtn("sex_misionary",act(3));
@@ -2509,28 +2509,28 @@ void HantersLoveSex::resetCounters()
 {
     if(root->vSex(sex_temp) > 0)
     {
-        root->sVSex(sex_temp,0);
-        root->uVSC(vaginalSex,1);
+        root->vSex(sex_temp) =0;
+        root->vStatistics(vaginalSex) +=1;
     }
     if(root->vSex(bj_temp) > 0)
     {
-        root->sVSex(bj_temp,0);
-        root->uVSC(blowJob,1);
+        root->vSex(bj_temp) = 0;
+        root->vStatistics(blowJob) += 1;
     }
     if(root->vSex(hj_temp) > 0)
     {
-        root->sVSex(hj_temp,0);
-        root->uVSC(handJob,1);
+        root->vSex(hj_temp) = 0;
+        root->vStatistics(handJob) += 1;
     }
     if(root->vSex(kuni_temp) > 0)
     {
-        root->sVSex(kuni_temp,0);
-        root->uVSC(getKuni,1);
+        root->vSex(kuni_temp) =0;
+        root->vStatistics(getKuni) += 1;
     }
     if(root->vSex(anal_temp) > 0)
     {
-        root->sVSex(anal_temp,0);
-        root->uVSC(analSex,1);
+        root->vSex(anal_temp) =0;
+        root->vStatistics(analSex) += 1;
     }
 }
 
@@ -2539,7 +2539,7 @@ void HantersLoveSex::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action,"HantersLoveSex");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &HantersLoveSex::actionHandler);
-    root->addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString HantersLoveSex::str(int id)

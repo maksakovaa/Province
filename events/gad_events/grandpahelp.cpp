@@ -1,9 +1,9 @@
 #include "grandpahelp.h"
-#include "../eventhandler.h"
+#include "../../game.h"
 #include "../../menu/buttons.h"
 #include "../../Functions.h"
 
-GrandpaHelp::GrandpaHelp(EventHandler* ptr): root(ptr) {}
+GrandpaHelp::GrandpaHelp(Game* ptr): root(ptr) {}
 
 void GrandpaHelp::start(QString arg)
 {
@@ -15,36 +15,36 @@ void GrandpaHelp::actionHandler(QString action)
     if(action == "grandpahelp")
     {
         root->setImage(media(0));
-        root->setDesc(str(0));
+        root->setText(str(0));
         int mon = root->getMonth();
         if(mon >= 1 && mon <= 4)
-            root->sVEvent(grandpahelping,getRandInt(0,5));
+            root->vEvent(grandpahelping) = getRandInt(0,5);
         if(mon == 5)
-            root->sVEvent(grandpahelping,getRandInt(6,11));
+            root->vEvent(grandpahelping) = getRandInt(6,11);
         if(mon == 6 || mon == 9)
-            root->sVEvent(grandpahelping,getRandInt(12,21));
+            root->vEvent(grandpahelping) = getRandInt(12,21);
         if(mon == 7 || mon == 8)
-            root->sVEvent(grandpahelping,getRandInt(22,32));
+            root->vEvent(grandpahelping) = getRandInt(22,32);
         if(mon >= 10 && mon <= 12)
-            root->sVEvent(grandpahelping,getRandInt(0,4));
+            root->vEvent(grandpahelping) = getRandInt(0,4);
         fnGrandpaHelping();
     }
     if(action == "clean_yard")
     {
         root->incTime(60);
-        root->uVEvent(grandpahelp,1);
-        root->uVQuest(grandpaQW,1);
-        root->uVStatus(day_weight,-1);
+        root->vEvent(grandpahelp) +=1;
+        root->vQuest(grandpaQW) += 1;
+        root->vStatus(day_weight) -= 1;
         if(root->getMonth() >= 4 && root->getMonth() <= 10)
         {
-            root->uVSkill(strenght,1);
+            root->vSkill(strenght) += 1;
             root->setImage(media(1));
-            root->setDesc(str(2));
+            root->setText(str(2));
         }
         else
         {
             root->setImage(media(2));
-            root->setDesc(str(3));
+            root->setText(str(3));
         }
         makeActBtn("gaddvor",act(1));
     }
@@ -55,10 +55,10 @@ void GrandpaHelp::actionHandler(QString action)
     if(action == "take_firewood")
     {
         root->incTime(15);
-        root->uVEvent(grandpahelp,1);
-        root->uVQuest(grandpaQW,1);
+        root->vEvent(grandpahelp) += 1;
+        root->vQuest(grandpaQW)+=1;
         genimage();
-        root->setDesc(str(5));
+        root->setText(str(5));
         makeActBtn("gadhouse",act(1));
     }
     if(action == "gadhouse")
@@ -67,10 +67,10 @@ void GrandpaHelp::actionHandler(QString action)
     }
     if(action == "feed_horse")
     {
-        root->sVJob(feed_horse,1);
+        root->vJob(feed_horse) =1;
         root->incTime(15);
         genimage();
-        root->setDesc(str(7));
+        root->setText(str(7));
         makeActBtn("gadsarai",act(4));
     }
     if(action == "gadsarai")
@@ -80,68 +80,68 @@ void GrandpaHelp::actionHandler(QString action)
     if(action == "feed_cow")
     {
         root->incTime(15);
-        root->sVJob(feed_cow,1);
+        root->vJob(feed_cow) =1;
         genimage();
-        root->setDesc(str(9));
+        root->setText(str(9));
         makeActBtn("gadsarai",act(4));
     }
     if(action == "comb_horse")
     {
-        root->sVJob(comb_horse,1);
+        root->vJob(comb_horse) =1;
         root->incTime(15);
         genimage();
-        root->setDesc(str(11));
+        root->setText(str(11));
         makeActBtn("gadsarai",act(4));
     }
     if(action == "feed_boar")
     {
-        root->sVJob(feed_boar,1);
+        root->vJob(feed_boar) =1;
         root->incTime(15);
         genimage();
-        root->setDesc(str(13));
+        root->setText(str(13));
         makeActBtn("gadsarai",act(4));
     }
     if(action == "horse_field")
     {
-        root->sVJob(horse_field,1);
+        root->vJob(horse_field) = 1;
         root->incTime(10);
         root->setImage(media(3));
-        root->setDesc(str(17));
+        root->setText(str(17));
         makeActBtn("gadsarai",act(4));
     }
     if(action == "cow_field")
     {
-        root->sVJob(cow_field,1);
+        root->vJob(cow_field) =1;
         root->incTime(10);
         root->setImage(media(3));
-        root->setDesc(str(18));
+        root->setText(str(18));
         makeActBtn("gadsarai",act(4));
     }
     if(action == "graze_cow")
     {
-        root->sVJob(graze_cow,1);
-        root->uVStatus(mood,20);
-        root->uVStatus(health,10);
-        root->sVStatus(cumLips,0);
-        root->sVStatus(water,24);
-        root->uVStatus(energy,10);
+        root->vJob(graze_cow) =1;
+        root->vStatus(mood) +=20;
+        root->vStatus(health) += 10;
+        root->vStatus(cumLips) = 0;
+        root->vStatus(water) = 24;
+        root->vStatus(energy) += 10;
         if(root->vStatus(energy) > 24)
-            root->uVStatus(day_weight,2);
+            root->vStatus(day_weight) += 2;
         else if(root->vStatus(energy) > 15 && root->vStatus(energy) < 25)
-            root->uVStatus(day_weight,1);
+            root->vStatus(day_weight) += 1;
         root->incTime(20);
         //$inventory[5+'_count'] += 1
         //$inventory[6+'_count'] += 1
-        if(root->gVJob(graze_cow_exp) == 0)
+        if(root->vJob(graze_cow_exp) == 0)
         {
             root->setImage(media(3));
-            root->setDesc(str(21));
+            root->setText(str(21));
             makeActBtn("gadsarai",act(4));
         }
         else
         {
             root->setImage(media(4));
-            root->setDesc(str(22));
+            root->setText(str(22));
             makeActBtn("graze_field",act(4));
         }
     }
@@ -151,18 +151,18 @@ void GrandpaHelp::actionHandler(QString action)
     }
     if(action == "horse_river")
     {
-        root->sVJob(horse_river,1);
+        root->vJob(horse_river) = 1;
         root->incTime(10);
         root->setImage(media(3));
-        root->setDesc(str(17));
+        root->setText(str(17));
         makeActBtn("gadsarai",act(4));
     }
     if(action == "haying_time")
     {
-        root->sVJob(haying_time,1);
+        root->vJob(haying_time) = 1;
         root->incTime(40);
         root->setImage(media(5));
-        root->setDesc(str(28));
+        root->setText(str(28));
         makeActBtn("field",act(4));
     }
     if(action == "field")
@@ -176,7 +176,7 @@ void GrandpaHelp::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action,"GrandpaHelp");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &GrandpaHelp::actionHandler);
-    root->addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString GrandpaHelp::str(int id)
@@ -210,13 +210,13 @@ QString GrandpaHelp::str(int id)
     str[23] = "<npc>- Внучка, сегодня хорошая погода. Отведи Буяна на речку, искупай его. Да и сама искупаешься.</npc>";
     str[24] = "<npc>- Света, внучка, сходи-ка в лес за грибами. Что-то грибочков жареных захотелось.</npc>"
         "<hero>- А сколько нужно, деда?</hero> - спросили вы."
-        "<npc>- Да " + intQStr(root->gVJob(grandpa_boletus)) + " кг будет достаточно,</npc> - ответил дедушка. <npc>- Только смотри, не заблудись внучка.</npc>";
+        "<npc>- Да " + intQStr(root->vJob(grandpa_boletus)) + " кг будет достаточно,</npc> - ответил дедушка. <npc>- Только смотри, не заблудись внучка.</npc>";
     str[25] = "<npc>- Света, внучка, сходи-ка в лес за ягодами. Бабушка варенья наварит.</npc>"
               "<hero>- А сколько нужно, деда?</hero> - спросили вы."
-              "<npc>- Да " + intQStr(root->gVJob(grandpa_bilberry)) + " кг будет достаточно,</npc> - ответил дедушка. <npc>- Только смотри, не заблудись внучка.</npc>";
+              "<npc>- Да " + intQStr(root->vJob(grandpa_bilberry)) + " кг будет достаточно,</npc> - ответил дедушка. <npc>- Только смотри, не заблудись внучка.</npc>";
     str[26] = "<npc>- Света, внучка, сходи-ка в лес за ягодами и грибами. Бабушка супа грибного сварит, да и ягод свежих поедим.</npc>"
               "<hero>- А сколько нужно, деда?</hero> - спросили вы."
-              "<npc>- Да " + intQStr(root->gVJob(grandpa_boletus)) + " кг грибов и " + intQStr(root->gVJob(grandpa_bilberry)) + " кг ягод будет достаточно,</npc> - ответил дедушка. <npc>- Только смотри, не заблудись внучка.</npc>";
+              "<npc>- Да " + intQStr(root->vJob(grandpa_boletus)) + " кг грибов и " + intQStr(root->vJob(grandpa_bilberry)) + " кг ягод будет достаточно,</npc> - ответил дедушка. <npc>- Только смотри, не заблудись внучка.</npc>";
     str[27] = "<npc>- Внучка, сегодня сенокос. Надо идти на поле и помочь.</npc>"
               "<hero>- Хорошо, деда,</hero> - ответили вы. Потом, взяв грабли, отправились на поле ";
     str[28] = "Вы взяли грабли и пошли на поле, где уже собирались остальные местные жители.";
@@ -232,7 +232,7 @@ QString GrandpaHelp::act(int id)
     act[3] = "Идти в сарай";
     act[4] = "Далее";
     act[5] = "Идти ";
-    if(root->gVJob(graze_cow_exp) == 0)
+    if(root->vJob(graze_cow_exp) == 0)
         act[5] += "в сарай";
     else
         act[5] += "на поле";
@@ -255,42 +255,42 @@ QString GrandpaHelp::media(int id)
 
 void GrandpaHelp::fnGrandpaHelping()
 {
-    int help = root->gVEvent(grandpahelping);
+    int help = root->vEvent(grandpahelping);
     if(help == 0 || help == 6 || help == 12 || help == 22)
     {
-        root->setDesc(str(1));
+        root->setText(str(1));
         makeActBtn("clean_yard",act(0));
     }
     if(help == 1 || help == 7)
     {
-        root->setDesc(str(4));
+        root->setText(str(4));
         makeActBtn("take_firewood",act(2));
     }
     if(help == 2)
     {
-        root->setDesc(str(6));
+        root->setText(str(6));
         makeActBtn("feed_horse",act(3));
     }
     if(help == 3)
     {
-        root->setDesc(str(8));
+        root->setText(str(8));
         makeActBtn("feed_cow",act(3));
     }
     if(help == 4)
     {
-        root->setDesc(str(10));
+        root->setText(str(10));
         makeActBtn("comb_horse",act(3));
     }
     if(help == 5 || help == 13 || help == 23)
     {
-        root->setDesc(str(12));
+        root->setText(str(12));
         makeActBtn("feed_boar",act(4));
     }
     if(help == 8 || help == 14 || help == 24)
     {
-        if(root->getWeekNum() > 5 || root->getWeekNum() == 0)
+        if(root->getWeek() > 5 || root->getWeek() == 0)
         {
-            root->setDesc(str(10));
+            root->setText(str(10));
             makeActBtn("comb_horse",act(3));
         }
         else
@@ -300,7 +300,7 @@ void GrandpaHelp::fnGrandpaHelping()
     {
         if(root->getHour() >= 6 && root->getHour() < 9)
         {
-            root->setDesc(str(15));
+            root->setText(str(15));
             makeActBtn("horse_field",act(3));
         }
         else
@@ -310,7 +310,7 @@ void GrandpaHelp::fnGrandpaHelping()
     {
         if(root->getHour() >= 6 && root->getHour() < 9)
         {
-            root->setDesc(str(16));
+            root->setText(str(16));
             makeActBtn("cow_field",act(3));
         }
         else
@@ -320,10 +320,10 @@ void GrandpaHelp::fnGrandpaHelping()
     {
         if(root->getHour() >= 6 && root->getHour() < 9)
         {
-            if(root->gVJob(graze_cow_exp) == 0)
-                root->setDesc(str(19));
-            if(root->gVJob(graze_cow_exp) > 0)
-                root->setDesc(str(20));
+            if(root->vJob(graze_cow_exp) == 0)
+                root->setText(str(19));
+            if(root->vJob(graze_cow_exp) > 0)
+                root->setText(str(20));
             makeActBtn("graze_cow",act(5));
         }
         else
@@ -331,9 +331,9 @@ void GrandpaHelp::fnGrandpaHelping()
     }
     if(help == 18 || help == 28)
     {
-        if(root->getTemp() >= 20 && root->getSunWeather() >= 0 && (root->getWeekNum() == 0 || root->getWeekNum() > 5))
+        if(root->getTemp() >= 20 && root->getSunWeather() >= 0 && (root->getWeek() == 0 || root->getWeek() > 5))
         {
-            root->setDesc(str(23));
+            root->setText(str(23));
             makeActBtn("horse_river",act(3));
         }
         else
@@ -341,11 +341,11 @@ void GrandpaHelp::fnGrandpaHelping()
     }
     if(help == 19 || help == 29)
     {
-        if(root->gVJob(go_in_boletus) == 0 && root->gVJob(go_in_bilberry) == 0 && root->gVJob(go_in_boletus_bilberry) == 0)
+        if(root->vJob(go_in_boletus) == 0 && root->vJob(go_in_bilberry) == 0 && root->vJob(go_in_boletus_bilberry) == 0)
         {
-            root->sVJob(grandpa_boletus,getRandInt(2,3));
-            root->sVJob(go_in_boletus,1);
-            root->setDesc(str(24));
+            root->vJob(grandpa_boletus) = getRandInt(2,3);
+            root->vJob(go_in_boletus) = 1;
+            root->setText(str(24));
             makeActBtn("back_to_loc",act(1));
         }
         else
@@ -353,11 +353,11 @@ void GrandpaHelp::fnGrandpaHelping()
     }
     if(help == 20 || help == 30)
     {
-        if(root->gVJob(go_in_boletus) == 0 && root->gVJob(go_in_bilberry) == 0 && root->gVJob(go_in_boletus_bilberry) == 0)
+        if(root->vJob(go_in_boletus) == 0 && root->vJob(go_in_bilberry) == 0 && root->vJob(go_in_boletus_bilberry) == 0)
         {
-            root->sVJob(grandpa_bilberry,getRandInt(3,5));
-            root->sVJob(go_in_bilberry,1);
-            root->setDesc(str(25));
+            root->vJob(grandpa_bilberry) = getRandInt(3,5);
+            root->vJob(go_in_bilberry) = 1;
+            root->setText(str(25));
             makeActBtn("back_to_loc",act(1));
         }
         else
@@ -365,12 +365,12 @@ void GrandpaHelp::fnGrandpaHelping()
     }
     if(help == 21 || help == 31)
     {
-        if(root->gVJob(go_in_boletus) == 0 && root->gVJob(go_in_bilberry) == 0 && root->gVJob(go_in_boletus_bilberry) == 0)
+        if(root->vJob(go_in_boletus) == 0 && root->vJob(go_in_bilberry) == 0 && root->vJob(go_in_boletus_bilberry) == 0)
         {
-            root->sVJob(grandpa_boletus,getRandInt(2,3));
-            root->sVJob(grandpa_bilberry,getRandInt(2,3));
-            root->sVJob(go_in_boletus_bilberry,1);
-            root->setDesc(str(26));
+            root->vJob(grandpa_boletus) = getRandInt(2,3);
+            root->vJob(grandpa_bilberry) = getRandInt(2,3);
+            root->vJob(go_in_boletus_bilberry) = 1;
+            root->setText(str(26));
             makeActBtn("back_to_loc",act(1));
         }
         else
@@ -380,7 +380,7 @@ void GrandpaHelp::fnGrandpaHelping()
     {
         if(root->getTemp() >= 20 && root->getSunWeather() >= 0 && root->getHour() >= 6 && root->getHour() < 9)
         {
-            root->setDesc(str(27));
+            root->setText(str(27));
             makeActBtn("haying_time",act(6));
         }
         else
@@ -399,6 +399,6 @@ void GrandpaHelp::genimage()
 
 void GrandpaHelp::no_job_today()
 {
-    root->setDesc(str(14));
+    root->setText(str(14));
     makeActBtn("back_to_loc",act(1));
 }

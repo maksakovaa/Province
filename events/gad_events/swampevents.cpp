@@ -1,9 +1,9 @@
 #include "swampevents.h"
 #include "../../menu/buttons.h"
-#include "../eventhandler.h"
+#include "../../game.h"
 #include "../../locations/gadukino/backwater.h"
 
-SwampEvents::SwampEvents(EventHandler *ptr): root(ptr){}
+SwampEvents::SwampEvents(Game *ptr): root(ptr){}
 
 void SwampEvents::start(QString arg)
 {
@@ -14,24 +14,24 @@ void SwampEvents::actionHandler(QString action)
 {
     if(action == "dress_after_backwater")
     {
-        root->sVStatus(clothesbackwater,0);
-        root->sVStatus(swamp_clothes,0);
+        root->vStatus(clothesbackwater) = 0;
+        root->vStatus(swamp_clothes) = 0;
         root->changeLoc(root->getCurLoc());
     }
     if(action == "backwater_ralax")
     {
         root->incTime(5);
-        root->sVEvent(hantersRape, 3);
+        root->vEvent(hantersRape) = 3;
         root->setImage(media(0));
-        root->setDesc(str(0));
+        root->setText(str(0));
         root->startEvent(eHanters);
     }
     if(action == "hunter_looks")
     {
         root->incTime(5);
-        root->sVEvent(hantersday, root->getDay());
+        root->vEvent(hantersday) = root->getDay();
         root->setImage(media(1));
-        root->setDesc(str(1));
+        root->setText(str(1));
         if(root->vStatus(clothesswamphouse) == 1 && root->vStatus(clearClothes) == 0)
             makeActBtn("wear_cloth",act(0));
         else
@@ -43,22 +43,22 @@ void SwampEvents::actionHandler(QString action)
     {
         root->redressOld();
         root->setImage(media(2));
-        root->setDesc(str(2));
+        root->setText(str(2));
         makeActBtn("back_to_loc",act(3));
     }
     if(action == "hide")
     {
         root->incTime(1);
         root->setImage(media(3));
-        root->setDesc(str(3));
+        root->setText(str(3));
         makeActBtn("backwater",act(3));
     }
     if(action == "stay_nude")
     {
-        root->uVEvent(hanterslut,1);
-        root->sVEvent(hanterknowday, root->getDay());
+        root->vEvent(hanterslut) += 1;
+        root->vEvent(hanterknowday) = root->getDay();
         root->setImage(media(4));
-        root->setDesc(str(4));
+        root->setText(str(4));
         makeActBtn("backwater",act(3));
     }
     if(action == "back_to_loc")
@@ -76,7 +76,7 @@ void SwampEvents::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action, "swampevents");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &SwampEvents::actionHandler);
-    root->addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString SwampEvents::str(int id)

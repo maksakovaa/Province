@@ -3,12 +3,12 @@
 
 #include "../location.h"
 
-class LocationHandler;
+class Game;
 
 class Gadfield: public Location
 {
 public:
-    Gadfield(LocationHandler* ptr);
+    Gadfield(Game* ptr);
     void show(QString arg = "") override;
     LocId getLocId() override;
     LocId getParId() override;
@@ -26,6 +26,8 @@ private:
     QString media(int id);
 private:
     QString metka;
+private:
+    Game* root;
 };
 
 #endif // GADFIELD_H

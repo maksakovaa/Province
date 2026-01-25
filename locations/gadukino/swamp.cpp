@@ -1,8 +1,9 @@
 #include "swamp.h"
 #include "../../menu/buttons.h"
 #include "../../Functions.h"
+#include "../../game.h"
 
-Swamp::Swamp(LocationHandler* ptr): Location(ptr) {}
+Swamp::Swamp(Game* ptr): root(ptr) {}
 
 void Swamp::show(QString arg)
 {
@@ -39,20 +40,20 @@ void Swamp::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action,"swamp");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Swamp::actionHandler);
-    addActBtn(btn);
+    root->addActions(btn);
 }
 
 void Swamp::actionHandler(QString action)
 {
     if (action == "swamp")
     {
-        setImage(makeImage(media(0),isDay(),getMonth()));
-        setDesc(str(0));
-        if(isDay())
+        root->setImage(makeImage(media(0),root->isDay(),root->getMonth()));
+        root->setText(str(0));
+        if(root->isDay())
         {
             makeActBtn("to_forest",act(0));
             makeActBtn("gadforest",act(1));
-            if(getMonth() >= 6 && getMonth() <= 9 && gVStatus(boletus) + gVStatus(bilberry) < 10 && gVEvent(swamp_day) != gVStatus(daystart))
+            if(root->getMonth() >= 6 && root->getMonth() <= 9 && root->vStatus(boletus) + root->vStatus(bilberry) < 10 && root->vEvent(swamp_day) != root->vStatus(daystart))
                 makeActBtn("search_food",act(2));
         }
         else
@@ -60,46 +61,46 @@ void Swamp::actionHandler(QString action)
     }
     if(action == "to_forest")
     {
-        sVStatus(swamp_clothes, 0);
-        if(gVEvent(goforest) > getRandInt(1,100))
+        root->vStatus(swamp_clothes) = 0;
+        if(root->vEvent(goforest) > getRandInt(1,100))
         {
-            sVEvent(edge_forestday_current,4);
-            changeLoc(lgadforest,30);
+            root->vEvent(edge_forestday_current) = 4;
+            root->changeLoc(lgadforest,30);
         }
         else
         {
-            startEvent(eGadForestEvent,"gadforest_lost_start");
+            root->startEvent(eGadForestEvent,"gadforest_lost_start");
         }
     }
     if(action == "gadforest")
     {
-        sVStatus(swamp_clothes, 0);
-        sVEvent(hanters,0);
-        sVEvent(edge_forestday_current,1);
-        changeLoc(lgadforest,150);
+        root->vStatus(swamp_clothes) = 0;
+        root->vEvent(hanters) = 0;
+        root->vEvent(edge_forestday_current) = 1;
+        root->changeLoc(lgadforest,150);
     }
     if(action == "search_food")
     {
-        incTime(30);
-        sVEvent(swamp_day,gVStatus(daystart));
-        if(gVEvent(goforest) < 20)
-            uVEvent(goforest,getRandInt(0,1));
+        root->incTime(30);
+        root->vEvent(swamp_day) = root->vStatus(daystart);
+        if(root->vEvent(goforest) < 20)
+            root->vEvent(goforest) += getRandInt(0,1);
         new_bilbery = getRandInt(4,5);
-        uVStatus(bilberry,new_bilbery);
-        uVStatus(mood,5);
-        startEvent(eGadForestEvent,"clothes1");
-        setDesc(str(1));
+        root->vStatus(bilberry) += new_bilbery;
+        root->vStatus(mood) += 5;
+        root->startEvent(eGadForestEvent,"clothes1");
+        root->setText(str(1));
         makeActBtn("swamp",act(3));
     }
     if(action == "forest_road")
     {
-        sVStatus(swamp_clothes, 0);
-        sVEvent(hanters,0);
-        startEvent(eGadForestEvent,"forest_road");
+        root->vStatus(swamp_clothes) = 0;
+        root->vEvent(hanters) = 0;
+        root->startEvent(eGadForestEvent,"forest_road");
     }
     if(action == "swamp_yard")
     {
-        changeLoc(lswampyard,0);
+        root->changeLoc(lswampyard,0);
     }
 }
 

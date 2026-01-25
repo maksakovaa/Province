@@ -1,13 +1,13 @@
 #ifndef MITKABUH_H
 #define MITKABUH_H
 
-class EventHandler;
+class Game;
 #include "../event.h"
 
 class MitkaBuh : public Event
 {
 public:
-    MitkaBuh(EventHandler* ptr);
+    MitkaBuh(Game* ptr);
     void start(QString arg = "") override;
     void makeActBtn(QString action, QString actName);
 private slots:
@@ -53,7 +53,7 @@ private:
     void vasyaVag1();
     void vasyaVag2();
 private:
-    EventHandler* root;
+    Game* root;
     int order{0};
     int mirapiss;
 };

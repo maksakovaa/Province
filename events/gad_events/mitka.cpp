@@ -1,9 +1,9 @@
 #include "mitka.h"
-#include "../eventhandler.h"
+#include "../../game.h"
 #include "../../Functions.h"
 #include "../../menu/buttons.h"
 
-Mitka::Mitka(EventHandler *ptr): root(ptr) {}
+Mitka::Mitka(Game *ptr): root(ptr) {}
 
 void Mitka::start(QString arg)
 {
@@ -15,85 +15,85 @@ void Mitka::actionHandler(QString action)
     if(action == "mitka")
     {
         root->setImage(media(0));
-        root->setDesc(str(0));
-        if(root->gVEvent(mitka) == 0)
+        root->setText(str(0));
+        if(root->vEvent(mitka) == 0)
         {
-            root->sVEvent(mitkaday, root->vStatus(daystart));
-            root->addDesc(str(1));
-            root->sVEvent(mitka,1);
+            root->vEvent(mitkaday) = root->vStatus(daystart);
+            root->addText(str(1));
+            root->vEvent(mitka) = 1;
         }
         else
         {
-            root->sVEvent(mitkaday, root->vStatus(daystart));
-            root->addDesc(str(2));
+            root->vEvent(mitkaday) = root->vStatus(daystart);
+            root->addText(str(2));
             makeActBtn("normalno",act(0));
-            if(root->gVEvent(mitkasextimes) == 0)
+            if(root->vEvent(mitkasextimes) == 0)
                 makeActBtn("gadukino",act(3));
         }
-        if(root->gVEvent(mitkasextimes) == 0)
+        if(root->vEvent(mitkasextimes) == 0)
             makeActBtn("gadukino",act(3));
     }
     if(action == "normalno")
     {
         root->setImage(media(0));
-        root->setDesc(str(3));
-        root->addDesc(str(4));
-        if(root->gVEvent(mitkasextimes) > 0 || root->vSkill(domination) <= -25)
+        root->setText(str(3));
+        root->addText(str(4));
+        if(root->vEvent(mitkasextimes) > 0 || root->vSkill(domination) <= -25)
         {
             tmp = getRandInt(0,6);
-            root->addDesc(str(5));
+            root->addText(str(5));
             if(tmp < 3)
                 makeActBtn("go_fuck0",act(1));
             else if(tmp >= 3 && tmp <= 5)
                 makeActBtn("go_fuck1",act(1));
             else if(tmp == 6)
                 makeActBtn("go_fuck2",act(1));
-            if(root->gVEvent(mitkasextimes) < 11 && root->vAddict(alko) < 6 && root->vSkill(domination) > -25)
+            if(root->vEvent(mitkasextimes) < 11 && root->vAddict(alko) < 6 && root->vSkill(domination) > -25)
                 makeActBtn("gadukino",act(2));
         }
-        if(root->gVEvent(mitkasextimes) == 0)
+        if(root->vEvent(mitkasextimes) == 0)
             makeActBtn("gadukino",act(3));
     }
     if(action == "go_fuck0")
     {
         root->incTime(15);
-        if(root->gVEvent(mitkasex) == 0)
+        if(root->vEvent(mitkasex) == 0)
         {
-            root->sVEvent(mitkasex,1);
-            root->uVSex(guy,1);
+            root->vEvent(mitkasex) = 1;
+            root->vSex(guy) += 1;
         }
         root->setBoyName("Митька");
-        root->sVSex(silavag,0);
-        root->sVSex(dick,16);
-        root->sVSex(pose,0);
+        root->vSex(silavag) = 0;
+        root->vSex(dick) = 16;
+        root->vSex(pose) = 0;
         if(root->vBody(vagina) == 0)
             root->setImage(media(1));
         else
             root->setImage(media(2));
-        root->setDesc(str(6));
-        root->sVSex(protect,1);
+        root->setText(str(6));
+        root->vSex(protect) = 1;
         root->sexStart();
         root->vaginal(tDick);
         root->sex_cum();
-        root->addDesc(str(7));
+        root->addText(str(7));
         makeActBtn("gadukino",act(3));
     }
     if(action == "go_fuck1")
     {
         root->incTime(15);
-        if(root->gVEvent(mitkasex) == 0)
+        if(root->vEvent(mitkasex) == 0)
         {
-            root->sVEvent(mitkasex,1);
-            root->uVSex(guy,1);
+            root->vEvent(mitkasex) = 1;
+            root->vSex(guy) += 1;
         }
         root->setBoyName("Митька");
-        root->sVSex(silavag,0);
-        root->sVSex(dick,16);
-        root->sVSex(pose,0);
-        root->uVStatus(horny,10);
-        root->uVSC(blowJob,1);
+        root->vSex(silavag) = 0;
+        root->vSex(dick) = 16;
+        root->vSex(pose) = 0;
+        root->vStatus(horny) += 10;
+        root->vStatistics(blowJob) += 1;
         root->setImage(media(3));
-        root->setDesc(str(8));
+        root->setText(str(8));
         root->blow_job();
         if(tmp == 3)
         {
@@ -112,36 +112,36 @@ void Mitka::actionHandler(QString action)
     {
         root->setImage(media(4));
         root->incTime(10);
-        root->uVStatus(horny,10);
+        root->vStatus(horny) += 10;
         root->cum("lip");
-        root->addDesc(str(9));
-        root->uVSC(swallow,1);
-        root->uVSkill(domination,-1);
+        root->addText(str(9));
+        root->vStatistics(swallow) += 1;
+        root->vSkill(domination) -= 1;
         makeActBtn("gadukino",act(3));
     }
     if(action == "cumface")
     {
         root->setImage(media(5));
         root->incTime(10);
-        root->uVStatus(horny,10);
+        root->vStatus(horny) += 10;
         root->cum("face");
-        root->addDesc(str(10));
-        root->uVSkill(domination,-1);
+        root->addText(str(10));
+        root->vSkill(domination) -= 1;
         makeActBtn("gadukino",act(3));
     }
     if(action == "cumlips2")
     {
         root->incTime(10);
-        root->uVStatus(horny,10);
+        root->vStatus(horny) += 10;
         root->cum("lip");
-        if(root->gVEvent(mitkasextimes) >= 14)
+        if(root->vEvent(mitkasextimes) >= 14)
         {
-            root->addDesc(str(11));
+            root->addText(str(11));
             root->setImage(media(7));
         }
         else
         {
-            root->addDesc(str(12));
+            root->addText(str(12));
             root->setImage(media(6));
         }
         makeActBtn("gadukino",act(3));
@@ -150,20 +150,20 @@ void Mitka::actionHandler(QString action)
     {
         root->incTime(10);
         root->setBoyName("Митька");
-        root->sVSex(silavag,0);
-        root->sVSex(dick,16);
-        root->sVSex(pose,0);
+        root->vSex(silavag) = 0;
+        root->vSex(dick) = 16;
+        root->vSex(pose) = 0;
         root->cum("anus");
-        root->uVBody(anus,1);
+        root->vBody(anus) +=1;
         if(root->vBody(anus) < 10)
-            root->uVSkill(domination,-1);
+            root->vSkill(domination) -= 1;
         if(root->vBody(anus) < 10)
             root->setImage(media(8));
         else if(root->vBody(anus) >= 10 && root->vBody(anus) < 25)
             root->setImage(media(10));
         else
             root->setImage(media(9));
-        root->setDesc(str(13));
+        root->setText(str(13));
         root->analStart(tDick);
         root->anal(tDick);
         root->anal_cum();
@@ -180,7 +180,7 @@ void Mitka::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action,"mitka");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Mitka::actionHandler);
-    root->addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString Mitka::str(int id)

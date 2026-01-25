@@ -25,6 +25,7 @@ public:
     void useItem(Items name, int count = 1);
     void fillItemList();
     QString getItemName(Items id);
+    void setItemCount(Items id,int count);
 private:
     void updQuantity(Items type, int count);
     void initNewLayout();

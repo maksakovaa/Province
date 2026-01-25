@@ -9,15 +9,13 @@
 
 MainWindow::MainWindow(SettingsForm* settingsForm, int year, int month, int day, QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
-    , m_time(this, year, month, day, 8, 0),
-    m_ccalko(this),
-    m_reproductSys(this),
-    m_ccsex(this),
-    SavePage(this), LoadPage(this)
+    , ui(new Ui::MainWindow),
+    m_savePage(this), m_loadPage(this)
 {
     this->setStyleSheet("background-color: #ffffff; color: #464646; font-size: 16px; font-family: 'Serif';");
     ui->setupUi(this);
+    m_render = new Render(this);
+    m_game = new Game(this, year, month, day, 8, 0);
     setupMainWindow(settingsForm);
     m_que = new NotificationQueue(ui->centralwidget);
 }
@@ -25,14 +23,12 @@ MainWindow::MainWindow(SettingsForm* settingsForm, int year, int month, int day,
 MainWindow::MainWindow(SettingsForm *settingsForm, QWidget *parent)
     : QMainWindow(parent),
     ui(new Ui::MainWindow),
-    m_time(this),
-    m_ccalko(this),
-    m_reproductSys(this),
-    m_ccsex(this),
-    SavePage(this),LoadPage(this)
+    m_savePage(this),m_loadPage(this)
 {
     this->setStyleSheet("background-color: #ffffff; color: #464646; font-size: 16px; font-family: 'Serif';");
     ui->setupUi(this);
+    m_render = new Render(this);
+    m_game = new Game(this);
     setupMainWindow(settingsForm);
     m_que = new NotificationQueue(ui->centralwidget);
 }
@@ -67,7 +63,7 @@ MainWindow *MainWindow::createMenu()
     {
         SettingsForm* settings = m.getSettingsPtr();
         auto w = new MainWindow(settings);
-        w->LoadPage.loadSave(m.getSave());
+        w->m_loadPage.loadSave(m.getSave());
         w->setAttribute(Qt::WA_DeleteOnClose);
         return w;
     }
@@ -75,55 +71,36 @@ MainWindow *MainWindow::createMenu()
 
 void MainWindow::start(QString loc, CharacterType charType)
 {
-    m_player->newPlayer(charType);
-    emit m_player->sigInitWardrobe();
-    m_player->calcVneshBonus();
-    m_reproductSys.slotEstrus();
-    m_time.firstStart();
-    slotUpdParams();
-    m_ccalko.slotDataInitAlko();
-    if(loc == "gaddvor")
-        locHandler->slotChangeLoc(lgaddvor,0);
-    else if(loc == "parents_home")
-        locHandler->slotChangeLoc(lbedrpar,0);
+    m_game->newGame(loc, charType);
 }
 
 void MainWindow::setupMainWindow(SettingsForm* settingsForm)
 {
-    page4 = settingsForm;
-    page4->setParent(this);
-    if(page4->settings()->isFullScreen())
+    m_settings = settingsForm;
+    m_settings->setParent(this);
+    if(m_settings->settings()->isFullScreen())
         this->showFullScreen();
     else
         this->showNormal();
-    ui->stackedWidget->addWidget(page4);
+    ui->stackedWidget->addWidget(m_settings);
     m_overlayStatus = new OverlayStatus(this,ui->scrollArea);
     m_bag = new BagForm(this);
     ui->scrollAreaBag->setWidget(m_bag);
-    m_player = new Player(this);
-    m_weather = new Weather(this);
-    pageRender = new Render(this);
-    locHandler = new LocationHandler(pageRender,this,ui->actionsLayout);
-    ui->page_2_pers->setPtr(m_player,locHandler);
-    connect(ui->page_1_map, SIGNAL(ChangeLocation(QString name,int min)), locHandler, SLOT(slotChangeLoc(QString name,int min)));
-    objHandler = new ObjectHandler(pageRender,this,ui->actionsLayout);
-    connect(m_player, &Player::sigInitWardrobe, objHandler, &ObjectHandler::slotInitWardrobe);
-    sexHandler = new SexHandler(pageRender,this,ui->actionsLayout);
+    ui->page_2_pers->setPtr(m_game);
+    connect(ui->page_1_map, SIGNAL(ChangeLocation(QString name,int min)), m_game->m_locs, SLOT(slotChangeLoc(QString name,int min)));
     connections();
     setupActionButtons();;
     loadStrings();
-    ui->stackedWidget->addWidget(&SavePage);
-    ui->stackedWidget->addWidget(&LoadPage);
-    m_npc = new NPC_Editor(this);
-    m_npc->init();
+    ui->stackedWidget->addWidget(&m_savePage);
+    ui->stackedWidget->addWidget(&m_loadPage);
     this->adjustSize();
 }
 
 void MainWindow::connections()
 {
-    connect(page4, &SettingsForm::sigChangeSettings, this, &MainWindow::slotUpdParams);
+    connect(m_settings, &SettingsForm::sigChangeSettings, this, &MainWindow::slotUpdParams);
     connect(ui->page_2_pers, &TabWidgetPlayer::sigUpdateStatus, this, &MainWindow::slotUpdParams);
-    connect(&m_ccalko, &CC_Alko::sigIncreaseRiscs, &m_reproductSys, &Pregnancy::slotIncreaseRiscs);
+    // connect(&m_ccalko, &CC_Alko::sigIncreaseRiscs, &m_reproductSys, &Pregnancy::slotIncreaseRiscs);
     connect(ui->label_energy, &QLabel::linkActivated, this, &MainWindow::slotOnStatusClick);
     connect(ui->label_water, &QLabel::linkActivated, this, &MainWindow::slotOnStatusClick);
     connect(ui->label_health, &QLabel::linkActivated, this, &MainWindow::slotOnStatusClick);
@@ -135,11 +112,11 @@ void MainWindow::connections()
 
 void MainWindow::slotUpdateDateTime()
 {
-    ui->labelDate->setText(m_time.getDayOfWeek() + ", " + m_time.getDateStr());
-    ui->labelTime->setText(m_time.getTime());
+    ui->labelDate->setText(m_game->m_time.getDayOfWeek() + ", " + m_game->m_time.getDateStr());
+    ui->labelTime->setText(m_game->m_time.getTime());
     ui->labelTime->setStyleSheet("font-size: 30px;");
-    ui->labelImageWeather->setPixmap(m_weather->getImage());
-    ui->labelTextTemperature->setText(m_weather->getCurrentTemp());
+    ui->labelImageWeather->setPixmap(m_game->m_weather->getImage());
+    ui->labelTextTemperature->setText(m_game->m_weather->getCurrentTemp());
     ui->labelTextTemperature->setStyleSheet("font-size: 50px;");
 }
 
@@ -150,19 +127,19 @@ void MainWindow::slotIsMapAwaylable(bool status)
 
 void MainWindow::updStatusVal(Status stat, int val)
 {
-    m_player->updVStatus(stat, val);
+    m_game->m_player->vStatus(stat) += val;
 }
 
 void MainWindow::updatePlayerStatusValue()
 {
-    ui->progressBarHorny->setValue(m_player->getVStatus(Status::horny));
-    ui->progressBarLust->setValue(m_player->getVStatus(Status::lust));
-    ui->progressBarHealth->setValue(m_player->getVStatus(Status::health));
-    ui->progressBarMood->setValue(m_player->getVStatus(Status::mood));
-    ui->progressBarEnergy->setValue(m_player->getVStatus(Status::energy));
-    ui->progressBarWater->setValue(m_player->getVStatus(Status::water));
-    ui->progressBarSon->setValue(m_player->getVStatus(Status::son));
-    ui->progressBarVnesh->setValue(m_player->getVStatus(Status::vnesh));
+    ui->progressBarHorny->setValue(m_game->m_player->vStatus(Status::horny));
+    ui->progressBarLust->setValue(m_game->m_player->vStatus(Status::lust));
+    ui->progressBarHealth->setValue(m_game->m_player->vStatus(Status::health));
+    ui->progressBarMood->setValue(m_game->m_player->vStatus(Status::mood));
+    ui->progressBarEnergy->setValue(m_game->m_player->vStatus(Status::energy));
+    ui->progressBarWater->setValue(m_game->m_player->vStatus(Status::water));
+    ui->progressBarSon->setValue(m_game->m_player->vStatus(Status::son));
+    ui->progressBarVnesh->setValue(m_game->m_player->vStatus(Status::vnesh));
 }
 
 void MainWindow::updPlayerStatusBarStyle()
@@ -179,9 +156,9 @@ void MainWindow::updPlayerStatusBarStyle()
 
 void MainWindow::slotUpdMoney()
 {
-    QString text = intQStr(m_player->getVStatus(Status::money));
+    QString text = intQStr(m_game->m_player->vStatus(Status::money));
 
-    if(page4->settings()->isCheats())
+    if(m_settings->settings()->isCheats())
     {
         makeLink(text, "money");
     }
@@ -191,7 +168,7 @@ void MainWindow::slotUpdMoney()
 
 void MainWindow::slotUpdParams()
 {
-    if(page4->settings()->isFullScreen())
+    if(m_settings->settings()->isFullScreen())
         this->showFullScreen();
     else if(this->isFullScreen())
         this->showNormal();
@@ -214,7 +191,7 @@ void MainWindow::loadStrings()
     QString hornyStr{"возбуждение"}, lustStr{"похоть"}, healthStr{"здоровье"}, moodStr{"настроение"},
         energyStr{"сытость"}, waterStr{"жажда"}, sonStr{"бодрость"}, vneshStr{"привлекательность"};
 
-    if(page4->isCheats())
+    if(m_settings->isCheats())
     {
         makeLink(hornyStr, "horny");
         makeLink(lustStr, "lust");
@@ -285,9 +262,9 @@ void MainWindow::on_pushButtonMap_clicked()
     if(ui->stackedWidget->currentIndex() != 1)
     {
         saveActions();
-        LocId mainloc = locHandler->getMainLoc();
-        LocId prevLoc = locHandler->getPrevLoc();
-        ui->page_1_map->setMap(ui->page_1_map->genMap(mainloc, prevLoc, m_time.getHour()));
+        LocId mainloc = m_game->m_locs->getMainLoc();
+        LocId prevLoc = m_game->m_locs->getPrevLoc();
+        ui->page_1_map->setMap(ui->page_1_map->genMap(mainloc, prevLoc, m_game->m_time.getHour()));
         ui->stackedWidget->setCurrentIndex(1);
     }
     else
@@ -323,11 +300,11 @@ void MainWindow::on_pushButtonPlayer_clicked()
 
 void MainWindow::on_pushButtonSettings_clicked()
 {
-    if(ui->stackedWidget->currentWidget() != page4)
+    if(ui->stackedWidget->currentWidget() != m_settings)
     {
         saveActions();
         ui->pushButtonMap->setEnabled(false);
-        ui->stackedWidget->setCurrentWidget(page4);
+        ui->stackedWidget->setCurrentWidget(m_settings);
     }
     else
     {
@@ -357,68 +334,68 @@ void MainWindow::slotOnStatusClick(const QString &link)
     if(link == "horny")
     {
         updStatusVal(Status::horny, 5);
-        if(m_player->getVStatus(horny) > 100)
+        if(m_game->m_player->vStatus(horny) > 100)
         {
-            m_player->setVStatus(lust, 0);
-            m_player->setVStatus(horny, 0);
+            m_game->m_player->vStatus(lust) = 0;
+            m_game->m_player->vStatus(horny) = 0;
         }
     }
     else if (link == "lust")
     {
         updStatusVal(Status::lust, 5);
-        if(m_player->getVStatus(lust) > 100)
+        if(m_game->m_player->vStatus(lust) > 100)
         {
-            m_player->setVStatus(lust, 5);
+            m_game->m_player->vStatus(lust) = 5;
         }
     }
     else if (link == "health")
     {
         updStatusVal(Status::health, 5);
-        if (m_player->getVStatus(health) > 100)
+        if (m_game->m_player->vStatus(health) > 100)
         {
-            m_player->setVStatus(health, 5);
+            m_game->m_player->vStatus(health) = 5;
         }
     }
     else if (link == "mood")
     {
         updStatusVal(Status::mood, 5);
-        if(m_player->getVStatus(mood) > 100)
+        if(m_game->m_player->vStatus(mood) > 100)
         {
-            m_player->setVStatus(mood, 0);
+            m_game->m_player->vStatus(mood) = 0;
         }
-        if (m_player->getVStatus(mood) < 0)
+        if (m_game->m_player->vStatus(mood) < 0)
         {
-            m_player->setVStatus(mood, 0);
+            m_game->m_player->vStatus(mood) = 0;
         }
     }
     else if (link == "energy")
     {
         updStatusVal(Status::energy, 4);
-        if (m_player->getVStatus(energy) > 24)
+        if (m_game->m_player->vStatus(energy) > 24)
         {
-            m_player->setVStatus(energy, 0);
+            m_game->m_player->vStatus(energy) = 0;
         }
-        if (m_player->getVStatus(energy) < 0)
+        if (m_game->m_player->vStatus(energy) < 0)
         {
-            m_player->setVStatus(energy, 0);
+            m_game->m_player->vStatus(energy) = 0;
         }
 
     }
     else if (link == "water")
     {
         updStatusVal(Status::water, 4);
-        if (m_player->getVStatus(water) > 24)
+        if (m_game->m_player->vStatus(water) > 24)
         {
-            m_player->setVStatus(water, 0);
+            m_game->m_player->vStatus(water) = 0;
         }
     }
     else if (link == "son")
     {
         updStatusVal(Status::son, 4);
 
-        if (m_player->getVStatus(son) > 24)
+        if (m_game->m_player->vStatus(son) > 24)
         {
-            m_player->setVStatus(son, 0);
+            m_game->m_player->vStatus(son) = 0;
         }
     }
     updatePlayerStatusValue();
@@ -428,11 +405,11 @@ void MainWindow::on_labelTime_linkActivated(const QString &link)
 {
     if(link == "hour")
     {
-        m_time.increaseTime(60);
+        m_game->m_time.increaseTime(60);
     }
     if(link == "minutes")
     {
-        m_time.increaseTime(5);
+        m_game->m_time.increaseTime(5);
     }
     ui->page_2_pers->reload();
     slotUpdParams();
@@ -442,17 +419,17 @@ void MainWindow::on_labelDate_linkActivated(const QString &link)
 {
     if (link == "day")
     {
-        m_time.increaseTime(24*60);
+        m_game->m_time.increaseTime(24*60);
     }
     if (link == "month")
     {
-        m_time.increaseTime(30*24*60);
+        m_game->m_time.increaseTime(30*24*60);
     }
     if (link == "year")
     {
-        m_time.increaseTime(12*30*24*60);
+        m_game->m_time.increaseTime(12*30*24*60);
     }
-    m_weather->updOnTimeMove();
+    m_game->m_weather->updOnTimeMove();
     ui->page_2_pers->reload();
     slotUpdParams();
 }
@@ -461,14 +438,14 @@ void MainWindow::on_labelMoney_linkActivated(const QString &link)
 {
     if (link == "money")
     {
-        m_player->updVStatus(Status::money, 5000);
+        m_game->m_player->vStatus(Status::money) += 5000;
     }
     slotUpdMoney();
 }
 
 void MainWindow::slotUpdPlayerIcon()
 {
-    ui->pushButtonPlayer->setIcon(m_player->getPlayerIcon());
+    ui->pushButtonPlayer->setIcon(m_game->m_player->getPlayerIcon());
 }
 
 void MainWindow::on_pushButtonSave_clicked()
@@ -479,7 +456,7 @@ void MainWindow::on_pushButtonSave_clicked()
         ui->pushButtonMap->setEnabled(false);
         ui->stackedWidget->setCurrentIndex(5);
         ClearLayout(ui->actionsLayout);
-        SavePage.viewSaves();
+        m_savePage.viewSaves();
     }
     else
     {
@@ -497,7 +474,7 @@ void MainWindow::on_pushButtonLoad_clicked()
         ui->pushButtonMap->setEnabled(false);
         ui->stackedWidget->setCurrentIndex(6);
         ClearLayout(ui->actionsLayout);
-        LoadPage.viewSaves();
+        m_loadPage.viewSaves();
     }
     else
     {
@@ -509,6 +486,7 @@ void MainWindow::on_pushButtonLoad_clicked()
 
 void MainWindow::on_pushButton_clicked()
 {
-    m_npc->rendNpcProfile(dimaNosov);
+    m_game->m_npc->rendNpcProfile(dimaNosov);
+    m_game->setTime(23,00);
 }
 

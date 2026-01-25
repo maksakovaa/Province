@@ -20,13 +20,14 @@ enum WeatherVar
 };
 
 class SaveForm; class LoadForm;
+class Game;
 
 class Weather: public QObject
 {
     Q_OBJECT
     friend SaveForm; friend LoadForm;
 public:
-    Weather(QWidget *ptr);
+    Weather(Game *ptr);
     bool isDay();
     bool isSnow();
     QString getImage();
@@ -50,7 +51,7 @@ private:
     void setCurrentTemp();
     void setForecast();
 private:
-    QWidget* root;
+    Game* root;
     std::unordered_map<WeatherVar,int> m_weather;
     int temperature[12][4];
 };

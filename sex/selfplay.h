@@ -50,7 +50,7 @@ class SelfPlay: public QObject
 {
     Q_OBJECT
 public:
-    SelfPlay(SexHandler* parent);
+    SelfPlay(Game* parent);
     void start();
 private slots:
     void slotActionHandler(SelfPlayActs act);
@@ -64,7 +64,7 @@ private:
     int getItemCount(Items i);
     QString getActName(SelfPlayActs act);
     QString getActDesc(SelfPlayDesc desc);
-    SexHandler* root;
+    Game* root;
     // int m_dildohand;
     SelfPlayActs current;
 };

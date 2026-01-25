@@ -3,13 +3,13 @@
 
 
 #include "../event.h"
-class EventHandler;
+class Game;
 
 
 class Bicycle: public Event
 {
 public:
-    Bicycle(EventHandler* ptr);
+    Bicycle(Game* ptr);
     void start(QString arg = "") override;
     void makeActBtn(QString action, QString actName);
 private slots:
@@ -19,7 +19,7 @@ private:
     QString act(int id);
     QString media(int id);
 private:
-    EventHandler* root;
+    Game* root;
 };
 
 #endif // BICYCLE_H

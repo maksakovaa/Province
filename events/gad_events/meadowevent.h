@@ -2,12 +2,12 @@
 #define MEADOWEVENT_H
 
 #include "../event.h"
-class EventHandler;
+class Game;
 
 class MeadowEvent: public Event
 {
 public:
-    MeadowEvent(EventHandler* ptr);
+    MeadowEvent(Game* ptr);
     void start(QString arg = "") override;
     void makeActBtn(QString action, QString actName);
 private slots:
@@ -31,7 +31,7 @@ private:
     void mira_lesb_talk4();
     void mirameadow();
 private:
-    EventHandler* root;
+    Game* root;
 };
 
 #endif // MEADOWEVENT_H

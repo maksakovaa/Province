@@ -1,7 +1,9 @@
 #include "gadsarai.h"
 #include "../../Functions.h"
 #include "../../menu/buttons.h"
-Gadsarai::Gadsarai(LocationHandler* ptr): Location(ptr){}
+#include "../../game.h"
+
+Gadsarai::Gadsarai(Game* ptr): root(ptr){}
 
 void Gadsarai::show(QString arg)
 {
@@ -38,15 +40,15 @@ void Gadsarai::makeActBtn(QString act, QString actName)
     QActButton* btn = new QActButton(act, "gadsarai");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Gadsarai::actionHandler);
-    addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString Gadsarai::str(int id)
 {
     QString bab, ded;
-    if(gVEvent(grandma_notalk) == 0) { bab = "<a href='grandma'>бабушка</a>"; }
+    if(root->vEvent(grandma_notalk) == 0) { bab = "<a href='grandma'>бабушка</a>"; }
     else { bab = "сердитая бабушка"; }
-    if(gVEvent(grandpa_notalk) == 0) { ded = "<a href='grandpa'>дедушка</a>"; }
+    if(root->vEvent(grandpa_notalk) == 0) { ded = "<a href='grandpa'>дедушка</a>"; }
     else { ded = "дедушка"; }
     QString str[17];
     str[0] = "Ветхий сарай в котором хранятся инструменты.";
@@ -100,159 +102,159 @@ QString Gadsarai::media(int id)
 
 void Gadsarai::actionHandler(QString action)
 {
-    clearActions();
+    root->clearActions();
     if (action == "grandma")
     {
-        startEvent(eGrandMa);
+        root->startEvent(eGrandMa);
     }
     if (action == "grandpa")
     {
-        startEvent(eGrandPa);
+        root->startEvent(eGrandPa);
     }
     if (action == "sarai")
     {
-        startEvent(eGadukinoEvents, "gadsarai_check");
+        root->startEvent(eGadukinoEvents, "gadsarai_check");
 
-        setImage(makeImage(media(0),isDay(), getMonth()));
-        setDesc(str(0));
-        if(gVEvent(mira_dog) == 0)
-            addText(str(1));
+        root->setImage(makeImage(media(0),root->isDay(), root->getMonth()));
+        root->setText(str(0));
+        if(root->vEvent(mira_dog) == 0)
+            root->addText(str(1));
         else
-            addText(str(2));
+            root->addText(str(2));
 
-        if (getSnow() == 0)
+        if (root->getSnow() == 0)
         {
-            if(getHour() > 9 && getHour() < 19)
-                addText(str(3));
-            else if(getHour() == 19)
-                addText(str(4));
+            if(root->getHour() > 9 && root->getHour() < 19)
+                root->addText(str(3));
+            else if(root->getHour() == 19)
+                root->addText(str(4));
             else
-                addText(str(5));
-            if (getHour() > 9 && getHour() < 20 && getWeekNum() > 1 || horse_river == 2)
-                addText(str(6));
+                root->addText(str(5));
+            if (root->getHour() > 9 && root->getHour() < 20 && root->getWeek() > 1 || horse_river == 2)
+                root->addText(str(6));
             else
-                addText(str(7));
+                root->addText(str(7));
         }
         else
         {
-            addText(str(5));
-            addText(str(7));
+            root->addText(str(5));
+            root->addText(str(7));
         }
-        addText(str(8));
-        if (gVEvent(findvel) == 1)
-            addText(str(9));
-        if(gVEvent(grandma_ingadsarai) == 1)
-            addText(str(10));
-        if(gVEvent(grandpa_ingadsarai) == 1)
-            addText(str(11));
+        root->addText(str(8));
+        if (root->vEvent(findvel) == 1)
+            root->addText(str(9));
+        if(root->vEvent(grandma_ingadsarai) == 1)
+            root->addText(str(10));
+        if(root->vEvent(grandpa_ingadsarai) == 1)
+            root->addText(str(11));
         makeActBtn("go_dvor", act(0));
-        if (gVEvent(card) == 0 || gVEvent(findvel) == 0)
+        if (root->vEvent(card) == 0 || root->vEvent(findvel) == 0)
             makeActBtn("search", act(1));
-        if(cardCheck() == 1)
+        if(root->cardCheck() == 1)
             makeActBtn("takeCards",act(3));
-        if (gVStatus(horny) >= 50 && gVEvent(grandparents_ingadsarai) == 0)
+        if (root->vStatus(horny) >= 50 && root->vEvent(grandparents_ingadsarai) == 0)
         {
             makeActBtn("mastr", act(4));
         }
-        int month = getMonth(), SunWeather = getSunWeather(), hour = getHour(), week = getWeekNum();
-        if (month >= 5 && month <= 9 && SunWeather >= 0 && hour > 13 && hour < 18 && week > 1 && week < 7 && gVEvent(grandmaknowsick) == 1)
+        int month = root->getMonth(), SunWeather = root->getSunWeather(), hour = root->getHour(), week = root->getWeek();
+        if (month >= 5 && month <= 9 && SunWeather >= 0 && hour > 13 && hour < 18 && week > 1 && week < 7 && root->vEvent(grandmaknowsick) == 1)
         {
-            startEvent(eGrandMa);
+            root->startEvent(eGrandMa);
         }
-        if (gVEvent(know_no_pirat) == 0)
+        if (root->vEvent(know_no_pirat) == 0)
         {
-            clearActions();
-            incTime(60);
-            sVEvent(know_no_pirat, 1);
-            setImage(media(1));
-            setDesc(str(14));
+            root->clearActions();
+            root->incTime(60);
+            root->vEvent(know_no_pirat) = 1;
+            root->setImage(media(1));
+            root->setText(str(14));
             makeActBtn("sarai", act(5));
         }
-        if (gVSex(grandmaknowmastr) == 1 || gVSex(grandpaknowmastr) == 1)
+        if (root->vSex(grandmaknowmastr) == 1 || root->vSex(grandpaknowmastr) == 1)
         {
-            incTime(5);
-            if (gVSex(grandmaknowmastr) == 1)
+            root->incTime(5);
+            if (root->vSex(grandmaknowmastr) == 1)
             {
-                uVQuest(grandmaQW,-5);
-                sVEvent(grandma_notalk,1);
-                setImage(media(2));
-                setDesc(str(15));
+                root->vQuest(grandmaQW) -= 5;
+                root->vEvent(grandma_notalk) = 1;
+                root->setImage(media(2));
+                root->setText(str(15));
             }
-            else if(gVSex(grandpaknowmastr) == 1)
+            else if(root->vSex(grandpaknowmastr) == 1)
             {
-                sVEvent(grandpa_notalk, 1);
-                setImage(media(3));
-                setDesc(str(16));
+                root->vEvent(grandpa_notalk) = 1;
+                root->setImage(media(3));
+                root->setText(str(16));
             }
             makeActBtn("run", act(6));
         }
-        startEvent(ePirat);
+        root->startEvent(ePirat);
     }
     if (action == "go_dvor")
     {
-        changeLoc(lgaddvor,5);
+        root->changeLoc(lgaddvor,5);
     }
     if (action == "search")
     {
-        incTime(15);
-        if (gVEvent(findvel) == 0)
+        root->incTime(15);
+        if (root->vEvent(findvel) == 0)
         {
-            sVEvent(findvel, 1);
-            setImage(media(4));
-            setDesc(str(12));
+            root->vEvent(findvel) = 1;
+            root->setImage(media(4));
+            root->setText(str(12));
         }
-        else if (cardCheck() == 0)
+        else if (root->cardCheck() == 0)
         {
-            sVEvent(card,1);
-            cardInit(100,5);
-            setImage(media(5));
-            setDesc(str(13));
+            root->vEvent(card) =1;
+            root->cardInit(100,5);
+            root->setImage(media(5));
+            root->setText(str(13));
         }
         makeActBtn("sarai", act(2));
     }
     if (action == "takeCards")
     {
-        setImage(media(5));
-        setDesc("");
+        root->setImage(media(5));
+        root->setText("");
         makeActBtn("pullOutCard", act(7));
         makeActBtn("sarai", act(8));
     }
     if (action == "pullOutCard")
     {
-        setImage(getCard());
-        uVStatus(horny,getCardHorny());
-        incTime(getCardTime());
+        root->setImage(root->getCard());
+        root->vStatus(horny) += root->getCardHorny();
+        root->incTime(root->getCardTime());
         makeActBtn("takeCards", act(9));
     }
     if (action == "mastr")
     {
-        startSelfPlay();
+        root->selfPlayStart();
     }
     if (action == "run")
     {
-        sVSex(grandmaknowmastr,0);
-        sVSex(grandpaknowmastr,0);
-        changeLoc(lgaddvor,1);
+        root->vSex(grandmaknowmastr) = 0;
+        root->vSex(grandpaknowmastr) = 0;
+        root->changeLoc(lgaddvor,1);
     }
     if (action == "mira_dog")
     {
-        startEvent(eGrandParentEvents,"mira_dog");
+        root->startEvent(eGrandParentEvents,"mira_dog");
     }
     if (action == "cow")
     {
-        startEvent(eGrandParentEvents,"cow");
+        root->startEvent(eGrandParentEvents,"cow");
     }
     if(action == "horse")
     {
-        startEvent(eGrandParentEvents,"horse");
+        root->startEvent(eGrandParentEvents,"horse");
     }
     if(action == "boar")
     {
-        startEvent(eGrandParentEvents,"boar");
+        root->startEvent(eGrandParentEvents,"boar");
     }
     if(action == "bicycle")
     {
-        startEvent(eBicycle,"sarai");
+        root->startEvent(eBicycle,"sarai");
     }
-    updateParams();
+    root->updateParams();
 }

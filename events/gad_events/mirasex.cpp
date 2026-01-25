@@ -1,8 +1,8 @@
 #include "mirasex.h"
-#include "../eventhandler.h"
+#include "../../game.h"
 #include "../../Functions.h"
 #include "../../menu/buttons.h"
-MiraSex::MiraSex(EventHandler* ptr): root(ptr) {
+MiraSex::MiraSex(Game* ptr): root(ptr) {
     you_orgasm = 0;
 }
 
@@ -45,7 +45,7 @@ void MiraSex::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action,"MiraSex");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &MiraSex::actionHandler);
-    root->addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString MiraSex::str(int id)
@@ -226,21 +226,21 @@ void MiraSex::miralick_first()
 {
     root->incTime(5);
     if(root->vStatus(horny) < 60)
-        root->sVStatus(horny,60);
+        root->vStatus(horny) = 60;
     else
-        root->uVStatus(horny,10);
-    root->uVEvent(miralick,1);
+        root->vStatus(horny) += 10;
+    root->vEvent(miralick) += 1;
     checkMiraSex();
-    root->uVSC(lesbianSex,1);
+    root->vStatistics(lesbianSex) += 1;
     if(root->isPanties())
     {
         root->setImage(media(5));
-        root->setDesc(str(44));
+        root->setText(str(44));
     }
     else
     {
         root->setImage(media(4));
-        root->setDesc(str(45));
+        root->setText(str(45));
     }
     makeActBtn("miralick_stand1",act(2));
 }
@@ -248,12 +248,12 @@ void MiraSex::mirakiss()
 {
     root->incTime(5);
     if(root->vStatus(horny) < 60)
-        root->uVStatus(horny,5);
-    if(root->gVEvent(mirahorny) < 60)
-        root->uVEvent(mirahorny,5);
+        root->vStatus(horny) += 5;
+    if(root->vEvent(mirahorny) < 60)
+        root->vEvent(mirahorny) += 5;
     root->setImage(media(getRandInt(0,3)));
-    root->setDesc(str(getRandInt(40,43)));
-    if(root->vStatus(horny) < 20 || root->gVEvent(mirahorny) < 20)
+    root->setText(str(getRandInt(40,43)));
+    if(root->vStatus(horny) < 20 || root->vEvent(mirahorny) < 20)
         makeActBtn("mirakiss",act(1));
     else
         makeActBtn("foreplay",act(0));
@@ -261,25 +261,25 @@ void MiraSex::mirakiss()
 void MiraSex::foreplay()
 {
     root->incTime(5);
-    if(root->vStatus(horny) >= root->gVEvent(mirahorny))
+    if(root->vStatus(horny) >= root->vEvent(mirahorny))
     {
         root->setImage(media(getRandInt(6,9)));
         if(root->vStatus(horny) < 60)
-            root->uVStatus(horny,getRandInt(0,5));
-        root->uVEvent(mirahorny,10);
-        root->setDesc(str(getRandInt(46,48)));
+            root->vStatus(horny) += getRandInt(0,5);
+        root->vEvent(mirahorny) += 10;
+        root->setText(str(getRandInt(46,48)));
     }
     else
     {
         root->setImage(media(getRandInt(10,12)));
-        root->uVStatus(horny,10);
-        root->setDesc(str(getRandInt(49,51)));
+        root->vStatus(horny) += 10;
+        root->setText(str(getRandInt(49,51)));
     }
-    if(root->vStatus(horny) < 40 || root->gVEvent(mirahorny) < 40)
+    if(root->vStatus(horny) < 40 || root->vEvent(mirahorny) < 40)
         makeActBtn("foreplay",act(3));
     else
     {
-        if(root->vStatus(horny) >= root->gVEvent(mirahorny))
+        if(root->vStatus(horny) >= root->vEvent(mirahorny))
             makeActBtn("lickmira_start",act(0));
         else
             makeActBtn("miralick_start",act(0));
@@ -288,66 +288,66 @@ void MiraSex::foreplay()
 void MiraSex::miralick_start()
 {
     root->incTime(5);
-    root->uVStatus(horny,getRandInt(0,5));
-    root->uVEvent(miralick,1);
-    root->uVSC(lesbianSex,1);
+    root->vStatus(horny) += getRandInt(0,5);
+    root->vEvent(miralick) += 1;
+    root->vStatistics(lesbianSex) += 1;
     if(root->isPanties())
     {
         root->setImage(media(5));
-        root->setDesc(str(52));
+        root->setText(str(52));
         makeActBtn("miralick_stand2",act(5));
         makeActBtn("dog_random",act(4));
     }
     else
     {
         root->setImage(media(4));
-        root->setDesc(str(53));
+        root->setText(str(53));
         makeActBtn("miralick_stand2",act(2));
     }
 }
 void MiraSex::lickmira_first()
 {
     root->incTime(5);
-    root->uVEvent(mirahorny,getRandInt(0,5));
+    root->vEvent(mirahorny) += getRandInt(0,5);
     checkMiraSex();
-    root->uVEvent(lickmira,1);
-    root->uVSC(lesbianSex,1);
+    root->vEvent(lickmira) += 1;
+    root->vStatistics(lesbianSex) += 1;
     root->setImage(media(13));
-    if(root->vSC(lesbianSex) < 10)
-        root->setDesc(str(54));
+    if(root->vStatistics(lesbianSex) < 10)
+        root->setText(str(54));
     else
-        root->setDesc(str(55));
+        root->setText(str(55));
     makeActBtn("lickmira_mis1",act(6));
 }
 void MiraSex::lickmira_start()
 {
     root->incTime(5);
-    root->uVEvent(mirahorny,getRandInt(0,5));
+    root->vEvent(mirahorny) += getRandInt(0,5);
     checkMiraSex();
-    root->uVSC(lesbianSex,1);
+    root->vStatistics(lesbianSex) += 1;
     root->setImage(media(13));
-    if(root->vSC(lesbianSex) < 10)
-        root->setDesc(str(54));
+    if(root->vStatistics(lesbianSex) < 10)
+        root->setText(str(54));
     else
-        root->setDesc(str(55));
+        root->setText(str(55));
     makeActBtn("lickmira_mis2",act(6));
 }
 void MiraSex::horny_talk()
 {
     root->incTime(5);
-    root->uVStatus(horny,5);
+    root->vStatus(horny) += 5;
     root->setImage(media(14));
-    root->setDesc(str(56));
+    root->setText(str(56));
     if(root->vStatus(horny) >= 80)
-        root->addDesc(str(57));
+        root->addText(str(57));
     else
-        root->addDesc(str(58));
-    root->addDesc(str(59));
-    if(root->gVQuest(miraQW) < 15)
-        root->addDesc(str(60));
+        root->addText(str(58));
+    root->addText(str(59));
+    if(root->vQuest(miraQW) < 15)
+        root->addText(str(60));
     else
-        root->addDesc(str(61));
-    if(root->gVQuest(miraQW) < 15)
+        root->addText(str(61));
+    if(root->vQuest(miraQW) < 15)
         makeActBtn("end",act(0));
     else
         makeActBtn("mirafinger",act(2));
@@ -356,32 +356,32 @@ void MiraSex::miralick_orgasm()
 {
     if(root->vStatus(horny) == 100)
     {
-        root->uVSC(orgasm,1);
-        root->sVStatus(lust,0);
-        root->sVStatus(horny,0);
-        root->uVStatus(mood,15);
+        root->vStatistics(orgasm) += 1;
+        root->vStatus(lust) = 0;
+        root->vStatus(horny) = 0;
+        root->vStatus(mood) += 15;
         you_orgasm += 1;
-        root->setDesc(str(62));
+        root->setText(str(62));
     }
 }
 void MiraSex::lickmira_mis1()
 {
     root->incTime(5);
-    if(root->vSC(lesbianSex) < 10)
+    if(root->vStatistics(lesbianSex) < 10)
     {
-        root->uVEvent(mirahorny,10);
-        root->uVStatus(horny,getRandInt(0,5));
+        root->vEvent(mirahorny) += 10;
+        root->vStatus(horny) += getRandInt(0,5);
     }
     else
     {
-        root->uVEvent(mirahorny,20);
-        root->uVStatus(horny,getRandInt(3,7));
+        root->vEvent(mirahorny) += 20;
+        root->vStatus(horny) += getRandInt(3,7);
     }
-    if(root->gVEvent(mirahorny) < 100)
+    if(root->vEvent(mirahorny) < 100)
     {
         root->setImage(media(getRandInt(15,17)));
         QString result = str(getRandInt(7,9));
-        if(root->vSC(lesbianSex) < 10)
+        if(root->vStatistics(lesbianSex) < 10)
            result += str(getRandInt(21,23));
         else
             result += str(getRandInt(24,26));
@@ -391,27 +391,27 @@ void MiraSex::lickmira_mis1()
             result += str(35);
         else
             result +=str(36);
-        root->setDesc(result);
+        root->setText(result);
         miralick_orgasm();
     }
     else
     {
-        root->sVEvent(miraorgasm,1);
-        root->sVEvent(mirahorny,0);
+        root->vEvent(miraorgasm) = 1;
+        root->vEvent(mirahorny) = 0;
         root->setImage(media(18));
         QString result = str(getRandInt(7,9));
-        if(root->vSC(lesbianSex) < 10)
+        if(root->vStatistics(lesbianSex) < 10)
             result += str(getRandInt(21,23));
         else
             result += str(getRandInt(24,26));
         result += str(36) + str(38);
         miralick_orgasm();
         if(root->vStatus(horny) < 60)
-            root->addDesc(str(63));
+            root->addText(str(63));
         else
-            root->addDesc(str(64));
+            root->addText(str(64));
     }
-    if(root->gVEvent(miraorgasm) == 0)
+    if(root->vEvent(miraorgasm) == 0)
         makeActBtn("lickmira_mis1",act(7));
     else
     {
@@ -424,21 +424,21 @@ void MiraSex::lickmira_mis1()
 void MiraSex::lickmira_mis2()
 {
     root->incTime(5);
-    if(root->vSC(lesbianSex) < 10)
+    if(root->vStatistics(lesbianSex) < 10)
     {
-        root->uVEvent(mirahorny,10);
-        root->uVStatus(horny,getRandInt(0,5));
+        root->vEvent(mirahorny) += 10;
+        root->vStatus(horny) += getRandInt(0,5);
     }
     else
     {
-        root->uVEvent(mirahorny,20);
-        root->uVStatus(horny,getRandInt(3,7));
+        root->vEvent(mirahorny) += 20;
+        root->vStatus(horny) += getRandInt(3,7);
     }
-    if(root->gVEvent(mirahorny) < 100)
+    if(root->vEvent(mirahorny) < 100)
     {
         root->setImage(media(getRandInt(15,17)));
         QString result = str(getRandInt(7,9));
-        if(root->vSC(lesbianSex) < 10)
+        if(root->vStatistics(lesbianSex) < 10)
             result += str(getRandInt(21,23));
         else
             result += str(getRandInt(24,26));
@@ -448,29 +448,29 @@ void MiraSex::lickmira_mis2()
             result += str(35);
         else
             result +=str(36);
-        root->setDesc(result);
+        root->setText(result);
         miralick_orgasm();
     }
     else
     {
-        root->sVEvent(miraorgasm,1);
-        root->sVEvent(mirahorny,0);
+        root->vEvent(miraorgasm) = 1;
+        root->vEvent(mirahorny) = 0;
         root->setImage(media(18));
         QString result = str(getRandInt(7,9));
-        if(root->vSC(lesbianSex) < 10)
+        if(root->vStatistics(lesbianSex) < 10)
             result += str(getRandInt(21,23));
         else
             result += str(getRandInt(24,26));
         result += str(36) + str(38);
         miralick_orgasm();
         if(root->vStatus(horny) < 60)
-            root->addDesc(str(65));
+            root->addText(str(65));
         else
-            root->addDesc(str(66));
+            root->addText(str(66));
     }
-    if(root->gVEvent(miraorgasm) == 0 && you_orgasm == 0)
+    if(root->vEvent(miraorgasm) == 0 && you_orgasm == 0)
     {
-        if(root->vStatus(horny) >= root->gVEvent(mirahorny))
+        if(root->vStatus(horny) >= root->vEvent(mirahorny))
         {
             if(getRandInt(1,2) == 1)
                 makeActBtn("pose69_2",act(8));
@@ -484,12 +484,12 @@ void MiraSex::lickmira_mis2()
             makeActBtn("dog_random",act(4));
         }
     }
-    else if(root->gVEvent(miraorgasm) == 1 && you_orgasm == 0)
+    else if(root->vEvent(miraorgasm) == 1 && you_orgasm == 0)
     {
         makeActBtn("miralick_stand2",act(9));
         makeActBtn("dog_random",act(4));
     }
-    else if(root->gVEvent(miraorgasm) == 0 && you_orgasm == 1)
+    else if(root->vEvent(miraorgasm) == 0 && you_orgasm == 1)
         makeActBtn("lickmira_mis2",act(7));
     else
         makeActBtn("end",act(0));
@@ -497,13 +497,13 @@ void MiraSex::lickmira_mis2()
 void MiraSex::pose69_1()
 {
     root->incTime(5);
-    if(root->vSC(lesbianSex) < 10) root->uVEvent(mirahorny,10);
-    if(root->vSC(lesbianSex) >= 10) root->uVEvent(mirahorny,20);
-    if(root->gVEvent(miralick) < 10) root->uVStatus(horny,10);
-    if(root->gVEvent(miralick) >= 10) root->uVStatus(horny,20);
+    if(root->vStatistics(lesbianSex) < 10) root->vEvent(mirahorny) += 10;
+    if(root->vStatistics(lesbianSex) >= 10) root->vEvent(mirahorny) += 20;
+    if(root->vEvent(miralick) < 10) root->vStatus(horny) += 10;
+    if(root->vEvent(miralick) >= 10) root->vStatus(horny) += 20;
 
     QString result = str(13);
-    if(root->vSC(lesbianSex) < 10)
+    if(root->vStatistics(lesbianSex) < 10)
         result += str(getRandInt(21,23));
     else
         result += str(getRandInt(24,26));
@@ -514,7 +514,7 @@ void MiraSex::pose69_1()
     else
         result += str(36);
     result += str(14);
-    if(root->gVEvent(miralick) < 10)
+    if(root->vEvent(miralick) < 10)
         result += str(getRandInt(15,17));
     else
         result += str(getRandInt(18,20));
@@ -524,44 +524,44 @@ void MiraSex::pose69_1()
         result += str(31);
     else
         result += str(32);
-    if(root->gVEvent(mirahorny) < 100 && root->vStatus(horny) < 100)
+    if(root->vEvent(mirahorny) < 100 && root->vStatus(horny) < 100)
     {
         root->setImage(media(getRandInt(19,21)));
-        root->setDesc(result);
+        root->setText(result);
     }
-    else if(root->gVEvent(mirahorny) >= 100 && root->vStatus(horny) < 100)
+    else if(root->vEvent(mirahorny) >= 100 && root->vStatus(horny) < 100)
     {
-        root->sVEvent(miraorgasm,1);
-        root->sVEvent(mirahorny,0);
+        root->vEvent(miraorgasm) = 1;
+        root->vEvent(mirahorny) = 0;
         root->setImage(media(23));
-        root->setDesc(result + str(38));
-        root->addDesc(str(67));
+        root->setText(result + str(38));
+        root->addText(str(67));
     }
-    else if(root->gVEvent(mirahorny) < 100 && root->vStatus(horny) >= 100)
+    else if(root->vEvent(mirahorny) < 100 && root->vStatus(horny) >= 100)
     {
-        root->uVSC(orgasm,1);
+        root->vStatistics(orgasm) += 1;
         you_orgasm = 1;
-        root->sVStatus(lust,0);
-        root->sVStatus(horny,0);
+        root->vStatus(lust) = 0;
+        root->vStatus(horny) = 0;
         root->setImage(media(22));
-        root->setDesc(result + str(37));
-        root->addDesc(str(68));
+        root->setText(result + str(37));
+        root->addText(str(68));
     }
     else
     {
-        root->uVSC(orgasm,1);
+        root->vStatistics(orgasm) += 1;
         you_orgasm = 1;
-        root->sVStatus(lust,0);
-        root->sVStatus(horny,0);
-        root->sVEvent(miraorgasm,1);
-        root->sVEvent(mirahorny,0);
+        root->vStatus(lust) = 0;
+        root->vStatus(horny) = 0;
+        root->vEvent(miraorgasm) = 1;
+        root->vEvent(mirahorny) = 0;
         root->setImage(media(getRandInt(37,38)));
-        root->setDesc(result + str(39));
-        root->addDesc(str(69));
+        root->setText(result + str(39));
+        root->addText(str(69));
     }
-    if(root->gVEvent(miraorgasm) == 0 && you_orgasm == 0)
+    if(root->vEvent(miraorgasm) == 0 && you_orgasm == 0)
     {
-        if(root->gVEvent(mirahorny) <= root->vStatus(horny))
+        if(root->vEvent(mirahorny) <= root->vStatus(horny))
         {
             if(getRandInt(1,2) == 1)
                 makeActBtn("pose69_2",act(7));
@@ -575,12 +575,12 @@ void MiraSex::pose69_1()
             makeActBtn("dog_random",act(4));
         }
     }
-    else if(root->gVEvent(miraorgasm) == 1 && you_orgasm == 0)
+    else if(root->vEvent(miraorgasm) == 1 && you_orgasm == 0)
     {
         makeActBtn("miralick_stand2",act(9));
         makeActBtn("dog_random",act(4));
     }
-    else if(root->gVEvent(miraorgasm) == 0 && you_orgasm == 1)
+    else if(root->vEvent(miraorgasm) == 0 && you_orgasm == 1)
         makeActBtn("lickmira_mis2",act(10));
     else
         makeActBtn("end",act(0));
@@ -588,13 +588,13 @@ void MiraSex::pose69_1()
 void MiraSex::pose69_2()
 {
     root->incTime(5);
-    if(root->vSC(lesbianSex) < 10) root->uVEvent(mirahorny,10);
-    if(root->vSC(lesbianSex) >= 10) root->uVEvent(mirahorny,20);
-    if(root->gVEvent(miralick) < 10) root->uVStatus(horny,10);
-    if(root->gVEvent(miralick) >= 10) root->uVStatus(horny,20);
+    if(root->vStatistics(lesbianSex) < 10) root->vEvent(mirahorny) += 10;
+    if(root->vStatistics(lesbianSex) >= 10) root->vEvent(mirahorny) += 20;
+    if(root->vEvent(miralick) < 10) root->vStatus(horny) += 10;
+    if(root->vEvent(miralick) >= 10) root->vStatus(horny) += 20;
 
     QString result = str(getRandInt(10,12));
-    if(root->vSC(lesbianSex) < 10)
+    if(root->vStatistics(lesbianSex) < 10)
         result += str(getRandInt(21,23));
     else
         result += str(getRandInt(24,26));
@@ -605,7 +605,7 @@ void MiraSex::pose69_2()
     else
         result += str(36);
     result += str(14);
-    if(root->gVEvent(miralick) < 10)
+    if(root->vEvent(miralick) < 10)
         result += str(getRandInt(15,17));
     else
         result += str(getRandInt(18,20));
@@ -615,44 +615,44 @@ void MiraSex::pose69_2()
         result += str(31);
     else
         result += str(32);
-    if(root->gVEvent(mirahorny) < 100 && root->vStatus(horny) < 100)
+    if(root->vEvent(mirahorny) < 100 && root->vStatus(horny) < 100)
     {
         root->setImage(media(getRandInt(19,21)));
-        root->setDesc(result);
+        root->setText(result);
     }
-    else if(root->gVEvent(mirahorny) >= 100 && root->vStatus(horny) < 100)
+    else if(root->vEvent(mirahorny) >= 100 && root->vStatus(horny) < 100)
     {
-        root->sVEvent(miraorgasm,1);
-        root->sVEvent(mirahorny,0);
+        root->vEvent(miraorgasm) = 1;
+        root->vEvent(mirahorny) = 0;
         root->setImage(media(23));
-        root->setDesc(result + str(38));
-        root->addDesc(str(67));
+        root->setText(result + str(38));
+        root->addText(str(67));
     }
-    else if(root->gVEvent(mirahorny) < 100 && root->vStatus(horny) >= 100)
+    else if(root->vEvent(mirahorny) < 100 && root->vStatus(horny) >= 100)
     {
-        root->uVSC(orgasm,1);
+        root->vStatistics(orgasm) += 1;
         you_orgasm = 1;
-        root->sVStatus(lust,0);
-        root->sVStatus(horny,0);
+        root->vStatus(lust) = 0;
+        root->vStatus(horny) = 0;
         root->setImage(media(22));
-        root->setDesc(result + str(37));
-        root->addDesc(str(68));
+        root->setText(result + str(37));
+        root->addText(str(68));
     }
     else
     {
-        root->uVSC(orgasm,1);
+        root->vStatistics(orgasm) += 1;
         you_orgasm = 1;
-        root->sVStatus(lust,0);
-        root->sVStatus(horny,0);
-        root->sVEvent(miraorgasm,1);
-        root->sVEvent(mirahorny,0);
+        root->vStatus(lust) = 0;
+        root->vStatus(horny) = 0;
+        root->vEvent(miraorgasm) = 1;
+        root->vEvent(mirahorny) = 0;
         root->setImage(media(getRandInt(37,38)));
-        root->setDesc(result + str(39));
-        root->addDesc(str(69));
+        root->setText(result + str(39));
+        root->addText(str(69));
     }
-    if(root->gVEvent(miraorgasm) == 0 && you_orgasm == 0)
+    if(root->vEvent(miraorgasm) == 0 && you_orgasm == 0)
     {
-        if(root->gVEvent(mirahorny) <= root->vStatus(horny))
+        if(root->vEvent(mirahorny) <= root->vStatus(horny))
         {
             if(getRandInt(1,2) == 1)
                 makeActBtn("pose69_2",act(7));
@@ -666,12 +666,12 @@ void MiraSex::pose69_2()
             makeActBtn("dog_random",act(4));
         }
     }
-    else if(root->gVEvent(miraorgasm) == 1 && you_orgasm == 0)
+    else if(root->vEvent(miraorgasm) == 1 && you_orgasm == 0)
     {
         makeActBtn("miralick_stand2",act(9));
         makeActBtn("dog_random",act(4));
     }
-    else if(root->gVEvent(miraorgasm) == 0 && you_orgasm == 1)
+    else if(root->vEvent(miraorgasm) == 0 && you_orgasm == 1)
         makeActBtn("lickmira_mis2",act(10));
     else
         makeActBtn("end",act(0));
@@ -679,14 +679,14 @@ void MiraSex::pose69_2()
 void MiraSex::miralick_stand1()
 {
     root->incTime(5);
-    if(root->gVEvent(miralick) < 10) root->uVStatus(horny,10);
-    if(root->gVEvent(miralick) >= 10)
+    if(root->vEvent(miralick) < 10) root->vStatus(horny) += 10;
+    if(root->vEvent(miralick) >= 10)
     {
-        root->uVStatus(horny,20);
-        root->uVEvent(mirahorny,getRandInt(0,9));
+        root->vStatus(horny) += 20;
+        root->vEvent(mirahorny) += getRandInt(0,9);
     }
     QString result = str(getRandInt(0,1));
-    if(root->gVEvent(miralick) < 10)
+    if(root->vEvent(miralick) < 10)
         result += str(getRandInt(15,17));
     else
         result += str(getRandInt(18,20));
@@ -699,17 +699,17 @@ void MiraSex::miralick_stand1()
             result += str(31);
         else
             result += str(32);
-        root->setDesc(result);
+        root->setText(result);
     }
     else
     {
-        root->uVSC(orgasm,1);
+        root->vStatistics(orgasm) += 1;
         you_orgasm = 1;
-        root->sVStatus(lust,0);
-        root->sVStatus(horny,0);
+        root->vStatus(lust) = 0;
+        root->vStatus(horny) = 0;
         root->setImage(media(24));
-        root->setDesc(result + str(37));
-        root->addDesc(str(70));
+        root->setText(result + str(37));
+        root->addText(str(70));
     }
 
     if(you_orgasm == 0)
@@ -720,15 +720,15 @@ void MiraSex::miralick_stand1()
 void MiraSex::miralick_stand2()
 {
     root->incTime(5);
-    if(root->gVEvent(miralick) < 10)
-        root->uVStatus(horny,10);
-    if(root->gVEvent(miralick) >= 10)
+    if(root->vEvent(miralick) < 10)
+        root->vStatus(horny) += 10;
+    if(root->vEvent(miralick) >= 10)
     {
-        root->uVStatus(horny,20);
-        root->uVEvent(mirahorny,getRandInt(0,5));
+        root->vStatus(horny) += 20;
+        root->vEvent(mirahorny) += getRandInt(0,5);
     }
     QString result = str(getRandInt(0,1));
-    if(root->gVEvent(miralick) < 10)
+    if(root->vEvent(miralick) < 10)
         result += str(getRandInt(15,17));
     else
         result += str(getRandInt(18,20));
@@ -741,23 +741,23 @@ void MiraSex::miralick_stand2()
             result += str(31);
         else
             result += str(32);
-        root->setDesc(result);
+        root->setText(result);
     }
     else
     {
-        root->uVSC(orgasm,1);
+        root->vStatistics(orgasm) += 1;
         you_orgasm = 1;
-        root->sVStatus(lust,0);
-        root->sVStatus(horny,0);
+        root->vStatus(lust) = 0;
+        root->vStatus(horny) = 0;
         root->setImage(media(24));
-        root->setDesc(result + str(32) + str(37));
-        if(root->gVEvent(miraorgasm) == 0) root->addDesc(str(71));
-        if(root->gVEvent(miraorgasm) == 1) root->addDesc(str(72));
+        root->setText(result + str(32) + str(37));
+        if(root->vEvent(miraorgasm) == 0) root->addText(str(71));
+        if(root->vEvent(miraorgasm) == 1) root->addText(str(72));
     }
 
-    if(root->gVEvent(miraorgasm) == 0 && you_orgasm == 0)
+    if(root->vEvent(miraorgasm) == 0 && you_orgasm == 0)
     {
-        if(root->gVEvent(mirahorny) <= root->vStatus(horny))
+        if(root->vEvent(mirahorny) <= root->vStatus(horny))
         {
             if(getRandInt(1,2) == 1)
                 makeActBtn("pose69_2",act(8));
@@ -771,12 +771,12 @@ void MiraSex::miralick_stand2()
             makeActBtn("dog_random",act(4));
         }
     }
-    else if(root->gVEvent(miraorgasm) == 1 && you_orgasm == 0)
+    else if(root->vEvent(miraorgasm) == 1 && you_orgasm == 0)
     {
         makeActBtn("miralick_stand2",act(11));
         makeActBtn("dog_random",act(4));
     }
-    else if(root->gVEvent(miraorgasm) == 0 && you_orgasm == 1)
+    else if(root->vEvent(miraorgasm) == 0 && you_orgasm == 1)
         makeActBtn("lickmira_mis2",act(10));
     else
         makeActBtn("end",act(0));
@@ -784,16 +784,16 @@ void MiraSex::miralick_stand2()
 void MiraSex::miralick_dog()
 {
     root->incTime(5);
-    if(root->gVEvent(miralick) < 10)
-        root->uVStatus(horny,10);
-    if(root->gVEvent(miralick) >= 10)
+    if(root->vEvent(miralick) < 10)
+        root->vStatus(horny) += 10;
+    if(root->vEvent(miralick) >= 10)
     {
-        root->uVStatus(horny,20);
-        root->uVEvent(mirahorny,getRandInt(0,5));
+        root->vStatus(horny) += 20;
+        root->vEvent(mirahorny) += getRandInt(0,5);
     }
 
     QString result = str(getRandInt(3,5));
-    if(root->gVEvent(miralick) < 10)
+    if(root->vEvent(miralick) < 10)
         result += str(getRandInt(15,17));
     else
         result += str(getRandInt(18,20));
@@ -807,23 +807,23 @@ void MiraSex::miralick_dog()
             result += str(31);
         else
             result += str(33);
-        root->setDesc(result);
+        root->setText(result);
     }
     else
     {
-        root->uVSC(orgasm,1);
+        root->vStatistics(orgasm) += 1;
         you_orgasm = 1;
-        root->sVStatus(lust,0);
-        root->sVStatus(horny,0);
+        root->vStatus(lust) = 0;
+        root->vStatus(horny) = 0;
         root->setImage(media(29));
-        root->setDesc(result + str(33) + str(37));
-        if(root->gVEvent(miraorgasm) == 0) root->addDesc(str(73));
-        if(root->gVEvent(miraorgasm) == 1) root->addDesc(str(74));
+        root->setText(result + str(33) + str(37));
+        if(root->vEvent(miraorgasm) == 0) root->addText(str(73));
+        if(root->vEvent(miraorgasm) == 1) root->addText(str(74));
     }
 
-    if(root->gVEvent(miraorgasm) == 0 && you_orgasm == 0)
+    if(root->vEvent(miraorgasm) == 0 && you_orgasm == 0)
     {
-        if(root->gVEvent(mirahorny) <= root->vStatus(horny))
+        if(root->vEvent(mirahorny) <= root->vStatus(horny))
         {
             if(getRandInt(1,2) == 1)
                 makeActBtn("pose69_2",act(8));
@@ -837,12 +837,12 @@ void MiraSex::miralick_dog()
             makeActBtn("pose69_2",act(8));
         }
     }
-    else if(root->gVEvent(miraorgasm) == 1 && you_orgasm == 0)
+    else if(root->vEvent(miraorgasm) == 1 && you_orgasm == 0)
     {
         makeActBtn("dog_random",act(12));
         makeActBtn("miralick_stand2",act(9));
     }
-    else if(root->gVEvent(miraorgasm) == 0 && you_orgasm == 1)
+    else if(root->vEvent(miraorgasm) == 0 && you_orgasm == 1)
         makeActBtn("lickmira_mis2",act(10));
     else
         makeActBtn("end",act(0));
@@ -850,8 +850,8 @@ void MiraSex::miralick_dog()
 void MiraSex::mirafinger()
 {
     root->incTime(5);
-    root->uVStatus(horny,15);
-    root->uVEvent(mirahorny,getRandInt(0,5));
+    root->vStatus(horny) += 15;
+    root->vEvent(mirahorny) += getRandInt(0,5);
     QString result = str(6) + str(getRandInt(27,29));
     if(root->vStatus(horny) < 100)
     {
@@ -862,17 +862,17 @@ void MiraSex::mirafinger()
             result += str(31);
         else
             result += str(33);
-        root->setDesc(result);
+        root->setText(result);
     }
     else
     {
-        root->uVSC(orgasm,1);
+        root->vStatistics(orgasm) += 1;
         you_orgasm = 1;
-        root->sVStatus(lust,0);
-        root->sVStatus(horny,0);
+        root->vStatus(lust) = 0;
+        root->vStatus(horny) = 0;
         root->setImage(media(34));
-        root->setDesc(result + str(33) + str(37));
-        root->addDesc(str(75));
+        root->setText(result + str(33) + str(37));
+        root->addText(str(75));
     }
     if(you_orgasm == 0)
         makeActBtn("mirafinger",act(12));
@@ -882,8 +882,8 @@ void MiraSex::mirafinger()
 void MiraSex::mirafinger_dog()
 {
     root->incTime(5);
-    root->uVStatus(horny,15);
-    root->uVEvent(mirahorny,getRandInt(0,5));
+    root->vStatus(horny) += 15;
+    root->vEvent(mirahorny) += getRandInt(0,5);
     QString result = str(getRandInt(3,5)) + str(getRandInt(27,29));
     if(root->vStatus(horny) < 100)
     {
@@ -894,22 +894,22 @@ void MiraSex::mirafinger_dog()
             result += str(31);
         else
             result += str(33);
-        root->setDesc(result);
+        root->setText(result);
     }
     else
     {
-        root->uVSC(orgasm,1);
+        root->vStatistics(orgasm) += 1;
         you_orgasm = 1;
-        root->sVStatus(lust,0);
-        root->sVStatus(horny,0);
+        root->vStatus(lust) = 0;
+        root->vStatus(horny) = 0;
         root->setImage(media(34));
-        root->setDesc(result + str(33) + str(37));
-        if(root->gVEvent(miraorgasm) == 0) root->addDesc(str(73));
-        if(root->gVEvent(miraorgasm) == 1) root->addDesc(str(74));
+        root->setText(result + str(33) + str(37));
+        if(root->vEvent(miraorgasm) == 0) root->addText(str(73));
+        if(root->vEvent(miraorgasm) == 1) root->addText(str(74));
     }
-    if(root->gVEvent(miraorgasm) == 0 && you_orgasm == 0)
+    if(root->vEvent(miraorgasm) == 0 && you_orgasm == 0)
     {
-        if(root->vStatus(horny) >= root->gVEvent(mirahorny))
+        if(root->vStatus(horny) >= root->vEvent(mirahorny))
         {
             if(getRandInt(1,2) == 1) makeActBtn("pose69_2",act(8));
             else makeActBtn("lickmira_mis2",act(10));
@@ -921,30 +921,30 @@ void MiraSex::mirafinger_dog()
             makeActBtn("pose69_2",act(8));
         }
     }
-    else if(root->gVEvent(miraorgasm) == 1 && you_orgasm == 0)
+    else if(root->vEvent(miraorgasm) == 1 && you_orgasm == 0)
     {
         makeActBtn("dog_random",act(12));
         makeActBtn("miralick_stand2",act(9));
     }
-    else if(root->gVEvent(miraorgasm) == 0 && you_orgasm == 1)
+    else if(root->vEvent(miraorgasm) == 0 && you_orgasm == 1)
         makeActBtn("lickmira_mis2",act(10));
     else
         makeActBtn("end",act(0));
 }
 void MiraSex::end()
 {
-    root->sVEvent(mirainmeadow,0);
+    root->vEvent(mirainmeadow) = 0;
     you_orgasm = 0;
-    root->sVEvent(miraorgasm,0);
+    root->vEvent(miraorgasm) = 0;
     root->incTime(20);
     root->changeLoc(lgaddvor);
 }
 void MiraSex::checkMiraSex()
 {
-    if(root->gVEvent(mirasex) == 0)
+    if(root->vEvent(mirasex) == 0)
     {
-        root->sVEvent(mirasex,1);
-        root->uVSex(girl,1);
+        root->vEvent(mirasex) = 1;
+        root->vSex(girl) += 1;
     }
 }
 

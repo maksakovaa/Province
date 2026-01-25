@@ -1,9 +1,9 @@
 #include "bicycle.h"
-#include "../eventhandler.h"
+#include "../../game.h"
 #include "../../menu/buttons.h"
 #include "../../Functions.h"
 
-Bicycle::Bicycle(EventHandler *ptr): root(ptr) {}
+Bicycle::Bicycle(Game *ptr): root(ptr) {}
 
 void Bicycle::start(QString arg)
 {
@@ -19,69 +19,69 @@ void Bicycle::actionHandler(QString action)
     {
         root->incTime(1);
         root->setImage(media(0));
-        root->setDesc(str(0));
+        root->setText(str(0));
         int hour = root->getHour();
         int month = root->getMonth();
         if(month >= 4 && month <= 10 && root->getSunWeather() >= 0)
         {
-            if(hour >= 6 && hour <= 20 && root->gVEvent(findvel) != root->vStatus(daystart))
+            if(hour >= 6 && hour <= 20 && root->vEvent(findvel) != root->vStatus(daystart))
                 makeActBtn("drive_bicycle",act(1));
-            if(root->gVEvent(goforest) > 0)
+            if(root->vEvent(goforest) > 0)
                 makeActBtn("drive_forest",act(2));
-            if(root->gVEvent(goswamp) == 1)
+            if(root->vEvent(goswamp) == 1)
                 makeActBtn("drive_swamp",act(3));
         }
         makeActBtn("gadsarai",act(0));
     }
     if(action == "drive_bicycle")
     {
-        root->sVEvent(findvel,root->vStatus(daystart));
+        root->vEvent(findvel) = root->vStatus(daystart);
         root->incTime(60);
-        root->uVSkill(runner,getRandInt(0,2));
-        root->uVSkill(speed,getRandInt(0,2));
-        root->uVStatus(day_weight,-1);
-        root->uVStatus(mood,5);
-        root->uVStatus(sweat,2);
-        if(root->gVQuest(QWgets_bicycle_day) != root->vStatus(daystart))
+        root->vSkill(runner) += getRandInt(0,2);
+        root->vSkill(speed) += getRandInt(0,2);
+        root->vStatus(day_weight) -= 1;
+        root->vStatus(mood) += 5;
+        root->vStatus(sweat) += 2;
+        if(root->vQuest(QWgets_bicycle_day) != root->vStatus(daystart))
         {
-            root->uVQuest(QWgets_bicycle,1);
-            root->sVQuest(QWgets_bicycle_day,root->vStatus(daystart));
+            root->vQuest(QWgets_bicycle) += 1;
+            root->vQuest(QWgets_bicycle_day) = root->vStatus(daystart);
         }
         if(root->isNude())
         {
-            root->uVStatus(horny,20);
+            root->vStatus(horny) += 20;
             root->setImage(media(1));
-            root->setDesc(str(1));
+            root->setText(str(1));
             makeActBtn("gadsarai",act(4));
         }
         if(root->isSkirt())
         {
             if(getRandInt(0,100) > 70)
             {
-                root->uVStatus(horny,5);
+                root->vStatus(horny) += 5;
                 if(root->isPanties())
                 {
                     root->setImage(media(2));
-                    root->setDesc(str(2));
+                    root->setText(str(2));
                 }
                 else
                 {
                     root->setImage(media(3));
-                    root->setDesc(str(3));
+                    root->setText(str(3));
                 }
                 makeActBtn("gadsarai",act(4));
             }
             else
             {
                 root->setImage(media(4));
-                root->setDesc(str(4));
+                root->setText(str(4));
                 makeActBtn("gadsarai",act(4));
             }
         }
         else
         {
             root->setImage(media(5));
-            root->setDesc(str(4));
+            root->setText(str(4));
             makeActBtn("gadsarai",act(4));
         }
     }
@@ -92,10 +92,10 @@ void Bicycle::actionHandler(QString action)
     if(action == "drive_forest")
     {
         root->incTime(25);
-        root->uVStatus(mood,5);
-        root->sVEvent(findvel,2);
+        root->vStatus(mood) += 5;
+        root->vEvent(findvel) = 2;
         actionHandler("clothes_findvel");
-        root->setDesc(str(5));
+        root->setText(str(5));
         makeActBtn("gadforest",act(5));
     }
     if(action == "gadforest")
@@ -105,14 +105,14 @@ void Bicycle::actionHandler(QString action)
     if(action == "drive_swamp")
     {
         root->incTime(75);
-        root->uVSkill(runner,getRandInt(0,1));
-        root->uVSkill(speed,getRandInt(0,1));
-        root->uVStatus(day_weight,-1);
-        root->uVStatus(mood,5);
-        root->uVStatus(sweat,1);
-        root->sVEvent(findvel,3);
+        root->vSkill(runner) += getRandInt(0,1);
+        root->vSkill(speed) += getRandInt(0,1);
+        root->vStatus(day_weight) -=1;
+        root->vStatus(mood) +=5;
+        root->vStatus(sweat) += 1;
+        root->vEvent(findvel) = 3;
         actionHandler("clothes_findvel");
-        root->setDesc(str(6));
+        root->setText(str(6));
         if(root->isDay())
             makeActBtn("swamp_yard",act(5));
         else
@@ -131,25 +131,25 @@ void Bicycle::actionHandler(QString action)
         root->incTime(1);
         root->setImage(media(0));
         makeActBtn("go_gaddvor",act(6));
-        if(root->gVEvent(goswamp) > 0)
+        if(root->vEvent(goswamp) > 0)
             makeActBtn("drive_swamp2",act(3));
          makeActBtn("gadforest",act(0));
     }
     if(action == "go_gaddvor")
     {
-        if(!root->isNude() || (root->isNude() && root->vSC(exhibi) > 0))
+        if(!root->isNude() || (root->isNude() && root->vStatistics(exhibi) > 0))
         {
-            root->uVStatus(mood,5);
-            root->sVEvent(findvel,1);
+            root->vStatus(mood) +=5;
+            root->vEvent(findvel) = 1;
             root->incTime(25);
             actionHandler("clothes_findvel");
-            root->setDesc(str(7));
+            root->setText(str(7));
             makeActBtn("gaddvor",act(5));
         }
         else
         {
             root->setImage(media(6));
-            root->setDesc(str(8));
+            root->setText(str(8));
             makeActBtn("gadforest",act(5));
         }
     }
@@ -160,10 +160,10 @@ void Bicycle::actionHandler(QString action)
     if(action == "drive_swamp2")
     {
         root->incTime(50);
-        root->uVStatus(mood,5);
-        root->sVEvent(findvel,3);
+        root->vStatus(mood) +=5;
+        root->vEvent(findvel) = 3;
         actionHandler("clothes_findvel");
-        root->setDesc(str(6));
+        root->setText(str(6));
         if(root->isDay())
             makeActBtn("swamp_yard",act(5));
         else
@@ -179,18 +179,18 @@ void Bicycle::actionHandler(QString action)
     }
     if(action == "go_gaddvor2")
     {
-        if(!root->isNude() || (root->isNude() && root->vSC(exhibi) > 0))
+        if(!root->isNude() || (root->isNude() && root->vStatistics(exhibi) > 0))
         {
             root->incTime(75);
-            root->uVSkill(runner,getRandInt(0,1));
-            root->uVSkill(speed,getRandInt(0,1));
-            root->uVStatus(day_weight,-1);
-            root->uVStatus(sweat,1);
-            root->uVStatus(mood,10);
-            root->sVEvent(findvel,1);
-            root->sVEvent(hanters,0);
+            root->vSkill(runner) += getRandInt(0,1);
+            root->vSkill(speed) += getRandInt(0,1);
+            root->vStatus(day_weight) -= 1;
+            root->vStatus(sweat) += 1;
+            root->vStatus(mood) += 10;
+            root->vEvent(findvel) = 1;
+            root->vEvent(hanters) = 0;
             actionHandler("clothes_findvel");
-            root->setDesc(str(7));
+            root->setText(str(7));
             if(root->isDay())
                 makeActBtn("gaddvor",act(5));
             else
@@ -198,18 +198,18 @@ void Bicycle::actionHandler(QString action)
         }
         else
         {
-            root->addDesc(str(8));
+            root->addText(str(8));
             makeActBtn("swamp_yard",act(5));
         }
     }
     if(action == "drive_forest2")
     {
         root->incTime(50);
-        root->uVStatus(mood,5);
-        root->sVEvent(hanters,0);
-        root->sVEvent(findvel,2);
+        root->vStatus(mood) += 5;
+        root->vEvent(hanters) = 0;
+        root->vEvent(findvel) = 2;
         actionHandler("clothes_findvel");
-        root->setDesc(str(5));
+        root->setText(str(5));
         if(root->isDay())
             makeActBtn("gadforest",act(5));
         else
@@ -226,7 +226,7 @@ void Bicycle::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action, "bicycle");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Bicycle::actionHandler);
-    root->addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString Bicycle::str(int id)

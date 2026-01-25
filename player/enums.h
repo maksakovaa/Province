@@ -244,7 +244,7 @@ enum Addiction
     alko, maxAlko, alkoday, max_hangoverDay, alkoholism, hangoverDay, alkoAbstainDay,
     alkoAbstainCount, hangVneshAlko, lenghangoverday,
 
-    drugEffect, drugStatus
+    drugEffect, drugAddict, addictTime, _addict, drugType, drugStatus
 };
 
 enum SC     //Статистика

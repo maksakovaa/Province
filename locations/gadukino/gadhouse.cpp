@@ -1,8 +1,8 @@
 #include "gadhouse.h"
 #include "../../Functions.h"
 #include "../../menu/buttons.h"
-
-Gadhouse::Gadhouse(LocationHandler *ptr): Location(ptr) {}
+#include "../../game.h"
+Gadhouse::Gadhouse(Game *ptr): root(ptr) {}
 
 void Gadhouse::show(QString arg)
 {
@@ -36,112 +36,112 @@ bool Gadhouse::isParent()
 
 void Gadhouse::actionHandler(QString action)
 {
-    clearActions();
+    root->clearActions();
     if(action == "gadhouse")
     {
-        setImage(media(0));
-        setDesc(str(0));
+        root->setImage(media(0));
+        root->setText(str(0));
         if(getRandInt(0,5) == 0)
-            addText(str(1));
-        if(getHour() < 6 || getHour() > 21)
-            addText(str(2));
-        else if (getHour() == 6)
+            root->addText(str(1));
+        if(root->getHour() < 6 || root->getHour() > 21)
+            root->addText(str(2));
+        else if (root->getHour() == 6)
         {
-            addText(str(3));
-            addText(str(4));
+            root->addText(str(3));
+            root->addText(str(4));
         }
-        else if(getHour() == 7 || getHour() == 13 || getHour() == 18)
-            addText(str(5));
-        else if(getHour() > 13 && getHour() < 18 && getWeekNum() == 0 && (getMonth() >= 5 || getMonth() <= 9))
-            addText(str(6));
-        else if(getHour() > 19 && getHour() < 22)
-            addText(str(7));
-        else if(getHour() > 20 && getHour() < 22)
-            addText(str(8));
+        else if(root->getHour() == 7 || root->getHour() == 13 || root->getHour() == 18)
+            root->addText(str(5));
+        else if(root->getHour() > 13 && root->getHour() < 18 && root->getWeek() == 0 && (root->getMonth() >= 5 || root->getMonth() <= 9))
+            root->addText(str(6));
+        else if(root->getHour() > 19 && root->getHour() < 22)
+            root->addText(str(7));
+        else if(root->getHour() > 20 && root->getHour() < 22)
+            root->addText(str(8));
 
         //Логистика
         //////////
 
-        if(getMonth() < 5 || getMonth() > 9 || getSunWeather() < 0)
+        if(root->getMonth() < 5 || root->getMonth() > 9 || root->getSunWeather() < 0)
         {
-            if(getHour() > 7 && getHour() < 13)
-                addText(str(10));
-            else if(getHour() > 13 && getHour() < 18)
-                addText(str(11));
+            if(root->getHour() > 7 && root->getHour() < 13)
+                root->addText(str(10));
+            else if(root->getHour() > 13 && root->getHour() < 18)
+                root->addText(str(11));
         }
-        if(gVEvent(mira_guest) == 1)
-            addText(str(12));
+        if(root->vEvent(mira_guest) == 1)
+            root->addText(str(12));
         makeActBtn("to_gaddvor", str(13));
         makeActBtn("eat", str(15));
-        drinkAll();
-        cookies();
-        fatDel();
-        vitamin();
-        pills();
-        if(gVStatus(boletus) > 0 || gVStatus(bilberry) > 0)
+        root->drinkAll();
+        root->cookies();
+        root->fatDel();
+        root->vitamin();
+        root->pills();
+        if(root->vStatus(boletus) > 0 || root->vStatus(bilberry) > 0)
         {
             makeActBtn("dry_food", str(17));
         }
-        fancywork();
-        home_workout();
-        // gs 'zz_family', 'father_sheduler'
+        root->fancywork();
+        root->home_workout();
+        root->startEvent(eFamily, "father_sheduler");
+        if(root->gNPC(father).location == lgadhouse)
+        {
+            root->addText("В комнате отдыхают родители.");
+            root->startEvent(eGadukinoEvents,"go_home");
+        }
 
-        // if $father['location'] = $curloc:
-        // gs 'zz_render', '', '', 'В комнате отдыхают родители.'
-        startEvent(eGadukinoEvents,"go_home");
-        // end
-
-        connect(getTextPtr(), &QLabel::linkActivated, this, &Gadhouse::actionHandler);
+        connect(root->getTextPtr(), &QLabel::linkActivated, this, &Gadhouse::actionHandler);
     }
     if(action == "to_gaddvor")
     {
-        if(isCloth())
+        if(root->isCloth())
         {
-            changeLoc(lgaddvor, 5);
+            root->changeLoc(lgaddvor, 5);
         }
         else
         {
-            addText(str(14));
+            root->addText(str(14));
         }
     }
     if(action == "eat")
     {
-        eat();
-        drink("tea");
+        root->eat();
+        root->drink("tea");
         makeActBtn("gadhouse", str(16));
     }
     if(action == "dry_food")
     {
-        uVStatus(eda, gVStatus(boletus) + gVStatus(bilberry));
-        sVStatus(boletus,0);
-        sVStatus(bilberry,0);
-        setImage(media(1));
-        setDesc(str(18));
+        root->vStatus(eda) += root->vStatus(boletus) + root->vStatus(bilberry);
+        root->vStatus(boletus) = 0;
+        root->vStatus(bilberry) = 0;
+        root->setImage(media(1));
+        root->setText(str(18));
         makeActBtn("gadhouse", str(19));
     }
     if(action == "grandma")
     {
-        startEvent(eGrandMa);
+        root->startEvent(eGrandMa);
     }
     if(action == "grandpa")
     {
-        startEvent(eGrandPa);
+        root->startEvent(eGrandPa);
     }
     if(action == "loker")
     {
-        viewObj("wardrobe");
+        root->viewObj("wardrobe");
     }
     if(action == "mirror")
     {
-        viewObj("mirror");
+        root->viewObj("mirror");
     }
     if(action == "bed")
     {
-        viewObj("bed");
+        root->viewObj("bed");
     }
     if(action == "villagecat")
     {
-        startEvent(eGrandParentEvents,"villagecat");
+        root->startEvent(eGrandParentEvents,"villagecat");
     }
     if(action == "zz_books_custom_shelf_0_9")
     {
@@ -149,22 +149,22 @@ void Gadhouse::actionHandler(QString action)
     }
     if(action == "Miroslava")
     {
-        startEvent(eMiroslava);
+        root->startEvent(eMiroslava);
     }
     if(action == "HR_Nina")
     {
-        startEvent(eLogistEvents,"HR_Nina");
+        root->startEvent(eLogistEvents,"HR_Nina");
     }
 }
 
 QString Gadhouse::str(int id)
 {
     QString ded, bab;
-    if(gVEvent(grandma_notalk) == 0)
+    if(root->vEvent(grandma_notalk) == 0)
         bab = "<a href='grandma'>бабушка</a>";
     else
         bab = "сердитая бабушка";
-    if(gVEvent(grandpa_notalk) == 0)
+    if(root->vEvent(grandpa_notalk) == 0)
         ded = "<a href='grandpa'>дедушка</a>";
     else
         ded = "дедушка";
@@ -206,5 +206,5 @@ void Gadhouse::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action, "gadhouse");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Gadhouse::actionHandler);
-    addActBtn(btn);
+    root->addActions(btn);
 }

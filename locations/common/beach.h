@@ -5,13 +5,13 @@
 #include <QObject>
 #include "../../items/cloth.h"
 
-class LocationHandler;
+class Game;
 
 class Beach: public QObject
 {
     Q_OBJECT
 public:
-    Beach(LocationHandler* ptr);
+    Beach(Game* ptr);
     void check_people();
     void walk();
     void undress(int arg = 0);
@@ -28,7 +28,7 @@ private:
     void storeClothes();
     QString str(int id);
     QString act(int id);
-    LocationHandler* root;
+    Game* root;
     Cloth* cloth = nullptr;
     Cloth* panties = nullptr;
     Cloth* stock = nullptr;

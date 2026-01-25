@@ -2,12 +2,12 @@
 #define MIROSLAVA_H
 
 #include "../event.h"
-class EventHandler;
+class Game;
 
 class Miroslava: public Event
 {
 public:
-    Miroslava(EventHandler* ptr);
+    Miroslava(Game* ptr);
     void start(QString arg = "") override;
     void makeActBtn(QString action, QString actName);
 private slots:
@@ -20,7 +20,7 @@ private:
     QString act(int id);
     QString media(int id);
 private:
-    EventHandler* root;
+    Game* root;
     int age;
 };
 

@@ -77,7 +77,7 @@ void LoadForm::loadSave(QString file)
             loadButtons(in);
             ((MainWindow*)root)->adjustSize();
             ((MainWindow*)root)->slotUpdParams();
-            ((MainWindow*)root)->locHandler->checkMapAwailable();
+            ((MainWindow*)root)->m_game->checkMapAwailable();
         }
     }
 }
@@ -95,17 +95,17 @@ void LoadForm::loadTimeServer(QTextStream &in)
         line = line.trimmed();
         QStringList list = line.split(":");
         if(list[0] == "year")
-            ((MainWindow*)root)->m_time.currTimePoint.tm_year = list[1].toInt();
+            ((MainWindow*)root)->m_game->m_time.currTimePoint.tm_year = list[1].toInt();
         if(list[0] == "month")
-            ((MainWindow*)root)->m_time.currTimePoint.tm_mon = list[1].toInt();
+            ((MainWindow*)root)->m_game->m_time.currTimePoint.tm_mon = list[1].toInt();
         if(list[0] == "day")
-            ((MainWindow*)root)->m_time.currTimePoint.tm_mday = list[1].toInt();
+            ((MainWindow*)root)->m_game->m_time.currTimePoint.tm_mday = list[1].toInt();
         if(list[0] == "hour")
-            ((MainWindow*)root)->m_time.currTimePoint.tm_hour = list[1].toInt();
+            ((MainWindow*)root)->m_game->m_time.currTimePoint.tm_hour = list[1].toInt();
         if(list[0] == "min")
-            ((MainWindow*)root)->m_time.currTimePoint.tm_min = list[1].toInt();
+            ((MainWindow*)root)->m_game->m_time.currTimePoint.tm_min = list[1].toInt();
         if(list[0] == "sec")
-            ((MainWindow*)root)->m_time.currTimePoint.tm_sec = list[1].toInt();
+            ((MainWindow*)root)->m_game->m_time.currTimePoint.tm_sec = list[1].toInt();
     }
     line = "";
     while (line != "}")
@@ -117,17 +117,17 @@ void LoadForm::loadTimeServer(QTextStream &in)
         line = line.trimmed();
         QStringList list = line.split(":");
         if(list[0] == "year")
-            ((MainWindow*)root)->m_time.oldTime.tm_year = list[1].toInt();
+            ((MainWindow*)root)->m_game->m_time.oldTime.tm_year = list[1].toInt();
         if(list[0] == "month")
-            ((MainWindow*)root)->m_time.oldTime.tm_mon = list[1].toInt();
+            ((MainWindow*)root)->m_game->m_time.oldTime.tm_mon = list[1].toInt();
         if(list[0] == "day")
-            ((MainWindow*)root)->m_time.oldTime.tm_mday = list[1].toInt();
+            ((MainWindow*)root)->m_game->m_time.oldTime.tm_mday = list[1].toInt();
         if(list[0] == "hour")
-            ((MainWindow*)root)->m_time.oldTime.tm_hour = list[1].toInt();
+            ((MainWindow*)root)->m_game->m_time.oldTime.tm_hour = list[1].toInt();
         if(list[0] == "min")
-            ((MainWindow*)root)->m_time.oldTime.tm_min = list[1].toInt();
+            ((MainWindow*)root)->m_game->m_time.oldTime.tm_min = list[1].toInt();
         if(list[0] == "sec")
-            ((MainWindow*)root)->m_time.oldTime.tm_sec = list[1].toInt();
+            ((MainWindow*)root)->m_game->m_time.oldTime.tm_sec = list[1].toInt();
     }
 }
 
@@ -145,14 +145,14 @@ void LoadForm::loadlocPointers(QTextStream &in)
         QStringList list = line.split(":");
         if(list[0] == "current_loc")
         {
-            ((MainWindow*)root)->locHandler->m_current = ((MainWindow*)root)->locHandler->m_locations[static_cast<LocId>(list[1].toInt())];
+            ((MainWindow*)root)->m_game->m_locs->m_current = ((MainWindow*)root)->m_game->m_locs->m_locations[static_cast<LocId>(list[1].toInt())];
         }
         if(list[0] == "prev_loc")
         {
             if(list[1] != "-1")
-                ((MainWindow*)root)->locHandler->m_prev = ((MainWindow*)root)->locHandler->m_locations[static_cast<LocId>(list[1].toInt())];
+                ((MainWindow*)root)->m_game->m_locs->m_prev = ((MainWindow*)root)->m_game->m_locs->m_locations[static_cast<LocId>(list[1].toInt())];
             else
-                ((MainWindow*)root)->locHandler->m_prev = nullptr;
+                ((MainWindow*)root)->m_game->m_locs->m_prev = nullptr;
         }
     }
 }
@@ -168,7 +168,7 @@ void LoadForm::loadWeather(QTextStream& in)
             continue;
         line = line.trimmed();
         QStringList list = line.split(":");
-        ((MainWindow*)root)->m_weather->m_weather[static_cast<WeatherVar>(list[0].toInt())] = list[1].toInt();
+        ((MainWindow*)root)->m_game->m_weather->m_weather[static_cast<WeatherVar>(list[0].toInt())] = list[1].toInt();
     }
 }
 
@@ -184,11 +184,11 @@ void LoadForm::loadPlayer(QTextStream& in)
         line = line.trimmed();
         QStringList list = line.split(":");
         if(list[0] == "year")
-            ((MainWindow*)root)->m_player->m_birthDate.tm_year = list[1].toInt();
+            ((MainWindow*)root)->m_game->m_player->m_birthDate.tm_year = list[1].toInt();
         if(list[0] == "month")
-            ((MainWindow*)root)->m_player->m_birthDate.tm_mon = list[1].toInt();
+            ((MainWindow*)root)->m_game->m_player->m_birthDate.tm_mon = list[1].toInt();
         if(list[0] == "day")
-            ((MainWindow*)root)->m_player->m_birthDate.tm_mday = list[1].toInt();
+            ((MainWindow*)root)->m_game->m_player->m_birthDate.tm_mday = list[1].toInt();
     }
     line = "";
     //load body params
@@ -199,7 +199,7 @@ void LoadForm::loadPlayer(QTextStream& in)
             continue;
         line = line.trimmed();
         QStringList list = line.split(":");
-        ((MainWindow*)root)->m_player->m_body[static_cast<Body>(list[0].toInt())] = list[1].toInt();
+        ((MainWindow*)root)->m_game->m_player->m_body[static_cast<Body>(list[0].toInt())] = list[1].toInt();
     }
     line = "";
     //load skills
@@ -210,7 +210,7 @@ void LoadForm::loadPlayer(QTextStream& in)
             continue;
         line = line.trimmed();
         QStringList list = line.split(":");
-        ((MainWindow*)root)->m_player->m_skills[static_cast<Skills>(list[0].toInt())] = list[1].toInt();
+        ((MainWindow*)root)->m_game->m_player->m_skills[static_cast<Skills>(list[0].toInt())] = list[1].toInt();
     }
     line = "";
     //load status
@@ -221,7 +221,7 @@ void LoadForm::loadPlayer(QTextStream& in)
             continue;
         line = line.trimmed();
         QStringList list = line.split(":");
-        ((MainWindow*)root)->m_player->m_status[static_cast<Status>(list[0].toInt())] = list[1].toInt();
+        ((MainWindow*)root)->m_game->m_player->m_status[static_cast<Status>(list[0].toInt())] = list[1].toInt();
     }
     line = "";
     //load sex
@@ -232,7 +232,7 @@ void LoadForm::loadPlayer(QTextStream& in)
             continue;
         line = line.trimmed();
         QStringList list = line.split(":");
-        ((MainWindow*)root)->m_player->m_sex[static_cast<SexVar>(list[0].toInt())] = list[1].toInt();
+        ((MainWindow*)root)->m_game->m_player->m_sex[static_cast<SexVar>(list[0].toInt())] = list[1].toInt();
     }
     line = "";
     //load preg
@@ -243,7 +243,7 @@ void LoadForm::loadPlayer(QTextStream& in)
             continue;
         line = line.trimmed();
         QStringList list = line.split(":");
-        ((MainWindow*)root)->m_player->m_preg[static_cast<PregVar>(list[0].toInt())] = list[1].toInt();
+        ((MainWindow*)root)->m_game->m_player->m_preg[static_cast<PregVar>(list[0].toInt())] = list[1].toInt();
     }
     line = "";
     //load statistic
@@ -254,7 +254,7 @@ void LoadForm::loadPlayer(QTextStream& in)
             continue;
         line = line.trimmed();
         QStringList list = line.split(":");
-        ((MainWindow*)root)->m_player->m_statistic[static_cast<SC>(list[0].toInt())] = list[1].toInt();
+        ((MainWindow*)root)->m_game->m_player->m_statistic[static_cast<SC>(list[0].toInt())] = list[1].toInt();
     }
     line = "";
     // load addict
@@ -265,7 +265,7 @@ void LoadForm::loadPlayer(QTextStream& in)
             continue;
         line = line.trimmed();
         QStringList list = line.split(":");
-        ((MainWindow*)root)->m_player->m_addict[static_cast<Addiction>(list[0].toInt())] = list[1].toInt();
+        ((MainWindow*)root)->m_game->m_player->m_addict[static_cast<Addiction>(list[0].toInt())] = list[1].toInt();
     }
     line = "";
     //load sick
@@ -276,7 +276,7 @@ void LoadForm::loadPlayer(QTextStream& in)
             continue;
         line = line.trimmed();
         QStringList list = line.split(":");
-        ((MainWindow*)root)->m_player->m_sick[static_cast<Sickness>(list[0].toInt())] = list[1].toInt();
+        ((MainWindow*)root)->m_game->m_player->m_sick[static_cast<Sickness>(list[0].toInt())] = list[1].toInt();
     }
     line = "";
     //load job
@@ -287,7 +287,7 @@ void LoadForm::loadPlayer(QTextStream& in)
             continue;
         line = line.trimmed();
         QStringList list = line.split(":");
-        ((MainWindow*)root)->m_player->m_job[static_cast<JobStatus>(list[0].toInt())] = list[1].toInt();
+        ((MainWindow*)root)->m_game->m_player->m_job[static_cast<JobStatus>(list[0].toInt())] = list[1].toInt();
     }
     line = "";
     //load school var
@@ -298,7 +298,7 @@ void LoadForm::loadPlayer(QTextStream& in)
             continue;
         line = line.trimmed();
         QStringList list = line.split(":");
-        ((MainWindow*)root)->locHandler->m_events->m_schoolVal[static_cast<SchoolVar>(list[0].toInt())] = list[1].toInt();
+        ((MainWindow*)root)->m_game->m_events->m_schoolVal[static_cast<SchoolVar>(list[0].toInt())] = list[1].toInt();
     }
 }
 
@@ -313,7 +313,7 @@ void LoadForm::loadEventVal(QTextStream& in)
             continue;
         line = line.trimmed();
         QStringList list = line.split(":");
-        ((MainWindow*)root)->locHandler->m_events->m_eventval[static_cast<EventParams>(list[0].toInt())] = list[1].toInt();
+        ((MainWindow*)root)->m_game->m_events->m_eventval[static_cast<EventParams>(list[0].toInt())] = list[1].toInt();
     }
 }
 
@@ -328,7 +328,7 @@ void LoadForm::loadQuestVal(QTextStream& in)
             continue;
         line = line.trimmed();
         QStringList list = line.split(":");
-        ((MainWindow*)root)->locHandler->m_events->m_questval[static_cast<QuestParams>(list[0].toInt())] = list[1].toInt();
+        ((MainWindow*)root)->m_game->m_events->m_questval[static_cast<QuestParams>(list[0].toInt())] = list[1].toInt();
     }
 }
 
@@ -349,14 +349,14 @@ void LoadForm::loadItems(QTextStream& in)
 void LoadForm::loadClothOnPlayer(QTextStream &in)
 {
     QString line;
-    qDebug() << "load cloth on player";
+    // qDebug() << "load cloth on player";
     std::unordered_map<QString,QString> clothes;
     while (line != "}")
     {
         line = in.readLine();
         if(line == "{" || line == "}")
             continue;
-        qDebug() << line;
+        // qDebug() << line;
         line = line.trimmed();
         QStringList list = line.split(":");
         clothes[list[0]] = list[1];
@@ -367,7 +367,7 @@ void LoadForm::loadClothOnPlayer(QTextStream &in)
         ptr = new ClothMain(clothes["id"].toInt(), static_cast<ClothGroup>(clothes["group"].toInt()), clothes["name"],clothes["price"].toInt(),clothes["condition"].toInt());
         ptr->setSize(clothes["size"].toInt());
     }
-    ((MainWindow*)root)->m_player->m_clothSLots[ClothType::Main] = ptr;
+    ((MainWindow*)root)->m_game->m_player->m_clothSLots[ClothType::Main] = ptr;
     clothes.clear();
     line = "";
 
@@ -385,7 +385,7 @@ void LoadForm::loadClothOnPlayer(QTextStream &in)
     {
         ptr2 = new ClothPanties(ClothType::Panties,clothes["price"].toInt(),clothes["condition"].toInt());
     }
-    ((MainWindow*)root)->m_player->m_clothSLots[ClothType::Panties] = ptr2;
+    ((MainWindow*)root)->m_game->m_player->m_clothSLots[ClothType::Panties] = ptr2;
 }
 
 void LoadForm::loadClothPrev(QTextStream &in)
@@ -410,7 +410,7 @@ void LoadForm::loadClothPrev(QTextStream &in)
         prevptr = new ClothMain(clothes["id"].toInt(), static_cast<ClothGroup>(clothes["group"].toInt()), clothes["name"],clothes["price"].toInt(),clothes["condition"].toInt());
         prevptr->setSize(clothes["size"].toInt());
     }
-    ((MainWindow*)root)->m_player->m_prevCloth[ClothType::Main] = prevptr;
+    ((MainWindow*)root)->m_game->m_player->m_prevCloth[ClothType::Main] = prevptr;
     clothes.clear();
     line = "";
     while (line != "}")
@@ -428,7 +428,7 @@ void LoadForm::loadClothPrev(QTextStream &in)
     {
         prevptr2 = new ClothPanties(ClothType::Panties,clothes["price"].toInt(),clothes["condition"].toInt());
     }
-    ((MainWindow*)root)->m_player->m_prevCloth[ClothType::Panties] = prevptr2;
+    ((MainWindow*)root)->m_game->m_player->m_prevCloth[ClothType::Panties] = prevptr2;
 }
 
 void LoadForm::loadClothWardr(QTextStream &in)
@@ -450,18 +450,18 @@ void LoadForm::loadClothWardr(QTextStream &in)
         }
         if(clothes["cloth_type"] == "1" && clothes["count"] != "0")
         {
-            if(((MainWindow*)root)->m_player->m_clothSLots[ClothType::Panties] != nullptr)
-                ((MainWindow*)root)->objHandler->m_wardrobe->m_storage[((MainWindow*)root)->m_player->m_clothSLots[ClothType::Panties]] = clothes["count"].toInt();
-            else if(((MainWindow*)root)->m_player->m_prevCloth[ClothType::Panties] != nullptr)
-                ((MainWindow*)root)->objHandler->m_wardrobe->m_storage[((MainWindow*)root)->m_player->m_prevCloth[ClothType::Panties]] = clothes["count"].toInt();
+            if(((MainWindow*)root)->m_game->m_player->m_clothSLots[ClothType::Panties] != nullptr)
+                ((MainWindow*)root)->m_game->m_objs->m_wardrobe->m_storage[((MainWindow*)root)->m_game->m_player->m_clothSLots[ClothType::Panties]] = clothes["count"].toInt();
+            else if(((MainWindow*)root)->m_game->m_player->m_prevCloth[ClothType::Panties] != nullptr)
+                ((MainWindow*)root)->m_game->m_objs->m_wardrobe->m_storage[((MainWindow*)root)->m_game->m_player->m_prevCloth[ClothType::Panties]] = clothes["count"].toInt();
             else
-                ((MainWindow*)root)->objHandler->m_wardrobe->m_storage[new ClothPanties(ClothType::Panties)] = clothes["count"].toInt();
+                ((MainWindow*)root)->m_game->m_objs->m_wardrobe->m_storage[new ClothPanties(ClothType::Panties)] = clothes["count"].toInt();
         }
         else if(clothes["cloth_type"] == "0" && clothes["count"] != "0")
         {
             ClothMain* ptrX = new ClothMain(clothes["id"].toInt(), static_cast<ClothGroup>(clothes["group"].toInt()),clothes["name"],clothes["price"].toInt(),clothes["condition"].toInt());
             ptrX->setSize(clothes["size"].toInt());
-            ((MainWindow*)root)->objHandler->m_wardrobe->m_storage[ptrX] = clothes["count"].toInt();
+            ((MainWindow*)root)->m_game->m_objs->m_wardrobe->m_storage[ptrX] = clothes["count"].toInt();
         }
         clothes.clear();
         line = in.readLine();
@@ -498,8 +498,8 @@ void LoadForm::loadCurScreen(QTextStream& in)
                 image = list[1];
         }
         // qDebug() << "loading" << image;
-        ((MainWindow*)root)->pageRender->rendImagePage(this);
-        ((MainWindow*)root)->pageRender->imageLbl->setText(image);
+        ((MainWindow*)root)->m_render->rendImagePage(this);
+        ((MainWindow*)root)->m_render->imageLbl->setText(image);
     }
     if(cur_page == 1)
     {
@@ -522,8 +522,8 @@ void LoadForm::loadCurScreen(QTextStream& in)
                 height = list[1].toInt();
         }
         // qDebug() << "loading" << video;
-        ((MainWindow*)root)->pageRender->rendVideoPage(this);
-        ((MainWindow*)root)->pageRender->setVideo(video,width,height);
+        ((MainWindow*)root)->m_render->rendVideoPage(this);
+        ((MainWindow*)root)->m_render->setVideo(video,width,height);
     }
     line = "";
     if(cur_page == 0 || cur_page == 1)
@@ -538,7 +538,7 @@ void LoadForm::loadCurScreen(QTextStream& in)
             QStringList list = line.split("|");
             text = list[1];
         }
-        ((MainWindow*)root)->pageRender->setText(text);
+        ((MainWindow*)root)->m_render->setText(text);
     }
 }
 
@@ -552,6 +552,7 @@ void LoadForm::loadButtons(QTextStream& in)
         while (line != "    }")
         {
             line = in.readLine();
+            qDebug() << line;
             if(line == "    }" || line == "    {" || line == "{" || line == "}")
                 continue;
             line = line.trimmed();
@@ -568,259 +569,259 @@ void LoadForm::makeButton(std::unordered_map<QString, QString>& params)
 {
     if(params["handler"] == "beach")
     {
-        ((MainWindow*)root)->locHandler->m_beach->makeActBtn(params["action"],params["buttonText"]);
+        ((MainWindow*)root)->m_game->m_locs->m_beach->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "common")
     {
-        ((MainWindow*)root)->locHandler->m_common->makeActBtn(params["action"],params["buttonText"]);
+        ((MainWindow*)root)->m_game->m_locs->m_common->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "gadbana")
     {
-        Gadbana* ptr = (Gadbana*)((MainWindow*)root)->locHandler->m_locations[lgadbana];
+        Gadbana* ptr = (Gadbana*)((MainWindow*)root)->m_game->m_locs->m_locations[lgadbana];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "gadbeach")
     {
-        Gadbeach* ptr = (Gadbeach*)((MainWindow*)root)->locHandler->m_locations[lgadbeach];
+        Gadbeach* ptr = (Gadbeach*)((MainWindow*)root)->m_game->m_locs->m_locations[lgadbeach];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "gaddvor")
     {
-        Gaddvor* ptr = (Gaddvor*)((MainWindow*)root)->locHandler->m_locations[lgaddvor];
+        Gaddvor* ptr = (Gaddvor*)((MainWindow*)root)->m_game->m_locs->m_locations[lgaddvor];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "gadgarden")
     {
-        Gadgarden* ptr = (Gadgarden*)((MainWindow*)root)->locHandler->m_locations[lgadgarden];
+        Gadgarden* ptr = (Gadgarden*)((MainWindow*)root)->m_game->m_locs->m_locations[lgadgarden];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "gadhouse")
     {
-        Gadhouse* ptr = (Gadhouse*)((MainWindow*)root)->locHandler->m_locations[lgadhouse];
+        Gadhouse* ptr = (Gadhouse*)((MainWindow*)root)->m_game->m_locs->m_locations[lgadhouse];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "gadmarket")
     {
-        Gadmarket* ptr = (Gadmarket*)((MainWindow*)root)->locHandler->m_locations[lgadmarket];
+        Gadmarket* ptr = (Gadmarket*)((MainWindow*)root)->m_game->m_locs->m_locations[lgadmarket];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "gadriver")
     {
-        Gadriver* ptr = (Gadriver*)((MainWindow*)root)->locHandler->m_locations[lgadriver];
+        Gadriver* ptr = (Gadriver*)((MainWindow*)root)->m_game->m_locs->m_locations[lgadriver];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "gadroad")
     {
-        Gadroad* ptr = (Gadroad*)((MainWindow*)root)->locHandler->m_locations[lgadroad];
+        Gadroad* ptr = (Gadroad*)((MainWindow*)root)->m_game->m_locs->m_locations[lgadroad];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "gadsarai")
     {
-        Gadsarai* ptr = (Gadsarai*)((MainWindow*)root)->locHandler->m_locations[lgadsarai];
+        Gadsarai* ptr = (Gadsarai*)((MainWindow*)root)->m_game->m_locs->m_locations[lgadsarai];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "gadukino")
     {
-        Gadukino* ptr = (Gadukino*)((MainWindow*)root)->locHandler->m_locations[lgadukino];
+        Gadukino* ptr = (Gadukino*)((MainWindow*)root)->m_game->m_locs->m_locations[lgadukino];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "kitchActs")
     {
-        ((MainWindow*)root)->locHandler->m_kitchenActs->makeActBtn(params["action"],params["buttonText"]);
+        ((MainWindow*)root)->m_game->m_locs->m_kitchenActs->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "shop")
     {
-        Shop* ptr = (Shop*)((MainWindow*)root)->locHandler->m_locations[lshop];
+        Shop* ptr = (Shop*)((MainWindow*)root)->m_game->m_locs->m_locations[lshop];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "backwater")
     {
-        Backwater* ptr = (Backwater*)((MainWindow*)root)->locHandler->m_locations[lbackwater];
+        Backwater* ptr = (Backwater*)((MainWindow*)root)->m_game->m_locs->m_locations[lbackwater];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "gadfield")
     {
-        Gadfield* ptr = (Gadfield*)((MainWindow*)root)->locHandler->m_locations[lgadfield];
+        Gadfield* ptr = (Gadfield*)((MainWindow*)root)->m_game->m_locs->m_locations[lgadfield];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "mirahome")
     {
-        MiroslavaHome* ptr = (MiroslavaHome*)((MainWindow*)root)->locHandler->m_locations[lmirahome];
+        MiroslavaHome* ptr = (MiroslavaHome*)((MainWindow*)root)->m_game->m_locs->m_locations[lmirahome];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "gadforestswamp")
     {
-        GadForestSwamp* ptr = (GadForestSwamp*)((MainWindow*)root)->locHandler->m_locations[lgadforestswamp];
+        GadForestSwamp* ptr = (GadForestSwamp*)((MainWindow*)root)->m_game->m_locs->m_locations[lgadforestswamp];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "gadforest")
     {
-        Gadforest* ptr = (Gadforest*)((MainWindow*)root)->locHandler->m_locations[lgadforest];
+        Gadforest* ptr = (Gadforest*)((MainWindow*)root)->m_game->m_locs->m_locations[lgadforest];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "meadow")
     {
-        Meadow* ptr = (Meadow*)((MainWindow*)root)->locHandler->m_locations[lmeadow];
+        Meadow* ptr = (Meadow*)((MainWindow*)root)->m_game->m_locs->m_locations[lmeadow];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "gadukinoevents")
     {
-        GadukinoEvent* ptr = (GadukinoEvent*)((MainWindow*)root)->locHandler->m_events->m_events[eGadukinoEvents];
+        GadukinoEvent* ptr = (GadukinoEvent*)((MainWindow*)root)->m_game->m_events->m_events[eGadukinoEvents];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "swampspring")
     {
-        SwampSpring* ptr = (SwampSpring*)((MainWindow*)root)->locHandler->m_locations[lswampspring];
+        SwampSpring* ptr = (SwampSpring*)((MainWindow*)root)->m_game->m_locs->m_locations[lswampspring];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "swampyard")
     {
-        SwampYard* ptr = (SwampYard*)((MainWindow*)root)->locHandler->m_locations[lswampyard];
+        SwampYard* ptr = (SwampYard*)((MainWindow*)root)->m_game->m_locs->m_locations[lswampyard];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "swamphouse")
     {
-        SwampHouse* ptr = (SwampHouse*)((MainWindow*)root)->locHandler->m_locations[lswamphouse];
+        SwampHouse* ptr = (SwampHouse*)((MainWindow*)root)->m_game->m_locs->m_locations[lswamphouse];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "swamp")
     {
-        Swamp* ptr = (Swamp*)((MainWindow*)root)->locHandler->m_locations[lswamp];
+        Swamp* ptr = (Swamp*)((MainWindow*)root)->m_game->m_locs->m_locations[lswamp];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "gadforestevent")
     {
-        GadforestEvent* ptr = (GadforestEvent*)((MainWindow*)root)->locHandler->m_events->m_events[eGadForestEvent];
+        GadforestEvent* ptr = (GadforestEvent*)((MainWindow*)root)->m_game->m_events->m_events[eGadForestEvent];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "korrparr")
     {
-        korrPar* ptr = (korrPar*)((MainWindow*)root)->locHandler->m_locations[lkorrpar];
+        korrPar* ptr = (korrPar*)((MainWindow*)root)->m_game->m_locs->m_locations[lkorrpar];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "miroslava")
     {
-        Miroslava* ptr = (Miroslava*)((MainWindow*)root)->locHandler->m_events->m_events[eMiroslava];
+        Miroslava* ptr = (Miroslava*)((MainWindow*)root)->m_game->m_events->m_events[eMiroslava];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "mitka")
     {
-        Mitka* ptr = (Mitka*)((MainWindow*)root)->locHandler->m_events->m_events[eMitka];
+        Mitka* ptr = (Mitka*)((MainWindow*)root)->m_game->m_events->m_events[eMitka];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "riverevents")
     {
-        RiverEvents* ptr = (RiverEvents*)((MainWindow*)root)->locHandler->m_events->m_events[eRiverEvents];
+        RiverEvents* ptr = (RiverEvents*)((MainWindow*)root)->m_game->m_events->m_events[eRiverEvents];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "mitkasex")
     {
-        MitkaSex* ptr = (MitkaSex*)((MainWindow*)root)->locHandler->m_events->m_events[eMitkaSex];
+        MitkaSex* ptr = (MitkaSex*)((MainWindow*)root)->m_game->m_events->m_events[eMitkaSex];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "AndreiHanter")
     {
-        AndreiHanter* ptr = (AndreiHanter*)((MainWindow*)root)->locHandler->m_events->m_events[eAndreiHanter];
+        AndreiHanter* ptr = (AndreiHanter*)((MainWindow*)root)->m_game->m_events->m_events[eAndreiHanter];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "swampevents")
     {
-        SwampEvents* ptr = (SwampEvents*)((MainWindow*)root)->locHandler->m_events->m_events[eSwampEvents];
+        SwampEvents* ptr = (SwampEvents*)((MainWindow*)root)->m_game->m_events->m_events[eSwampEvents];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "bicycle")
     {
-        Bicycle* ptr = (Bicycle*)((MainWindow*)root)->locHandler->m_events->m_events[eBicycle];
+        Bicycle* ptr = (Bicycle*)((MainWindow*)root)->m_game->m_events->m_events[eBicycle];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "grandpa")
     {
-        Grandpa* ptr = (Grandpa*)((MainWindow*)root)->locHandler->m_events->m_events[eGrandPa];
+        Grandpa* ptr = (Grandpa*)((MainWindow*)root)->m_game->m_events->m_events[eGrandPa];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "GadforestLost")
     {
-        GadforestLost* ptr = (GadforestLost*)((MainWindow*)root)->locHandler->m_events->m_events[eGadForestLost];
+        GadforestLost* ptr = (GadforestLost*)((MainWindow*)root)->m_game->m_events->m_events[eGadForestLost];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "pirat")
     {
-        Pirat* ptr = (Pirat*)((MainWindow*)root)->locHandler->m_events->m_events[ePirat];
+        Pirat* ptr = (Pirat*)((MainWindow*)root)->m_game->m_events->m_events[ePirat];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "grandma")
     {
-        Grandma* ptr = (Grandma*)((MainWindow*)root)->locHandler->m_events->m_events[eGrandMa];
+        Grandma* ptr = (Grandma*)((MainWindow*)root)->m_game->m_events->m_events[eGrandMa];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "GadforestRelax")
     {
-        GadforestRelax* ptr = (GadforestRelax*)((MainWindow*)root)->locHandler->m_events->m_events[eGadForestRelax];
+        GadforestRelax* ptr = (GadforestRelax*)((MainWindow*)root)->m_game->m_events->m_events[eGadForestRelax];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "GrandmaHelp")
     {
-        GrandmaHelp* ptr = (GrandmaHelp*)((MainWindow*)root)->locHandler->m_events->m_events[eGrandMaHelp];
+        GrandmaHelp* ptr = (GrandmaHelp*)((MainWindow*)root)->m_game->m_events->m_events[eGrandMaHelp];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "GrandpaHelp")
     {
-        GrandpaHelp* ptr = (GrandpaHelp*)((MainWindow*)root)->locHandler->m_events->m_events[eGrandPaHelp];
+        GrandpaHelp* ptr = (GrandpaHelp*)((MainWindow*)root)->m_game->m_events->m_events[eGrandPaHelp];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "GrandparentsEvents")
     {
-        GrandparentsEvents* ptr = (GrandparentsEvents*)((MainWindow*)root)->locHandler->m_events->m_events[eGrandParentEvents];
+        GrandparentsEvents* ptr = (GrandparentsEvents*)((MainWindow*)root)->m_game->m_events->m_events[eGrandParentEvents];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "HanterSex")
     {
-        HanterSex* ptr = (HanterSex*)((MainWindow*)root)->locHandler->m_events->m_events[eHanterSex];
+        HanterSex* ptr = (HanterSex*)((MainWindow*)root)->m_game->m_events->m_events[eHanterSex];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "IgorHanter")
     {
-        IgorHanter* ptr = (IgorHanter*)((MainWindow*)root)->locHandler->m_events->m_events[eIgorHanter];
+        IgorHanter* ptr = (IgorHanter*)((MainWindow*)root)->m_game->m_events->m_events[eIgorHanter];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "Hanters")
     {
-        Hanters* ptr = (Hanters*)((MainWindow*)root)->locHandler->m_events->m_events[eHanters];
+        Hanters* ptr = (Hanters*)((MainWindow*)root)->m_game->m_events->m_events[eHanters];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "HantersLoveSex")
     {
-        HantersLoveSex* ptr = (HantersLoveSex*)((MainWindow*)root)->locHandler->m_events->m_events[eHantersLoveSex];
+        HantersLoveSex* ptr = (HantersLoveSex*)((MainWindow*)root)->m_game->m_events->m_events[eHantersLoveSex];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "MeadowEvent")
     {
-        MeadowEvent* ptr = (MeadowEvent*)((MainWindow*)root)->locHandler->m_events->m_events[eMeadowEvent];
+        MeadowEvent* ptr = (MeadowEvent*)((MainWindow*)root)->m_game->m_events->m_events[eMeadowEvent];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "MiraFather")
     {
-        MiraFather* ptr = (MiraFather*)((MainWindow*)root)->locHandler->m_events->m_events[eMiraFather];
+        MiraFather* ptr = (MiraFather*)((MainWindow*)root)->m_game->m_events->m_events[eMiraFather];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "MiraSex")
     {
-        MiraSex* ptr = (MiraSex*)((MainWindow*)root)->locHandler->m_events->m_events[eMiraSex];
+        MiraSex* ptr = (MiraSex*)((MainWindow*)root)->m_game->m_events->m_events[eMiraSex];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "MitkaBuhGroup")
     {
-        MitkaBuhGroup* ptr = (MitkaBuhGroup*)((MainWindow*)root)->locHandler->m_events->m_events[eMitkaBuhGroup];
+        MitkaBuhGroup* ptr = (MitkaBuhGroup*)((MainWindow*)root)->m_game->m_events->m_events[eMitkaBuhGroup];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "MitkaBuh")
     {
-        MitkaBuh* ptr = (MitkaBuh*)((MainWindow*)root)->locHandler->m_events->m_events[eMitkaBuh];
+        MitkaBuh* ptr = (MitkaBuh*)((MainWindow*)root)->m_game->m_events->m_events[eMitkaBuh];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
     if(params["handler"] == "SergeiHanter")
     {
-        SergeiHanter* ptr = (SergeiHanter*)((MainWindow*)root)->locHandler->m_events->m_events[eSergeiHanter];
+        SergeiHanter* ptr = (SergeiHanter*)((MainWindow*)root)->m_game->m_events->m_events[eSergeiHanter];
         ptr->makeActBtn(params["action"],params["buttonText"]);
     }
 }

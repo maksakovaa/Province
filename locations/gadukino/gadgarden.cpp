@@ -1,7 +1,9 @@
 #include "gadgarden.h"
 #include "../../Functions.h"
 #include "../../menu/buttons.h"
-Gadgarden::Gadgarden(LocationHandler *ptr): Location(ptr) {}
+#include "../../game.h"
+
+Gadgarden::Gadgarden(Game *ptr): root(ptr) {}
 
 void Gadgarden::show(QString arg)
 {
@@ -38,100 +40,100 @@ bool Gadgarden::isParent()
 
 void Gadgarden::actionHandler(QString action)
 {
-    clearActions();
+    root->clearActions();
     if(action == "garden")
     {
-        sVEvent(grandma_ingadgarden, 0);
-        sVEvent(grandpa_ingadgarden, 0);
-        int month = getMonth();
-        setImage(makeImage(media(0),isDay(),month));
-        setDesc(str(0));
-        if(getSnow() == 0)
-            addText(str(1));
-        if((month >= 6 && month <= 8 && gVJob(graze_cow) == 0) || (month >= 5 && month <= 9 && gVJob(graze_cow) > 0) )
-            if(getSunWeather() >= 0 && getHour() > 7 && getHour() < 13)
+        root->vEvent(grandma_ingadgarden) = 0;
+        root->vEvent(grandpa_ingadgarden) = 0;
+        int month = root->getMonth();
+        root->setImage(makeImage(media(0),root->isDay(),month));
+        root->setText(str(0));
+        if(root->getSnow() == 0)
+            root->addText(str(1));
+        if((month >= 6 && month <= 8 && root->vJob(graze_cow) == 0) || (month >= 5 && month <= 9 && root->vJob(graze_cow) > 0) )
+            if(root->getSunWeather() >= 0 && root->getHour() > 7 && root->getHour() < 13)
             {
-                sVEvent(grandma_ingadgarden, 1);
-                addText(str(2));
+                root->vEvent(grandma_ingadgarden) = 1;
+                root->addText(str(2));
             }
-        if(getSunWeather() >= 0 && getHour() > 7 && getHour() < 13 && gVJob(graze_cow) == 0 && (month == 5 || month == 9))
+        if(root->getSunWeather() >= 0 && root->getHour() > 7 && root->getHour() < 13 && root->vJob(graze_cow) == 0 && (month == 5 || month == 9))
         {
-            sVEvent(grandpa_ingadgarden, 1);
-            sVEvent(grandma_ingadgarden, 1);
-            addText(str(3));
+            root->vEvent(grandpa_ingadgarden) = 1;
+            root->vEvent(grandma_ingadgarden) = 1;
+            root->addText(str(3));
         }
-        if(grandma_ingadgarden == 1 && gVEvent(grandmaknowsick) == 1)
+        if(grandma_ingadgarden == 1 && root->vEvent(grandmaknowsick) == 1)
         {
-            startEvent(eGrandMa);
+            root->startEvent(eGrandMa);
         }
-        if(gVJob(workGarden) == 1)
+        if(root->vJob(workGarden) == 1)
             makeActBtn("work_garden", str(4));
-        if(gVJob(waterGarden) == 1)
+        if(root->vJob(waterGarden) == 1)
             makeActBtn("water_garden", str(7));
-        if(gVJob(harvest_garden) == 1)
+        if(root->vJob(harvest_garden) == 1)
             makeActBtn("harvest_garden", str(9));
         makeActBtn("gaddvor", str(11));
-        if(getCloth(ClothType::Main) == nullptr)
+        if(root->getCloth(ClothType::Main) == nullptr)
         {
-            startEvent(eGrandParentEvents,"garden_nude");
+            root->startEvent(eGrandParentEvents,"garden_nude");
         }
-        connect(getTextPtr(), &QLabel::linkActivated, this, &Gadgarden::actionHandler);
+        connect(root->getTextPtr(), &QLabel::linkActivated, this, &Gadgarden::actionHandler);
     }
     if(action == "work_garden")
     {
-        incTime(180);
-        uVStatus(sweat, 1);
-        sVJob(workGarden, 0);
-        uVEvent(grandmahelp,3);
-        uVQuest(grandmaQW,1);
-        if(gVSkill(strenght) < 30)
-            uVSkill(strenght,1);
-        uVStatus(day_weight, -1);
-        setImage(media(1));
-        setDesc(str(5));
+        root->incTime(180);
+        root->vStatus(sweat) += 1;
+        root->vJob(workGarden) = 0;
+        root->vEvent(grandmahelp) += 3;
+        root->vQuest(grandmaQW) += 1;
+        if(root->vSkill(strenght) < 30)
+            root->vSkill(strenght) += 1;
+        root->vStatus(day_weight) -= 1;
+        root->setImage(media(1));
+        root->setText(str(5));
         makeActBtn("garden", str(6));
     }
     if(action == "water_garden")
     {
-        uVStatus(sweat,1);
-        incTime(60);
-        sVJob(waterGarden, 0);
-        uVEvent(grandmahelp, 1);
-        uVQuest(grandmaQW,1);
-        if(gVSkill(endurance) < 30)
-            uVSkill(endurance,1);
-        uVStatus(day_weight, -1);
-        setImage(media(2));
-        setDesc(str(8));
+        root->vStatus(sweat) += 1;
+        root->incTime(60);
+        root->vJob(waterGarden) = 0;
+        root->vEvent(grandmahelp) += 1;
+        root->vQuest(grandmaQW) += 1;
+        if(root->vSkill(endurance) < 30)
+            root->vSkill(endurance) += 1;
+        root->vStatus(day_weight) -= 1;
+        root->setImage(media(2));
+        root->setText(str(8));
         makeActBtn("garden", str(6));
     }
     if(action == "harvest_garden")
     {
-        incTime(180);
-        uVStatus(sweat,1);
-        sVJob(harvest_garden, 0);
-        uVEvent(grandmahelp,3);
-        uVQuest(grandmaQW,1);
-        if(gVSkill(strenght) < 30)
-            uVSkill(strenght,1);
-        uVStatus(day_weight,-1);
-        setImage(media(3));
-        setDesc(str(10));
+        root->incTime(180);
+        root->vStatus(sweat) += 1;
+        root->vJob(harvest_garden) = 0;
+        root->vEvent(grandmahelp) += 3;
+        root->vQuest(grandmaQW) += 1;
+        if(root->vSkill(strenght) < 30)
+            root->vSkill(strenght) += 1;
+        root->vStatus(day_weight) -= 1;
+        root->setImage(media(3));
+        root->setText(str(10));
         makeActBtn("garden", str(6));
     }
     if(action == "gaddvor")
     {
-        changeLoc(lgaddvor,5);
+        root->changeLoc(lgaddvor,5);
     }
     if(action == "strawberry")
     {
-        setImage(media(4));
-        setDesc(str(12));
-        if((getMonth() == 6 || getMonth() == 7) && gVEvent(strawberriesday) != gVStatus(daystart))
+        root->setImage(media(4));
+        root->setText(str(12));
+        if((root->getMonth() == 6 || root->getMonth() == 7) && root->vEvent(strawberriesday) != root->vStatus(daystart))
         {
             makeActBtn("eatStrawberry", str(13));
         }
-        if(gVJob(collect_strawberries) == 1)
+        if(root->vJob(collect_strawberries) == 1)
         {
             makeActBtn("collect_strawberries", str(15));
         }
@@ -139,107 +141,107 @@ void Gadgarden::actionHandler(QString action)
     }
     if(action == "eatStrawberry")
     {
-        sVEvent(strawberriesday,gVStatus(daystart));
-        incTime(30);
-        uVStatus(mood,10);
-        uVStatus(water,10);
-        uVStatus(energy,5);
-        sVStatus(cumLips,0);
-        setImage(media(5));
-        setDesc(str(14));
+        root->vEvent(strawberriesday) = root->vStatus(daystart);
+        root->incTime(30);
+        root->vStatus(mood) += 10;
+        root->vStatus(water) += 10;
+        root->vStatus(energy) += 5;
+        root->vStatus(cumLips) = 0;
+        root->setImage(media(5));
+        root->setText(str(14));
         makeActBtn("strawberry", str(6));
     }
     if(action == "collect_strawberries")
     {
-        incTime(180);
-        uVStatus(sweat,1);
-        sVJob(collect_strawberries, 0);
-        uVEvent(grandmahelp, 5);
-        uVQuest(grandmaQW,1);
-        if(gVSkill(agility) < 30)
-            uVSkill(agility,1);
-        uVStatus(day_weight,-1);
-        if(isSkirt() && isPanties())
-            setImage(media(6));
-        else if(isSkirt() && !isPanties())
-            setImage(media(7));
+        root->incTime(180);
+        root->vStatus(sweat) += 1;
+        root->vJob(collect_strawberries) = 0;
+        root->vEvent(grandmahelp) += 5;
+        root->vQuest(grandmaQW) += 1;
+        if(root->vSkill(agility) < 30)
+            root->vSkill(agility) += 1;
+        root->vStatus(day_weight) -= 1;
+        if(root->isSkirt() && root->isPanties())
+            root->setImage(media(6));
+        else if(root->isSkirt() && !root->isPanties())
+            root->setImage(media(7));
         else
-            setImage(media(8));
-        setDesc(str(16));
+            root->setImage(media(8));
+        root->setText(str(16));
         makeActBtn("strawberry", str(6));
     }
     if(action == "go_garden")
     {
-        incTime(5);
+        root->incTime(5);
         actionHandler("garden");
     }
     if(action == "fruit_garden")
     {
-        if(isDay())
-            setImage(media(9));
+        if(root->isDay())
+            root->setImage(media(9));
         else
-            setImage(media(10));
-        setDesc(str(18));
-        int month = getMonth();
-        int sunWeather = getSunWeather();
-        int hour = getHour();
-        if(month >= 6 && month <= 8 && sunWeather >= 0 && hour > 7 && hour < 13 && getWeekNum() == 7 && gVJob(graze_cow) == 0)
-            setDesc(str(19));
-        if(month >= 7 && month <= 9 && gVEvent(fruitday) != gVStatus(daystart))
+            root->setImage(media(10));
+        root->setText(str(18));
+        int month = root->getMonth();
+        int sunWeather = root->getSunWeather();
+        int hour = root->getHour();
+        if(month >= 6 && month <= 8 && sunWeather >= 0 && hour > 7 && hour < 13 && root->getWeek() == 7 && root->vJob(graze_cow) == 0)
+            root->setText(str(19));
+        if(month >= 7 && month <= 9 && root->vEvent(fruitday) != root->vStatus(daystart))
             makeActBtn("eatFruits", str(20));
-        if(gVJob(fruit_collect) == 1)
+        if(root->vJob(fruit_collect) == 1)
             makeActBtn("fruit_collect", str(22));
         makeActBtn("go_garden", str(17));
     }
     if(action == "eatFruits")
     {
-        sVEvent(fruitday, gVStatus(daystart));
-        incTime(30);
-        uVStatus(mood,10);
-        uVStatus(water,5);
-        uVStatus(energy,10);
-        sVStatus(cumLips,0);
-        setImage(media(11));
-        setDesc(str(21));
+        root->vEvent(fruitday) = root->vStatus(daystart);
+        root->incTime(30);
+        root->vStatus(mood) += 10;
+        root->vStatus(water) += 5;
+        root->vStatus(energy) += 10;
+        root->vStatus(cumLips) = 0;
+        root->setImage(media(11));
+        root->setText(str(21));
         makeActBtn("fruit_garden", str(6));
     }
     if(action == "fruit_collect")
     {
-        incTime(180);
-        uVStatus(sweat,1);
-        sVJob(fruit_collect, 0);
-        uVEvent(grandmahelp, 5);
-        uVQuest(grandmaQW,1);
-        if(gVSkill(agility) < 30)
-            uVSkill(agility,1);
-        uVStatus(day_weight,-1);
-        if(isSkirt() && isPanties())
-            setImage(media(12));
-        else if(isSkirt() && !isPanties())
-            setImage(media(13));
+        root->incTime(180);
+        root->vStatus(sweat) += 1;
+        root->vJob(fruit_collect) = 0;
+        root->vEvent(grandmahelp) += 5;
+        root->vQuest(grandmaQW) += 1;
+        if(root->vSkill(agility) < 30)
+            root->vSkill(agility) += 1;
+        root->vStatus(day_weight) -= 1;
+        if(root->isSkirt() && root->isPanties())
+            root->setImage(media(12));
+        else if(root->isSkirt() && !root->isPanties())
+            root->setImage(media(13));
         else
-            setImage(media(14));
-        setDesc(str(23));
+            root->setImage(media(14));
+        root->setText(str(23));
         makeActBtn("fruit_garden", str(23));
     }
     if(action == "grandma")
     {
-        startEvent(eGrandMa);
+        root->startEvent(eGrandMa);
     }
     if(action == "grandpa")
     {
-        startEvent(eGrandPa);
+        root->startEvent(eGrandPa);
     }
 }
 
 QString Gadgarden::str(int id)
 {
     QString bab,ded;
-    if(gVEvent(grandma_notalk) == 0)
+    if(root->vEvent(grandma_notalk) == 0)
         bab = "<a href='grandma'>бабушка</a>";
     else
         bab = "сердитая бабушка";
-    if(gVEvent(grandpa_notalk) == 0)
+    if(root->vEvent(grandpa_notalk) == 0)
         ded = "<a href='grandpa'>дедушка</a>";
     else
         ded = "дедушка";
@@ -279,9 +281,9 @@ QString Gadgarden::media(int id)
     med[2] = "data/actions/work_garden/water_garden.jpg";
     med[3] = "data/actions/work_garden/harvest_garden" + intQStr(getRandInt(1,5)) + ".jpg";
     med[4] = "data/locations/gadukino/gaddvor/strawberry";
-    if(isDay() && (getMonth() == 6|| getMonth() == 7))
+    if(root->isDay() && (root->getMonth() == 6|| root->getMonth() == 7))
         med[4] += intQStr(1) + ".jpg";
-    else if(isDay() && getMonth() != 6 && getMonth() != 7)
+    else if(root->isDay() && root->getMonth() != 6 && root->getMonth() != 7)
         med[4] += intQStr(2) + ".jpg";
     else
         med[4] += "_night.jpg";
@@ -303,5 +305,5 @@ void Gadgarden::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action, "gadgarden");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Gadgarden::actionHandler);
-    addActBtn(btn);
+    root->addActions(btn);
 }

@@ -7,7 +7,7 @@ class korrPar: public Location
 {
     Q_OBJECT
 public:
-    korrPar(LocationHandler* ptr);
+    korrPar(Game* ptr);
     void show(QString arg = "") override;
     LocId getLocId() override;
     LocId getParId() override;
@@ -20,6 +20,7 @@ private slots:
 private:
     QString str(int id);
     QString act(int id);
+    Game* root;
 };
 
 #endif

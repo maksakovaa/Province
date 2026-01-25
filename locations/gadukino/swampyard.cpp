@@ -1,8 +1,9 @@
 #include "swampyard.h"
 #include "../../Functions.h"
 #include "../../menu/buttons.h"
+#include "../../game.h"
 
-SwampYard::SwampYard(LocationHandler* ptr): Location(ptr) {}
+SwampYard::SwampYard(Game* ptr): root(ptr) {}
 
 void SwampYard::show(QString arg)
 {
@@ -38,139 +39,139 @@ void SwampYard::actionHandler(QString action)
 {
     if(action == "swamp_yard")
     {
-        if(getWeekNum() == 6 || getWeekNum() == 0)
-            sVEvent(hantersrand,getRandInt(1,3));
-        if(getWeekNum() > 0 && getWeekNum() < 6)
-            sVEvent(hantersrand, getRandInt(1,5));
-        if(gVEvent(hantersrand) == 1)
-            sVEvent(hanters,1);
-        sVEvent(hantslutsexrand, getRandInt(1,3));
+        if(root->getWeek() == 6 || root->getWeek() == 0)
+            root->vEvent(hantersrand) = getRandInt(1,3);
+        if(root->getWeek() > 0 && root->getWeek() < 6)
+            root->vEvent(hantersrand) = getRandInt(1,5);
+        if(root->vEvent(hantersrand) == 1)
+            root->vEvent(hanters) = 1;
+        root->vEvent(hantslutsexrand) = getRandInt(1,3);
 
-        if(gVEvent(lost_girl) == 0)
-            sVEvent(lost_girl, getRandInt(40,60));
+        if(root->vEvent(lost_girl) == 0)
+            root->vEvent(lost_girl) = getRandInt(40,60);
 
-        setImage(makeImage(media(0),isDay(),getMonth()));
-        setDesc(str(0));
+        root->setImage(makeImage(media(0),root->isDay(),root->getMonth()));
+        root->setText(str(0));
 
-        if(gVEvent(findvel) == 3)
-            addText(str(1));
+        if(root->vEvent(findvel) == 3)
+            root->addText(str(1));
 
-        if(gVStatus(clearClothes) > 0 && gVStatus(clearclothesH) == 0)
-            addText(str(2));
+        if(root->vStatus(clearClothes) > 0 && root->vStatus(clearclothesH) == 0)
+            root->addText(str(2));
 
-        if(gVEvent(hanters) > 0 && gVEvent(hantersKnow) == 0)
-            addText(str(3));
-        if(gVEvent(hanters) > 0 && gVEvent(hantersKnow) > 0 && getHour() >= 8 && getHour() < 20)
-            addText(str(4));
+        if(root->vEvent(hanters) > 0 && root->vEvent(hantersKnow) == 0)
+            root->addText(str(3));
+        if(root->vEvent(hanters) > 0 && root->vEvent(hantersKnow) > 0 && root->getHour() >= 8 && root->getHour() < 20)
+            root->addText(str(4));
 
         makeActBtn("swamphouse",act(0));
 
-        if(gVEvent(dirty_swamp_yard) > 10)
+        if(root->vEvent(dirty_swamp_yard) > 10)
             makeActBtn("clearswampyard",act(1));
 
         makeActBtn("go_swamp",act(2));
         //Охотники спасли ГГ из болота
-        if(gVEvent(hantershelp) == 1)
+        if(root->vEvent(hantershelp) == 1)
         {
-            incTime(5);
-            if(!isNude())
-                setImage(media(1));
+            root->incTime(5);
+            if(!root->isNude())
+                root->setImage(media(1));
             else
-                setImage(media(2));
-            if(isNude())
+                root->setImage(media(2));
+            if(root->isNude())
             {
-                if(gVEvent(hantersKnow) == 0)
-                    addText(str(5));
-                if(gVEvent(hantersKnow) == 1 && gVEvent(hantersKnowSlut) == 0)
-                    addText(str(6));
-                if(gVEvent(hantersKnow) == 1 && gVEvent(hantersKnowSlut) == 1)
-                    addText((str(7)));
+                if(root->vEvent(hantersKnow) == 0)
+                    root->addText(str(5));
+                if(root->vEvent(hantersKnow) == 1 && root->vEvent(hantersKnowSlut) == 0)
+                    root->addText(str(6));
+                if(root->vEvent(hantersKnow) == 1 && root->vEvent(hantersKnowSlut) == 1)
+                    root->addText((str(7)));
             }
-            if(gVEvent(hantersKnow) == 0)
+            if(root->vEvent(hantersKnow) == 0)
             {
-                addText(str(8));
+                root->addText(str(8));
                 makeActBtn("watch_around",act(3));
             }
-            if(gVEvent(hantersKnow) == 1)
+            if(root->vEvent(hantersKnow) == 1)
             {
-                addText(str(9));
+                root->addText(str(9));
                 makeActBtn("next",act(4));
             }
         }
 
-        if(gVEvent(hantershelp) == 2 && gVEvent(hantersKnow) == 0)
+        if(root->vEvent(hantershelp) == 2 && root->vEvent(hantersKnow) == 0)
         {
-            incTime(5);
-            sVEvent(hantersKnow,1);
-            uVQuest(hantersAndreiQW,1);
-            uVQuest(hantersIgorQW,1);
-            uVQuest(hantersSergeiQW,1);
-            if(isCloth())
+            root->incTime(5);
+            root->vEvent(hantersKnow) = 1;
+            root->vQuest(hantersAndreiQW) += 1;
+            root->vQuest(hantersIgorQW) += 1;
+            root->vQuest(hantersSergeiQW) += 1;
+            if(root->isCloth())
             {
-                setImage(media(3));
-                setDesc(str(12));
-                if(gVStatus(vnesh) >= 40)
-                    addText(str(13));
-                if(gVStatus(vnesh) < 40)
-                    addText(str(14));
-                addText(str(15));
-                if(gVEvent(gadriver_gang) == 0)
+                root->setImage(media(3));
+                root->setText(str(12));
+                if(root->vStatus(vnesh) >= 40)
+                    root->addText(str(13));
+                if(root->vStatus(vnesh) < 40)
+                    root->addText(str(14));
+                root->addText(str(15));
+                if(root->vEvent(gadriver_gang) == 0)
                 {
-                    addText(str(16));
-                    if(gVStatus(sweat) > 0 || gVStatus(dirtyClothes) > 0)
+                    root->addText(str(16));
+                    if(root->vStatus(sweat) > 0 || root->vStatus(dirtyClothes) > 0)
                     {
-                        addText(str(17));
+                        root->addText(str(17));
                     }
                     else
-                        addText(str(18));
+                        root->addText(str(18));
                 }
                 else
                 {
-                    addText(str(19));
-                    if(gVStatus(sweat) > 3 || gVStatus(dirtyClothes) == 1)
+                    root->addText(str(19));
+                    if(root->vStatus(sweat) > 3 || root->vStatus(dirtyClothes) == 1)
                     {
-                        sVEvent(hantersKnowSlut,1);
-                        sVEvent(hantersRape,1);
-                        addText(str(20));
+                        root->vEvent(hantersKnowSlut) = 1;
+                        root->vEvent(hantersRape) = 1;
+                        root->addText(str(20));
                     }
                     else
                     {
-                        sVEvent(hantersKnowSlut,1);
-                        sVEvent(hantersRape,1);
-                        addText(str(21));
+                        root->vEvent(hantersKnowSlut) = 1;
+                        root->vEvent(hantersRape) = 1;
+                        root->addText(str(21));
                     }
                 }
             }
             else
             {
-                setImage(media(4));
-                setDesc(str(22));
-                if(gVEvent(gadriver_gang) == 0)
+                root->setImage(media(4));
+                root->setText(str(22));
+                if(root->vEvent(gadriver_gang) == 0)
                 {
-                    addText(str(23));
-                    if(gVStatus(sweat) > 0)
-                        addText(str(24));
+                    root->addText(str(23));
+                    if(root->vStatus(sweat) > 0)
+                        root->addText(str(24));
                     else
-                        addText(str(25));
+                        root->addText(str(25));
                 }
                 else
                 {
-                    addText(str(19));
-                    if(gVStatus(sweat) > 0)
+                    root->addText(str(19));
+                    if(root->vStatus(sweat) > 0)
                     {
-                        sVEvent(hantersKnowSlut,1);
-                        sVEvent(hantersRape,1);
-                        addText(str(26));
+                        root->vEvent(hantersKnowSlut) = 1;
+                        root->vEvent(hantersRape) = 1;
+                        root->addText(str(26));
                     }
                     else
                     {
-                        sVEvent(hantersKnowSlut,1);
-                        sVEvent(hantersRape,1);
-                        addText(str(27));
+                        root->vEvent(hantersKnowSlut) = 1;
+                        root->vEvent(hantersRape) = 1;
+                        root->addText(str(27));
                     }
                 }
             }
-            if(isNude() && gVEvent(hantersKnowSlut) == 0)
+            if(root->isNude() && root->vEvent(hantersKnowSlut) == 0)
             {
                 makeActBtn("get_out1",act(7));
                 makeActBtn("sit_down1",act(8));
@@ -184,386 +185,386 @@ void SwampYard::actionHandler(QString action)
         }
         tmp = getRandInt(1,10);
         //просьба охотников по уборке в доме
-        if(gVEvent(hanters) > 0 && gVEvent(hantersKnow) == 1 && getHour() >= 8 && getHour() < 20 && gVEvent(dirty_swamphouse) > 5 && tmp == 2)
+        if(root->vEvent(hanters) > 0 && root->vEvent(hantersKnow) == 1 && root->getHour() >= 8 && root->getHour() < 20 && root->vEvent(dirty_swamphouse) > 5 && tmp == 2)
         {
             tmp = getRandInt(1,3);
-            incTime(5);
+            root->incTime(5);
 
             if(tmp == 1)
             {
                 boy = act(9);
-                setImage(media(5));
+                root->setImage(media(5));
             }
             if(tmp == 2)
             {
                 boy = act(10);
-                setImage(media(6));
+                root->setImage(media(6));
             }
             if(tmp == 3)
             {
                 boy = act(11);
-                setImage(media(7));
+                root->setImage(media(7));
             }
-            setDesc(str(28) + boy);
-            if(gVEvent(hantersKnowSlut) == 0)
-                addText(str(29));
-            if(gVEvent(hantersKnowSlut) == 1)
-                addText(str(30));
+            root->setText(str(28) + boy);
+            if(root->vEvent(hantersKnowSlut) == 0)
+                root->addText(str(29));
+            if(root->vEvent(hantersKnowSlut) == 1)
+                root->addText(str(30));
             makeActBtn("clean_house",act(12));
-            if(gVEvent(hantersKnowSlut) == 0)
+            if(root->vEvent(hantersKnowSlut) == 0)
                 makeActBtn("discard",act(13));
         }
         //просьба охотников по уборке во дворе
-        if(gVEvent(hanters) > 0 && gVEvent(hantersKnow) == 1 && getHour() >= 8 && getHour() < 20 && gVEvent(dirty_swamp_yard) > 5 && tmp == 3)
+        if(root->vEvent(hanters) > 0 && root->vEvent(hantersKnow) == 1 && root->getHour() >= 8 && root->getHour() < 20 && root->vEvent(dirty_swamp_yard) > 5 && tmp == 3)
         {
             tmp = getRandInt(1,3);
-            incTime(5);
+            root->incTime(5);
 
             if(tmp == 1)
             {
                 boy = act(9);
-                setImage(media(5));
+                root->setImage(media(5));
             }
             if(tmp == 2)
             {
                 boy = act(10);
-                setImage(media(6));
+                root->setImage(media(6));
             }
             if(tmp == 3)
             {
                 boy = act(11);
-                setImage(media(7));
+                root->setImage(media(7));
             }
-            setDesc(str(28) + boy);
-            if(gVEvent(hantersKnowSlut) == 0)
-                addText(str(31));
-            if(gVEvent(hantersKnowSlut) == 1)
-                addText(str(32));
+            root->setText(str(28) + boy);
+            if(root->vEvent(hantersKnowSlut) == 0)
+                root->addText(str(31));
+            if(root->vEvent(hantersKnowSlut) == 1)
+                root->addText(str(32));
             makeActBtn("clearswampyard",act(14));
-            if(gVEvent(hantersKnowSlut) == 0)
+            if(root->vEvent(hantersKnowSlut) == 0)
                 makeActBtn("discard",act(13));
         }
         //разговор охотников, если ГГ снималась в порно, в фотостудии, танцевала стриптиз или шлюха в Гадюкино
-        if(gVEvent(hanters) > 0 && gVEvent(hantersKnowSlut) == 0 && gVEvent(hantersKnow) == 1 && gVEvent(hanters_check) == 0 && getHour() >= 8 && getHour() < 20)
+        if(root->vEvent(hanters) > 0 && root->vEvent(hantersKnowSlut) == 0 && root->vEvent(hantersKnow) == 1 && root->vEvent(hanters_check) == 0 && root->getHour() >= 8 && root->getHour() < 20)
         {
-            if(gVSC(modelfoto) > 0 && gVEvent(hantersknowfoto) == 0 && gVEvent(hantersIgorLove) == 0)
+            if(root->vStatistics(modelfoto) > 0 && root->vEvent(hantersknowfoto) == 0 && root->vEvent(hantersIgorLove) == 0)
             {
-                incTime(5);
-                uVEvent(hanterslut,5);
-                sVEvent(hanters_check,1);
-                sVEvent(hantersknowfoto,1);
-                setImage(media(8));
-                setDesc(str(35));
+                root->incTime(5);
+                root->vEvent(hanterslut) += 5;
+                root->vEvent(hanters_check) = 1;
+                root->vEvent(hantersknowfoto) = 1;
+                root->setImage(media(8));
+                root->setText(str(35));
                 makeActBtn("swamp_yard",act(4));
             }
-            else if(gVSC(stripDanceSum) > 0 && gVEvent(hantersknowstrip) == 0 && gVEvent(hantersSergeiLove) == 0)
+            else if(root->vStatistics(stripDanceSum) > 0 && root->vEvent(hantersknowstrip) == 0 && root->vEvent(hantersSergeiLove) == 0)
             {
-                incTime(5);
-                uVEvent(hanterslut,10);
-                sVEvent(hanters_check,1);
-                sVEvent(hantersknowstrip,1);
-                setImage(media(8));
-                setDesc(str(36));
+                root->incTime(5);
+                root->vEvent(hanterslut) += 10;
+                root->vEvent(hanters_check) = 1;
+                root->vEvent(hantersknowstrip) = 1;
+                root->setImage(media(8));
+                root->setText(str(36));
                 makeActBtn("swamp_yard",act(4));
             }
-            else if(gVSC(film) > 0 && gVEvent(hantersknowfilm) == 0 && gVEvent(hantersAndreiLove) == 0)
+            else if(root->vStatistics(film) > 0 && root->vEvent(hantersknowfilm) == 0 && root->vEvent(hantersAndreiLove) == 0)
             {
-                incTime(5);
-                uVEvent(hanterslut,15);
-                sVEvent(hanters_check,1);
-                sVEvent(hantersknowstrip,1);
-                setImage(media(8));
-                setDesc(str(37));
+                root->incTime(5);
+                root->vEvent(hanterslut) += 15;
+                root->vEvent(hanters_check) = 1;
+                root->vEvent(hantersknowstrip) = 1;
+                root->setImage(media(8));
+                root->setText(str(37));
                 makeActBtn("swamp_yard",act(4));
             }
-            else if(gVEvent(gadriver_gang) > 0)
+            else if(root->vEvent(gadriver_gang) > 0)
             {
-                incTime(5);
-                sVEvent(hanters_check,1);
-                sVEvent(hantersRape,1);
-                setImage(media(8));
-                setDesc(str(38));
+                root->incTime(5);
+                root->vEvent(hanters_check) = 1;
+                root->vEvent(hantersRape) = 1;
+                root->setImage(media(8));
+                root->setText(str(38));
                 makeActBtn("swamp_yard",act(4));
             }
         }
         //если ГГ голая и на поляне есть охотники
-        if(isNude() && gVEvent(hantershelp) == 0 && gVEvent(hanters) == 1 && getHour() >= 8 && getHour() < 20 && gVEvent(hanterknowday) != getDay())
+        if(root->isNude() && root->vEvent(hantershelp) == 0 && root->vEvent(hanters) == 1 && root->getHour() >= 8 && root->getHour() < 20 && root->vEvent(hanterknowday) != root->getDay())
         {
-            if(gVEvent(hantersKnowSlut) == 0)
+            if(root->vEvent(hantersKnowSlut) == 0)
             {
-                setImage(media(9));
-                setDesc(str(39));
-                if(gVStatus(clothesswamphouse) == 1 && gVStatus(clearClothes) == 0)
+                root->setImage(media(9));
+                root->setText(str(39));
+                if(root->vStatus(clothesswamphouse) == 1 && root->vStatus(clearClothes) == 0)
                     makeActBtn("dress1",act(15));
                 else
                     makeActBtn("dress2",act(15));
                 makeActBtn("stay_nude",act(16));
 
             }
-            if(gVEvent(hantersKnowSlut) > 0)
+            if(root->vEvent(hantersKnowSlut) > 0)
             {
-                if(gVEvent(hantslutsex) == 0)
+                if(root->vEvent(hantslutsex) == 0)
                 {
-                    setImage(media(10));
-                    setDesc(str(43));
+                    root->setImage(media(10));
+                    root->setText(str(43));
                     makeActBtn("hantersSexNude",act(4));
                 }
                 else
                 {
-                    sVEvent(hanterknowday, getDay());
-                    setImage(media(10));
-                    setDesc(str(44));
+                    root->vEvent(hanterknowday) =  root->getDay();
+                    root->setImage(media(10));
+                    root->setText(str(44));
                     makeActBtn("swamp_yard",act(4));
                 }
             }
         }
         //разговор после пьяного стриптиза и траха ГГ с охотниками
-        if(gVEvent(hantdanceslut) == 1 && getHour() >= 8 && getHour() < 20)
+        if(root->vEvent(hantdanceslut) == 1 && root->getHour() >= 8 && root->getHour() < 20)
         {
-            incTime(5);
-            setImage(media(5));
-            setDesc(str(45));
+            root->incTime(5);
+            root->setImage(media(5));
+            root->setText(str(45));
             makeActBtn("agree",act(17));
-            if(gVSkill(domination) > 0 && gVAddict(alko) < 8)
+            if(root->vSkill(domination) > 0 && root->vAddict(alko) < 8)
                 makeActBtn("disagree",act(13));
         }
         //разговор после изнасилования ГГ охотниками
-        if(gVEvent(hantersRape) == 4 && getHour() >= 8 && getHour() < 20)
+        if(root->vEvent(hantersRape) == 4 && root->getHour() >= 8 && root->getHour() < 20)
         {
-            incTime(5);
-            sVEvent(hantersKnowSlut,2);
-            sVEvent(hantersRape,5);
-            setImage(media(5));
-            setDesc(str(46));
+            root->incTime(5);
+            root->vEvent(hantersKnowSlut) =2;
+            root->vEvent(hantersRape) = 5;
+            root->setImage(media(5));
+            root->setText(str(46));
             makeActBtn("swamp_yard",act(7));
         }
-        if(gVEvent(hanters) > 0 && getHour() >= 8 && getHour() < 20)
+        if(root->vEvent(hanters) > 0 && root->getHour() >= 8 && root->getHour() < 20)
         {
             //признание в любви Игоря
-            if(gVEvent(hantersIgorLove) == 0 && gVQuest(hantersIgorQW) >= 35 && gVEvent(hantersKnowSlut) == 0 /*&& bfA < 1 */ && gVStatus(vnesh) >= 40)
+            if(root->vEvent(hantersIgorLove) == 0 && root->vQuest(hantersIgorQW) >= 35 && root->vEvent(hantersKnowSlut) == 0 /*&& bfA < 1 */ && root->vStatus(vnesh) >= 40)
             {
-                incTime(10);
-                setImage(media(7));
-                setDesc(str(47));
+                root->incTime(10);
+                root->setImage(media(7));
+                root->setText(str(47));
                 makeActBtn("IgorHanter",act(4));
             }
             //секс с Игорем
-            if(gVEvent(hantersIgorLove) > 0 && gVQuest(hantersIgorQW) >= 10 && tmp == 4 && gVEvent(hantersIgorsex) == 0)
+            if(root->vEvent(hantersIgorLove) > 0 && root->vQuest(hantersIgorQW) >= 10 && tmp == 4 && root->vEvent(hantersIgorsex) == 0)
             {
-                incTime(5);
-                sVEvent(hantersIgorsex, getRandInt(12,36));
-                setImage(media(11));
-                setDesc(str(48));
+                root->incTime(5);
+                root->vEvent(hantersIgorsex) = getRandInt(12,36);
+                root->setImage(media(11));
+                root->setText(str(48));
                 makeActBtn("igor_agree_sex",act(17));
                 makeActBtn("igor_disagree_sex",act(13));
             }
             //цветы от Игоря
-            if(gVEvent(hantersKnowSlut) == 0 && isCloth() && gVQuest(hantersIgorQW) >= 20 && tmp == 5 && gVEvent(flowersday) != getDay())
+            if(root->vEvent(hantersKnowSlut) == 0 && root->isCloth() && root->vQuest(hantersIgorQW) >= 20 && tmp == 5 && root->vEvent(flowersday) != root->getDay())
             {
-                incTime(5);
-                uVStatus(horny,5);
-                sVEvent(flowersday,getDay());
-                setImage(media(12));
-                setDesc(str(51));
+                root->incTime(5);
+                root->vStatus(horny) += 5;
+                root->vEvent(flowersday) = root->getDay();
+                root->setImage(media(12));
+                root->setText(str(51));
                 makeActBtn("accept_igorflowers",act(19));
                 makeActBtn("decline_igorflowers",act(13));
             }
             //общение с Сергеем
-            if(gVEvent(hantersKnowSlut) == 0 && isCloth() && gVQuest(hantersSergeiQW) >= 15 && tmp == 6 && gVEvent(hantersSergeiday) != getDay())
+            if(root->vEvent(hantersKnowSlut) == 0 && root->isCloth() && root->vQuest(hantersSergeiQW) >= 15 && tmp == 6 && root->vEvent(hantersSergeiday) != root->getDay())
             {
-                incTime(5);
-                sVEvent(hantersSergeiday,getDay());
-                setImage(media(6));
-                setDesc(str(56));
+                root->incTime(5);
+                root->vEvent(hantersSergeiday) = root->getDay();
+                root->setImage(media(6));
+                root->setText(str(56));
                 makeActBtn("talk_sergei",act(17));
                 makeActBtn("donttalk_sergei",act(13));
             }
             //секс с Сергеем
-            if(gVEvent(hantersSergeiLove) > 0 && gVQuest(hantersSergeiQW) >= 10 && tmp == 7 && gVEvent(hantersSergeisex) == 0)
+            if(root->vEvent(hantersSergeiLove) > 0 && root->vQuest(hantersSergeiQW) >= 10 && tmp == 7 && root->vEvent(hantersSergeisex) == 0)
             {
-                incTime(5);
-                sVEvent(hantersSergeisex,getRandInt(9,30));
-                setImage(media(11));
-                setDesc(str(59));
+                root->incTime(5);
+                root->vEvent(hantersSergeisex) = getRandInt(9,30);
+                root->setImage(media(11));
+                root->setText(str(59));
                 makeActBtn("segrei_agree_sex",act(17));
                 makeActBtn("sergei_disagree_sex",act(13));
             }
             //секс с Андреем
-            if(gVEvent(hantersAndreiLove) > 0 && gVQuest(hantersAndreiQW) >= 10 && tmp == 8 && gVEvent(hantersAndreisex) == 0)
+            if(root->vEvent(hantersAndreiLove) > 0 && root->vQuest(hantersAndreiQW) >= 10 && tmp == 8 && root->vEvent(hantersAndreisex) == 0)
             {
-                incTime(5);
-                sVEvent(hantersAndreisex,getRandInt(6,24));
-                setImage(media(11));
-                setDesc(str(62));
+                root->incTime(5);
+                root->vEvent(hantersAndreisex) = getRandInt(6,24);
+                root->setImage(media(11));
+                root->setText(str(62));
                 makeActBtn("andrei_agree_sex",act(20));
                 makeActBtn("andrei_disagree_sex",act(13));
             }
             //секс если ГГ шлюха
-            if(gVEvent(hantersRape) == 5 && gVEvent(hantslutsexrand) == 1 && gVEvent(hantslutsex) == 0)
+            if(root->vEvent(hantersRape) == 5 && root->vEvent(hantslutsexrand) == 1 && root->vEvent(hantslutsex) == 0)
             {
-                incTime(5);
-                sVEvent(temphant,getRandInt(1,3));
-                sVEvent(slutgosex,1);
-                if(gVEvent(temphant) == 1)
+                root->incTime(5);
+                root->vEvent(temphant) = getRandInt(1,3);
+                root->vEvent(slutgosex) = 1;
+                if(root->vEvent(temphant) == 1)
                 {
-                    setImage(media(5));
-                    setDesc(str(65));
+                    root->setImage(media(5));
+                    root->setText(str(65));
                 }
-                else if(gVEvent(temphant) == 2)
+                else if(root->vEvent(temphant) == 2)
                 {
-                    setImage(media(6));
-                    setDesc(str(66));
+                    root->setImage(media(6));
+                    root->setText(str(66));
                 }
-                else if(gVEvent(temphant) == 3)
+                else if(root->vEvent(temphant) == 3)
                 {
-                    setImage(media(7));
-                    setDesc(str(67));
+                    root->setImage(media(7));
+                    root->setText(str(67));
                 }
-                if(gVStatus(horny) < 40)
-                    addText(str(68));
-                else if(gVStatus(horny) >= 40 && gVStatus(horny) < 70)
-                    addText(str(69));
-                else if(gVStatus(horny) >= 70)
-                    addText(str(70));
+                if(root->vStatus(horny) < 40)
+                    root->addText(str(68));
+                else if(root->vStatus(horny) >= 40 && root->vStatus(horny) < 70)
+                    root->addText(str(69));
+                else if(root->vStatus(horny) >= 70)
+                    root->addText(str(70));
                 makeActBtn("hanters",act(18));
             }
             //выбор межды любовниками
-            if(gVEvent(hantersAndreiLove) > 0 && gVEvent(hantersSergeiLove) > 0 && tmp == 1)
+            if(root->vEvent(hantersAndreiLove) > 0 && root->vEvent(hantersSergeiLove) > 0 && tmp == 1)
             {
-                setImage(media(13));
-                setDesc(str(71));
-                if(gVEvent(hanterslut) >= 10)
-                    addText(str(72));
-                addText(str(73));
+                root->setImage(media(13));
+                root->setText(str(71));
+                if(root->vEvent(hanterslut) >= 10)
+                    root->addText(str(72));
+                root->addText(str(73));
                 makeActBtn("chooseSergei1",act(21));
                 makeActBtn("chooseAndrei1",act(22));
-                if(gVEvent(hanterslut) >= 10)
+                if(root->vEvent(hanterslut) >= 10)
                     makeActBtn("chooseBothAS1",act(23));
                 makeActBtn("chooseNoOne1",act(24));
             }
-            if(gVEvent(hantersAndreiLove) > 0 && gVEvent(hantersIgorLove) > 0 && tmp == 1)
+            if(root->vEvent(hantersAndreiLove) > 0 && root->vEvent(hantersIgorLove) > 0 && tmp == 1)
             {
-                setImage(media(13));
-                setDesc(str(78));
-                if(gVEvent(hanterslut) >= 10)
-                    addText(str(72));
-                addText(str(73));
+                root->setImage(media(13));
+                root->setText(str(78));
+                if(root->vEvent(hanterslut) >= 10)
+                    root->addText(str(72));
+                root->addText(str(73));
                 makeActBtn("chooseIgor1",act(25));
                 makeActBtn("chooseAndrei2",act(22));
-                if(gVEvent(hanterslut) >= 10)
+                if(root->vEvent(hanterslut) >= 10)
                     makeActBtn("chooseBothAS2",act(23));
                 makeActBtn("chooseNoOne2",act(24));
             }
-            if(gVEvent(hantersSergeiLove) > 0 && gVEvent(hantersIgorLove) > 0 && tmp == 1)
+            if(root->vEvent(hantersSergeiLove) > 0 && root->vEvent(hantersIgorLove) > 0 && tmp == 1)
             {
-                incTime(15);
-                setImage(media(13));
-                setDesc(str(83));
+                root->incTime(15);
+                root->setImage(media(13));
+                root->setText(str(83));
                 makeActBtn("chooseSergei2",act(21));
                 makeActBtn("chooseIgor2",act(25));
                 makeActBtn("chooseNoOne3",act(24));
             }
             //трио ГГ, Андрей и Сергей, если любовь
-            if(gVEvent(doublehanterlove) == 1 && (gVEvent(hantersAndreisex) == 0 || gVEvent(hantersSergeisex) == 0))
+            if(root->vEvent(doublehanterlove) == 1 && (root->vEvent(hantersAndreisex) == 0 || root->vEvent(hantersSergeisex) == 0))
             {
-                incTime(5);
-                sVEvent(hantersAndreisex,getRandInt(6,24));
-                sVEvent(hantersSergeisex,getRandInt(9,30));
-                setImage(media(13));
-                setDesc(str(87));
+                root->incTime(5);
+                root->vEvent(hantersAndreisex) = getRandInt(6,24);
+                root->vEvent(hantersSergeisex) = getRandInt(9,30);
+                root->setImage(media(13));
+                root->setText(str(87));
                 makeActBtn("go_with_AS",act(26));
                 makeActBtn("decline_go_with_AS",act(13));
             }
             int skirtsrand = getRandInt(1,10);
-            if(gVEvent(hantersKnow) > 0 && isSkirt() && !isPanties() && skirtsrand == 1)
+            if(root->vEvent(hantersKnow) > 0 && root->isSkirt() && !root->isPanties() && skirtsrand == 1)
             {
-                incTime(15);
-                uVEvent(hanterslut,1);
-                setImage(media(14));
-                setDesc(str(89));
+                root->incTime(15);
+                root->vEvent(hanterslut) += 1;
+                root->setImage(media(14));
+                root->setText(str(89));
                 makeActBtn("swamp_yard",act(4));
             }
             //трио если ГГ шлюха
-            if(gVEvent(hantersRape) == 5 && gVEvent(hantslutsexrand) == 2 && gVEvent(hantslutsex) == 0)
+            if(root->vEvent(hantersRape) == 5 && root->vEvent(hantslutsexrand) == 2 && root->vEvent(hantslutsex) == 0)
             {
-                incTime(5);
-                sVEvent(temphant,getRandInt(1,3));
-                sVEvent(slutgosex,2);
-                setImage(media(13));
-                setDesc(str(90));
-                if(gVEvent(temphant) == 1)
-                    addText(str(91));
-                if(gVEvent(temphant) == 2)
-                    addText(str(92));
-                if(gVEvent(temphant) == 3)
-                    addText(str(93));
-                if(gVStatus(horny) < 40)
-                    addText(str(68));
-                else if(gVStatus(horny) >= 40 && gVStatus(horny) < 70)
-                    addText(str(69));
-                else if(gVStatus(horny) >= 70)
-                    addText(str(70));
+                root->incTime(5);
+                root->vEvent(temphant) = getRandInt(1,3);
+                root->vEvent(slutgosex) = 2;
+                root->setImage(media(13));
+                root->setText(str(90));
+                if(root->vEvent(temphant) == 1)
+                    root->addText(str(91));
+                if(root->vEvent(temphant) == 2)
+                    root->addText(str(92));
+                if(root->vEvent(temphant) == 3)
+                    root->addText(str(93));
+                if(root->vStatus(horny) < 40)
+                    root->addText(str(68));
+                else if(root->vStatus(horny) >= 40 && root->vStatus(horny) < 70)
+                    root->addText(str(69));
+                else if(root->vStatus(horny) >= 70)
+                    root->addText(str(70));
                 makeActBtn("go_with_guys",act(26));
             }
         }
-        if(gVEvent(lost_girl) < 10)
+        if(root->vEvent(lost_girl) < 10)
         {
-            incTime(150);
-            sVEvent(lost_girl,0);
-            sVEvent(hanters,0);
-            sVEvent(goswamp,1);
-            sVEvent(forester,1);
-            setImage(media(15));
-            setDesc(str(95));
+            root->incTime(150);
+            root->vEvent(lost_girl) = 0;
+            root->vEvent(hanters) = 0;
+            root->vEvent(goswamp) = 1;
+            root->vEvent(forester) = 1;
+            root->setImage(media(15));
+            root->setText(str(95));
             makeActBtn("gadhouse",act(4));
         }
     }
     if(action == "swamphouse")
     {
-        changeLoc(lswamphouse,5);
+        root->changeLoc(lswamphouse,5);
     }
     if(action == "clearswampyard")
     {
-        uVEvent(hanterslut,-1);
-        int dirty = gVEvent(dirty_swamp_yard);
+        root->vEvent(hanterslut) -= 1;
+        int dirty = root->vEvent(dirty_swamp_yard);
         if(dirty < 10)
         {
-            incTime(60);
-            uVStatus(sweat,1);
+            root->incTime(60);
+            root->vStatus(sweat) += 1;
         }
         else if(dirty >= 10 && dirty < 20)
         {
-            incTime(120);
-            uVStatus(sweat,2);
+            root->incTime(120);
+            root->vStatus(sweat) += 2;
         }
         else if(dirty >= 20)
         {
-            incTime(180);
-            uVStatus(sweat,3);
+            root->incTime(180);
+            root->vStatus(sweat) += 3;
         }
-        if(gVQuest(hantersAndreiQW) < 15)
-            uVQuest(hantersAndreiQW,1);
-        if(gVQuest(hantersIgorQW) < 15)
-            uVQuest(hantersIgorQW,1);
-        if(gVQuest(hantersSergeiQW) < 15)
-            uVQuest(hantersSergeiQW,1);
-        setImage(media(16));
-        setDesc(str(10));
-        sVEvent(dirty_swamp_yard,0);
+        if(root->vQuest(hantersAndreiQW) < 15)
+            root->vQuest(hantersAndreiQW) += 1;
+        if(root->vQuest(hantersIgorQW) < 15)
+            root->vQuest(hantersIgorQW) += 1;
+        if(root->vQuest(hantersSergeiQW) < 15)
+            root->vQuest(hantersSergeiQW) += 1;
+        root->setImage(media(16));
+        root->setText(str(10));
+        root->vEvent(dirty_swamp_yard) = 0;
         makeActBtn("swamp_yard",act(4));
     }
     if(action == "go_swamp")
     {
-        if(gVEvent(hanters) == 1)
+        if(root->vEvent(hanters) == 1)
         {
-            if(getHour() >= getSunrise() && getHour() < getSunset())
+            if(root->getHour() >= root->getSunrise() && root->getHour() < root->getSunset())
             {
-                changeLoc(lswamp,5);
+                root->changeLoc(lswamp,5);
             }
             else
             {
-                setImage(media(7));
-                setDesc(str(11));
+                root->setImage(media(7));
+                root->setText(str(11));
                 makeActBtn("swamp_yard",act(5));
                 makeActBtn("swamp",act(6));
             }
@@ -573,374 +574,374 @@ void SwampYard::actionHandler(QString action)
     }
     if(action == "swamp")
     {
-        changeLoc(lswamp,5);
+        root->changeLoc(lswamp,5);
     }
     if(action == "watch_around")
     {
-        sVEvent(hantershelp,2);
+        root->vEvent(hantershelp) = 2;
         actionHandler("swamp_yard");
     }
     if(action == "next")
     {
-        sVEvent(hantershelp,0);
+        root->vEvent(hantershelp) = 0;
         actionHandler("swamp_yard");
     }
 
     if(action == "clean_house")
     {
-        getLocPtr(lswamphouse)->show("dirty_swamphouse");
+        root->getLocPtr(lswamphouse)->show("dirty_swamphouse");
     }
     if(action == "discard")
     {
-        incTime(5);
-        uVEvent(hanterslut,1);
-        uVSkill(domination,1);
+        root->incTime(5);
+        root->vEvent(hanterslut) += 1;
+        root->vSkill(domination) += 1;
         if(tmp == 1)
-            uVQuest(hantersAndreiQW,-1);
+            root->vQuest(hantersAndreiQW) -= 1;
         if(tmp == 2)
-            uVQuest(hantersSergeiQW,-1);
+            root->vQuest(hantersSergeiQW) -= 1;
         if(tmp == 3)
-            uVQuest(hantersIgorQW,-1);
-        setImage(media(17));
-        setDesc(str(33) + boy + str(34));
+            root->vQuest(hantersIgorQW) -= 1;
+        root->setImage(media(17));
+        root->setText(str(33) + boy + str(34));
         makeActBtn("swamp_yard",act(4));
     }
 
     if(action == "dress1")
     {
-        sVStatus(clothesswamphouse,0);
-        incTime(5);
-        getLocPtr(lswamphouse)->show("wearCloth");
-        setImage(media(18));
-        setDesc(str(40));
+        root->vStatus(clothesswamphouse) = 0;
+        root->incTime(5);
+        root->getLocPtr(lswamphouse)->show("wearCloth");
+        root->setImage(media(18));
+        root->setText(str(40));
         makeActBtn("swamphouse",act(4));
     }
     if(action == "dress2")
     {
-        incTime(5);
-        sVStatus(swamp_clothes,1);
-        getLocPtr(lswamphouse)->show("wearCloth");
-        setImage(media(19));
-        setDesc(str(41));
+        root->incTime(5);
+        root->vStatus(swamp_clothes) = 1;
+        root->getLocPtr(lswamphouse)->show("wearCloth");
+        root->setImage(media(19));
+        root->setText(str(41));
         makeActBtn("swamphouse",act(4));
     }
     if(action == "stay_nude")
     {
-        uVEvent(hanterslut,1);
-        sVEvent(hanterknowday,getDay());
-        setImage(media(10));
-        setDesc(str(42));
+        root->vEvent(hanterslut) += 1;
+        root->vEvent(hanterknowday) = root->getDay();
+        root->setImage(media(10));
+        root->setText(str(42));
         makeActBtn("swamp_yard",act(4));
     }
 
     if(action == "hantersSexNude")
     {
-        sVEvent(hantersexnude,1);
-        startEvent(eHanters);
+        root->vEvent(hantersexnude) = 1;
+        root->startEvent(eHanters);
     }
     if(action == "agree")
     {
-        sVEvent(hantdanceslut,2);
-        startEvent(eHanters);
+        root->vEvent(hantdanceslut) = 2;
+        root->startEvent(eHanters);
     }
     if(action == "disagree")
     {
-        sVEvent(hantdanceslut,3);
-        startEvent(eHanters);
+        root->vEvent(hantdanceslut) = 3;
+        root->startEvent(eHanters);
     }
 
     if(action == "igor_agree_sex")
     {
-        incTime(5);
-        uVQuest(hantersIgorQW,1);
-        uVStatus(horny,5);
-        setImage(media(20));
-        setDesc(str(49));
+        root->incTime(5);
+        root->vQuest(hantersIgorQW) += 1;
+        root->vStatus(horny) += 5;
+        root->setImage(media(20));
+        root->setText(str(49));
         makeActBtn("HanterLoveSex",act(18));
     }
     if(action == "igor_disagree_sex")
     {
-        incTime(5);
-        uVQuest(hantersIgorQW,-1);
-        setImage(media(17));
-        setDesc(str(50));
+        root->incTime(5);
+        root->vQuest(hantersIgorQW) -= 1;
+        root->setImage(media(17));
+        root->setText(str(50));
         makeActBtn("swamp_yard",act(18));
     }
     if(action == "accept_igorflowers")
     {
-        incTime(5);
-        uVEvent(hanterslut,-1);
-        uVQuest(hantersIgorQW,1);
-        if(gVQuest(hantersAndreiQW) >= 10 && gVEvent(hantersKnowSlut) == 0)
-            uVQuest(hantersAndreiQW,-2);
-        if(gVQuest(hantersSergeiQW) >= 10 && gVEvent(hantersKnowSlut) == 0)
-            uVQuest(hantersSergeiQW,-2);
-        sVStatus(mood,100);
-        if(gVEvent(hantersIgorLove) == 0 && gVQuest(hantersIgorQW) >= 20 && gVQuest(hantersIgorQW) < 25)
+        root->incTime(5);
+        root->vEvent(hanterslut) -= 1;
+        root->vQuest(hantersIgorQW) += 1;
+        if(root->vQuest(hantersAndreiQW) >= 10 && root->vEvent(hantersKnowSlut) == 0)
+            root->vQuest(hantersAndreiQW) -= 2;
+        if(root->vQuest(hantersSergeiQW) >= 10 && root->vEvent(hantersKnowSlut) == 0)
+            root->vQuest(hantersSergeiQW) -= 2;
+        root->vStatus(mood) = 100;
+        if(root->vEvent(hantersIgorLove) == 0 && root->vQuest(hantersIgorQW) >= 20 && root->vQuest(hantersIgorQW) < 25)
         {
-            if(isSkirt())
-                setImage(media(21));
-            if(!isSkirt())
-                setImage(media(22));
-            setDesc(str(52));
+            if(root->isSkirt())
+                root->setImage(media(21));
+            if(!root->isSkirt())
+                root->setImage(media(22));
+            root->setText(str(52));
         }
-        if((gVEvent(hantersIgorLove) == 0 && gVQuest(hantersIgorQW) >= 25) || gVEvent(hantersIgorLove) > 0)
+        if((root->vEvent(hantersIgorLove) == 0 && root->vQuest(hantersIgorQW) >= 25) || root->vEvent(hantersIgorLove) > 0)
         {
-            if(isSkirt())
-                setImage(media(23));
-            if(!isSkirt())
-                setImage(media(24));
-            setDesc(str(53));
+            if(root->isSkirt())
+                root->setImage(media(23));
+            if(!root->isSkirt())
+                root->setImage(media(24));
+            root->setText(str(53));
         }
-        if(gVEvent(hantersIgorLove) == 0 && gVQuest(hantersIgorQW) >= 30)
+        if(root->vEvent(hantersIgorLove) == 0 && root->vQuest(hantersIgorQW) >= 30)
         {
-            setImage(media(25));
-            setDesc(str(54));
+            root->setImage(media(25));
+            root->setText(str(54));
         }
         makeActBtn("swamp_yard",act(4));
     }
     if(action == "decline_igorflowers")
     {
-        incTime(5);
-        uVQuest(hantersIgorQW,-2);
-        setImage(media(17));
-        setDesc(str(55));
+        root->incTime(5);
+        root->vQuest(hantersIgorQW) -= 2;
+        root->setImage(media(17));
+        root->setText(str(55));
         makeActBtn("swamp_yard",act(4));
     }
 
     if(action == "talk_sergei")
     {
-        incTime(120);
-        uVEvent(hanterslut,-1);
-        uVQuest(hantersSergeiQW,1);
-        if(gVQuest(hantersIgorQW) >= 10 && gVEvent(hantersKnowSlut) == 0)
-            uVQuest(hantersIgorQW,-2);
-        if(gVQuest(hantersAndreiQW) >= 10 && gVEvent(hantersKnowSlut) == 0)
-            uVQuest(hantersAndreiQW,-2);
-        sVStatus(mood,100);
-        setImage(media(26));
-        setDesc(str(57));
+        root->incTime(120);
+        root->vEvent(hanterslut) -= 1;
+        root->vQuest(hantersSergeiQW) += 1;
+        if(root->vQuest(hantersIgorQW) >= 10 && root->vEvent(hantersKnowSlut) == 0)
+            root->vQuest(hantersIgorQW) -= 2;
+        if(root->vQuest(hantersAndreiQW) >= 10 && root->vEvent(hantersKnowSlut) == 0)
+            root->vQuest(hantersAndreiQW) -= 2;
+        root->vStatus(mood) = 100;
+        root->setImage(media(26));
+        root->setText(str(57));
         makeActBtn("swamp_yard",act(4));
     }
     if(action == "donttalk_sergei")
     {
-        incTime(5);
-        uVQuest(hantersSergeiQW,-2);
-        setImage(media(17));
-        setDesc(str(58));
+        root->incTime(5);
+        root->vQuest(hantersSergeiQW) -= 2;
+        root->setImage(media(17));
+        root->setText(str(58));
         makeActBtn("swamp_yard",act(4));
     }
     if(action == "segrei_agree_sex")
     {
-        incTime(5);
-        uVStatus(horny,5);
-        uVQuest(hantersSergeiQW,1);
-        setImage(media(20));
-        setDesc(str(60));
+        root->incTime(5);
+        root->vStatus(horny) += 5;
+        root->vQuest(hantersSergeiQW) += 1;
+        root->setImage(media(20));
+        root->setText(str(60));
         makeActBtn("HanterLoveSex",act(18));
     }
     if(action == "sergei_disagree_sex")
     {
-        incTime(5);
-        uVQuest(hantersSergeiQW,-1);
-        setImage(media(17));
-        setDesc(str(61));
+        root->incTime(5);
+        root->vQuest(hantersSergeiQW) -= 1;
+        root->setImage(media(17));
+        root->setText(str(61));
         makeActBtn("swamp_yard",act(18));
     }
 
     if(action == "andrei_agree_sex")
     {
-        incTime(5);
-        uVStatus(horny,5);
-        uVQuest(hantersAndreiQW,1);
-        setImage(media(27));
-        setDesc(str(63));
+        root->incTime(5);
+        root->vStatus(horny) += 5;
+        root->vQuest(hantersAndreiQW) += 1;
+        root->setImage(media(27));
+        root->setText(str(63));
         makeActBtn("HantersLoveSex",act(4));
     }
     if(action == "andrei_disagree_sex")
     {
-        incTime(5);
-        uVQuest(hantersAndreiQW,-1);
-        setImage(media(17));
-        setDesc(str(64));
+        root->incTime(5);
+        root->vQuest(hantersAndreiQW) -= 1;
+        root->setImage(media(17));
+        root->setText(str(64));
         makeActBtn("swamp_yard",act(18));
     }
 
     if(action == "chooseSergei1")
     {
-        incTime(5);
-        sVEvent(hantersAndreiLove,0);
-        sVQuest(hantersAndreiQW,-100);
-        sVEvent(hanterslut,-1);
-        setImage(media(6));
-        setDesc(str(76));
+        root->incTime(5);
+        root->vEvent(hantersAndreiLove) = 0;
+        root->vQuest(hantersAndreiQW) = -100;
+        root->vEvent(hanterslut) -= 1;
+        root->setImage(media(6));
+        root->setText(str(76));
         makeActBtn("swamp_yard", act(4));
     }
     if(action == "chooseAndrei1")
     {
-        incTime(5);
-        sVEvent(hantersSergeiLove,0);
-        sVQuest(hantersSergeiQW,-100);
-        sVEvent(hanterslut,-1);
-        setImage(media(5));
-        setDesc(str(77));
+        root->incTime(5);
+        root->vEvent(hantersSergeiLove) = 0;
+        root->vQuest(hantersSergeiQW) = -100;
+        root->vEvent(hanterslut) -= 1;
+        root->setImage(media(5));
+        root->setText(str(77));
         makeActBtn("swamp_yard", act(4));
     }
     if(action == "chooseBothAS1")
     {
-        incTime(5);
-        uVEvent(hanterslut,10);
-        sVEvent(doublehanterlove,1);
-        setImage(media(28));
-        setDesc(str(75));
+        root->incTime(5);
+        root->vEvent(hanterslut) += 10;
+        root->vEvent(doublehanterlove) = 1;
+        root->setImage(media(28));
+        root->setText(str(75));
         makeActBtn("swamp_yard",act(4));
     }
     if(action == "chooseNoOne1")
     {
-        incTime(5);
-        sVEvent(hantersAndreiLove,0);
-        uVQuest(hantersAndreiQW,-50);
-        sVEvent(hantersSergeiLove,0);
-        uVQuest(hantersSergeiQW,-50);
-        uVEvent(hanterslut,-1);
-        setImage(media(29));
-        setDesc(str(74));
+        root->incTime(5);
+        root->vEvent(hantersAndreiLove) = 0;
+        root->vQuest(hantersAndreiQW) -= 50;
+        root->vEvent(hantersSergeiLove) = 0;
+        root->vQuest(hantersSergeiQW) -= 50;
+        root->vEvent(hanterslut) -= 1;
+        root->setImage(media(29));
+        root->setText(str(74));
         makeActBtn("swamp_yard",act(4));
     }
 
     if(action == "chooseIgor1")
     {
-        incTime(5);
-        sVEvent(hantersAndreiLove,0);
-        sVQuest(hantersAndreiQW,-100);
-        sVEvent(hanterslut,-1);
-        setImage(media(7));
-        setDesc(str(79));
+        root->incTime(5);
+        root->vEvent(hantersAndreiLove) = 0;
+        root->vQuest(hantersAndreiQW) = -100;
+        root->vEvent(hanterslut) -= 1;
+        root->setImage(media(7));
+        root->setText(str(79));
         makeActBtn("swamp_yard", act(4));
     }
     if(action == "chooseAndrei2")
     {
-        incTime(5);
-        sVEvent(hantersIgorLove,0);
-        sVQuest(hantersIgorQW,-100);
-        sVEvent(hanterslut,-1);
-        setImage(media(5));
-        setDesc(str(80));
+        root->incTime(5);
+        root->vEvent(hantersIgorLove) = 0;
+        root->vQuest(hantersIgorQW) = -100;
+        root->vEvent(hanterslut) -= 1;
+        root->setImage(media(5));
+        root->setText(str(80));
         makeActBtn("swamp_yard", act(4));
     }
     if(action == "chooseBothAS2")
     {
-        incTime(5);
-        sVEvent(hantersIgorLove,0);
-        uVQuest(hantersIgorQW,-100);
-        uVEvent(hanterslut,1);
-        setImage(media(28));
-        setDesc(str(81));
+        root->incTime(5);
+        root->vEvent(hantersIgorLove) = 0;
+        root->vQuest(hantersIgorQW) -= 100;
+        root->vEvent(hanterslut) += 1;
+        root->setImage(media(28));
+        root->setText(str(81));
         makeActBtn("swamp_yard",act(4));
     }
     if(action == "chooseNoOne2")
     {
-        incTime(5);
-        sVEvent(hantersAndreiLove,0);
-        uVQuest(hantersAndreiQW,-50);
-        sVEvent(hantersIgorLove,0);
-        uVQuest(hantersIgorQW,-50);
-        uVEvent(hanterslut,-1);
-        setImage(media(29));
-        setDesc(str(82));
+        root->incTime(5);
+        root->vEvent(hantersAndreiLove) = 0;
+        root->vQuest(hantersAndreiQW) -= 50;
+        root->vEvent(hantersIgorLove) = 0;
+        root->vQuest(hantersIgorQW) -= 50;
+        root->vEvent(hanterslut) -= 1;
+        root->setImage(media(29));
+        root->setText(str(82));
         makeActBtn("swamp_yard",act(4));
     }
     if(action == "chooseSergei2")
     {
-        incTime(5);
-        sVEvent(hantersIgorLove,0);
-        sVQuest(hantersIgorQW,-100);
-        uVEvent(hanterslut,-1);
-        setImage(media(6));
-        setDesc(str(84));
+        root->incTime(5);
+        root->vEvent(hantersIgorLove) = 0;
+        root->vQuest(hantersIgorQW) = -100;
+        root->vEvent(hanterslut) -= 1;
+        root->setImage(media(6));
+        root->setText(str(84));
         makeActBtn("swamp_yard", act(4));
     }
     if(action == "chooseIgor2")
     {
-        incTime(5);
-        sVEvent(hantersSergeiLove,0);
-        sVQuest(hantersSergeiQW,-100);
-        sVEvent(hanterslut,-1);
-        setImage(media(7));
-        setDesc(str(85));
+        root->incTime(5);
+        root->vEvent(hantersSergeiLove) = 0;
+        root->vQuest(hantersSergeiQW) = -100;
+        root->vEvent(hanterslut) -= 1;
+        root->setImage(media(7));
+        root->setText(str(85));
         makeActBtn("swamp_yard",act(4));
     }
     if(action == "chooseNoOne3")
     {
-        incTime(5);
-        sVEvent(hantersSergeiLove,0);
-        uVQuest(hantersSergeiQW,-50);
-        sVEvent(hantersIgorLove,0);
-        uVQuest(hantersIgorQW,-50);
-        uVEvent(hanterslut,-1);
-        setImage(media(29));
-        setDesc(str(86));
+        root->incTime(5);
+        root->vEvent(hantersSergeiLove) = 0;
+        root->vQuest(hantersSergeiQW) -= 50;
+        root->vEvent(hantersIgorLove) = 0;
+        root->vQuest(hantersIgorQW) -= 50;
+        root->vEvent(hanterslut) -= 1;
+        root->setImage(media(29));
+        root->setText(str(86));
         makeActBtn("swamp_yard",act(4));
     }
 
     if(action == "go_with_AS")
     {
-        incTime(5);
-        uVQuest(hantersAndreiQW,1);
-        uVQuest(hantersSergeiQW,1);
-        uVStatus(horny,5);
-        sVEvent(doublelovesex,1);
-        uVEvent(hanterslut,1);
-        sVEvent(temphant,1);
-        setImage(media(30));
+        root->incTime(5);
+        root->vQuest(hantersAndreiQW) += 1;
+        root->vQuest(hantersSergeiQW) += 1;
+        root->vStatus(horny) += 5;
+        root->vEvent(doublelovesex) = 1;
+        root->vEvent(hanterslut) += 1;
+        root->vEvent(temphant) = 1;
+        root->setImage(media(30));
         makeActBtn("hantersex",act(4));
     }
     if(action == "decline_go_with_AS")
     {
-        incTime(5);
-        uVQuest(hantersAndreiQW,-1);
-        uVQuest(hantersSergeiQW,-1);
-        setImage(media(17));
-        setDesc(str(88));
+        root->incTime(5);
+        root->vQuest(hantersAndreiQW) -= 1;
+        root->vQuest(hantersSergeiQW) -= 1;
+        root->setImage(media(17));
+        root->setText(str(88));
         makeActBtn("swamp_yard", act(18));
     }
 
     if(action == "go_with_guys")
     {
-        incTime(5);
-        uVStatus(horny,5);
-        setImage(media(30));
-        setDesc(str(94));
+        root->incTime(5);
+        root->vStatus(horny) += 5;
+        root->setImage(media(30));
+        root->setText(str(94));
         makeActBtn("hantersex",act(4));
     }
     //A HREF LINKS
     if(action == "swampspring")
     {
-        changeLoc(lswampspring,5);
+        root->changeLoc(lswampspring,5);
     }
     if(action == "backwater")
     {
-        changeLoc(lbackwater,5);
+        root->changeLoc(lbackwater,5);
     }
     if(action == "bicycle")
     {
-        startEvent(eBicycle, "swamp");
+        root->startEvent(eBicycle, "swamp");
     }
     if(action == "hanters")
     {
-        startEvent(eHanters);
+        root->startEvent(eHanters);
     }
     if(action == "IgorHanter")
     {
-        startEvent(eIgorHanter);
+        root->startEvent(eIgorHanter);
     }
     if(action == "HanterLoveSex")
     {
-        startEvent(eHantersLoveSex);
+        root->startEvent(eHantersLoveSex);
     }
     if(action == "hantersex")
     {
-        startEvent(eHanterSex);
+        root->startEvent(eHanterSex);
     }
 }
 
@@ -949,7 +950,7 @@ void SwampYard::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action, "swampyard");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &SwampYard::actionHandler);
-    addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString SwampYard::str(int id)
@@ -1029,7 +1030,7 @@ QString SwampYard::str(int id)
             "- Я её видел, точно вам говорю, - услышали вы возбужденный голос Сергея, - она там на сцене танцевала."
             "Потом, заметив вас, парни замолчали и перевели разговор на другую тему.";
     str[37] = "Появившись на поляне вы увидели парней, что-то возбужденно обсуждавших."
-            "- Я недавно порнуху скачал, она там снималась, точно вам говорю, это " + getPFName() + ", - услышали вы возбужденный голос Андрея. Потом, "
+            "- Я недавно порнуху скачал, она там снималась, точно вам говорю, это " + root->getPFName() + ", - услышали вы возбужденный голос Андрея. Потом, "
                               "заметив вас, парни замолчали и перевели разговор на другую тему.";
     str[38] = "Появившись на поляне вы увидели парней, что-то возбужденно обсуждавших."
             "- Я точно вам говорю, она всем в Гадюкино дает, сам недавно её \"тестировал\", - услышали вы возбужденный голос Андрея. Потом, заметив вас,"
@@ -1038,7 +1039,7 @@ QString SwampYard::str(int id)
     str[40] = "И, сломя голову, кинулись в избушку одеваться.";
     str[41] = "И быстро кинулись в избушку и прикрылись куском мешковины... Ну хоть что-то.";
     str[42] = "Но потом решили пощекотать себе нервы и оставили все как есть. Мужчины старательно отводят глаза от вашего обнаженного тела.<br>";
-    if(gVEvent(hantersKnow) == 1)
+    if(root->vEvent(hantersKnow) == 1)
         str[42] += "- Ну ты, Светик, блин даешь, - услышали вы только фразу Андрея.";
     else
         str[42] += "- Ни фига себе картина!, - услышали вы только удивлённый возглас.";

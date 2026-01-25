@@ -1,7 +1,9 @@
 #include "gadroad.h"
 #include "../../Functions.h"
 #include "../../menu/buttons.h"
-Gadroad::Gadroad(LocationHandler *ptr): Location(ptr) {}
+#include "../../game.h"
+
+Gadroad::Gadroad(Game *ptr): root(ptr) {}
 
 void Gadroad::show(QString arg)
 {
@@ -37,15 +39,15 @@ void Gadroad::actionHandler(QString action)
 {
     if(action == "gadroad")
     {
-        setImage(makeImage(media(0), isDay(), getMonth()));
-        setDesc(str(0));
+        root->setImage(makeImage(media(0), root->isDay(), root->getMonth()));
+        root->setText(str(0));
         makeActBtn("gadfield",act(0));
         makeActBtn("gadforest",act(1));
-        ClothMain* ptr = (ClothMain*)getCloth(ClothType::Main);
-        if(ptr != nullptr && ptr->getClothGroup() == sportsSuit && getHour() >= 6 && getHour() < 21 && gVEvent(daybegskver) != gVStatus(daystart) && getSunWeather() >= 0)
+        ClothMain* ptr = (ClothMain*)root->getCloth(ClothType::Main);
+        if(ptr != nullptr && ptr->getClothGroup() == sportsSuit && root->getHour() >= 6 && root->getHour() < 21 && root->vEvent(daybegskver) != root->vStatus(daystart) && root->getSunWeather() >= 0)
         {
-            if(gVSick(sick) > 0)
-                addText(str(1));
+            if(root->vSick(sick) > 0)
+                root->addText(str(1));
             else
                 makeActBtn("run_road",act(2));
         }
@@ -55,57 +57,57 @@ void Gadroad::actionHandler(QString action)
     }
     if(action == "gadfield")
     {
-        changeLoc(lgadfield,10);
+        root->changeLoc(lgadfield,10);
     }
     if(action == "gadforest")
     {
-        changeLoc(lgadforest,30);
+        root->changeLoc(lgadforest,30);
     }
     if(action == "run_road")
     {
-        incTime(60);
-        uVStatus(day_weight,-1);
-        uVSkill(runner,getRandInt(3,6));
-        fnSport(2);
-        if(gVSkill(speed) < 40)
-            uVSkill(speed,1);
+        root->incTime(60);
+        root->vStatus(day_weight) -= 1;
+        root->vSkill(runner) += getRandInt(3,6);
+        root->fnSport(2);
+        if(root->vSkill(speed) < 40)
+            root->vSkill(speed) += 1;
         else
-            uVSkill(speed,getRandInt(0,1));
-        if(gVSkill(endurance) < 20)
-            uVSkill(endurance,1);
-        sVEvent(daybegskver,gVStatus(daystart));
-        if(getSnow() > 0)
-            setImage(media(1));
-        else if(getSnow() == 0 && (getMonth() < 5 || getMonth() > 9))
-            setImage(media(2));
+            root->vSkill(speed) += getRandInt(0,1);
+        if(root->vSkill(endurance) < 20)
+            root->vSkill(endurance) += 1;
+        root->vEvent(daybegskver) = root->vStatus(daystart);
+        if(root->getSnow() > 0)
+            root->setImage(media(1));
+        else if(root->getSnow() == 0 && (root->getMonth() < 5 || root->getMonth() > 9))
+            root->setImage(media(2));
         else
         {
-            int group = gVBody(bodyGroup);
+            int group = root->vBody(bodyGroup);
             if(group > 1)
             {
                 if(group == 2)
-                    setImage(media(5));
+                    root->setImage(media(5));
                 else
-                    setImage(media(6));
+                    root->setImage(media(6));
             }
             else
             {
-                if(gVSkill(strenght) + gVSkill(endurance) < 50)
-                    setImage(media(4));
+                if(root->vSkill(strenght) + root->vSkill(endurance) < 50)
+                    root->setImage(media(4));
                 else
-                    setImage(media(3));
+                    root->setImage(media(3));
             }
-            setDesc(str(2));
+            root->setText(str(2));
             makeActBtn("gadroad",act(5));
         }
     }
     if(action == "backdoors")
     {
-        startEvent(eGadukinoEvents, "gadukino_back");
+        root->startEvent(eGadukinoEvents, "gadukino_back");
     }
     if(action == "gadukino")
     {
-        changeLoc(lgadukino,20);
+        root->changeLoc(lgadukino,20);
     }
 }
 
@@ -114,7 +116,7 @@ void Gadroad::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action,"gadroad");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Gadroad::actionHandler);
-    addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString Gadroad::str(int id)

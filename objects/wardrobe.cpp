@@ -1,5 +1,5 @@
 #include "wardrobe.h"
-#include "objecthandler.h"
+#include "../game.h"
 #include "../Functions.h"
 #include "../items/cloth.h"
 #include "../menu/customshadoweffect.h"
@@ -7,7 +7,7 @@
 #include "../items/clothformTrash.h"
 #include "../menu/buttons.h"
 
-Wardrobe::Wardrobe(ObjectHandler* ptr): m_size(0), root(ptr){}
+Wardrobe::Wardrobe(Game *ptr): m_size(0), root(ptr){}
 
 QString Wardrobe::getName()
 {
@@ -73,7 +73,7 @@ void Wardrobe::slotUpdSize(int size)
 void Wardrobe::slotActHandler(WardrActs act)
 {
     current = act;
-    ClearLayout(root->m_actions);
+    root->clearActions();
     
     switch (act)
     {
@@ -81,12 +81,12 @@ void Wardrobe::slotActHandler(WardrActs act)
     case actWardr5:
     case actWardr11:
         {
-            root->m_render->rendObjPage(root);
+            root->rendObjPage(root);
             makeButtons();
             header = new QLabel;
             connect(header, &QLabel::linkActivated, this, &Wardrobe::slotHeader);
             header->setAlignment(Qt::AlignHCenter);
-            root->m_render->addQWidgetInObjPage(header);
+            root->addQWidgetInObjPage(header);
             header->setText(warStr(actWardr6) + "<br>");
 
             if (!m_layouts.empty())
@@ -119,22 +119,22 @@ void Wardrobe::slotActHandler(WardrActs act)
         break;
     case actWardr2:
         {
-            root->m_render->rendImagePage(root);
-            root->player()->redress(ClothType::Main,nullptr);
-            root->m_render->setImage("data/img/clothing/0/0.jpg");
-            root->m_render->setText(warStr(actWardr3));
+            root->rendImagePage(root);
+            root->redress(ClothType::Main,nullptr);
+            root->setImage("data/img/clothing/0/0.jpg");
+            root->setText(warStr(actWardr3));
             makeButtons();
         }
         break;
     case actWardr4:
         {
-            LocId loc = root->getCurLoc()->getLocId();
-            ClothMain* cur = (ClothMain*)root->player()->getCloth(ClothType::Main);
+            LocId loc = root->getCurLoc();
+            ClothMain* cur = (ClothMain*)root->getCloth(ClothType::Main);
             if (cur != nullptr && cur->getClothGroup() > ClothGroup::swimsuit)
             {
                 finalize();
             }
-            else if(root->getVStatus(shamelessFlag) >= 2 && loc == lbedrpar || loc == lbedr || loc == lkorr)
+            else if(root->vStatus(shamelessFlag) >= 2 && loc == lbedrpar || loc == lbedr || loc == lkorr)
             {
                 finalize();
             }
@@ -146,26 +146,26 @@ void Wardrobe::slotActHandler(WardrActs act)
         break;
     case actWardr7:
         {
-            root->m_render->rendVideoPage(root);
-            root->m_render->setVideo("data/img/clothing/0/0.webm",900,460);
-            root->player()->redress(ClothType::Panties,nullptr);
-            root->m_render->setText(warStr(actWardr9));
+            root->rendVideoPage(root);
+            root->setVideo("data/img/clothing/0/0.webm",900,460);
+            root->redress(ClothType::Panties,nullptr);
+            root->setText(warStr(actWardr9));
             makeButtons();
         }
         break;
     case actWardr8:
         {
-            root->m_render->rendVideoPage(root);
-            root->m_render->setVideo("data/img/clothing/0/6.webm",872,600);
-            root->player()->redress(ClothType::Panties,m_panties);
-            root->m_render->setText(warStr(actWardr10));
+            root->rendVideoPage(root);
+            root->setVideo("data/img/clothing/0/6.webm",872,600);
+            root->redress(ClothType::Panties,m_panties);
+            root->setText(warStr(actWardr10));
             makeButtons();
         }
         break;
     case actWardr12:
     {
-        ClearLayout(root->m_actions);
-        root->m_render->rendObjPage(root);
+        root->clearActions();
+        root->rendObjPage(root);
         makeButtons();
 
         if (!m_layouts.empty())
@@ -201,7 +201,7 @@ void Wardrobe::clothFormHandler(Cloth *cloth, QString action)
 {
     if(action == "wear")
     {
-        root->player()->redress(ClothType::Main,cloth);
+        root->redress(ClothType::Main,cloth);
     }
     else if(action == "fit")
     {
@@ -257,7 +257,7 @@ void Wardrobe::slotHeader(QString act)
 
 ClothForm *Wardrobe::genForm(ClothMain *cloth)
 {
-    ClothForm* ptr = new ClothForm(cloth, root->getVBody(hips));
+    ClothForm* ptr = new ClothForm(cloth, root->vBody(hips));
     CustomShadowEffect *bodyShadow = new CustomShadowEffect();
     bodyShadow->setBlurRadius(20.0);
     bodyShadow->setDistance(6.0);
@@ -282,12 +282,12 @@ void Wardrobe::initNewLayout()
     QHBoxLayout* layout = new QHBoxLayout;
     layout->setAlignment(Qt::AlignLeft);
     m_layouts.push_back(layout);
-    root->m_render->addLayoutsInObjPage(m_layouts.back());
+    root->addLayoutsInObjPage(m_layouts.back());
 }
 
 void Wardrobe::initWarDrobe()
 {
-    m_size = root->getVBody(hips);
+    m_size = root->vBody(hips);
     ClothMain* first = new ClothMain(3, ClothGroup::sundress, "Сарафан",0,-99);
     ClothMain* second = new ClothMain(4, ClothGroup::schoolUniform, "Школьная форма",0,-99);
     ClothMain* third = new ClothMain(getRandInt(10,29), ClothGroup::sportsSuit, "Спортивный костюм");
@@ -299,18 +299,18 @@ void Wardrobe::initWarDrobe()
     addCloth(third,1);
     addCloth(four,1);
     addCloth(m_panties,3);
-    root->player()->wearClothes(first);
-    root->player()->wearClothes(m_panties);
+    root->wearClothes(first);
+    root->wearClothes(m_panties);
 }
 
 void Wardrobe::finalize()
 {
-    root->setVStatus(clothesswamphouse, 0);
-    root->setVStatus(clothesbackwater, 0);
-    root->setVStatus(clothesforest, 0);
-    root->setVStatus(swamp_clothes, 0);
-	if (root->getVStatus(dirtyClothes) > 0) root->setVStatus(dirtyClothes,0);
-    root->changeLoc(root->getCurLoc()->getLocId());
+    root->vStatus(clothesswamphouse) = 0;
+    root->vStatus(clothesbackwater) = 0;
+    root->vStatus(clothesforest) = 0;
+    root->vStatus(swamp_clothes) = 0;
+    if (root->vStatus(dirtyClothes) > 0) root->vStatus(dirtyClothes) = 0;
+    root->changeLoc(root->getCurLoc());
 }
 
 int Wardrobe::countPanties()
@@ -318,7 +318,7 @@ int Wardrobe::countPanties()
     int result = 0;
     if(root->isPanties())
     {
-        result += root->player()->getCloth(ClothType::Panties)->getCondition();
+        result += root->getCloth(ClothType::Panties)->getCondition();
         result += m_storage[m_panties] * 500;
     }
     else
@@ -336,7 +336,7 @@ void Wardrobe::makeButtons()
         if (root->getCloth(ClothType::Main) != nullptr)
         {
             ClothMain *upPtr = (ClothMain *)root->getCloth(ClothType::Main);
-            if (root->getCurLoc()->getLocId() != lgschool)
+            if (root->getCurLoc() != lgschool)
                 makeActBtn(actWardr2);
             if (upPtr->getClothGroup() >= sundress && root->getCloth(ClothType::Panties) != nullptr)
                 makeActBtn(actWardr7);
@@ -363,7 +363,7 @@ void Wardrobe::makeActBtn(WardrActs act)
 {
     WardrActionButton* btnx = new WardrActionButton(warStr(act), act);
     connect(btnx, &WardrActionButton::sigAction, this, &Wardrobe::slotActHandler);
-    root->m_actions->addWidget(btnx);
+    root->addActions(btnx);
 }
 
 QString Wardrobe::warStr(int index)
@@ -375,7 +375,7 @@ QString Wardrobe::warStr(int index)
     str[3] = "Вы полностью разделись";
     str[4] = "Выйти";
     str[5] = "Назад";
-    str[6] = "<p style=\"text-align:center\"><strong>Ваш размер: " + intQStr(root->player()->getVBody(hips)) + "</strong><br>На верхней полке лежит купальник.<br>У вас есть еще " + intQStr(countPanties()) + " ед. трусиков.<br>Внизу шкафа стоит <a href='trashbag'>корзина со старой одеждой</a></p>";
+    str[6] = "<p style=\"text-align:center\"><strong>Ваш размер: " + intQStr(root->vBody(hips)) + "</strong><br>На верхней полке лежит купальник.<br>У вас есть еще " + intQStr(countPanties()) + " ед. трусиков.<br>Внизу шкафа стоит <a href='trashbag'>корзина со старой одеждой</a></p>";
     str[7] = "Снять трусики";
     str[8] = "Надеть трусики";
     str[9] = "Вы сняли трусики.";

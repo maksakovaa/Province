@@ -1,22 +1,22 @@
 #include "pirat.h"
-#include "../eventhandler.h"
+#include "../../game.h"
 #include "../../Functions.h"
 #include "../../menu/buttons.h"
 
-Pirat::Pirat(EventHandler* ptr): root(ptr) {}
+Pirat::Pirat(Game* ptr): root(ptr) {}
 
 void Pirat::start(QString arg)
 {
-    if (root->gVEvent(pir_pirat) == 0 && root->gVEvent(know_no_pirat) == 1 && root->gVEvent(pir_pirat_search) == 0)
+    if (root->vEvent(pir_pirat) == 0 && root->vEvent(know_no_pirat) == 1 && root->vEvent(pir_pirat_search) == 0)
     {
         makeActBtn("search", act(0));
     }
     else
     {
-        root->addDesc("<br>В будке сидит Пират");
+        root->addText("<br>В будке сидит Пират");
         makeActBtn("pir_pirat", act(1));
     }
-    if(root->gVEvent(pir_piratsuka) >= 50 && root->gVEvent(pir_piratfriend) >= 70 && root->gVEvent(pir_pirat_sex) != root->vStatus(daystart))
+    if(root->vEvent(pir_piratsuka) >= 50 && root->vEvent(pir_piratfriend) >= 70 && root->vEvent(pir_pirat_sex) != root->vStatus(daystart))
     {
         pirat_forced();
     }
@@ -24,7 +24,7 @@ void Pirat::start(QString arg)
 
 void Pirat::actionHandler(QString action)
 {
-    root->rendImagePage();
+    root->rendImagePage(this);
     root->clearActions();
     if(action == "pir_pirat")
     {
@@ -37,10 +37,10 @@ void Pirat::actionHandler(QString action)
     if(action == "go&watch")
     {
         root->incTime(5);
-        root->sVEvent(pirat, 1);
-        root->sVEvent(pir_pirat_search, 1);
+        root->vEvent(pirat) = 1;
+        root->vEvent(pir_pirat_search) = 1;
         root->setImage(media(0));
-        root->setDesc(evStr(22));
+        root->setText(evStr(22));
         makeActBtn("disperse", act(2));
         makeActBtn("wait", act(3));
     }
@@ -51,19 +51,19 @@ void Pirat::actionHandler(QString action)
     if(action == "disperse")
     {
         root->incTime(5);
-        root->uVSkill(domination, 1);
-        root->uVEvent(pir_piratfriend, -5);
+        root->vSkill(domination) += 1;
+        root->vEvent(pir_piratfriend) -= 5;
         root->setImage(media(1));
-        root->setDesc(evStr(23));
+        root->setText(evStr(23));
         makeActBtn("next2", act(4));
     }
     if(action == "wait")
     {
         root->incTime(10);
-        root->uVStatus(horny,10);
-        root->uVEvent(pir_piratfriend, 1);
+        root->vStatus(horny) += 10;
+        root->vEvent(pir_piratfriend) += 1;
         root->setImage(media(2));
-        root->setDesc(evStr(24));
+        root->setText(evStr(24));
         makeActBtn("next2", act(4));
     }
     if(action == "next2")
@@ -81,16 +81,16 @@ void Pirat::actionHandler(QString action)
     }
     if(action == "submiss")
     {
-        root->uVStatus(horny, getRandInt(5,10));
+        root->vStatus(horny) += getRandInt(5,10);
         root->incTime(2);
-        root->uVSkill(domination, -1);
-        root->sVEvent(pir_piratknow, getRandInt(0,1));
-        root->sVEvent(pir_piratHorny, 0);
-        root->sVEvent(pir_pirat_sex, root->vStatus(daystart));
-        root->uVEvent(pir_zoo,1);
+        root->vSkill(domination) -= 1;
+        root->vEvent(pir_piratknow) = getRandInt(0,1);
+        root->vEvent(pir_piratHorny) =  0;
+        root->vEvent(pir_pirat_sex) = root->vStatus(daystart);
+        root->vEvent(pir_zoo) += 1;
         root->setImage(media(3));
-        root->setDesc(evStr(3));
-        if(root->gVEvent(pir_piratknow) == 1)
+        root->setText(evStr(3));
+        if(root->vEvent(pir_piratknow) == 1)
         {
             if(root->vBody(vagina) == 0)
             {
@@ -109,17 +109,17 @@ void Pirat::actionHandler(QString action)
     }
     if(action == "submiss_wait1")
     {
-        if(root->gVEvent(pir_piratsuka) < 30)
-            root->uVEvent(pir_piratsuka, 5);
-        root->uVStatus(horny, getRandInt(5,10));
+        if(root->vEvent(pir_piratsuka) < 30)
+            root->vEvent(pir_piratsuka) += 5;
+        root->vStatus(horny) += getRandInt(5,10);
         root->incTime(30);
-        root->sVBody(vagina,5);
-        root->sVSex(vgape,3);
+        root->vBody(vagina) = 5;
+        root->vSex(vgape) = 3;
         //vgape_time
-        root->sVStatus(mood, root->vStatus(mood)/2);
-        root->uVSkill(domination, -10);
+        root->vStatus(mood)  = root->vStatus(mood)/2;
+        root->vSkill(domination) -= 10;
         root->setImage(media(5));
-        root->setDesc(evStr(4));
+        root->setText(evStr(4));
         makeActBtn("next3", act(6));
     }
     if(action == "next3")
@@ -132,24 +132,24 @@ void Pirat::actionHandler(QString action)
         if(vag < 10)
         {
             root->incTime(2);
-            root->uVBody(vagina,5);
-            root->sVSex(vgape,3);
-            root->sVStatus(horny, 0);
+            root->vBody(vagina) += 5;
+            root->vSex(vgape) = 3;
+            root->vStatus(horny) = 0;
             root->setImage(media(6));
-            root->setDesc(evStr(5));
+            root->setText(evStr(5));
             makeActBtn("next3", act(7));
         }
         else if(vag >= 10 && vag < 25)
         {
             root->incTime(20);
-            root->uVBody(vagina,4);
-            root->sVSex(vgape, 2);
-            root->uVStatus(horny, getRandInt(15,25));
+            root->vBody(vagina) += 4;
+            root->vSex(vgape) = 2;
+            root->vStatus(horny) += getRandInt(15,25);
             if(root->vStatus(horny) >= 100)
             {
-                root->uVSC(orgasm,1);
-                root->sVStatus(horny, 0);
-                root->sVStatus(mood, 100);
+                root->vStatistics(orgasm) += 1;
+                root->vStatus(horny) = 0;
+                root->vStatus(mood)  = 100;
                 if(root->vBody(piercingG) == 1)
                 {
                     root->setImage(media(7));
@@ -158,25 +158,25 @@ void Pirat::actionHandler(QString action)
                 {
                     root->setImage(media(8));
                 }
-                root->setDesc(evStr(6));
+                root->setText(evStr(6));
             }
             else
             {
                 root->setImage(media(6));
-                root->setDesc(evStr(7));
+                root->setText(evStr(7));
             }
             makeActBtn("next3", act(7));
         }
         else if(vag >=25 && vag < 35)
         {
             root->incTime(20);
-            root->uVBody(vagina,3);
-            root->uVStatus(horny, getRandInt(25,50));
+            root->vBody(vagina) += 3;
+            root->vStatus(horny) += getRandInt(25,50);
             if(root->vStatus(horny) >= 100)
             {
-                root->uVSC(orgasm,1);
-                root->sVStatus(horny,0);
-                root->sVStatus(mood, 100);
+                root->vStatistics(orgasm) += 1;
+                root->vStatus(horny) = 0;
+                root->vStatus(mood)  = 100;
                 if(root->vBody(piercingG) == 1)
                 {
                     root->setImage(media(7));
@@ -185,25 +185,25 @@ void Pirat::actionHandler(QString action)
                 {
                     root->setImage(media(8));
                 }
-                root->setDesc(evStr(8));
+                root->setText(evStr(8));
             }
             else
             {
                 root->setImage(media(8));
-                root->setDesc(evStr(9));
+                root->setText(evStr(9));
             }
             makeActBtn("next3", act(7));
         }
         else if(vag >= 35)
         {
             root->incTime(15);
-            root->uVBody(vagina,1);
-            root->uVStatus(horny, getRandInt(99,100));
+            root->vBody(vagina) += 1;
+            root->vStatus(horny) += getRandInt(99,100);
             if(root->vStatus(horny) >= 100)
             {
-                root->uVSC(orgasm,1);
-                root->sVStatus(horny,0);
-                root->sVStatus(mood,100);
+                root->vStatistics(orgasm) += 1;
+                root->vStatus(horny) = 0;
+                root->vStatus(mood)  = 100;
                 if(root->vBody(piercingG) == 1)
                 {
                     root->setImage(media(7));
@@ -212,12 +212,12 @@ void Pirat::actionHandler(QString action)
                 {
                     root->setImage(media(8));
                 }
-                root->setDesc(evStr(10));
+                root->setText(evStr(10));
             }
             else
             {
                 root->setImage(media(8));
-                root->setDesc(evStr(11));
+                root->setText(evStr(11));
             }
             makeActBtn("next3", act(7));
         }
@@ -226,75 +226,75 @@ void Pirat::actionHandler(QString action)
     {
         int anusVal = root->vBody(anus);
         root->incTime(2);
-        root->sVStatus(mood, root->vStatus(mood)/2);
-        root->rendVideoPage();
+        root->vStatus(mood)  = root->vStatus(mood)/2;
+        root->rendVideoPage(this);
         root->setVideo(media(9), 868, 540);
         if(anusVal < 10)
         {
             root->incTime(20);
-            root->uVBody(anus,5);
-            root->sVSex(agape,3);
-            root->sVStatus(horny,0);
+            root->vBody(anus) += 5;
+            root->vSex(agape) = 3;
+            root->vStatus(horny) = 0;
             root->cum("anus");
             //gs stat
-            root->setDesc(evStr(12));
+            root->setText(evStr(12));
             makeActBtn("next3", act(7));
         }
         else if(anusVal >= 10 && anusVal < 25)
         {
             root->incTime(20);
-            root->uVBody(anus,3);
-            root->sVSex(agape,2);
-            root->uVStatus(horny, -getRandInt(15,30));
+            root->vBody(anus) += 3;
+            root->vSex(agape) = 2;
+            root->vStatus(horny) -= getRandInt(15,30);
             root->cum("anus");
             //gs stat
-            root->setDesc(evStr(13));
+            root->setText(evStr(13));
             makeActBtn("next3", act(7));
         }
         else if(anusVal >= 25 && anusVal < 35)
         {
             root->incTime(20);
-            root->uVBody(anus,2);
-            root->sVSex(agape,1);
-            root->uVStatus(horny, getRandInt(15,30));
+            root->vBody(anus) += 2;
+            root->vSex(agape) = 1;
+            root->vStatus(horny) += getRandInt(15,30);
             root->cum("anus");
             //gs stat
             if(root->vStatus(horny) >= 100)
             {
-                root->uVSC(orgasm,1);
-                root->sVStatus(horny,0);
-                root->sVStatus(mood,100);
-                root->uVSC(analOrgasm,1);
-                root->rendImagePage();
+                root->vStatistics(orgasm) += 1;
+                root->vStatus(horny) = 0;
+                root->vStatus(mood)  = 100;
+                root->vStatistics(analOrgasm) += 1;
+                root->rendImagePage(this);
                 root->setImage(media(10));
-                root->setDesc(evStr(14));
+                root->setText(evStr(14));
             }
             else
             {
-                root->setDesc(evStr(15));
+                root->setText(evStr(15));
             }
             makeActBtn("next3", act(7));
         }
         else if(anusVal >= 35)
         {
             root->incTime(20);
-            root->uVBody(anus,1);
-            root->uVStatus(horny, getRandInt(50,100));
+            root->vBody(anus) += 1;
+            root->vStatus(horny) += getRandInt(50,100);
             root->cum("anus");
             //gs stat
             if(root->vStatus(horny) >= 100)
             {
-                root->uVSC(orgasm,1);
-                root->uVSC(analOrgasm,1);
-                root->sVStatus(horny,0);
-                root->sVStatus(mood,100);
-                root->rendImagePage();
+                root->vStatistics(orgasm) += 1;
+                root->vStatistics(analOrgasm) += 1;
+                root->vStatus(horny) = 0;
+                root->vStatus(mood)  = 100;
+                root->rendImagePage(this);
                 root->setImage(media(11));
-                root->setDesc(evStr(16));
+                root->setText(evStr(16));
             }
             else
             {
-                root->setDesc(evStr(17));
+                root->setText(evStr(17));
             }
             makeActBtn("next3", act(7));
         }
@@ -321,61 +321,61 @@ void Pirat::actionHandler(QString action)
     }
     if(action == "tolerate")
     {
-        root->sVEvent(pir_piratHorny, 0);
+        root->vEvent(pir_piratHorny) = 0;
         root->incTime(5);
-        root->sVStatus(mood, root->vStatus(mood)/2);
-        root->uVEvent(pir_piratsuka, 1);
-        root->sVEvent(pir_pirat_sex, root->vStatus(daystart));
-        root->uVSkill(domination, -1);
+        root->vStatus(mood)  = root->vStatus(mood)/2;
+        root->vEvent(pir_piratsuka) += 1;
+        root->vEvent(pir_pirat_sex) = root->vStatus(daystart);
+        root->vSkill(domination) -= 1;
         //gs stat
         root->setImage(media(12));
-        if(root->gVEvent(grandparents_ingadsarai) == 0)
-            root->setDesc(str(7));
-        if(root->gVEvent(grandpa_ingadsarai) == 1)
-            root->addDesc(str(8));
-        if(root->gVEvent(grandma_ingadsarai) == 1)
-            root->addDesc(str(9));
-        if(root->gVEvent(grandpa_ingadsarai) == 1)
+        if(root->vEvent(grandparents_ingadsarai) == 0)
+            root->setText(str(7));
+        if(root->vEvent(grandpa_ingadsarai) == 1)
+            root->addText(str(8));
+        if(root->vEvent(grandma_ingadsarai) == 1)
+            root->addText(str(9));
+        if(root->vEvent(grandpa_ingadsarai) == 1)
             makeActBtn("push_away", act(9));
-        if(root->gVEvent(grandpa_ingadsarai) == 1)
+        if(root->vEvent(grandpa_ingadsarai) == 1)
             makeActBtn("scream", act(10));
         makeActBtn("next4", act(8));
     }
     if(action == "next4")
     {
-        if(root->gVEvent(grandpa_ingadsarai) == 1)
+        if(root->vEvent(grandpa_ingadsarai) == 1)
         {
-            root->uVQuest(grandpaQW,-1);
+            root->vQuest(grandpaQW) -=1;
         }
-        if(root->gVEvent(grandma_ingadsarai) == 1)
+        if(root->vEvent(grandma_ingadsarai) == 1)
         {
-            root->uVQuest(grandmaQW,-1);
+            root->vQuest(grandmaQW) -= 1;
         }
         root->changeLoc(lgadsarai);
     }
     if(action == "onAllFour")
     {
-        root->uVStatus(horny, getRandInt(10,20));
-        root->sVEvent(pir_piratHorny, 0);
+        root->vStatus(horny) += getRandInt(10,20);
+        root->vEvent(pir_piratHorny) = 0;
         root->incTime(5);
-        root->sVStatus(mood, root->vStatus(mood)/2);
-        root->uVEvent(pir_piratsuka,1);
-        root->uVSkill(domination, -1);
-        root->uVStatus(cumFrot, 1);
-        root->sVEvent(pir_pirat_sex, root->vStatus(daystart));
+        root->vStatus(mood)  = root->vStatus(mood)/2;
+        root->vEvent(pir_piratsuka) += 1;
+        root->vSkill(domination) -= 1;
+        root->vStatus(cumFrot) += 1;
+        root->vEvent(pir_pirat_sex) = root->vStatus(daystart);
         //gs stat
         root->setImage(media(13));
-        if(root->gVEvent(grandparents_ingadsarai) == 0)
-            root->setDesc(str(11));
-        if(root->gVEvent(grandpa_ingadsarai) == 1)
+        if(root->vEvent(grandparents_ingadsarai) == 0)
+            root->setText(str(11));
+        if(root->vEvent(grandpa_ingadsarai) == 1)
         {
-            root->setDesc(str(12));
-            root->uVQuest(grandpaQW,-5);
+            root->setText(str(12));
+            root->vQuest(grandpaQW) -= 5;
         }
-        if(root->gVEvent(grandma_ingadsarai) == 1)
+        if(root->vEvent(grandma_ingadsarai) == 1)
         {
-            root->setDesc(str(13));
-            root->uVQuest(grandmaQW, -5);
+            root->setText(str(13));
+            root->vQuest(grandmaQW) -= 5;
         }
         makeActBtn("next3", act(8));
     }
@@ -389,10 +389,10 @@ void Pirat::actionHandler(QString action)
     }
     if(action == "undress&onAllFour")
     {
-        root->uVStatus(horny, getRandInt(5,10));
+        root->vStatus(horny) += getRandInt(5,10);
         root->incTime(2);
         root->setImage(media(3));
-        root->setDesc(str(15));
+        root->setText(str(15));
         makeActBtn("pir_DogVag", act(11));
         makeActBtn("pir_DogAnal", act(12));
     }
@@ -402,7 +402,7 @@ void Pirat::actionHandler(QString action)
         pirDogAnal();
     if(action == "next5")
     {
-        root->uVEvent(pir_piratfriend, -1);
+        root->vEvent(pir_piratfriend) -= 1;
         root->changeLoc(lgadsarai);
     }
     if(action == "preHandJob")
@@ -410,7 +410,7 @@ void Pirat::actionHandler(QString action)
         root->incTime(5);
         //gs stat
         root->setImage(media(14));
-        root->setDesc(sexStr(18));
+        root->setText(sexStr(18));
         makeActBtn("handjob", act(13));
         makeActBtn("next3", act(14));
     }
@@ -419,9 +419,9 @@ void Pirat::actionHandler(QString action)
         root->incTime(5);
         //gs stat
         root->setImage(media(15));
-        root->setDesc(sexStr(19));
+        root->setText(sexStr(19));
         makeActBtn("takeoff", act(15));
-        if(root->gVEvent(pir_DogVag) == 1 || root->gVEvent(pir_DogAnal) == 1)
+        if(root->vEvent(pir_DogVag) == 1 || root->vEvent(pir_DogAnal) == 1)
         {
             makeActBtn("pir_DogVag", act(11));
             makeActBtn("pir_DogAnal", act(12));
@@ -433,78 +433,78 @@ void Pirat::actionHandler(QString action)
         if(root->vSkill(agility) > temp)
         {
             root->incTime(1);
-            root->uVEvent(pir_piratHorny, -40);
+            root->vEvent(pir_piratHorny) -= 40;
             root->setImage(media(1));
-            root->setDesc(sexStr(20));
+            root->setText(sexStr(20));
             makeActBtn("next3", act(8));
         }
         else
         {
             root->incTime(10);
-            root->sVEvent(pir_piratHorny,0);
-            root->sVEvent(pir_pirat_sex, root->vStatus(daystart));
+            root->vEvent(pir_piratHorny) =0;
+            root->vEvent(pir_pirat_sex) = root->vStatus(daystart);
             int temp = getRandInt(1,3);
             //gs stat
             root->setImage(media(16));
-            root->setDesc(sexStr(21));
+            root->setText(sexStr(21));
             makeActBtn("next6" + intQStr(temp), act(4));
         }
     }
     if(action == "next61")
     {
         root->incTime(30);
-        root->sVEvent(pir_DogAnal, 1);
-        root->uVSC(analSex, 1);
+        root->vEvent(pir_DogAnal) = 1;
+        root->vStatistics(analSex) += 1;
         int anusVal = root->vBody(anus);
         if(anusVal < 10)
         {
-            root->uVStatus(mood, -50);
-            root->uVBody(anus,5);
-            root->sVSex(agape,3);
-            root->sVStatus(horny,0);
+            root->vStatus(mood) -= 50;
+            root->vBody(anus) += 5;
+            root->vSex(agape) = 3;
+            root->vStatus(horny) = 0;
         }
         if(anusVal >= 10 && anusVal < 25)
         {
-            root->uVStatus(mood, -20);
-            root->uVBody(anus,3);
-            root->sVSex(agape,2);
-            root->uVStatus(horny, -getRandInt(15,30));
+            root->vStatus(mood) -= 20;
+            root->vBody(anus) += 3;
+            root->vSex(agape) = 2;
+            root->vStatus(horny) -= getRandInt(15,30);
         }
         if(anusVal >= 25 && anusVal < 35)
         {
-            root->uVStatus(mood, -10);
-            root->uVBody(anus,2);
-            root->sVSex(agape,1);
-            root->uVStatus(horny,getRandInt(15,30));
+            root->vStatus(mood) -= 10;
+            root->vBody(anus) += 2;
+            root->vSex(agape) = 1;
+            root->vStatus(horny) += getRandInt(15,30);
         }
         if(anusVal >= 35)
         {
-            root->uVBody(anus,1);
-            root->uVStatus(horny,getRandInt(50,100));
+            root->vBody(anus) += 1;
+            root->vStatus(horny) += getRandInt(50,100);
         }
-        root->uVSkill(domination, -1);
+        root->vSkill(domination) -= 1;
         root->cum("anus");
         //gs stat
         root->setImage(media(17));
         if(root->vStatus(horny) >= 100)
         {
-            root->uVSC(orgasm,1);
-            root->uVSC(analOrgasm,1);
-            root->sVStatus(horny,0);
-            root->sVStatus(mood,100);
+            root->vStatistics(orgasm) += 1;
+            root->vStatistics(analOrgasm) += 1;
+            root->vStatus(horny) = 0;
+            root->vStatus(mood)  = 100;
             //gs stat
-            root->setDesc(sexStr(22));
+            root->setText(sexStr(22));
         }
         else
         {
             if(anusVal < 10)
-                root->setDesc(sexStr(23));
+                root->setText(sexStr(23));
             else if(anusVal >= 10 && anusVal < 25)
-                root->setDesc(sexStr(24));
+                root->setText(sexStr(24));
             else if(anusVal >= 25 && anusVal < 35)
-                root->setDesc(sexStr(25));
+                root->setText(sexStr(25));
             else if(anusVal >= 35)
-                root->setDesc(sexStr(26));
+                root->setText(sexStr(26));
         }
         makeActBtn("next3", act(8));
     }
@@ -512,75 +512,75 @@ void Pirat::actionHandler(QString action)
     {
         if(root->vBody(vagina) == 0)
         {
-            root->sVEvent(pir_DogVag, 1);
-            root->uVEvent(pir_piratsuka,5);
-            root->uVStatus(horny,0);
+            root->vEvent(pir_DogVag) = 1;
+            root->vEvent(pir_piratsuka) += 5;
+            root->vStatus(horny) += 0;
             root->incTime(10);
-            root->uVBody(vagina,1);
-            root->sVSex(vgape,1);
-            root->uVStatus(mood, -50);
-            root->uVSkill(domination, -10);
-            root->uVSC(vaginalSex, 1);
+            root->vBody(vagina) += 1;
+            root->vSex(vgape) = 1;
+            root->vStatus(mood) -= 50;
+            root->vSkill(domination) -= 10;
+            root->vStatistics(vaginalSex) += 1;
             //gs stat
             root->setImage(media(5));
-            root->setDesc(sexStr(27));
+            root->setText(sexStr(27));
             makeActBtn("next64", act(4));
         }
         else
         {
-            root->sVEvent(pir_DogVag, 1);
+            root->vEvent(pir_DogVag) = 1;
             root->incTime(30);
             root->cum("pussy");
-            root->uVSC(vaginalSex,1);
+            root->vStatistics(vaginalSex) += 1;
             int vag = root->vBody(vagina);
             if(vag < 10)
             {
-                root->uVStatus(mood,-50);
-                root->uVBody(vagina,5);
-                root->sVSex(vgape,3);
-                root->sVStatus(horny,0);
+                root->vStatus(mood)  -= 50;
+                root->vBody(vagina) += 5;
+                root->vSex(vgape) = 3;
+                root->vStatus(horny) = 0;
             }
             else if(vag >= 10 && vag < 25)
             {
-                root->uVBody(vagina,4);
-                root->sVSex(vgape,2);
-                root->uVStatus(horny, getRandInt(15,25));
+                root->vBody(vagina) += 4;
+                root->vSex(vgape) = 2;
+                root->vStatus(horny) += getRandInt(15,25);
             }
             else if(vag >= 25 && vag < 35)
             {
-                root->uVBody(vagina,3);
-                root->sVSex(vgape,1);
-                root->uVStatus(horny,getRandInt(25,50));
+                root->vBody(vagina) += 3;
+                root->vSex(vgape) = 1;
+                root->vStatus(horny) += getRandInt(25,50);
             }
             else if(vag >= 35)
             {
-                root->uVBody(vagina,1);
-                root->uVStatus(horny,getRandInt(50,75));
+                root->vBody(vagina) += 1;
+                root->vStatus(horny) += getRandInt(50,75);
             }
             if(root->vStatus(horny) >= 100)
             {
-                root->uVSC(orgasm,1);
-                root->uVSC(vaginalOrgasm,1);
-                root->sVStatus(horny,0);
-                root->sVStatus(mood,100);
+                root->vStatistics(orgasm) += 1;
+                root->vStatistics(vaginalOrgasm) += 1;
+                root->vStatus(horny) = 0;
+                root->vStatus(mood)  = 100;
                 if(root->vBody(piercingG) == 1)
                     root->setImage(media(7));
                 else
                     root->setImage(media(8));
-                root->setDesc(sexStr(29));
+                root->setText(sexStr(29));
             }
             else
             {
                 int vag = root->vBody(vagina);
                 root->setImage(media(6));
                 if(vag < 10)
-                    root->setDesc(sexStr(30));
+                    root->setText(sexStr(30));
                 else if(vag >= 10 && vag < 25)
-                    root->setDesc(sexStr(31));
+                    root->setText(sexStr(31));
                 else if (vag >= 25 && vag < 35)
-                    root->setDesc(sexStr(32));
+                    root->setText(sexStr(32));
                 else if(vag >= 35)
-                    root->setDesc(sexStr(33));
+                    root->setText(sexStr(33));
             }
             makeActBtn("next3", act(8));
         }
@@ -588,82 +588,82 @@ void Pirat::actionHandler(QString action)
     if(action == "next64")
     {
         root->incTime(20);
-        root->uVBody(vagina,5);
-        root->sVSex(vgape,3);
-        root->uVStatus(mood, -50);
+        root->vBody(vagina) += 5;
+        root->vSex(vgape) = 3;
+        root->vStatus(mood) -= 50;
         root->cum("pussy");
         //gs stat
         root->setImage(media(6));
-        root->setDesc(sexStr(28));
+        root->setText(sexStr(28));
         makeActBtn("next3", act(8));
     }
     if(action == "mastr")
     {
-        root->uVStatus(horny, getRandInt(20,30));
+        root->vStatus(horny) += getRandInt(20,30);
         root->incTime(10);
-        root->sVEvent(pir_piratHorny, 0);
-        root->uVStatus(mood, root->vStatus(mood)/20);
-        root->sVEvent(pir_DogHJ, 1);
+        root->vEvent(pir_piratHorny) = 0;
+        root->vStatus(mood) += root->vStatus(mood)/20;
+        root->vEvent(pir_DogHJ) = 1;
         //gs stat
         root->setImage(media(18));
-        if(root->gVEvent(pir_piratsuka) < 10)
+        if(root->vEvent(pir_piratsuka) < 10)
         {
-            root->setDesc(sexStr(38));
+            root->setText(sexStr(38));
             makeActBtn("pir_pirat", act(8));
         }
         else
         {
-            root->setDesc(sexStr(39));
+            root->setText(sexStr(39));
             makeActBtn("takeInMouth", act(16));
             makeActBtn("next3", act(17));
         }
     }
     if(action == "takeInMouth")
     {
-        root->uVStatus(horny, getRandInt(5,15));
+        root->vStatus(horny) += getRandInt(5,15);
         root->incTime(5);
-        root->uVEvent(pir_piratsuka, 5);
-        root->sVEvent(pir_DogBJ,1);
-        root->sVEvent(pir_pirat_sex, root->vStatus(daystart));
+        root->vEvent(pir_piratsuka) += 5;
+        root->vEvent(pir_DogBJ) = 1;
+        root->vEvent(pir_pirat_sex) = root->vStatus(daystart);
         //gs stat
         root->setImage(media(19));
-        root->setDesc(sexStr(40));
+        root->setText(sexStr(40));
         makeActBtn("suckNext", act(18));
     }
     if(action == "suckNext")
     {
-        root->uVStatus(horny, getRandInt(25,40));
+        root->vStatus(horny) += getRandInt(25,40);
         root->incTime(5);
-        root->sVEvent(pir_piratHorny,0);
-        root->sVStatus(mood, root->vStatus(mood)/2);
-        root->uVStatus(cumLips,1);
+        root->vEvent(pir_piratHorny) = 0;
+        root->vStatus(mood)  = root->vStatus(mood)/2;
+        root->vStatus(cumLips) += 1;
         //gs stat
         root->setImage(media(20));
-        root->setDesc(sexStr(41));
+        root->setText(sexStr(41));
         makeActBtn("pir_pirat", act(8));
     }
     if(action == "mastr2")
     {
-        root->uVStatus(horny, getRandInt(20,30));
+        root->vStatus(horny) += getRandInt(20,30);
         root->incTime(10);
-        root->sVEvent(pir_piratHorny,0);
-        root->uVEvent(pir_piratsuka, 1);
-        root->uVStatus(mood, root->vStatus(mood)/20);
+        root->vEvent(pir_piratHorny) = 0;
+        root->vEvent(pir_piratsuka) += 1;
+        root->vStatus(mood) += root->vStatus(mood)/20;
         //gs stat
         root->setImage(media(18));
-        root->setDesc(sexStr(45));
+        root->setText(sexStr(45));
         makeActBtn("pir_pirat", act(8));
     }
     if(action == "suck2")
     {
-        root->uVStatus(horny, getRandInt(5,15));
+        root->vStatus(horny) += getRandInt(5,15);
         root->incTime(5);
-        root->uVEvent(pir_piratsuka, 2);
-        root->sVEvent(pir_DogBJ,1);
-        root->sVEvent(pir_pirat_sex, root->vStatus(daystart));
+        root->vEvent(pir_piratsuka) += 2;
+        root->vEvent(pir_DogBJ) = 1;
+        root->vEvent(pir_pirat_sex) = root->vStatus(daystart);
         int temp = getRandInt(1,3);
         root->setImage(media(19));
-        root->setDesc(sexStr(46));
+        root->setText(sexStr(46));
         if(temp == 1)
         {
             makeActBtn("cumOnFace", act(19));
@@ -675,60 +675,60 @@ void Pirat::actionHandler(QString action)
     }
     if(action == "cumOnFace")
     {
-        root->uVStatus(horny, getRandInt(15,30));
+        root->vStatus(horny) += getRandInt(15,30);
         root->incTime(5);
-        root->sVEvent(pir_piratHorny,0);
-        root->sVStatus(mood, root->vStatus(mood)/2);
+        root->vEvent(pir_piratHorny) = 0;
+        root->vStatus(mood)  = root->vStatus(mood)/2;
         root->cum("face");
         root->setImage(media(21));
-        root->setDesc(sexStr(47));
+        root->setText(sexStr(47));
         makeActBtn("pir_pirat", act(8));
     }
     if(action == "cumInMouth")
     {
-        root->uVStatus(horny, getRandInt(25,40));
+        root->vStatus(horny) += getRandInt(25,40);
         root->incTime(5);
-        root->sVEvent(pir_piratHorny,0);
-        root->sVStatus(mood, root->vStatus(mood)/2);
+        root->vEvent(pir_piratHorny) = 0;
+        root->vStatus(mood)  = root->vStatus(mood)/2;
         root->cum("lip");
         root->setImage(media(20));
-        root->setDesc(sexStr(48));
+        root->setText(sexStr(48));
         makeActBtn("pir_pirat", act(8));
     }
     if(action == "allowVag")
     {
         root->incTime(2);
-        root->sVStatus(mood, root->vStatus(mood)/2);
-        root->uVSkill(domination, -1);
+        root->vStatus(mood)  = root->vStatus(mood)/2;
+        root->vSkill(domination) -= 1;
         //gs stat
         root->setImage(media(6));
-        root->setDesc(sexStr(52));
+        root->setText(sexStr(52));
         int vag = root->vBody(vagina);
         if(vag < 10)
         {
             root->incTime(20);
-            root->uVBody(vagina,4);
-            root->sVSex(vgape,3);
-            root->sVStatus(horny,0);
+            root->vBody(vagina) += 4;
+            root->vSex(vgape) = 3;
+            root->vStatus(horny) = 0;
             root->cum("pussy");
             //gs stat
-            root->addDesc(sexStr(53));
+            root->addText(sexStr(53));
             makeActBtn("next3", act(8));
         }
         else if(vag >= 10 && vag < 25)
         {
             root->incTime(20);
-            root->uVBody(vagina,3);
-            root->sVSex(vgape,2);
-            root->uVStatus(horny, -getRandInt(15,30));
+            root->vBody(vagina) += 3;
+            root->vSex(vgape) = 2;
+            root->vStatus(horny) -= getRandInt(15,30);
 
             //gs stat
             if(root->vStatus(horny) >= 100)
             {
-                root->uVSC(orgasm,1);
-                root->uVSC(vaginalOrgasm,1);
-                root->sVStatus(horny,0);
-                root->sVStatus(mood,100);
+                root->vStatistics(orgasm) += 1;
+                root->vStatistics(vaginalOrgasm) += 1;
+                root->vStatus(horny) = 0;
+                root->vStatus(mood)  = 100;
                 root->cum("pussy");
                 //gs stat
                 if(root->vBody(piercingG) == 1)
@@ -739,24 +739,24 @@ void Pirat::actionHandler(QString action)
                 {
                     root->setImage(media(8));
                 }
-                root->setDesc(sexStr(54));
+                root->setText(sexStr(54));
             }
             else
-                root->setDesc(sexStr(55));
+                root->setText(sexStr(55));
             makeActBtn("next3", act(8));
         }
         else if(vag >=25 && vag < 35)
         {
             root->incTime(20);
-            root->uVBody(vagina,2);
-            root->uVStatus(horny, getRandInt(25,50));
+            root->vBody(vagina) += 2;
+            root->vStatus(horny) += getRandInt(25,50);
             root->cum("pussy");
             if(root->vStatus(horny) >= 100)
             {
-                root->uVSC(orgasm,1);
-                root->uVSC(vaginalOrgasm,1);
-                root->sVStatus(horny,0);
-                root->sVStatus(mood,100);
+                root->vStatistics(orgasm) += 1;
+                root->vStatistics(vaginalOrgasm) += 1;
+                root->vStatus(horny) = 0;
+                root->vStatus(mood)  = 100;
                 //gs stat
                 if(root->vBody(piercingG) == 1)
                 {
@@ -766,26 +766,26 @@ void Pirat::actionHandler(QString action)
                 {
                     root->setImage(media(8));
                 }
-                root->setDesc(sexStr(56));
+                root->setText(sexStr(56));
             }
             else
             {
-                root->setDesc(sexStr(57));
+                root->setText(sexStr(57));
             }
             makeActBtn("next3", act(8));
         }
         else if(vag >= 35)
         {
             root->incTime(20);
-            root->uVBody(vagina,1);
-            root->uVStatus(horny, getRandInt(50,100));
+            root->vBody(vagina) += 1;
+            root->vStatus(horny) += getRandInt(50,100);
             root->cum("pussy");
             if(root->vStatus(horny) >= 100)
             {
-                root->uVSC(orgasm,1);
-                root->uVSC(vaginalOrgasm,1);
-                root->sVStatus(horny,0);
-                root->sVStatus(mood,100);
+                root->vStatistics(orgasm) += 1;
+                root->vStatistics(vaginalOrgasm) += 1;
+                root->vStatus(horny) = 0;
+                root->vStatus(mood)  = 100;
                 if(root->vBody(piercingG) == 1)
                 {
                     root->setImage(media(7));
@@ -794,46 +794,46 @@ void Pirat::actionHandler(QString action)
                 {
                     root->setImage(media(8));
                 }
-                root->setDesc(sexStr(59));
+                root->setText(sexStr(59));
             }
             else
-                root->setDesc(sexStr(60));
+                root->setText(sexStr(60));
             makeActBtn("next3", act(8));
         }
     }
     if(action == "notAllowVag")
     {
         root->incTime(2);
-        root->sVStatus(mood, root->vStatus(mood)/2);
+        root->vStatus(mood)  = root->vStatus(mood)/2;
         int piratboggle = getRandInt(1,5);
         if(piratboggle <= 2)
         {
             root->setImage(media(4));
-            root->setDesc(sexStr(61));
+            root->setText(sexStr(61));
             int vag = root->vBody(vagina);
             if(vag < 15)
             {
                 root->incTime(10);
-                root->uVBody(vagina,1);
+                root->vBody(vagina) += 1;
                 if(root->vSex(vgape) < 3)
-                    root->uVSex(vgape,1);
-                root->uVStatus(horny, -getRandInt(10,20));
+                    root->vSex(vgape) += 1;
+                root->vStatus(horny) -= getRandInt(10,20);
                 root->cum("pussy");
-                root->addDesc(sexStr(62));
+                root->addText(sexStr(62));
                 makeActBtn("next3", act(8));
             }
             else if(vag >=15 && vag < 25)
             {
                 root->incTime(10);
-                root->uVBody(vagina,1);
-                root->uVStatus(horny, getRandInt(15,30));
+                root->vBody(vagina) += 1;
+                root->vStatus(horny) += getRandInt(15,30);
                 root->cum("pussy");
                 if(root->vStatus(horny) >= 100)
                 {
-                    root->uVSC(orgasm,1);
-                    root->uVSC(vaginalOrgasm,1);
-                    root->sVStatus(horny,0);
-                    root->sVStatus(mood,100);
+                    root->vStatistics(orgasm) += 1;
+                    root->vStatistics(vaginalOrgasm) += 1;
+                    root->vStatus(horny) = 0;
+                    root->vStatus(mood)  = 100;
                     if(root->vBody(piercingG) == 1)
                     {
                         root->setImage(media(22));
@@ -842,23 +842,23 @@ void Pirat::actionHandler(QString action)
                     {
                         root->setImage(media(23));
                     }
-                    root->addDesc(sexStr(63));
+                    root->addText(sexStr(63));
                 }
                 else
-                    root->addDesc(sexStr(64));
+                    root->addText(sexStr(64));
                 makeActBtn("next3", act(8));
             }
             else if(vag >= 25 && vag < 35)
             {
                 root->incTime(20);
-                root->uVStatus(horny,getRandInt(30,50));
+                root->vStatus(horny) += getRandInt(30,50);
                 root->cum("pussy");
                 if(root->vStatus(horny) >= 100)
                 {
-                    root->uVSC(orgasm,1);
-                    root->uVSC(vaginalOrgasm,1);
-                    root->sVStatus(horny,0);
-                    root->sVStatus(mood,100);
+                    root->vStatistics(orgasm) += 1;
+                    root->vStatistics(vaginalOrgasm) += 1;
+                    root->vStatus(horny) = 0;
+                    root->vStatus(mood)  = 100;
                     if(root->vBody(piercingG) == 1)
                     {
                         root->setImage(media(22));
@@ -867,23 +867,23 @@ void Pirat::actionHandler(QString action)
                     {
                         root->setImage(media(23));
                     }
-                    root->addDesc(sexStr(65));
+                    root->addText(sexStr(65));
                 }
                 else
-                    root->addDesc(sexStr(66));
+                    root->addText(sexStr(66));
                 makeActBtn("next3", act(8));
             }
             else if(vag >= 35)
             {
                 root->incTime(20);
-                root->uVStatus(horny, getRandInt(15,30));
+                root->vStatus(horny) += getRandInt(15,30);
                 root->cum("pussy");
                 if(root->vStatus(horny) >= 100)
                 {
-                    root->uVSC(orgasm,1);
-                    root->uVSC(vaginalOrgasm,1);
-                    root->sVStatus(horny,0);
-                    root->sVStatus(mood,100);
+                    root->vStatistics(orgasm) += 1;
+                    root->vStatistics(vaginalOrgasm) += 1;
+                    root->vStatus(horny) = 0;
+                    root->vStatus(mood)  = 100;
                     if(root->vBody(piercingG) == 1)
                     {
                         root->setImage(media(22));
@@ -892,10 +892,10 @@ void Pirat::actionHandler(QString action)
                     {
                         root->setImage(media(23));
                     }
-                    root->addDesc(sexStr(67));
+                    root->addText(sexStr(67));
                 }
                 else
-                    root->addDesc(sexStr(68));
+                    root->addText(sexStr(68));
                 makeActBtn("next3", act(8));
             }
 
@@ -906,40 +906,40 @@ void Pirat::actionHandler(QString action)
             if(vag < 15)
             {
                 root->incTime(10);
-                root->uVBody(vagina,1);
+                root->vBody(vagina) += 1;
                 if(root->vSex(vgape) < 3)
-                    root->uVSex(vgape,1);
-                root->uVStatus(horny, - getRandInt(10,20));
+                    root->vSex(vgape) += 1;
+                root->vStatus(horny) -= getRandInt(10,20);
                 root->setImage(media(24));
-                root->setDesc(sexStr(69));
+                root->setText(sexStr(69));
                 makeActBtn("pir_DogVag", act(21));
                 makeActBtn("pir_pirat", act(22));
             }
             else if(vag >= 15 && vag < 25)
             {
                 root->incTime(10);
-                root->uVBody(vagina,1);
-                root->uVStatus(horny, getRandInt(15,30));
+                root->vBody(vagina) += 1;
+                root->vStatus(horny) += getRandInt(15,30);
                 root->setImage(media(24));
-                root->setDesc(sexStr(70));
+                root->setText(sexStr(70));
                 makeActBtn("pir_DogVag", act(21));
                 makeActBtn("pir_pirat", act(22));
             }
             else if(vag >= 25 && vag < 35)
             {
                 root->incTime(20);
-                root->uVStatus(horny, getRandInt(30,50));
+                root->vStatus(horny) += getRandInt(30,50);
                 root->setImage(media(24));
-                root->setDesc(sexStr(71));
+                root->setText(sexStr(71));
                 makeActBtn("pir_DogVag", act(21));
                 makeActBtn("pir_pirat", act(22));
             }
             else if(vag >= 35)
             {
                 root->incTime(20);
-                root->uVStatus(horny, getRandInt(15,30));
+                root->vStatus(horny) += getRandInt(15,30);
                 root->setImage(media(24));
-                root->setDesc(sexStr(72));
+                root->setText(sexStr(72));
                 makeActBtn("pir_DogVag", act(21));
                 makeActBtn("pir_pirat", act(22));
             }
@@ -948,11 +948,11 @@ void Pirat::actionHandler(QString action)
     if(action == "allowAnal")
     {
         root->incTime(2);
-        root->sVStatus(mood, root->vStatus(mood)/2);
-        root->uVSkill(domination, -1);
+        root->vStatus(mood)  = root->vStatus(mood)/2;
+        root->vSkill(domination) -= 1;
         //gs stat
         root->setImage(media(17));
-        root->setDesc(sexStr(75));
+        root->setText(sexStr(75));
         int piratboggle = getRandInt(0,5);
         int anusVal = root->vBody(anus);
         if(piratboggle <= 4)
@@ -960,69 +960,69 @@ void Pirat::actionHandler(QString action)
             if(anusVal < 15)
             {
                 root->incTime(20);
-                root->uVBody(anus,4);
-                root->sVSex(agape,3);
-                root->sVStatus(horny,0);
+                root->vBody(anus) += 4;
+                root->vSex(agape) = 3;
+                root->vStatus(horny) = 0;
                 root->cum("anus");
                 //gs stat
-                root->addDesc(sexStr(76));
+                root->addText(sexStr(76));
                 makeActBtn("next3", act(8));
             }
             else if(anusVal >= 15 && anusVal < 25)
             {
                 root->incTime(20);
-                root->uVBody(anus,3);
-                root->sVSex(agape,2);
-                root->uVStatus(horny, -getRandInt(15,30));
+                root->vBody(anus) += 3;
+                root->vSex(agape) = 2;
+                root->vStatus(horny) -= getRandInt(15,30);
                 root->cum("anus");
                 //gs stat
-                root->addDesc(sexStr(77));
+                root->addText(sexStr(77));
                 makeActBtn("pir_pirat", act(8));
             }
             else if (anusVal >= 25 && anusVal < 35)
             {
                 root->incTime(20);
-                root->uVBody(anus,2);
-                root->sVSex(agape,1);
-                root->uVStatus(horny, getRandInt(15,30));
+                root->vBody(anus) += 2;
+                root->vSex(agape) = 1;
+                root->vStatus(horny) += getRandInt(15,30);
                 root->cum("anus");
                 //gs stat
                 if(root->vStatus(horny) >= 100)
                 {
-                    root->uVSC(orgasm,1);
-                    root->uVSC(analOrgasm,1);
-                    root->sVStatus(horny,0);
-                    root->sVStatus(mood,100);
+                    root->vStatistics(orgasm) += 1;
+                    root->vStatistics(analOrgasm) += 1;
+                    root->vStatus(horny) = 0;
+                    root->vStatus(mood)  = 100;
                     //gs stat
                     root->setImage(media(11));
-                    root->addDesc(sexStr(78));
+                    root->addText(sexStr(78));
                     makeActBtn("next3", act(8));
                 }
                 else
                 {
-                    root->addDesc(sexStr(79));
+                    root->addText(sexStr(79));
                     makeActBtn("pir_pirat", act(8));
                 }
             }
             else if(anusVal >= 35)
             {
                 root->incTime(20);
-                root->uVBody(anus,1);
-                root->uVStatus(horny, getRandInt(50,100));
+                root->vBody(anus) += 1;
+                root->vStatus(horny) += getRandInt(50,100);
                 root->cum("anus");
                 if(root->vStatus(horny) >= 100)
                 {
-                    root->uVSC(orgasm,1);
-                    root->uVSC(analOrgasm,1);
-                    root->sVStatus(horny,0);
-                    root->sVStatus(mood,100);
+                    root->vStatistics(orgasm) += 1;
+                    root->vStatistics(analOrgasm) += 1;
+                    root->vStatus(horny) = 0;
+                    root->vStatus(mood)  = 100;
                     root->setImage(media(11));
-                    root->addDesc(sexStr(80));
+                    root->addText(sexStr(80));
                     makeActBtn("next3", act(8));
                 }
                 else
                 {
-                    root->addDesc(sexStr(81));
+                    root->addText(sexStr(81));
                     makeActBtn("pir_pirat", act(8));
                 }
             }
@@ -1032,48 +1032,48 @@ void Pirat::actionHandler(QString action)
             if(anusVal < 15)
             {
                 root->incTime(20);
-                root->uVBody(anus,5);
-                root->sVSex(agape,3);
-                root->sVStatus(horny,0);
+                root->vBody(anus) += 5;
+                root->vSex(agape) = 3;
+                root->vStatus(horny) = 0;
                 root->cum("anus");
                 //gs stat
                 root->setImage(media(25));
-                root->addDesc(sexStr(82));
+                root->addText(sexStr(82));
                 makeActBtn("next3", act(8));
             }
             else if(anusVal >= 15 && anusVal < 25)
             {
                 root->incTime(20);
-                root->uVBody(anus,5);
-                root->sVSex(agape,3);
-                root->sVStatus(horny,0);
+                root->vBody(anus) += 5;
+                root->vSex(agape) = 3;
+                root->vStatus(horny) = 0;
                 root->cum("anus");
                 //gs stat
                 root->setImage(media(25));
-                root->addDesc(sexStr(83));
+                root->addText(sexStr(83));
                 makeActBtn("next3", act(8));
             }
             else if(anusVal >= 25 && anusVal < 35)
             {
                 root->incTime(20);
-                root->uVBody(anus,4);
-                root->sVSex(agape,2);
-                root->uVStatus(horny, -getRandInt(40,60));
+                root->vBody(anus) += 4;
+                root->vSex(agape) = 2;
+                root->vStatus(horny) -= getRandInt(40,60);
                 root->cum("anus");
                 //gs stat
                 root->setImage(media(25));
-                root->addDesc(sexStr(84));
+                root->addText(sexStr(84));
                 makeActBtn("pir_pirat", act(8));
             }
             else if(anusVal >= 35)
             {
                 root->incTime(5);
-                root->uVBody(anus,3);
-                root->sVSex(agape,1);
-                root->uVStatus(horny, getRandInt(15,30));
+                root->vBody(anus) += 3;
+                root->vSex(agape) = 1;
+                root->vStatus(horny) += getRandInt(15,30);
                 //gs stat
                 root->setImage(media(25));
-                root->addDesc(sexStr(85));
+                root->addText(sexStr(85));
                 makeActBtn("pir_pirat", act(8));
             }
         }
@@ -1081,89 +1081,89 @@ void Pirat::actionHandler(QString action)
     if (action == "notAllowAnal")
     {
         root->incTime(2);
-        root->sVStatus(mood, root->vStatus(mood)/2);
+        root->vStatus(mood)  = root->vStatus(mood)/2;
         //gs stat
         root->setImage(media(26));
-        root->setDesc(sexStr(86));
+        root->setText(sexStr(86));
         int vAnus = root->vBody(anus);
         if(vAnus < 15)
         {
             root->incTime(10);
-            root->uVBody(anus,1);
-            root->sVSex(agape,2);
-            root->uVStatus(horny, - getRandInt(15,30));
+            root->vBody(anus) += 1;
+            root->vSex(agape) = 2;
+            root->vStatus(horny) -= getRandInt(15,30);
             root->cum("anus");
             //gs stat
-            root->addDesc(sexStr(87));
+            root->addText(sexStr(87));
             makeActBtn("pir_pirat", act(8));
         }
         else if(vAnus >= 15 && vAnus < 25)
         {
             root->incTime(10);
-            root->uVBody(anus,1);
-            root->uVStatus(horny, getRandInt(15,30));
+            root->vBody(anus) += 1;
+            root->vStatus(horny) += getRandInt(15,30);
             root->cum("anus");
             //gs stat
             if(root->vStatus(horny) >= 100)
             {
-                root->uVSC(orgasm,1);
-                root->uVSC(analOrgasm,1);
-                root->sVStatus(horny,0);
-                root->sVStatus(mood,100);
+                root->vStatistics(orgasm) += 1;
+                root->vStatistics(analOrgasm) += 1;
+                root->vStatus(horny) = 0;
+                root->vStatus(mood)  = 100;
                 //gs stat
                 root->setImage(media(27));
-                root->addDesc(sexStr(88));
+                root->addText(sexStr(88));
                 makeActBtn("pir_pirat", act(8));
             }
             else
             {
-                root->addDesc(sexStr(89));
+                root->addText(sexStr(89));
                 makeActBtn("next3", act(8));
             }
         }
         else if(vAnus >= 25 && vAnus < 35)
         {
             root->incTime(20);
-            root->uVStatus(horny, getRandInt(30,50));
+            root->vStatus(horny) += getRandInt(30,50);
             root->cum("anus");
             //gs stat
             if(root->vStatus(horny) >= 100)
             {
-                root->uVSC(orgasm,1);
-                root->uVSC(analOrgasm,1);
-                root->sVStatus(horny,0);
-                root->sVStatus(mood,100);
+                root->vStatistics(orgasm) += 1;
+                root->vStatistics(analOrgasm) += 1;
+                root->vStatus(horny) = 0;
+                root->vStatus(mood)  = 100;
                 //gs stat
                 root->setImage(media(27));
-                root->addDesc(sexStr(90));
+                root->addText(sexStr(90));
                 makeActBtn("next3", act(8));
             }
             else
             {
-                root->addDesc(sexStr(91));
+                root->addText(sexStr(91));
                 makeActBtn("pir_pirat", act(8));
             }
         }
         else if(vAnus >= 35)
         {
             root->incTime(20);
-            root->uVStatus(horny, getRandInt(50,100));
+            root->vStatus(horny) += getRandInt(50,100);
             root->cum("anus");
             //gs stat
             if(root->vStatus(horny) >= 100)
             {
-                root->uVSC(orgasm,1);
-                root->uVSC(analOrgasm,1);
-                root->sVStatus(horny,0);
-                root->sVStatus(mood,100);
+                root->vStatistics(orgasm) += 1;
+                root->vStatistics(analOrgasm) += 1;
+                root->vStatus(horny) = 0;
+                root->vStatus(mood)  = 100;
                 //gs stat
                 root->setImage(media(27));
-                root->addDesc(sexStr(92));
+                root->addText(sexStr(92));
                 makeActBtn("next3", act(8));
             }
             else
             {
-                root->addDesc(sexStr(93));
+                root->addText(sexStr(93));
                 makeActBtn("pir_pirat", act(8));
             }
         }
@@ -1181,14 +1181,14 @@ void Pirat::pirat_search()
     if (tmp == 1)
     {
         root->setImage(media(28));
-        root->setDesc(evStr(20));
+        root->setText(evStr(20));
         makeActBtn( "go&watch", act(23));
         makeActBtn( "goaway", act(24));
     }
     else
     {
         root->setImage(media(29));
-        root->setDesc(evStr(21));
+        root->setText(evStr(21));
         makeActBtn( "next", act(4));
     }
 }
@@ -1197,18 +1197,18 @@ void Pirat::pirat_forced()
 {
     root->incTime(5);
     root->setImage(media(12));
-    root->setDesc(evStr(0));
-    if(root->gVEvent(grandpa_ingadsarai) == 1)
+    root->setText(evStr(0));
+    if(root->vEvent(grandpa_ingadsarai) == 1)
     {
-        root->uVQuest(grandpaQW, -5);
-        root->addDesc(evStr(1));
+        root->vQuest(grandpaQW) -=5;
+        root->addText(evStr(1));
     }
-    if(root->gVEvent(grandma_ingadsarai) == 1)
+    if(root->vEvent(grandma_ingadsarai) == 1)
     {
-        root->uVQuest(grandmaQW, -5);
-        root->addDesc(evStr(2));
+        root->vQuest(grandmaQW) -=5;
+        root->addText(evStr(2));
     }
-    if(root->gVEvent(grandparents_ingadsarai) == 1)
+    if(root->vEvent(grandparents_ingadsarai) == 1)
     {
         makeActBtn( "goHome", act(8));
     }
@@ -1216,7 +1216,7 @@ void Pirat::pirat_forced()
     {
         makeActBtn( "push_away", act(25));
     }
-    if(root->gVEvent(grandparents_ingadsarai) == 0)
+    if(root->vEvent(grandparents_ingadsarai) == 0)
     {
         makeActBtn( "submiss", act(26));
     }
@@ -1224,48 +1224,48 @@ void Pirat::pirat_forced()
 
 void Pirat::grandparentsIngadsarai()
 {
-    if(root->gVEvent(grandma_ingadsarai) == 1)
+    if(root->vEvent(grandma_ingadsarai) == 1)
     {
-        root->addDesc(evStr(25));
+        root->addText(evStr(25));
     }
-    if(root->gVEvent(grandpa_ingadsarai) == 1)
+    if(root->vEvent(grandpa_ingadsarai) == 1)
     {
-        root->addDesc(evStr(26));
+        root->addText(evStr(26));
     }
 }
 
 void Pirat::spurn()
 {
-    root->sVEvent(pir_piratHorny, 20);
-    root->uVEvent(pir_piratfriend, -1);
+    root->vEvent(pir_piratHorny) = 20;
+    root->vEvent(pir_piratfriend) -= 1;
     root->incTime(1);
-    root->uVSkill(domination,1);
+    root->vSkill(domination) += 1;
     root->setImage(media(30));
-    if(root->gVEvent(pir_piratsuka) < 3)
+    if(root->vEvent(pir_piratsuka) < 3)
     {
-        root->setDesc(sexStr(35));
+        root->setText(sexStr(35));
     }
     else
     {
-        root->setDesc(sexStr(36));
+        root->setText(sexStr(36));
     }
     makeActBtn( "pir_pirat", act(8));
 }
 
 void Pirat::stroking()
 {
-    if(root->gVEvent(pir_piratfriend) < 5 && root->gVEvent(pir_stroking) != root->getDay())
+    if(root->vEvent(pir_piratfriend) < 5 && root->vEvent(pir_stroking) != root->getDay())
     {
-        root->sVEvent(pir_stroking, root->getDay());
-        root->uVEvent(pir_piratfriend, 1);
+        root->vEvent(pir_stroking) = root->getDay();
+        root->vEvent(pir_piratfriend) += 1;
     }
-    if(root->gVEvent(pir_pirat_sex) != root->vStatus(daystart) && root->gVEvent(pir_stroking) != root->getDay() && root->gVEvent(pir_piratfriend) > 5)
+    if(root->vEvent(pir_pirat_sex) != root->vStatus(daystart) && root->vEvent(pir_stroking) != root->getDay() && root->vEvent(pir_piratfriend) > 5)
     {
-        root->sVEvent(pir_stroking,root->getDay());
-        root->uVEvent(pir_piratHorny, 5);
+        root->vEvent(pir_stroking) = root->getDay();
+        root->vEvent(pir_piratHorny) += 5;
     }
     root->incTime(15);
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     if(((ClothMain*)root->getCloth(ClothType::Main))->getClothGroup() == ClothGroup::eveningDress)
         root->setVideo(media(31), 768, 540);
     else
@@ -1276,15 +1276,15 @@ void Pirat::stroking()
         else
             root->setVideo(media(33), 768, 540);
     }
-    root->setDesc(sexStr(0));
+    root->setText(sexStr(0));
     makeActBtn( "next3", act(8));
 }
 
 void Pirat::strokingHorny()
 {
-    root->uVStatus(horny, 20);
+    root->vStatus(horny) += 20;
     root->incTime(15);
-    root->sVEvent(pir_stroking, root->getDay());
+    root->vEvent(pir_stroking) = root->getDay();
     //gs stat
 
     if(root->isSkirt())
@@ -1292,70 +1292,70 @@ void Pirat::strokingHorny()
         if(root->isPanties())
         {
             root->setImage(media(34));
-            root->setDesc(sexStr(1));
+            root->setText(sexStr(1));
         }
         else
         {
             root->setImage(media(35));
-            root->setDesc(sexStr(2));
+            root->setText(sexStr(2));
         }
     }
     else
     {
         root->setImage(media(36));
-        root->setDesc(sexStr(3));
+        root->setText(sexStr(3));
     }
-    root->addDesc(sexStr(4));
-    if(root->gVEvent(grandparents_ingadsarai) == 0)
+    root->addText(sexStr(4));
+    if(root->vEvent(grandparents_ingadsarai) == 0)
         makeActBtn( "dog_lick", act(27));
     makeActBtn( "next5", act(28));
 }
 
 void Pirat::scream()
 {
-    root->sVEvent(pir_piratHorny, 0);
-    root->uVEvent(pir_piratfriend, -5);
+    root->vEvent(pir_piratHorny) = 0;
+    root->vEvent(pir_piratfriend) -= 5;
     root->incTime(1);
-    root->uVSkill(domination,1);
-    if(root->gVEvent(grandpa_ingadsarai) == 1) { }
-    if(root->gVEvent(grandma_ingadsarai) == 1) {}
+    root->vSkill(domination) += 1;
+    if(root->vEvent(grandpa_ingadsarai) == 1) { }
+    if(root->vEvent(grandma_ingadsarai) == 1) {}
     root->setImage(media(1));
-    root->setDesc(sexStr(5));
+    root->setText(sexStr(5));
     makeActBtn( "next3", act(8));
 }
 
 void Pirat::dogLick()
 {
-    root->sVStatus(horny, 0);
-    root->uVSC(orgasm, 1);
+    root->vStatus(horny) = 0;
+    root->vStatistics(orgasm) += 1;
     root->incTime(1);
-    root->uVEvent(pir_zoo, 1);
-    root->uVEvent(pir_pir_zoo, 1);
-    root->sVEvent(pir_piratfriend, 6);
-    root->sVStatus(mood, 100);
-    root->uVEvent(pir_piratHorny, 10);
+    root->vEvent(pir_zoo) += 1;
+    root->vEvent(pir_pir_zoo) += 1;
+    root->vEvent(pir_piratfriend) = 6;
+    root->vStatus(mood)  = 100;
+    root->vEvent(pir_piratHorny) += 10;
     //gs stat
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->setVideo(media(37), 768, 540);
     if(root->isSkirt() && root->isPanties())
-        root->setDesc(sexStr(6));
+        root->setText(sexStr(6));
     else if(root->isSkirt() && !root->isPanties())
-        root->setDesc(sexStr(7));
+        root->setText(sexStr(7));
     else
-        root->setDesc(sexStr(8));
+        root->setText(sexStr(8));
 
-    if(root->gVEvent(piratlick) == 0)
+    if(root->vEvent(piratlick) == 0)
     {
-        root->sVEvent(piratlick, 1);
-        root->addDesc(sexStr(9));
+        root->vEvent(piratlick) = 1;
+        root->addText(sexStr(9));
     }
     else
     {
-        root->addDesc(sexStr(10));
+        root->addText(sexStr(10));
     }
-    if(root->gVEvent(pir_piratsuka) >= 7 && root->gVEvent(pir_DogHJ) == 0)
+    if(root->vEvent(pir_piratsuka) >= 7 && root->vEvent(pir_DogHJ) == 0)
     {
-        root->addDesc(sexStr(11));
+        root->addText(sexStr(11));
         makeActBtn( "nandjob", act(13));
         makeActBtn( "next3", act(14));
     }
@@ -1367,49 +1367,49 @@ void Pirat::dogLick()
 
 void Pirat::dogLickAss()
 {
-    root->sVStatus(horny,0);
-    root->uVSC(orgasm,1);
+    root->vStatus(horny) = 0;
+    root->vStatistics(orgasm) += 1;
     root->incTime(1);
-    root->uVEvent(pir_piratsuka, 1);
-    root->uVEvent(pir_zoo, 1);
-    root->sVStatus(mood,100);
-    root->uVEvent(pir_piratHorny, getRandInt(10,30));
+    root->vEvent(pir_piratsuka) += 1;
+    root->vEvent(pir_zoo) += 1;
+    root->vStatus(mood)  = 100;
+    root->vEvent(pir_piratHorny) += getRandInt(10,30);
     //gs stat
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->setVideo(media(38), 768,540);
     if(root->isSkirt() && root->isPanties())
-        root->setDesc(sexStr(12));
+        root->setText(sexStr(12));
     else if(root->isSkirt() && !root->isPanties())
-        root->setDesc(sexStr(13));
+        root->setText(sexStr(13));
     else
-        root->setDesc(sexStr(14));
-    if(root->gVEvent(piratlickass) == 0)
+        root->setText(sexStr(14));
+    if(root->vEvent(piratlickass) == 0)
     {
-        root->sVEvent(piratlickass,  1);
-        root->addDesc(sexStr(15));
+        root->vEvent(piratlickass) = 1;
+        root->addText(sexStr(15));
         makeActBtn( "next3", act(8));
     }
     else
     {
-        root->addDesc(sexStr(16));
-        if(root->gVEvent(pir_piratHorny) < 40)
+        root->addText(sexStr(16));
+        if(root->vEvent(pir_piratHorny) < 40)
         {
-            root->addDesc(sexStr(17));
+            root->addText(sexStr(17));
             makeActBtn( "next3", act(8));
         }
         else
         {
-            if(root->gVEvent(pir_piratsuka) >= 7 && root->gVEvent(pir_DogHJ) == 0)
+            if(root->vEvent(pir_piratsuka) >= 7 && root->vEvent(pir_DogHJ) == 0)
             {
                 makeActBtn( "preHandJob", act(4));
             }
-            else if(root->gVEvent(pir_piratsuka) >= 12)
+            else if(root->vEvent(pir_piratsuka) >= 12)
             {
                 makeActBtn( "comeToLife", act(29));
             }
             else
             {
-                root->addDesc(sexStr(34));
+                root->addText(sexStr(34));
                 makeActBtn( "pir_pirat", act(8));
             }
         }
@@ -1418,26 +1418,26 @@ void Pirat::dogLickAss()
 
 void Pirat::pirDogHJ()
 {
-    root->uVStatus(horny, getRandInt(5,15));
+    root->vStatus(horny) += getRandInt(5,15);
     root->incTime(1);
-    root->uVEvent(pir_piratsuka, 1);
-    root->uVEvent(pir_zoo, 1);
-    root->sVEvent(pir_pirat_sex, root->vStatus(daystart));
+    root->vEvent(pir_piratsuka) += 1;
+    root->vEvent(pir_zoo) += 1;
+    root->vEvent(pir_pirat_sex) = root->vStatus(daystart);
     //gs stat
     root->setImage(media(39));
-    root->setDesc(sexStr(37));
+    root->setText(sexStr(37));
     makeActBtn( "mastr", act(30));
 }
 
 void Pirat::pirDogBJ()
 {
-    root->uVStatus(horny, getRandInt(5,15));
+    root->vStatus(horny) += getRandInt(5,15);
     root->incTime(1);
-    root->uVEvent(pir_zoo, 1);
-    root->sVEvent(pir_pirat_sex, root->vStatus(daystart));
+    root->vEvent(pir_zoo) += 1;
+    root->vEvent(pir_pirat_sex) = root->vStatus(daystart);
     //gs stat
     root->setImage(media(39));
-    root->setDesc(sexStr(44));
+    root->setText(sexStr(44));
     makeActBtn( "mastr2", act(30));
     makeActBtn( "suck2", act(16));
 }
@@ -1447,37 +1447,37 @@ void Pirat::pirDogVag()
     if(root->vSex(vgape) > 1)
     {
         root->setImage(media(3));
-        root->setDesc(sexStr(49));
+        root->setText(sexStr(49));
         makeActBtn( "pir_pirat", act(7));
     }
     else
     {
         root->incTime(2);
-        root->sVEvent(pir_piratHorny, 0);
-        root->sVStatus(mood, root->vStatus(mood)/2);
-        root->uVEvent(pir_piratsuka, 3);
-        root->uVEvent(pir_zoo, 1);
-        root->sVEvent(pir_DogVag, 1);
-        root->uVSC(vaginalSex,1);
-        root->sVEvent(pir_pirat_sex, root->vStatus(daystart));
+        root->vEvent(pir_piratHorny) = 0;
+        root->vStatus(mood)  = root->vStatus(mood)/2;
+        root->vEvent(pir_piratsuka) += 3;
+        root->vEvent(pir_zoo) += 1;
+        root->vEvent(pir_DogVag) = 1;
+        root->vStatistics(vaginalSex) += 1;
+        root->vEvent(pir_pirat_sex) = root->vStatus(daystart);
         //gs stat
         if(root->vBody(vagina) == 0)
         {
-            root->uVEvent(pir_piratsuka, 5);
-            root->sVStatus(horny,0);
+            root->vEvent(pir_piratsuka) += 5;
+            root->vStatus(horny) = 0;
             root->incTime(30);
-            root->uVBody(vagina,5);
-            root->sVSex(vgape,3);
-            root->uVStatus(mood,-50);
+            root->vBody(vagina) += 5;
+            root->vSex(vgape) = 3;
+            root->vStatus(mood)  -= 50;
             root->cum("pussy");
             //gs stat
             root->setImage(media(5));
-            root->setDesc(sexStr(50));
+            root->setText(sexStr(50));
         }
         else
         {
             root->setImage(media(4));
-            root->setDesc(sexStr(51));
+            root->setText(sexStr(51));
         }
         if(root->vBody(vagina) == 0)
         {
@@ -1496,22 +1496,22 @@ void Pirat::pirDogAnal()
     if(root->vSex(agape) > 1)
     {
         root->setImage(media(3));
-        root->setDesc(sexStr(73));
+        root->setText(sexStr(73));
         makeActBtn( "pir_pirat", act(7));
     }
     else
     {
-        root->uVEvent(pir_piratsuka, 3);
+        root->vEvent(pir_piratsuka) += 3;
         root->incTime(5);
-        root->sVEvent(pir_piratHorny, 0);
-        root->sVStatus(mood, root->vStatus(mood)/2);
-        root->sVEvent(pir_DogAnal,1);
-        root->uVSC(analSex, 1);
-        root->uVEvent(pir_zoo,1);
-        root->sVEvent(pir_pirat_sex, root->vStatus(daystart));
+        root->vEvent(pir_piratHorny) = 0;
+        root->vStatus(mood)  = root->vStatus(mood)/2;
+        root->vEvent(pir_DogAnal) = 1;
+        root->vStatistics(analSex) += 1;
+        root->vEvent(pir_zoo) += 1;
+        root->vEvent(pir_pirat_sex) = root->vStatus(daystart);
         //gs stat
         root->setImage(media(26));
-        root->setDesc(sexStr(74));
+        root->setText(sexStr(74));
         makeActBtn( "allowAnal", act(31));
         makeActBtn( "notAllowAnal", act(32));
     }
@@ -1519,56 +1519,56 @@ void Pirat::pirDogAnal()
 
 void Pirat::lickingAss()
 {
-    root->uVEvent(pir_piratHorny, 30);
+    root->vEvent(pir_piratHorny) += 30;
     root->incTime(10);
-    root->uVStatus(horny, getRandInt(10,20));
+    root->vStatus(horny) += getRandInt(10,20);
     //gs stat
     root->setImage(media(40));
-    root->setDesc(sexStr(94));
+    root->setText(sexStr(94));
     makeActBtn( "pir_pirat", act(7));
 }
 
 void Pirat::excite()
 {
-    root->rendVideoPage();
+    root->rendVideoPage(this);
     root->incTime(10);
-    root->sVEvent(pir_piratHorny, 20);
+    root->vEvent(pir_piratHorny) = 20;
     int temp = getRandInt(1,10);
     if(temp == 1)
     {
-        root->sVEvent(pir_pirat_sex, root->vStatus(daystart));
+        root->vEvent(pir_pirat_sex) = root->vStatus(daystart);
         root->setVideo(media(42), 768, 540);
-        root->setDesc(sexStr(42));
+        root->setText(sexStr(42));
         makeActBtn( "next3", act(4));
     }
     if(temp > 1)
     {
         root->setVideo(media(41), 768, 540);
-        root->setDesc(sexStr(43));
+        root->setText(sexStr(43));
         makeActBtn( "pir_pirat", act(4));
     }
 }
 
 void Pirat::pirPirat()
 {
-    if(root->gVEvent(pir_piratfriend) < 5)
+    if(root->vEvent(pir_piratfriend) < 5)
     {
         root->incTime(5);
         //gs stat
         root->setImage(media(30));
-        root->setDesc(str(0));
+        root->setText(str(0));
         grandparentsIngadsarai();
         makeActBtn( "stroking", act(33));
     }
-    if(root->gVEvent(pir_piratfriend) == 5)
+    if(root->vEvent(pir_piratfriend) == 5)
     {
         root->incTime(5);
         //gs stat
         root->setImage(media(30));
         if(root->vStatus(horny) < 40)
-            root->setDesc(str(1));
+            root->setText(str(1));
         else
-            root->setDesc(str(2));
+            root->setText(str(2));
         grandparentsIngadsarai();
         if(root->vStatus(horny) < 40)
             makeActBtn( "stroking", act(33));
@@ -1576,72 +1576,72 @@ void Pirat::pirPirat()
             makeActBtn( "stroking_horny", act(33));
         makeActBtn( "next3", act(8));
     }
-    if(root->gVEvent(pir_piratfriend) > 5)
+    if(root->vEvent(pir_piratfriend) > 5)
     {
-        if(root->gVEvent(pir_piratHorny) < 40)
+        if(root->vEvent(pir_piratHorny) < 40)
         {
             if(root->vStatus(horny) < 40)
             {
                 root->setImage(media(30));
-                if(root->gVEvent(pir_piratHorny) < 20)
-                    root->setDesc(str(3));
+                if(root->vEvent(pir_piratHorny) < 20)
+                    root->setText(str(3));
                 else
-                    root->setDesc(str(4));
+                    root->setText(str(4));
             }
             else
             {
                 root->setImage(media(34));
-                root->setDesc(str(5));
+                root->setText(str(5));
             }
             grandparentsIngadsarai();
             if(root->vStatus(horny) >= 40)
                 makeActBtn( "scream", act(10));
-            if(root->vStatus(horny) >= 40 && root->gVEvent(grandparents_ingadsarai) == 0)
+            if(root->vStatus(horny) >= 40 && root->vEvent(grandparents_ingadsarai) == 0)
                 makeActBtn( "dog_lick", act(34));
-            if(root->vStatus(horny) >= 40 && pir_piratsuka >= 5 && root->gVEvent(grandparents_ingadsarai) == 0)
+            if(root->vStatus(horny) >= 40 && pir_piratsuka >= 5 && root->vEvent(grandparents_ingadsarai) == 0)
                 makeActBtn( "dog_lick_ass", act(35));
-            if(root->gVEvent(pir_piratsuka) >= 12 && pir_DogHJ == 1 && (root->gVEvent(pir_DogVag) == 1 || root->gVEvent(pir_DogAnal) == 1) && root->gVEvent(pir_pirat_sex) != root->vStatus(daystart) && root->gVEvent(grandparents_ingadsarai) == 0)
+            if(root->vEvent(pir_piratsuka) >= 12 && pir_DogHJ == 1 && (root->vEvent(pir_DogVag) == 1 || root->vEvent(pir_DogAnal) == 1) && root->vEvent(pir_pirat_sex) != root->vStatus(daystart) && root->vEvent(grandparents_ingadsarai) == 0)
                 makeActBtn( "excite", act(36));
-            if(root->gVEvent(pir_piratsuka) >= 35 && pir_DogBJ == 1 && (root->gVEvent(pir_DogVag) == 1 || root->gVEvent(pir_DogAnal) == 1) && root->gVEvent(pir_pirat_sex) != root->vStatus(daystart) && root->gVEvent(grandparents_ingadsarai) == 0)
+            if(root->vEvent(pir_piratsuka) >= 35 && pir_DogBJ == 1 && (root->vEvent(pir_DogVag) == 1 || root->vEvent(pir_DogAnal) == 1) && root->vEvent(pir_pirat_sex) != root->vStatus(daystart) && root->vEvent(grandparents_ingadsarai) == 0)
                 makeActBtn( "licking_ass", act(37));
             makeActBtn( "stroking", act(33));
             makeActBtn( "next3", act(8));
         }
         else
         {
-            if(root->gVEvent(pir_piratsuka) < 5)
+            if(root->vEvent(pir_piratsuka) < 5)
             {
                 root->setImage(media(12));
-                root->setDesc(str(6));
+                root->setText(str(6));
                 grandparentsIngadsarai();
                 makeActBtn( "push_away", act(9));
                 makeActBtn( "tolerate", act(38));
             }
-            else if(root->gVEvent(pir_piratsuka) >= 5 && root->gVEvent(pir_piratsuka) < 7)
+            else if(root->vEvent(pir_piratsuka) >= 5 && root->vEvent(pir_piratsuka) < 7)
             {
                 root->setImage(media(13));
-                root->setDesc(str(10));
+                root->setText(str(10));
                 grandparentsIngadsarai();
                 makeActBtn( "push_away", act(9));
                 makeActBtn( "onAllFour", act(39));
             }
-            else if(root->gVEvent(pir_piratsuka) > 7)
+            else if(root->vEvent(pir_piratsuka) > 7)
             {
                 root->setImage(media(13));
-                root->setDesc(str(14));
+                root->setText(str(14));
                 grandparentsIngadsarai();
                 makeActBtn( "push_away", act(9));
-                if(root->gVEvent(grandparents_ingadsarai) == 1)
+                if(root->vEvent(grandparents_ingadsarai) == 1)
                     makeActBtn( "scream", act(10));
-                if(root->vStatus(horny) >= 40 && pir_DogHJ == 0 && root->gVEvent(grandparents_ingadsarai) == 0)
+                if(root->vStatus(horny) >= 40 && pir_DogHJ == 0 && root->vEvent(grandparents_ingadsarai) == 0)
                     makeActBtn( "dog_lick", act(34));
-                if(root->vStatus(horny) >= 40 && pir_piratsuka >= 15 && (root->gVEvent(pir_DogVag) == 0 || root->gVEvent(pir_DogAnal) == 0) && root->gVEvent(grandparents_ingadsarai) == 0)
+                if(root->vStatus(horny) >= 40 && pir_piratsuka >= 15 && (root->vEvent(pir_DogVag) == 0 || root->vEvent(pir_DogAnal) == 0) && root->vEvent(grandparents_ingadsarai) == 0)
                     makeActBtn( "dog_lick_ass", act(35));
-                if(pir_DogHJ == 1 && pir_DogBJ == 0 && root->gVEvent(grandparents_ingadsarai) == 0)
+                if(pir_DogHJ == 1 && pir_DogBJ == 0 && root->vEvent(grandparents_ingadsarai) == 0)
                     makeActBtn( "handjob", act(13));
-                if(root->gVEvent(pir_piratsuka) >= 10 && root->gVEvent(pir_DogBJ) == 1 && root->gVEvent(grandparents_ingadsarai) == 0)
+                if(root->vEvent(pir_piratsuka) >= 10 && root->vEvent(pir_DogBJ) == 1 && root->vEvent(grandparents_ingadsarai) == 0)
                     makeActBtn( "blowjob", act(13));
-                if(root->gVEvent(pir_piratsuka) >= 12 && (root->gVEvent(pir_DogVag) == 1 || root->gVEvent(pir_DogAnal) == 1) && root->gVEvent(grandparents_ingadsarai) == 0)
+                if(root->vEvent(pir_piratsuka) >= 12 && (root->vEvent(pir_DogVag) == 1 || root->vEvent(pir_DogAnal) == 1) && root->vEvent(grandparents_ingadsarai) == 0)
                     makeActBtn( "undress&onAllFour", act(40));
             }
             makeActBtn( "next3", "Отойти");
@@ -1654,7 +1654,7 @@ void Pirat::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action,"pirat");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &Pirat::actionHandler);
-    root->addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString Pirat::act(int id)

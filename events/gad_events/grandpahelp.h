@@ -2,12 +2,12 @@
 #define GRANDPAHELP_H
 
 #include "../event.h"
-class EventHandler;
+class Game;
 
 class GrandpaHelp: public Event
 {
 public:
-    GrandpaHelp(EventHandler* ptr);
+    GrandpaHelp(Game* ptr);
     void start(QString arg = "") override;
     void makeActBtn(QString action, QString actName);
 private slots:
@@ -20,7 +20,7 @@ private:
     void genimage();
     void no_job_today();
 private:
-    EventHandler* root;
+    Game* root;
 };
 
 #endif // GRANDPAHELP_H

@@ -1,118 +1,118 @@
 #include "hantersex.h"
 #include "../../menu/buttons.h"
-#include "../eventhandler.h"
+#include "../../game.h"
 #include "../../Functions.h"
 
-HanterSex::HanterSex(EventHandler* ptr): root(ptr) {}
+HanterSex::HanterSex(Game* ptr): root(ptr) {}
 
 void HanterSex::start(QString arg)
 {
     //секс после стриптиза если ГГ не шлюха
-    if(root->gVEvent(hantdancesex) == 1)
+    if(root->vEvent(hantdancesex) == 1)
     {
         root->incTime(5);
-        root->uVSC(gangBang,1);
-        root->sVStatus(mood,100);
-        root->uVSkill(domination,-1);
+        root->vStatistics(gangBang) += 1;
+        root->vStatus(mood) = 100;
+        root->vSkill(domination) -= 1;
         resetCounters();
         checkHantSex();
         root->setImage(media(0));
-        root->setDesc(str(0));
+        root->setText(str(0));
         makeActBtn("danceSex1.0",act(0));
     }
     //секс после стриптиза если ГГ шлюха
-    if(root->gVEvent(hantdancesex) == 3)
+    if(root->vEvent(hantdancesex) == 3)
     {
         root->incTime(5);
-        root->uVSC(gangBang,1);
-        root->sVStatus(mood,100);
-        root->uVSkill(domination,-1);
+        root->vStatistics(gangBang) += 1;
+        root->vStatus(mood) = 100;
+        root->vSkill(domination) -= 1;
         resetCounters();
-        root->uVSC(blowJob,3);
+        root->vStatistics(blowJob) += 3;
         checkHantSex();
-        root->uVEvent(hantslutsex,getRandInt(9,12));
+        root->vEvent(hantslutsex) += getRandInt(9,12);
         root->setImage(media(1));
-        root->setDesc(str(28));
+        root->setText(str(28));
         makeActBtn("hantergrOi",act(1));
     }
     //секс если ГГ голая перед охотниками
-    if(root->gVEvent(hantersexnude) == 1)
+    if(root->vEvent(hantersexnude) == 1)
     {
         root->incTime(1);
-        root->uVSC(gangBang,1);
-        root->sVEvent(hantersexnude,0);
-        root->uVSkill(domination,-1);
+        root->vStatistics(gangBang) += 1;
+        root->vEvent(hantersexnude) = 0;
+        root->vSkill(domination) -= 1;
         resetCounters();
-        root->uVSC(blowJob,3);
+        root->vStatistics(blowJob) += 3;
         checkHantSex();
-        root->uVEvent(hantslutsex,getRandInt(9,12));
+        root->vEvent(hantslutsex) += getRandInt(9,12);
         root->setImage(media(89));
-        root->setDesc(str(29));
+        root->setText(str(29));
         makeActBtn("hantersgrOasi",act(1));
     }
     //если ГГ шлюха
-    if(root->gVEvent(sluthomesex) == 1)
+    if(root->vEvent(sluthomesex) == 1)
     {
         root->incTime(5);
-        root->sVEvent(sluthomesex,0);
-        root->uVEvent(hantslutsex,getRandInt(3,6));
-        root->sVStatus(clothesswamphouse,1);
-        root->uVSkill(domination,-1);
+        root->vEvent(sluthomesex) = 0;
+        root->vEvent(hantslutsex) += getRandInt(3,6);
+        root->vStatus(clothesswamphouse) = 1;
+        root->vSkill(domination) -= 1;
         resetCounters();
-        root->uVSC(blowJob,1);
+        root->vStatistics(blowJob) += 1;
         root->redress(ClothType::Main,nullptr);
-        if(root->gVEvent(temphant) == 1)
+        if(root->vEvent(temphant) == 1)
         {
-            if(root->gVEvent(hantersAndreisex) == 0)
+            if(root->vEvent(hantersAndreisex) == 0)
             {
-                root->sVEvent(hantersAndreisex,1);
-                root->uVSex(guy,1);
+                root->vEvent(hantersAndreisex) = 1;
+                root->vSex(guy) += 1;
             }
             setAndrei();
         }
-        if(root->gVEvent(temphant) == 2)
+        if(root->vEvent(temphant) == 2)
         {
-            if(root->gVEvent(hantersSergeisex) == 0)
+            if(root->vEvent(hantersSergeisex) == 0)
             {
-                root->sVEvent(hantersSergeisex,1);
-                root->uVSex(guy,1);
+                root->vEvent(hantersSergeisex) = 1;
+                root->vSex(guy) += 1;
             }
             setSergei();
         }
-        if(root->gVEvent(temphant) == 3)
+        if(root->vEvent(temphant) == 3)
         {
-            if(root->gVEvent(hantersIgorsex) == 0)
+            if(root->vEvent(hantersIgorsex) == 0)
             {
-                root->sVEvent(hantersIgorsex,1);
-                root->uVSex(guy,1);
+                root->vEvent(hantersIgorsex) = 1;
+                root->vSex(guy) += 1;
             }
             setIgor();
         }
         root->setImage(media(90));
-        root->setDesc(str(30));
+        root->setText(str(30));
         makeActBtn("sluthomeSTART",act(11));
     }
     //трио
-    if(root->gVEvent(doublelovesex) == 1 || root->gVEvent(slutgosex) == 2 || root->gVEvent(forest_hantersex) == 2 || root->gVEvent(forest_gopsex) == 2)
+    if(root->vEvent(doublelovesex) == 1 || root->vEvent(slutgosex) == 2 || root->vEvent(forest_hantersex) == 2 || root->vEvent(forest_gopsex) == 2)
     {
         root->incTime(5);
-        root->uVSkill(domination,-1);
-        root->uVSC(gangBang,1);
-        root->uVSC(blowJob,2);
+        root->vSkill(domination) -= 1;
+        root->vStatistics(gangBang) += 1;
+        root->vStatistics(blowJob) += 2;
         resetCounters();
         root->setImage(media(91));
-        if(root->gVEvent(slutgosex) == 2)
-            root->uVEvent(hantslutsex,getRandInt(6,9));
-        if(root->gVEvent(doublelovesex) == 1)
+        if(root->vEvent(slutgosex) == 2)
+            root->vEvent(hantslutsex) += getRandInt(6,9);
+        if(root->vEvent(doublelovesex) == 1)
         {
-            root->uVEvent(hantersAndreisex,getRandInt(6,24));
-            root->uVEvent(hantersSergeisex,getRandInt(9,20));
-            root->setDesc(str(31));
+            root->vEvent(hantersAndreisex) += getRandInt(6,24);
+            root->vEvent(hantersSergeisex) += getRandInt(9,20);
+            root->setText(str(31));
         }
         else
-            root->setDesc(str(32));
-        root->sVEvent(slutgosex,0);
-        root->sVEvent(doublelovesex,0);
+            root->setText(str(32));
+        root->vEvent(slutgosex) = 0;
+        root->vEvent(doublelovesex) = 0;
         hantsexa = getRandInt(1,5);
         if(hantsexa < 4) makeActBtn("doubleloveOral12",act(1));
         if(hantsexa == 4) makeActBtn("doubleloveOralCum12_1",act(1));
@@ -127,20 +127,20 @@ void HanterSex::actionHandler(QString action)
         if(action == "danceSex1.0")
         {
             root->setImage(media(16));
-            root->setDesc(str(1));
+            root->setText(str(1));
             makeActBtn("danceSex1.1",act(1));
         }
         if(action == "danceSex1.1")
         {
             root->incTime(5);
             setIgor();
-            root->uVBody(throat,1);
-            root->uVSC(blowJob,1);
-            root->uVStatus(horny,getRandInt(10,20));
+            root->vBody(throat) += 1;
+            root->vStatistics(blowJob) += 1;
+            root->vStatus(horny) += getRandInt(10,20);
             root->setImage(media(5));
-            root->setDesc(str(5));
+            root->setText(str(5));
             root->blow_job();
-            root->addDesc(str(6));
+            root->addText(str(6));
             makeActBtn("danceSex1.2",act(2));
         }
         if(action == "danceSex1.2")
@@ -148,18 +148,18 @@ void HanterSex::actionHandler(QString action)
             root->incTime(5);
             setIgor();
             root->setImage(media(11));
-            root->setDesc(str(7));
+            root->setText(str(7));
             makeActBtn("danceSex1.3",act(2));
         }
         if(action == "danceSex1.3")
         {
             root->incTime(5);
-            root->sVSex(pose,0);
-            root->uVSex(lubonus,1);
-            root->uVSC(blowJob,2);
-            root->uVStatus(horny, getRandInt(10,20));
+            root->vSex(pose) = 0;
+            root->vSex(lubonus) += 1;
+            root->vStatistics(blowJob) += 2;
+            root->vStatus(horny) +=  getRandInt(10,20);
             root->setImage(media(getRandInt(2,4)));
-            root->setDesc(str(8));
+            root->setText(str(8));
             setAndrei();
             root->blow_job();
             setSergei();
@@ -171,125 +171,125 @@ void HanterSex::actionHandler(QString action)
         if(action == "danceSex1.4")
         {
             root->incTime(5);
-            root->sVSex(pose,0);
-            root->uVSC(vaginalSex,1);
+            root->vSex(pose) = 0;
+            root->vStatistics(vaginalSex) += 1;
             root->setImage(media(getRandInt(67,68)));
-            root->setDesc(str(9));
+            root->setText(str(9));
             setSergei();
             root->blow_job();
             setIgor();
             root->blow_job();
             setAndrei();
-            root->sVSex(protect,1);
+            root->vSex(protect) = 1;
             root->vaginal(tDick);
             makeActBtn("danceSex1.5",act(4));
         }
         if(action == "danceSex1.5")
         {
             root->incTime(5);
-            root->sVSex(pose,0);
-            root->uVSC(vaginalSex,1);
+            root->vSex(pose) = 0;
+            root->vStatistics(vaginalSex) += 1;
             root->setImage(media(getRandInt(78,81)));
-            root->setDesc(str(10));
+            root->setText(str(10));
             setAndrei();
             root->blow_job();
             setIgor();
             root->blow_job();
             setSergei();
-            root->sVSex(protect,1);
+            root->vSex(protect) = 1;
             root->vaginal(tDick);
             makeActBtn("danceSex1.6",act(5));
         }
         if(action == "danceSex1.6")
         {
             root->incTime(5);
-            root->sVSex(pose,1);
+            root->vSex(pose) = 1;
             root->setImage(media(getRandInt(58,60)));
-            root->setDesc(str(11));
+            root->setText(str(11));
             setSergei();
             root->blow_job();
             setIgor();
             root->blow_job();
             setAndrei();
-            root->sVSex(protect,1);
+            root->vSex(protect) = 1;
             root->vaginal(tDick);
             makeActBtn("danceSex1.7",act(6));
         }
         if(action == "danceSex1.7")
         {
             root->incTime(5);
-            root->sVSex(pose,1);
-            root->uVSC(vaginalSex,1);
+            root->vSex(pose) = 1;
+            root->vStatistics(vaginalSex) += 1;
             root->setImage(media(getRandInt(70,73)));
-            root->setDesc(str(12));
+            root->setText(str(12));
             setAndrei();
             root->blow_job();
             setSergei();
             root->blow_job();
             setIgor();
-            root->sVSex(protect,1);
+            root->vSex(protect) = 1;
             root->vaginal(tDick);
             makeActBtn("danceSex1.8",act(7));
         }
         if(action == "danceSex1.8")
         {
             root->incTime(5);
-            root->sVSex(pose,2);
+            root->vSex(pose) = 2;
             root->setImage(media(getRandInt(82,84)));
-            root->setDesc(str(13));
+            root->setText(str(13));
             setAndrei();
             root->blow_job();
             setIgor();
             root->blow_job();
             setSergei();
-            root->sVSex(protect,1);
+            root->vSex(protect) = 1;
             root->vaginal(tDick);
             makeActBtn("danceSex1.9",act(7));
         }
         if(action == "danceSex1.9")
         {
             root->incTime(5);
-            root->sVSex(pose,2);
+            root->vSex(pose) = 2;
             root->setImage(media(getRandInt(63,65)));
-            root->setDesc(str(14));
+            root->setText(str(14));
             setSergei();
             root->blow_job();
             setIgor();
             root->blow_job();
             setAndrei();
-            root->sVSex(protect,1);
+            root->vSex(protect) = 1;
             root->vaginal(tDick);
             makeActBtn("danceSex1.10",act(0));
         }
         if(action == "danceSex1.10")
         {
             root->incTime(5);
-            root->sVSex(pose,1);
+            root->vSex(pose) = 1;
             root->setImage(media(12));
-            root->setDesc(str(15));
+            root->setText(str(15));
             makeActBtn("danceSex1.11",act(0));
         }
         if(action == "danceSex1.11")
         {
             root->incTime(5);
-            root->sVSex(pose,1);
-            root->uVSex(lubonus,5);
-            root->uVStatus(mood,25);
+            root->vSex(pose) = 1;
+            root->vSex(lubonus) += 5;
+            root->vStatus(mood) +=25;
             root->setImage(media(13));
-            root->setDesc(str(16));
+            root->setText(str(16));
             makeActBtn("danceSex1.12",act(7));
         }
         if(action == "danceSex1.12")
         {
             root->incTime(5);
-            root->sVSex(pose,1);
+            root->vSex(pose) = 1;
             root->setImage(media(getRandInt(42,43)));
-            root->setDesc(str(17));
+            root->setText(str(17));
             setSergei();
             root->blow_job();
             setAndrei();
             setIgor2();
-            root->sVSex(protect,1);
+            root->vSex(protect) = 1;
             root->dp_start();
             root->double_penetration();
             makeActBtn("danceSex1.13",act(3));
@@ -297,72 +297,72 @@ void HanterSex::actionHandler(QString action)
         if(action == "danceSex1.13")
         {
             root->incTime(1);
-            root->sVSex(pose,0);
+            root->vSex(pose) = 0;
             root->setImage(media(14));
-            root->setDesc(str(18));
+            root->setText(str(18));
             makeActBtn("danceSex1.14",act(8));
         }
         if(action == "danceSex1.14")
         {
             root->incTime(1);
-            root->sVSex(pose,0);
+            root->vSex(pose) = 0;
             root->cum("face");
             root->cum("belly");
             root->cum("lip");
-            root->uVSC(swallow,1);
+            root->vStatistics(swallow) += 1;
             root->setImage(media(15));
-            root->setDesc(str(19));
+            root->setText(str(19));
             makeActBtn("danceSex1.15",act(9));
         }
         if(action == "danceSex1.15")
         {
             root->incTime(1);
             root->setImage(media(87));
-            root->setDesc(str(20));
-            if(root->gVEvent(hantersIgorLove) > 0) root->addDesc(str(21));
-            if(root->gVEvent(hantersIgorLove) == 1 || root->gVEvent(hantersIgorLove) == 2) root->addDesc(str(22));
-            if(root->gVEvent(hantersIgorLove) == 3) root->addDesc(str(23));
-            if(root->gVEvent(hantersSergeiLove) > 0) root->addDesc(str(24));
-            if(root->gVEvent(hantersSergeiLove) > 0) root->addDesc(str(25));
-            if(root->gVEvent(hantersAndreiLove) > 0) root->addDesc(str(26));
+            root->setText(str(20));
+            if(root->vEvent(hantersIgorLove) > 0) root->addText(str(21));
+            if(root->vEvent(hantersIgorLove) == 1 || root->vEvent(hantersIgorLove) == 2) root->addText(str(22));
+            if(root->vEvent(hantersIgorLove) == 3) root->addText(str(23));
+            if(root->vEvent(hantersSergeiLove) > 0) root->addText(str(24));
+            if(root->vEvent(hantersSergeiLove) > 0) root->addText(str(25));
+            if(root->vEvent(hantersAndreiLove) > 0) root->addText(str(26));
             makeActBtn("danceSex1end",act(10));
         }
         if(action == "danceSex1end")
         {
             root->incTime(600);
-            root->uVStatus(son,20);
-            root->uVStatus(health,50);
-            root->uVStatus(mood,50);
-            root->sVEvent(hantdanceslut,1);
-            if(root->gVEvent(hantersIgorLove) == 3)
+            root->vStatus(son) += 20;
+            root->vStatus(health) += 50;
+            root->vStatus(mood) +=50;
+            root->vEvent(hantdanceslut) = 1;
+            if(root->vEvent(hantersIgorLove) == 3)
             {
-                root->sVEvent(hantersIgorLove,0);
-                root->uVQuest(hantersIgorQW,-100);
+                root->vEvent(hantersIgorLove) = 0;
+                root->vQuest(hantersIgorQW) -= 100;
                 //husband = 0 & divorced += 1 & husbandMark = 0 & husbharmin = 0 & husbizvradd = 0
             }
-            if(root->gVEvent(hantersIgorLove) == 2)
+            if(root->vEvent(hantersIgorLove) == 2)
             {
-                root->sVEvent(hantersIgorLove,0);
-                root->uVQuest(hantersIgorQW,-100);
+                root->vEvent(hantersIgorLove) = 0;
+                root->vQuest(hantersIgorQW) -= 100;
                 //bFa = 0
             }
-            if(root->gVEvent(hantersIgorLove) == 3)
+            if(root->vEvent(hantersIgorLove) == 3)
             {
-                root->sVEvent(hantersIgorLove,0);
-                root->uVQuest(hantersIgorQW,-100);
+                root->vEvent(hantersIgorLove) = 0;
+                root->vQuest(hantersIgorQW) -= 100;
             }
-            if(root->gVEvent(hantersSergeiLove) == 1)
+            if(root->vEvent(hantersSergeiLove) == 1)
             {
-                root->sVEvent(hantersSergeiLove,0);
-                root->uVQuest(hantersSergeiQW,-100);
+                root->vEvent(hantersSergeiLove) = 0;
+                root->vQuest(hantersSergeiQW) -= 100;
             }
-            if(root->gVEvent(hantersAndreiLove) == 1)
+            if(root->vEvent(hantersAndreiLove) == 1)
             {
-                root->sVEvent(hantersAndreiLove,0);
-                root->uVQuest(hantersAndreiQW,-100);
+                root->vEvent(hantersAndreiLove) = 0;
+                root->vQuest(hantersAndreiQW) -= 100;
             }
             root->setImage(media(88));
-            root->setDesc(str(27));
+            root->setText(str(27));
             makeActBtn("swamphouse",act(0));
         }
     }
@@ -395,25 +395,25 @@ void HanterSex::actionHandler(QString action)
         if(action == "hantersgrO3_wait")
         {
             root->incTime(1);
-            root->sVSex(pose,0);
+            root->vSex(pose) = 0;
             root->cum("face");
             root->cum("belly");
             root->cum("lip");
-            root->uVSC(swallow,1);
+            root->vStatistics(swallow) += 1;
             root->setImage(media(getRandInt(52,57)));
-            root->setDesc(str(19));
-            if(root->gVEvent(hantersexnude) == 0) makeActBtn("hantersgrEND",act(9));
-            if(root->gVEvent(hantersexnude) == 1) makeActBtn("exit2",act(0));
+            root->setText(str(19));
+            if(root->vEvent(hantersexnude) == 0) makeActBtn("hantersgrEND",act(9));
+            if(root->vEvent(hantersexnude) == 1) makeActBtn("exit2",act(0));
         }
         if(action == "hantersgrEND") hantersgrEND();
         if(action == "hantersgrEND_wakeup")
         {
             root->incTime(600);
-            root->uVStatus(son,20);
-            root->uVStatus(health,50);
-            root->uVStatus(mood,50);
+            root->vStatus(son) += 20;
+            root->vStatus(health) += 50;
+            root->vStatus(mood) +=50;
             root->setImage(media(88));
-            root->setDesc(str(27));
+            root->setText(str(27));
             makeActBtn("swamphouse",act(0));
         }
         if(action == "hantersgrAOsa") hantersgrAOsa();
@@ -502,17 +502,17 @@ void HanterSex::actionHandler(QString action)
     if(action == "hantersexfaint_up1")
     {
         root->incTime(10);
-        root->sVStatus(health,100);
-        root->uVStatus(mood,10);
-        root->setDesc(str(113));
+        root->vStatus(health) = 100;
+        root->vStatus(mood) +=10;
+        root->setText(str(113));
         makeActBtn("back_to_loc",act(0));
     }
     if(action == "hantersexfaint_up2")
     {
         root->incTime(10);
-        root->sVStatus(health,100);
-        root->uVStatus(mood,10);
-        root->setDesc(str(114));
+        root->vStatus(health) = 100;
+        root->vStatus(mood) +=10;
+        root->setText(str(114));
         makeActBtn("swamphouse",act(0));
     }
     if(action == "swamphouse")
@@ -521,13 +521,13 @@ void HanterSex::actionHandler(QString action)
         root->changeLoc(root->getCurLoc());
     if(action == "exit1")
     {
-        root->sVEvent(forest_hantersex,0);
+        root->vEvent(forest_hantersex) = 0;
         root->incTime(60);
         root->changeLoc(lswampyard);
     }
     if(action == "exit2")
     {
-        root->sVEvent(hantersexnude,0);
+        root->vEvent(hantersexnude) = 0;
         root->changeLoc(lswamphouse);
     }
 }
@@ -535,14 +535,14 @@ void HanterSex::actionHandler(QString action)
 void HanterSex::doubleloveOral1()
 {
     root->incTime(5);
-    root->uVStatus(horny,getRandInt(5,10));
-    root->uVSex(lubonus,1);
+    root->vStatus(horny) += getRandInt(5,10);
+    root->vSex(lubonus) += 1;
     hantsexa = getRandInt(1,5);
     setAIMV();
     root->setImage(media(getRandInt(124,125)));
-    root->setDesc(str(48));
+    root->setText(str(48));
     root->blow_job();
-    root->addDesc(str(49));
+    root->addText(str(49));
     if(root->vStatus(health) > 50)
         makeActBtn("doubleloveOralCum1",act(2));
     else
@@ -551,33 +551,33 @@ void HanterSex::doubleloveOral1()
 void HanterSex::doubleloveOralCum1()
 {
     root->incTime(5);
-    root->uVStatus(horny,getRandInt(5,10));
+    root->vStatus(horny) += getRandInt(5,10);
     root->cum("lip");
-    root->uVSC(swallow,1);
+    root->vStatistics(swallow) += 1;
     setAIMV();
     root->setImage(media(126));
-    root->setDesc(str(48));
+    root->setText(str(48));
     root->blow_job();
-    root->addDesc(str(46));
-    root->sVSex(lubonus,0);
-    if(root->gVEvent(forest_hantersex) == 0)
+    root->addText(str(46));
+    root->vSex(lubonus) = 0;
+    if(root->vEvent(forest_hantersex) == 0)
         makeActBtn("back_to_loc",act(0));
-    if(root->gVEvent(forest_hantersex) > 0)
+    if(root->vEvent(forest_hantersex) > 0)
         makeActBtn("exit1",act(0));
 }
 void HanterSex::doubleloveOral12()
 {
     root->incTime(5);
-    root->uVStatus(horny,getRandInt(5,10));
-    root->uVSex(lubonus,1);
+    root->vStatus(horny) += getRandInt(5,10);
+    root->vSex(lubonus) += 1;
     hantsexa = getRandInt(1,6);
     root->setImage(media(getRandInt(92,93)));
-    root->setDesc(str(33));
+    root->setText(str(33));
     setAIMV();
     root->blow_job();
     setSIKV();
     root->blow_job();
-    root->addDesc(str(37));
+    root->addText(str(37));
     if(root->vStatus(health) > 50)
     {
         if(hantsexa == 1) makeActBtn("doubleloveOralCum12",act(12));
@@ -593,34 +593,34 @@ void HanterSex::doubleloveOral12()
 void HanterSex::doubleloveOralCum12()
 {
     root->incTime(5);
-    root->uVStatus(horny,getRandInt(5,10));
+    root->vStatus(horny) += getRandInt(5,10);
     root->cum("lip");
-    root->uVSC(swallow,1);
+    root->vStatistics(swallow) += 1;
     root->cum("face");
-    root->sVSex(lubonus,0);
+    root->vSex(lubonus) = 0;
     if(root->isNude()) root->cum("belly");
-    if(root->isCloth()) root->uVStatus(cumFrot,getRandInt(0,1));
+    if(root->isCloth()) root->vStatus(cumFrot) += getRandInt(0,1);
     root->setImage(media(getRandInt(130,132)));
-    root->setDesc(str(50));
-    if(root->gVEvent(forest_hantersex) == 0)
+    root->setText(str(50));
+    if(root->vEvent(forest_hantersex) == 0)
         makeActBtn("back_to_loc",act(0));
-    if(root->gVEvent(forest_hantersex) > 0)
+    if(root->vEvent(forest_hantersex) > 0)
         makeActBtn("exit1",act(0));
 }
 void HanterSex::doubleloveOralCum12_1()
 {
     root->incTime(5);
-    root->uVStatus(horny,getRandInt(5,10));
-    root->uVSex(lubonus,2);
+    root->vStatus(horny) += getRandInt(5,10);
+    root->vSex(lubonus) += 2;
     hantsexa = getRandInt(1,2);
     root->setImage(media(94));
-    root->setDesc(str(33));
+    root->setText(str(33));
     setSIKV();
     root->blow_job();
     setAIMV();
     root->blow_job();
     root->fnswallow();
-    root->addDesc(str(38));
+    root->addText(str(38));
     if(root->vStatus(health) > 50)
     {
         if(hantsexa == 1) makeActBtn("doubleloveSide2",act(5));
@@ -632,17 +632,17 @@ void HanterSex::doubleloveOralCum12_1()
 void HanterSex::doubleloveOralCum12_2()
 {
     root->incTime(5);
-    root->uVStatus(horny,getRandInt(5,10));
-    root->uVSex(lubonus,2);
+    root->vStatus(horny) += getRandInt(5,10);
+    root->vSex(lubonus) += 2;
     hantsexa = getRandInt(1,2);
     root->setImage(media(95));
-    root->setDesc(str(33));
+    root->setText(str(33));
     setAIMV();
     root->blow_job();
     setSIKV();
     root->blow_job();
     root->fnswallow();
-    root->addDesc(str(38));
+    root->addText(str(38));
     if(root->vStatus(health) > 50)
     {
         if(hantsexa == 1) makeActBtn("doubleloveCow1",act(7));
@@ -654,14 +654,14 @@ void HanterSex::doubleloveOralCum12_2()
 void HanterSex::doubleloveOral2()
 {
     root->incTime(5);
-    root->uVStatus(horny,getRandInt(5,10));
-    root->uVSex(lubonus,1);
+    root->vStatus(horny) += getRandInt(5,10);
+    root->vSex(lubonus) += 1;
     setSIKV();
     root->setImage(media(getRandInt(127,128)));
-    root->setDesc(str(48));
+    root->setText(str(48));
     root->blow_job();
     root->fnswallow();
-    root->addDesc(str(49));
+    root->addText(str(49));
     if(root->vStatus(health) > 50)
         makeActBtn("doubleloveOralCum2",act(2));
     else
@@ -670,32 +670,32 @@ void HanterSex::doubleloveOral2()
 void HanterSex::doubleloveOralCum2()
 {
     root->incTime(5);
-    root->uVStatus(horny,getRandInt(5,10));
+    root->vStatus(horny) += getRandInt(5,10);
     setSIKV();
     root->setImage(media(129));
-    root->setDesc(str(48));
+    root->setText(str(48));
     root->blow_job();
     root->fnswallow();
-    root->addDesc(str(46));
-    root->sVSex(lubonus,0);
-    if(root->gVEvent(forest_hantersex) == 0)
+    root->addText(str(46));
+    root->vSex(lubonus) = 0;
+    if(root->vEvent(forest_hantersex) == 0)
         makeActBtn("back_to_loc",act(0));
-    if(root->gVEvent(forest_hantersex) > 0)
+    if(root->vEvent(forest_hantersex) > 0)
         makeActBtn("exit1",act(0));
 }
 void HanterSex::doubleloveDog112()
 {
     root->incTime(5);
-    root->uVSex(lubonus,1);
+    root->vSex(lubonus) += 1;
     hantsexa = getRandInt(1,7);
     root->setImage(media(getRandInt(96,98)));
-    root->setDesc(str(39));
+    root->setText(str(39));
     setSIKV();
     root->blow_job();
     setAIMV();
     root->analStart(tDick);
     root->anal(tDick);
-    root->addDesc(str(40));
+    root->addText(str(40));
     if(root->vStatus(health) > 50)
     {
         if(hantsexa == 1) makeActBtn("doubleloveOralCum12",act(12));
@@ -712,19 +712,19 @@ void HanterSex::doubleloveDog112()
 void HanterSex::doubleloveDogCum112_1()
 {
     root->incTime(5);
-    root->uVSex(lubonus,1);
+    root->vSex(lubonus) += 1;
     root->cum("anus");
     hantsexa = getRandInt(1,2);
     root->setImage(media(99));
-    root->setDesc(str(41));
+    root->setText(str(41));
     setSIKV();
     root->blow_job();
     setAIMV();
     root->analStart(tDick);
     root->anal(tDick);
     root->anal_cum();
-    root->addDesc(str(38));
-    root->uVSex(lubonus,1);
+    root->addText(str(38));
+    root->vSex(lubonus) += 1;
     if(root->vStatus(health) > 50)
     {
         if(hantsexa == 1) makeActBtn("doubleloveSide2",act(5));
@@ -736,17 +736,17 @@ void HanterSex::doubleloveDogCum112_1()
 void HanterSex::doubleloveDogCum112_2()
 {
     root->incTime(5);
-    root->uVSex(lubonus,1);
+    root->vSex(lubonus) += 1;
     hantsexa = getRandInt(1,2);
     root->setImage(media(100));
-    root->setDesc(str(41));
+    root->setText(str(41));
     setAIMV();
     root->analStart(tDick);
     root->anal(tDick);
     setSIKV();
     root->blow_job();
     root->fnswallow();
-    root->addDesc(str(38));
+    root->addText(str(38));
     if(root->vStatus(health) > 50)
     {
         if(hantsexa == 1) makeActBtn("doubleloveCow1",act(7));
@@ -758,16 +758,16 @@ void HanterSex::doubleloveDogCum112_2()
 void HanterSex::doubleloveDog212()
 {
     root->incTime(5);
-    root->uVSex(lubonus,1);
+    root->vSex(lubonus) += 1;
     hantsexa = getRandInt(1,7);
     root->setImage(media(getRandInt(101,103)));
-    root->setDesc(str(41));
+    root->setText(str(41));
     setAIMV();
     root->blow_job();
     setSIKV();
     root->analStart(tDick);
     root->anal(tDick);
-    root->addDesc(str(40));
+    root->addText(str(40));
     if(root->vStatus(health) > 50)
     {
         if(hantsexa == 1) makeActBtn("doubleloveOralCum12",act(12));
@@ -784,19 +784,19 @@ void HanterSex::doubleloveDog212()
 void HanterSex::doubleloveDogCum212_1()
 {
     root->incTime(5);
-    root->uVSex(lubonus,1);
+    root->vSex(lubonus) += 1;
     root->cum("anus");
     hantsexa = getRandInt(1,2);
     root->setImage(media(104));
-    root->setDesc(str(41));
+    root->setText(str(41));
     setAIMV();
     root->blow_job();
     setSIKV();
     root->analStart(tDick);
     root->anal(tDick);
     root->anal_cum();
-    root->addDesc(str(38));
-    root->uVSex(lubonus,1);
+    root->addText(str(38));
+    root->vSex(lubonus) += 1;
     if(root->vStatus(health) > 50)
     {
         if(hantsexa == 1) makeActBtn("doubleloveCow1",act(7));
@@ -809,17 +809,17 @@ void HanterSex::doubleloveDogCum212_1()
 void HanterSex::doubleloveDogCum212_2()
 {
     root->incTime(5);
-    root->uVSex(lubonus,1);
+    root->vSex(lubonus) += 1;
     hantsexa = getRandInt(1,2);
     root->setImage(media(105));
-    root->setDesc(str(41));
+    root->setText(str(41));
     setSIKV();
     root->analStart(tDick);
     root->anal(tDick);
     setAIMV();
     root->blow_job();
     root->fnswallow();
-    root->addDesc(str(38));
+    root->addText(str(38));
     if(root->vStatus(health) > 50)
     {
         if(hantsexa == 1) makeActBtn("doubleloveSide2",act(5));
@@ -831,16 +831,16 @@ void HanterSex::doubleloveDogCum212_2()
 void HanterSex::doubleloveSide12()
 {
     root->incTime(5);
-    root->uVSex(lubonus,1);
+    root->vSex(lubonus) += 1;
     hantsexa = getRandInt(1,7);
     root->setImage(media(getRandInt(106,107)));
-    root->setDesc(str(42));
+    root->setText(str(42));
     setAIMV();
     root->blow_job();
     setSIKV();
     root->analStart(tDick);
     root->anal(tDick);
-    root->addDesc(str(40));
+    root->addText(str(40));
     if(root->vStatus(health) > 50)
     {
         if(hantsexa == 1) makeActBtn("doubleloveOralCum12",act(12));
@@ -857,19 +857,19 @@ void HanterSex::doubleloveSide12()
 void HanterSex::doubleloveSideCum12_1()
 {
     root->incTime(5);
-    root->uVSex(lubonus,1);
+    root->vSex(lubonus) += 1;
     root->cum("anus");
     hantsexa = getRandInt(1,2);
     root->setImage(media(108));
-    root->setDesc(str(42));
+    root->setText(str(42));
     setAIMV();
     root->blow_job();
     setSIKV();
     root->analStart(tDick);
     root->anal(tDick);
     root->anal_cum();
-    root->addDesc(str(38));
-    root->uVSex(lubonus,1);
+    root->addText(str(38));
+    root->vSex(lubonus) += 1;
     if(root->vStatus(health) > 50)
     {
         if(hantsexa == 1) makeActBtn("doubleloveCow1",act(7));
@@ -881,17 +881,17 @@ void HanterSex::doubleloveSideCum12_1()
 void HanterSex::doubleloveSideCum12_2()
 {
     root->incTime(5);
-    root->uVSex(lubonus,1);
+    root->vSex(lubonus) += 1;
     hantsexa = getRandInt(1,2);
     root->setImage(media(109));
-    root->setDesc(str(42));
+    root->setText(str(42));
     setSIKV();
     root->analStart(tDick);
     root->anal(tDick);
     setAIMV();
     root->blow_job();
     root->fnswallow();
-    root->addDesc(str(38));
+    root->addText(str(38));
     if(root->vStatus(health) > 50)
     {
         if(hantsexa == 1) makeActBtn("doubleloveSide2",act(5));
@@ -906,10 +906,10 @@ void HanterSex::doubleloveSide2()
     hantsexa = getRandInt(1,2);
     setSIKV();
     root->setImage(media(getRandInt(118,119)));
-    root->setDesc(str(44));
+    root->setText(str(44));
     root->analStart(tDick);
     root->anal(tDick);
-    root->addDesc(str(45));
+    root->addText(str(45));
     if(root->vStatus(health) > 50)
     {
         if(hantsexa == 1) makeActBtn("doubleloveSideCum2",act(5));
@@ -924,15 +924,15 @@ void HanterSex::doubleloveSideCum2()
     root->cum("anus");
     setSIKV();
     root->setImage(media(120));
-    root->setDesc(str(44));
+    root->setText(str(44));
     root->analStart(tDick);
     root->anal(tDick);
     root->anal_cum();
-    root->addDesc(str(46));
-    root->sVSex(lubonus,0);
-    if(root->gVEvent(forest_hantersex) == 0)
+    root->addText(str(46));
+    root->vSex(lubonus) = 0;
+    if(root->vEvent(forest_hantersex) == 0)
         makeActBtn("back_to_loc",act(0));
-    if(root->gVEvent(forest_hantersex) > 0)
+    if(root->vEvent(forest_hantersex) > 0)
         makeActBtn("exit1",act(0));
 }
 void HanterSex::doubleloveCow1()
@@ -941,10 +941,10 @@ void HanterSex::doubleloveCow1()
     hantsexa = getRandInt(1,2);
     setAIMV();
     root->setImage(media(getRandInt(121,122)));
-    root->setDesc(str(47));
+    root->setText(str(47));
     root->analStart(tDick);
     root->anal(tDick);
-    root->addDesc(str(45));
+    root->addText(str(45));
     if(root->vStatus(health) > 50)
     {
         if(hantsexa == 1) makeActBtn("doubleloveCowCum1",act(7));
@@ -956,34 +956,34 @@ void HanterSex::doubleloveCow1()
 void HanterSex::doubleloveCowCum1()
 {
     root->incTime(5);
-    root->uVSex(lubonus,1);
+    root->vSex(lubonus) += 1;
     root->cum("anus");
     setAIMV();
     root->setImage(media(123));
-    root->setDesc(str(47));
+    root->setText(str(47));
     root->analStart(tDick);
     root->anal(tDick);
     root->anal_cum();
-    root->addDesc(str(46));
-    root->sVSex(lubonus,0);
-    if(root->gVEvent(forest_hantersex) == 0)
+    root->addText(str(46));
+    root->vSex(lubonus) = 0;
+    if(root->vEvent(forest_hantersex) == 0)
         makeActBtn("back_to_loc",act(0));
-    if(root->gVEvent(forest_hantersex) > 0)
+    if(root->vEvent(forest_hantersex) > 0)
         makeActBtn("exit1",act(0));
 }
 void HanterSex::doubleloveCow112()
 {
     root->incTime(5);
-    root->uVSex(lubonus,1);
+    root->vSex(lubonus) += 1;
     hantsexa = getRandInt(1,7);
     root->setImage(media(getRandInt(110,111)));
-    root->setDesc(str(43));
+    root->setText(str(43));
     setSIKV();
     root->blow_job();
     setAIMV();
     root->analStart(tDick);
     root->anal(tDick);
-    root->addDesc(str(40));
+    root->addText(str(40));
     if(root->vStatus(health) > 50)
     {
         if(hantsexa == 1) makeActBtn("doubleloveOralCum12",act(12));
@@ -1000,19 +1000,19 @@ void HanterSex::doubleloveCow112()
 void HanterSex::doubleloveCowCum112_1()
 {
     root->incTime(5);
-    root->uVSex(lubonus,1);
+    root->vSex(lubonus) += 1;
     root->cum("anus");
     hantsexa = getRandInt(1,2);
     root->setImage(media(112));
-    root->setDesc(str(43));
+    root->setText(str(43));
     setSIKV();
     root->blow_job();
     setAIMV();
     root->analStart(tDick);
     root->anal(tDick);
     root->anal_cum();
-    root->addDesc(str(38));
-    root->uVSex(lubonus,1);
+    root->addText(str(38));
+    root->vSex(lubonus) += 1;
     if(root->vStatus(health) > 50)
     {
         if(hantsexa == 1) makeActBtn("doubleloveSide2",act(5));
@@ -1024,17 +1024,17 @@ void HanterSex::doubleloveCowCum112_1()
 void HanterSex::doubleloveCowCum112_2()
 {
     root->incTime(5);
-    root->uVSex(lubonus,1);
+    root->vSex(lubonus) += 1;
     hantsexa = getRandInt(1,2);
     root->setImage(media(113));
-    root->setDesc(str(43));
+    root->setText(str(43));
     setAIMV();
     root->analStart(tDick);
     root->anal(tDick);
     setSIKV();
     root->blow_job();
     root->fnswallow();
-    root->addDesc(str(38));
+    root->addText(str(38));
     if(root->vStatus(health) > 50)
     {
         if(hantsexa == 1) makeActBtn("doubleloveCow1",act(7));
@@ -1046,16 +1046,16 @@ void HanterSex::doubleloveCowCum112_2()
 void HanterSex::doubleloveCow212()
 {
     root->incTime(5);
-    root->uVSex(lubonus,1);
+    root->vSex(lubonus) += 1;
     hantsexa = getRandInt(1,7);
     root->setImage(media(getRandInt(114,115)));
-    root->setDesc(str(43));
+    root->setText(str(43));
     setSIKV();
     root->blow_job();
     setAIMV();
     root->analStart(tDick);
     root->anal(tDick);
-    root->addDesc(str(40));
+    root->addText(str(40));
     if(root->vStatus(health) > 50)
     {
         if(hantsexa == 1) makeActBtn("doubleloveOralCum12",act(12));
@@ -1072,19 +1072,19 @@ void HanterSex::doubleloveCow212()
 void HanterSex::doubleloveCowCum212_1()
 {
     root->incTime(5);
-    root->uVSex(lubonus,1);
+    root->vSex(lubonus) += 1;
     root->cum("anus");
     hantsexa = getRandInt(1,2);
     root->setImage(media(116));
-    root->setDesc(str(43));
+    root->setText(str(43));
     setSIKV();
     root->blow_job();
     setAIMV();
     root->analStart(tDick);
     root->anal(tDick);
     root->anal_cum();
-    root->addDesc(str(38));
-    root->uVSex(lubonus,1);
+    root->addText(str(38));
+    root->vSex(lubonus) += 1;
     if(root->vStatus(health) > 50)
     {
         if(hantsexa == 1) makeActBtn("doubleloveSide2",act(5));
@@ -1096,17 +1096,17 @@ void HanterSex::doubleloveCowCum212_1()
 void HanterSex::doubleloveCowCum212_2()
 {
     root->incTime(5);
-    root->uVSex(lubonus,1);
+    root->vSex(lubonus) += 1;
     hantsexa = getRandInt(1,2);
     root->setImage(media(117));
-    root->setDesc(str(43));
+    root->setText(str(43));
     setAIMV();
     root->analStart(tDick);
     root->anal(tDick);
     setSIKV();
     root->blow_job();
     root->fnswallow();
-    root->addDesc(str(38));
+    root->addText(str(38));
     if(root->vStatus(health) > 50)
     {
         if(hantsexa == 1) makeActBtn("doubleloveCow1",act(7));
@@ -1119,11 +1119,11 @@ void HanterSex::doubleloveCowCum212_2()
 void HanterSex::sluthomeSTART()
 {
     root->incTime(5);
-    root->uVStatus(horny,getRandInt(1,5));
-    root->uVSC(blowJob,1);
+    root->vStatus(horny) += getRandInt(1,5);
+    root->vStatistics(blowJob) += 1;
     hantsexa = getRandInt(5,10);
     root->setImage(media(133));
-    root->setDesc(str(51));
+    root->setText(str(51));
     if(hantsexa == 1) makeActBtn("sluthomeORAL1",act(1));
     if(hantsexa == 2) makeActBtn("sluthomeOralCum1",act(1));
     if(hantsexa == 3) makeActBtn("sluthomeTanga",act(15));
@@ -1131,13 +1131,13 @@ void HanterSex::sluthomeSTART()
 void HanterSex::sluthomeORAL1()
 {
     root->incTime(5);
-    root->uVStatus(horny,getRandInt(5,10));
-    root->uVSex(lubonus,1);
+    root->vStatus(horny) += getRandInt(5,10);
+    root->vSex(lubonus) += 1;
     hantsexa = getRandInt(1,5);
     root->setImage(media(getRandInt(134,136)));
-    root->setDesc(str(52));
+    root->setText(str(52));
     root->blow_job();
-    root->addDesc(str(49));
+    root->addText(str(49));
     if(hantsexa == 1) makeActBtn("sluthomeORAL2",act(2));
     if(hantsexa == 2) makeActBtn("sluthomeOralCum2",act(2));
     if(hantsexa == 3) makeActBtn("sluthomeORAL3",act(2));
@@ -1147,24 +1147,24 @@ void HanterSex::sluthomeORAL1()
 void HanterSex::sluthomeOralCum1()
 {
     root->incTime(5);
-    root->sVSex(lubonus,0);
+    root->vSex(lubonus) = 0;
     root->setImage(media(137));
-    root->setDesc(str(52));
+    root->setText(str(52));
     root->blow_job();
     root->fnswallow();
-    root->addDesc(str(46));
+    root->addText(str(46));
     makeActBtn("swamphouse",act(0));
 }
 void HanterSex::sluthomeORAL2()
 {
     root->incTime(5);
-    root->uVStatus(horny,getRandInt(5,10));
-    root->uVSex(lubonus,1);
+    root->vStatus(horny) += getRandInt(5,10);
+    root->vSex(lubonus) += 1;
     hantsexa = getRandInt(1,4);
     root->setImage(media(getRandInt(143,145)));
-    root->setDesc(str(52));
+    root->setText(str(52));
     root->blow_job();
-    root->addDesc(str(40));
+    root->addText(str(40));
     if(hantsexa == 1) makeActBtn("sluthomeOralCum2",act(2));
     if(hantsexa == 2) makeActBtn("sluthomeORAL3",act(2));
     if(hantsexa == 3) makeActBtn("sluthomeOralCum3",act(2));
@@ -1173,53 +1173,53 @@ void HanterSex::sluthomeORAL2()
 void HanterSex::sluthomeOralCum2()
 {
     root->incTime(5);
-    root->sVSex(lubonus,0);
+    root->vSex(lubonus) = 0;
     root->setImage(media(138));
-    root->setDesc(str(52));
+    root->setText(str(52));
     root->blow_job();
     root->fnswallow();
-    root->addDesc(str(46));
+    root->addText(str(46));
     makeActBtn("swamphouse",act(0));
 }
 void HanterSex::sluthomeORAL3()
 {
     root->incTime(5);
-    root->uVStatus(horny,getRandInt(5,10));
-    root->uVSex(lubonus,1);
+    root->vStatus(horny) += getRandInt(5,10);
+    root->vSex(lubonus) += 1;
     hantsexa = getRandInt(1,2);
     root->setImage(media(getRandInt(146,147)));
-    root->setDesc(str(53));
+    root->setText(str(53));
     if(root->vBody(throat) < root->vSex(dick))
-        root->addDesc(str(54));
+        root->addText(str(54));
     if(root->vBody(throat) > root->vSex(dick))
-        root->addDesc(str(55));
+        root->addText(str(55));
     if(hantsexa) makeActBtn("sluthomeOralCum3",act(2));
     if(hantsexa) makeActBtn("sluthomeTanga",act(15));
 }
 void HanterSex::sluthomeOralCum3()
 {
     root->incTime(5);
-    root->sVSex(lubonus,0);
+    root->vSex(lubonus) = 0;
     root->setImage(media(139));
-    root->setDesc(str(53));
+    root->setText(str(53));
     if(root->vBody(throat) < root->vSex(dick))
-        root->addDesc(str(54));
+        root->addText(str(54));
     if(root->vBody(throat) > root->vSex(dick))
-        root->addDesc(str(55));
-    root->addDesc(str(56));
+        root->addText(str(55));
+    root->addText(str(56));
     root->fnswallow();
-    root->addDesc(str(46));
+    root->addText(str(46));
     makeActBtn("swamphouse",act(0));
 }
 void HanterSex::sluthomeORAL4()
 {
     root->incTime(5);
-    root->uVStatus(horny,getRandInt(5,10));
-    root->uVSex(lubonus,1);
+    root->vStatus(horny) += getRandInt(5,10);
+    root->vSex(lubonus) += 1;
     hantsexa = getRandInt(1,2);
     root->setImage(media(getRandInt(146,147)));
     root->blow_job();
-    root->addDesc(str(49));
+    root->addText(str(49));
     if(root->vStatus(health) > 50)
     {
         if(hantsexa == 1) makeActBtn("sluthomeOralCum4",act(2));
@@ -1238,21 +1238,21 @@ void HanterSex::sluthomeOralCum4()
     root->incTime(5);
     root->cum("lip");
     root->cum("face");
-    root->uVSC(swallow,1);
+    root->vStatistics(swallow) += 1;
     root->cum("belly");
-    root->sVSex(lubonus,0);
+    root->vSex(lubonus) = 0;
     root->setImage(media(getRandInt(140,142)));
-    root->addDesc(str(57));
+    root->addText(str(57));
     makeActBtn("swamphouse",act(0));
 }
 void HanterSex::sluthomeTanga()
 {
     root->incTime(5);
-    root->uVStatus(horny,5);
+    root->vStatus(horny) += 5;
     root->redress(ClothType::Panties,nullptr);
     hantsexa = getRandInt(1,6);
     root->setImage(media(151));
-    root->setDesc(str(58));
+    root->setText(str(58));
     if(root->vStatus(health) > 50)
     {
         if(hantsexa == 1) makeActBtn("sluthomeAnalDog1",act(13));
@@ -1271,10 +1271,10 @@ void HanterSex::sluthomeAnalDog1()
     checkBoyAsexA();
     hantsexa = getRandInt(1,10);
     root->setImage(media(getRandInt(152,153)));
-    root->setDesc(str(59));
+    root->setText(str(59));
     root->analStart(tDick);
     root->anal(tDick);
-    root->addDesc(str(45));
+    root->addText(str(45));
     if(root->vStatus(health) > 50)
     {
         if(hantsexa == 1) makeActBtn("sluthomeAnalDog2",act(13));
@@ -1296,11 +1296,11 @@ void HanterSex::sluthomeAnalDogCum1()
     root->incTime(5);
     root->cum("anus");
     root->setImage(media(154));
-    root->setDesc(str(60));
+    root->setText(str(60));
     root->analStart(tDick);
     root->anal(tDick);
     root->anal_cum();
-    root->addDesc(str(46));
+    root->addText(str(46));
     makeActBtn("swamphouse",act(0));
 }
 void HanterSex::sluthomeAnalDog2()
@@ -1309,10 +1309,10 @@ void HanterSex::sluthomeAnalDog2()
     checkBoyAsexA();
     hantsexa = getRandInt(1,5);
     root->setImage(media(getRandInt(156,157)));
-    root->setDesc(str(61));
+    root->setText(str(61));
     root->analStart(tDick);
     root->anal(tDick);
-    root->addDesc(str(45));
+    root->addText(str(45));
     if(root->vStatus(health) > 50)
     {
         if(hantsexa == 1) makeActBtn("sluthomeORAL4",act(1));
@@ -1329,11 +1329,11 @@ void HanterSex::sluthomeAnalDogCum2()
     root->incTime(5);
     root->cum("anus");
     root->setImage(media(155));
-    root->setDesc(str(61));
+    root->setText(str(61));
     root->analStart(tDick);
     root->anal(tDick);
     root->anal_cum();
-    root->addDesc(str(46));
+    root->addText(str(46));
     makeActBtn("swamphouse",act(0));
 }
 void HanterSex::sluthomeAnalCow1()
@@ -1342,10 +1342,10 @@ void HanterSex::sluthomeAnalCow1()
     checkBoyAsexA();
     hantsexa = getRandInt(1,10);
     root->setImage(media(getRandInt(158,160)));
-    root->setDesc(str(62));
+    root->setText(str(62));
     root->analStart(tDick);
     root->anal(tDick);
-    root->addDesc(str(45));
+    root->addText(str(45));
     if(root->vStatus(health) > 50)
     {
         if(hantsexa == 1) makeActBtn("sluthomeAnalDog1",act(13));
@@ -1367,11 +1367,11 @@ void HanterSex::sluthomeAnalCowCum1()
     root->incTime(5);
     root->cum("anus");
     root->setImage(media(161));
-    root->setDesc(str(62));
+    root->setText(str(62));
     root->analStart(tDick);
     root->anal(tDick);
     root->anal_cum();
-    root->addDesc(str(46));
+    root->addText(str(46));
     makeActBtn("swamphouse",act(0));
 }
 void HanterSex::sluthomeAnalCow2()
@@ -1380,10 +1380,10 @@ void HanterSex::sluthomeAnalCow2()
     checkBoyAsexA();
     hantsexa = getRandInt(1,10);
     root->setImage(media(getRandInt(163,164)));
-    root->setDesc(str(63));
+    root->setText(str(63));
     root->analStart(tDick);
     root->anal(tDick);
-    root->addDesc(str(45));
+    root->addText(str(45));
     if(root->vStatus(health) > 50)
     {
         if(hantsexa == 1) makeActBtn("sluthomeORAL4",act(1));
@@ -1398,24 +1398,24 @@ void HanterSex::sluthomeAnalCowCum2()
     root->incTime(5);
     root->cum("anus");
     root->setImage(media(162));
-    root->setDesc(str(63));
+    root->setText(str(63));
     root->analStart(tDick);
     root->anal(tDick);
     root->anal_cum();
-    root->addDesc(str(46));
+    root->addText(str(46));
     makeActBtn("swamphouse",act(0));
 }
 void HanterSex::sluthomeAnalSide1()
 {
-    root->sVSex(pose,0);
+    root->vSex(pose) = 0;
     root->incTime(5);
     checkBoyAsexA();
     hantsexa = getRandInt(1,10);
     root->setImage(media(getRandInt(165,166)));
-    root->setDesc(str(64));
+    root->setText(str(64));
     root->analStart(tDick);
     root->anal(tDick);
-    root->addDesc(str(45));
+    root->addText(str(45));
     if(root->vStatus(health) > 50)
     {
         if(hantsexa == 1) makeActBtn("sluthomeAnalDog1",act(13));
@@ -1438,24 +1438,24 @@ void HanterSex::sluthomeAnalSideCum1()
     root->incTime(5);
     root->cum("anus");
     root->setImage(media(167));
-    root->setDesc(str(64));
+    root->setText(str(64));
     root->analStart(tDick);
     root->anal(tDick);
     root->anal_cum();
-    root->addDesc(str(46));
+    root->addText(str(46));
     makeActBtn("swamphouse",act(0));
 }
 void HanterSex::sluthomeAnalSide2()
 {
-    root->sVSex(pose,0);
+    root->vSex(pose) = 0;
     root->incTime(5);
     checkBoyAsexA();
     hantsexa = getRandInt(1,2);
     root->setImage(media(getRandInt(169,170)));
-    root->setDesc(str(65));
+    root->setText(str(65));
     root->analStart(tDick);
     root->anal(tDick);
-    root->addDesc(str(45));
+    root->addText(str(45));
     if(root->vStatus(health) > 50)
     {
         if(hantsexa == 1) makeActBtn("sluthomeORAL4",act(1));
@@ -1469,25 +1469,25 @@ void HanterSex::sluthomeAnalSideCum2()
     root->incTime(5);
     root->cum("anus");
     root->setImage(media(168));
-    root->setDesc(str(65));
+    root->setText(str(65));
     root->analStart(tDick);
     root->anal(tDick);
     root->anal_cum();
-    root->addDesc(str(46));
+    root->addText(str(46));
     makeActBtn("swamphouse",act(0));
 }
 
 void HanterSex::hantergrOi()
 {
-    root->sVSex(pose,0);
+    root->vSex(pose) = 0;
     root->incTime(5);
     setIgor();
-    root->uVBody(throat,1);
-    root->uVStatus(horny,getRandInt(10,20));
+    root->vBody(throat) += 1;
+    root->vStatus(horny) += getRandInt(10,20);
     root->setImage(media(getRandInt(6,10)));
-    root->setDesc(str(66));
+    root->setText(str(66));
     root->blow_job();
-    root->addDesc(str(67));
+    root->addText(str(67));
     hantsexa = getRandInt(1,2);
     if(root->vStatus(health) > 50)
     {
@@ -1500,18 +1500,18 @@ void HanterSex::hantergrOi()
 void HanterSex::hantersgrOasi()
 {
     root->incTime(5);
-    root->sVSex(pose,0);
-    root->uVStatus(horny,getRandInt(10,20));
-    root->uVSex(lubonus,1);
+    root->vSex(pose) = 0;
+    root->vStatus(horny) += getRandInt(10,20);
+    root->vSex(lubonus) += 1;
     root->setImage(media(getRandInt(2,4)));
     setAndrei();
-    root->uVSC(blowJob,1);
+    root->vStatistics(blowJob) += 1;
     root->blow_job();
     setSergei();
-    root->uVSC(blowJob,1);
+    root->vStatistics(blowJob) += 1;
     root->blow_job();
     setIgor();
-    root->uVSC(blowJob,1);
+    root->vStatistics(blowJob) += 1;
     root->blow_job();
     hantsexa = getRandInt(1,10);
     hantsexb = getRandInt(1,8);
@@ -1520,16 +1520,16 @@ void HanterSex::hantersgrOasi()
 void HanterSex::hantersgrVaOsi()
 {
     root->incTime(5);
-    root->sVSex(pose,0);
+    root->vSex(pose) = 0;
     root->setImage(media(getRandInt(67,68)));
-    root->setDesc(str(9));
+    root->setText(str(9));
     setSergei();
     root->blow_job();
     setIgor();
     root->blow_job();
     setAndrei();
     checkBoyAsex();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->vaginal(tDick);
     hantsexa = getRandInt(2,10);
     hantsexb = getRandInt(1,8);
@@ -1538,20 +1538,20 @@ void HanterSex::hantersgrVaOsi()
 void HanterSex::hantersgrVOsi()
 {
     root->incTime(5);
-    root->sVSex(pose,0);
+    root->vSex(pose) = 0;
     root->setImage(media(77));
-    root->setDesc(str(9));
+    root->setText(str(9));
     setSergei();
     root->blow_job();
     setIgor();
     root->blow_job();
     setAndrei();
     checkBoyAsex();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
     root->sex_cum();
-    root->addDesc(str(68));
+    root->addText(str(68));
     hantsexa = getRandInt(1,3);
     hantsexb = getRandInt(1,8);
 
@@ -1570,22 +1570,22 @@ void HanterSex::hantersgrVOsi()
 void HanterSex::hantersgrVaO()
 {
     root->incTime(5);
-    root->sVSex(pose,0);
+    root->vSex(pose) = 0;
     root->setImage(media(66));
-    root->setDesc(str(9));
+    root->setText(str(9));
     setSergei();
     root->blow_job();
     setIgor();
     root->blow_job();
     setAndrei();
     checkBoyAsex();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->vaginal(tDick);
     setSergei();
     root->fnswallow();
     setIgor();
     root->fnswallow();
-    root->addDesc(str(69));
+    root->addText(str(69));
     hantsexa = getRandInt(1,3);
     if(root->vStatus(health) > 50)
     {
@@ -1599,20 +1599,20 @@ void HanterSex::hantersgrVaO()
 void HanterSex::hantersgrVaOi()
 {
     root->incTime(5);
-    root->sVSex(pose,0);
+    root->vSex(pose) = 0;
     root->setImage(media(62));
-    root->setDesc(str(9));
+    root->setText(str(9));
     setSergei();
     root->blow_job();
     setIgor();
     root->blow_job();
     setAndrei();
     checkBoyAsex();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->vaginal(tDick);
     setSergei();
     root->fnswallow();
-    root->addDesc(str(70));
+    root->addText(str(70));
     hantsexa = getRandInt(1,3);
     hantsexb = getRandInt(1,8);
     actions3();
@@ -1620,16 +1620,16 @@ void HanterSex::hantersgrVaOi()
 void HanterSex::hantersgrVsOai()
 {
     root->incTime(5);
-    root->sVSex(pose,0);
+    root->vSex(pose) = 0;
     root->setImage(media(getRandInt(78,81)));
-    root->setDesc(str(10));
+    root->setText(str(10));
     setAndrei();
     root->blow_job();
     setIgor();
     root->blow_job();
     setSergei();
     checkBoyBsex();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->vaginal(tDick);
     hantsexa = getRandInt(2,10);
     hantsexb = getRandInt(1,8);
@@ -1638,20 +1638,20 @@ void HanterSex::hantersgrVsOai()
 void HanterSex::hantersgrVOai()
 {
     root->incTime(5);
-    root->sVSex(pose,0);
+    root->vSex(pose) = 0;
     root->setImage(media(75));
-    root->setDesc(str(10));
+    root->setText(str(10));
     setAndrei();
     root->blow_job();
     setIgor();
     root->blow_job();
     setSergei();
     checkBoyBsex();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
     root->sex_cum();
-    root->addDesc(str(71));
+    root->addText(str(71));
     hantsexa = getRandInt(1,3);
     hantsexb = getRandInt(1,8);
     actions3();
@@ -1659,20 +1659,20 @@ void HanterSex::hantersgrVOai()
 void HanterSex::hantersgrVsOi()
 {
     root->incTime(5);
-    root->sVSex(pose,0);
+    root->vSex(pose) = 0;
     root->setImage(media(85));
-    root->setDesc(str(10));
+    root->setText(str(10));
     setAndrei();
     root->blow_job();
     setIgor();
     root->blow_job();
     setSergei();
     checkBoyBsex();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->vaginal(tDick);
     setAndrei();
     root->fnswallow();
-    root->addDesc(str(72));
+    root->addText(str(72));
     hantsexa = getRandInt(1,3);
     hantsexb = getRandInt(1,8);
     actions2();
@@ -1680,20 +1680,20 @@ void HanterSex::hantersgrVsOi()
 void HanterSex::hantersgrVsO()
 {
     root->incTime(5);
-    root->sVSex(pose,0);
+    root->vSex(pose) = 0;
     root->setImage(media(86));
-    root->setDesc(str(10));
+    root->setText(str(10));
     setAndrei();
     root->blow_job();
     setIgor();
     root->blow_job();
     setSergei();
     checkBoyBsex();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->vaginal(tDick);
     setIgor();
     root->fnswallow();
-    root->addDesc(str(73));
+    root->addText(str(73));
     if(root->vStatus(health) > 50)
         makeActBtn("hantersgr1As",act(7));
     else
@@ -1702,16 +1702,16 @@ void HanterSex::hantersgrVsO()
 void HanterSex::hantersgrViOas()
 {
     root->incTime(5);
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     root->setImage(media(getRandInt(70,73)));
-    root->setDesc(str(74));
+    root->setText(str(74));
     setAndrei();
     root->blow_job();
     setSergei();
     root->blow_job();
     setIgor();
     checkBoyCsex();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->vaginal(tDick);
     hantsexa = getRandInt(2,10);
     hantsexb = getRandInt(1,8);
@@ -1720,37 +1720,37 @@ void HanterSex::hantersgrViOas()
 void HanterSex::hantersgrViO()
 {
     root->incTime(5);
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     root->setImage(media(74));
-    root->setDesc(str(74));
+    root->setText(str(74));
     setAndrei();
     root->blow_job();
     setSergei();
     root->blow_job();
     setIgor();
     checkBoyCsex();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->vaginal(tDick);
     setSergei();
     root->fnswallow();
     setAndrei();
     root->fnswallow();
-    root->addDesc(str(75));
+    root->addText(str(75));
     actions5();
 }
 void HanterSex::hantersgrVsOia()
 {
     root->incTime(5);
-    root->sVSex(pose,2);
+    root->vSex(pose) = 2;
     root->setImage(media(getRandInt(82,84)));
-    root->setDesc(str(13));
+    root->setText(str(13));
     setAndrei();
     root->blow_job();
     setIgor();
     root->blow_job();
     setSergei();
     checkBoyBsex();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->vaginal(tDick);
     hantsexa = getRandInt(2,10);
     hantsexb = getRandInt(1,8);
@@ -1759,9 +1759,9 @@ void HanterSex::hantersgrVsOia()
 void HanterSex::hantersgrVsOi1()
 {
     root->incTime(5);
-    root->sVSex(pose,2);
+    root->vSex(pose) = 2;
     root->setImage(media(getRandInt(82,84)));
-    root->setDesc(str(13));
+    root->setText(str(13));
     setAndrei();
     root->blow_job();
     setIgor();
@@ -1771,22 +1771,22 @@ void HanterSex::hantersgrVsOi1()
     root->vaginal(tDick);
     setAndrei();
     root->fnswallow();
-    root->addDesc(str(76));
+    root->addText(str(76));
     actions2();
 }
 void HanterSex::hantersgrVaOis()
 {
     root->incTime(5);
-    root->sVSex(pose,2);
+    root->vSex(pose) = 2;
     root->setImage(media(getRandInt(63,65)));
-    root->setDesc(str(14));
+    root->setText(str(14));
     setSergei();
     root->blow_job();
     setIgor();
     root->blow_job();
     setAndrei();
     checkBoyAsex();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->vaginal(tDick);
     hantsexa = getRandInt(2,10);
     hantsexb = getRandInt(1,8);
@@ -1795,20 +1795,20 @@ void HanterSex::hantersgrVaOis()
 void HanterSex::hantersgrVaOs()
 {
     root->incTime(5);
-    root->sVSex(pose,2);
+    root->vSex(pose) = 2;
     root->setImage(media(69));
-    root->setDesc(str(14));
+    root->setText(str(14));
     setSergei();
     root->blow_job();
     setIgor();
     root->blow_job();
     setAndrei();
     checkBoyAsex();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->vaginal(tDick);
     setIgor();
     root->fnswallow();
-    root->addDesc(str(77));
+    root->addText(str(77));
     hantsexa = getRandInt(1,2);
     hantsexb = getRandInt(1,8);
     actions4();
@@ -1816,16 +1816,16 @@ void HanterSex::hantersgrVaOs()
 void HanterSex::hantersgrVO()
 {
     root->incTime(5);
-    root->sVSex(pose,2);
+    root->vSex(pose) = 2;
     root->setImage(media(76));
-    root->setDesc(str(14));
+    root->setText(str(14));
     setSergei();
     root->blow_job();
     setIgor();
     root->blow_job();
     setAndrei();
     checkBoyAsex();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
     root->sex_cum();
@@ -1833,22 +1833,22 @@ void HanterSex::hantersgrVO()
     root->fnswallow();
     setSergei();
     root->fnswallow();
-    root->addDesc(str(78));
+    root->addText(str(78));
     makeActBtn("hantersgrEND",act(9));
 }
 void HanterSex::hantersgrV2aOsi()
 {
     root->incTime(5);
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     root->setImage(media(getRandInt(58,60)));
-    root->setDesc(str(11));
+    root->setText(str(11));
     setSergei();
     root->blow_job();
     setIgor();
     root->blow_job();
     setAndrei();
     checkBoyAsex();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->vaginal(tDick);
     hantsexa = getRandInt(2,10);
     hantsexb = getRandInt(1,8);
@@ -1857,20 +1857,20 @@ void HanterSex::hantersgrV2aOsi()
 void HanterSex::hantersgrV2aOs()
 {
     root->incTime(5);
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     root->setImage(media(61));
-    root->setDesc(str(11));
+    root->setText(str(11));
     setSergei();
     root->blow_job();
     setIgor();
     root->blow_job();
     setAndrei();
     checkBoyAsex();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->vaginal(tDick);
     setIgor();
     root->fnswallow();
-    root->addDesc(str(79));
+    root->addText(str(79));
     hantsexa = getRandInt(1,2);
     hantsexb = getRandInt(1,8);
     actions4();
@@ -1878,16 +1878,16 @@ void HanterSex::hantersgrV2aOs()
 void HanterSex::hantersgrDPVaAiOs()
 {
     root->incTime(5);
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     root->setImage(media(getRandInt(42,43)));
-    root->setDesc(str(80));
+    root->setText(str(80));
     setSergei();
     root->blow_job();
     setAndrei();
     setIgor2();
     checkBoyAsex();
     checkBoyCsexA();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->dp_start();
     root->double_penetration();
     hantsexa = getRandInt(2,10);
@@ -1897,21 +1897,21 @@ void HanterSex::hantersgrDPVaAiOs()
 void HanterSex::hantersgrDPVaAOs()
 {
     root->incTime(5);
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     root->setImage(media(44));
-    root->setDesc(str(00));
+    root->setText(str(00));
     setSergei();
     root->blow_job();
     setAndrei();
     setIgor2();
     checkBoyAsex();
     checkBoyCsexA();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->dp_start();
     root->double_penetration();
-    root->uVSex(lubonus,2);
+    root->vSex(lubonus) += 2;
     root->cum("anus");
-    root->addDesc(str(81));
+    root->addText(str(81));
     hantsexa = getRandInt(1,2);
     hantsexb = getRandInt(1,8);
     actions4();
@@ -1919,9 +1919,9 @@ void HanterSex::hantersgrDPVaAOs()
 void HanterSex::hantersgrAiOsa()
 {
     root->incTime(5);
-    root->sVSex(pose,0);
+    root->vSex(pose) = 0;
     root->setImage(media(40));
-    root->setDesc(str(82));
+    root->setText(str(82));
     setSergei();
     root->blow_job();
     setAndrei();
@@ -1937,58 +1937,58 @@ void HanterSex::hantersgrAiOsa()
 void HanterSex::hantersgrAiO()
 {
     root->incTime(5);
-    root->sVSex(pose,0);
+    root->vSex(pose) = 0;
     root->setImage(media(39));
-    root->setDesc(str(82));
+    root->setText(str(82));
     setSergei();
     root->blow_job();
     setAndrei();
     root->blow_job();
     setIgor();
     checkBoyCsexA();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->analStart(tDick);
     root->anal(tDick);
     setAndrei();
     root->fnswallow();
     setSergei();
     root->fnswallow();
-    root->addDesc(str(83));
+    root->addText(str(83));
     actions5();
 }
 void HanterSex::hantersgrO3()
 {
     root->incTime(1);
-    root->sVSex(pose,0);
+    root->vSex(pose) = 0;
     root->setImage(media(getRandInt(48,51)));
-    root->setDesc(str(84));
+    root->setText(str(84));
     makeActBtn("hantersgrO3_wait",act(8));
 }
 void HanterSex::hantersgrEND()
 {
     root->incTime(1);
     root->setImage(media(87));
-    root->setDesc(str(20));
+    root->setText(str(20));
     makeActBtn("hantersgrEND_wakeup",act(10));
 }
 void HanterSex::hantersgrAOsa()
 {
     root->incTime(5);
-    root->sVSex(pose,0);
+    root->vSex(pose) = 0;
     root->setImage(media(41));
-    root->setDesc(str(82));
+    root->setText(str(82));
     setSergei();
     root->blow_job();
     setAndrei();
     root->blow_job();
     setIgor();
     checkBoyCsexA();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->analStart(tDick);
     root->anal(tDick);
     root->anal_cum();
-    root->uVSex(lubonus,2);
-    root->addDesc(str(85));
+    root->vSex(lubonus) += 2;
+    root->addText(str(85));
     hantsexa = getRandInt(1,2);
     hantsexb = getRandInt(1,8);
     actions4();
@@ -1996,14 +1996,14 @@ void HanterSex::hantersgrAOsa()
 void HanterSex::hantersgr2VaOi()
 {
     root->incTime(5);
-    root->sVSex(pose,0);
+    root->vSex(pose) = 0;
     root->setImage(media(30));
-    root->setDesc(str(86));
+    root->setText(str(86));
     setIgor();
     root->blow_job();
     setAndrei();
     checkBoyAsex();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->vaginal(tDick);
     hantsexa = getRandInt(1,3);
     hantsexb = getRandInt(1,8);
@@ -2012,48 +2012,48 @@ void HanterSex::hantersgr2VaOi()
 void HanterSex::hantersgr2VOi()
 {
     root->incTime(5);
-    root->sVSex(pose,0);
+    root->vSex(pose) = 0;
     root->setImage(media(36));
-    root->setDesc(str(86));
+    root->setText(str(86));
     setIgor();
     root->blow_job();
     setAndrei();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
     root->sex_cum();
-    root->addDesc(str(68));
+    root->addText(str(68));
     actions5();
 }
 void HanterSex::hantersgr2VO()
 {
     root->incTime(5);
-    root->sVSex(pose,0);
+    root->vSex(pose) = 0;
     root->setImage(media(37));
-    root->setDesc(str(86));
+    root->setText(str(86));
     setIgor();
     root->blow_job();
     setAndrei();
     checkBoyAsex();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
     root->sex_cum();
     setIgor();
     root->fnswallow();
-    root->addDesc(str(87));
+    root->addText(str(87));
     makeActBtn("hantersgrEND",act(9));
 }
 void HanterSex::hantersgr2ViOa()
 {
     root->incTime(5);
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     root->setImage(media(getRandInt(33,34)));
-    root->setDesc(str(88));
+    root->setText(str(88));
     setAndrei();
     root->blow_job();
     setIgor();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     checkBoyCsex();
     root->vaginal(tDick);
     hantsexa = getRandInt(1,3);
@@ -2063,49 +2063,49 @@ void HanterSex::hantersgr2ViOa()
 void HanterSex::hantersgr2ViO()
 {
     root->incTime(5);
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     root->setImage(media(35));
-    root->setDesc(str(88));
+    root->setText(str(88));
     setAndrei();
     root->blow_job();
     setIgor();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     checkBoyCsex();
     root->vaginal(tDick);
     setAndrei();
     root->fnswallow();
-    root->addDesc(str(89));
+    root->addText(str(89));
     actions5();
 }
 void HanterSex::hantersgr2VsO()
 {
     root->incTime(5);
-    root->sVSex(pose,2);
+    root->vSex(pose) = 2;
     root->setImage(media(38));
-    root->setDesc(str(90));
+    root->setText(str(90));
     setIgor();
     root->blow_job();
     setSergei();
     checkBoyBsex();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->vaginal(tDick);
     setIgor();
     root->fnswallow();
-    root->addDesc(str(91));
+    root->addText(str(91));
     if(root->vStatus(health) > 50) makeActBtn("hantersgr1As",act(7));
     else makeActBtn("hantersexfaint",act(14));
 }
 void HanterSex::hantersgr2VaOs()
 {
     root->incTime(5);
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     root->setImage(media(32));
-    root->setDesc(str(92));
+    root->setText(str(92));
     setSergei();
     root->blow_job();
     setAndrei();
     checkBoyAsex();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->vaginal(tDick);
     hantsexa = getRandInt(1,2);
     hantsexb = getRandInt(1,8);
@@ -2114,19 +2114,19 @@ void HanterSex::hantersgr2VaOs()
 void HanterSex::hantersgr2VaO()
 {
     root->incTime(5);
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     root->setImage(media(31));
-    root->setDesc(str(92));
+    root->setText(str(92));
     setSergei();
     root->blow_job();
     setAndrei();
     checkBoyAsex();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->vaginal(tDick);
     setSergei();
-    root->uVSC(swallow,1);
+    root->vStatistics(swallow) += 1;
     root->fnswallow();
-    root->addDesc(str(93));
+    root->addText(str(93));
     hantsexa = getRandInt(1,3);
     if(root->vStatus(health) > 50)
     {
@@ -2139,14 +2139,14 @@ void HanterSex::hantersgr2VaO()
 void HanterSex::hantersgr2AiOs()
 {
     root->incTime(5);
-    root->sVSex(pose,0);
+    root->vSex(pose) = 0;
     root->setImage(media(22));
-    root->setDesc(str(94));
+    root->setText(str(94));
     setSergei();
     root->blow_job();
     setIgor();
     checkBoyCsexA();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->analStart(tDick);
     root->anal(tDick);
     hantsexa = getRandInt(1,3);
@@ -2156,88 +2156,88 @@ void HanterSex::hantersgr2AiOs()
 void HanterSex::hantersgr2AOs()
 {
     root->incTime(5);
-    root->sVSex(pose,0);
+    root->vSex(pose) = 0;
     root->setImage(media(24));
-    root->setDesc(str(94));
+    root->setText(str(94));
     setSergei();
     root->blow_job();
     setIgor();
     checkBoyCsexA();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->analStart(tDick);
     root->anal(tDick);
     root->anal_cum();
-    root->uVSex(lubonus,2);
-    root->addDesc(str(95));
+    root->vSex(lubonus) += 2;
+    root->addText(str(95));
     if(root->vStatus(health) > 50) makeActBtn("hantersgr1As",act(7));
     else makeActBtn("hantersexfaint",act(14));
 }
 void HanterSex::hantersgr2AiO()
 {
     root->incTime(5);
-    root->sVSex(pose,0);
+    root->vSex(pose) = 0;
     root->setImage(media(21));
-    root->setDesc(str(94));
+    root->setText(str(94));
     setSergei();
     root->blow_job();
     setIgor();
     checkBoyCsexA();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->analStart(tDick);
     root->anal(tDick);
     setSergei();
-    root->uVSC(swallow,1);
+    root->vStatistics(swallow) += 1;
     root->fnswallow();
-    root->addDesc(str(96));
+    root->addText(str(96));
     actions5();
 }
 void HanterSex::hantersgr2AOi()
 {
     root->incTime(5);
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     root->setImage(media(23));
-    root->setDesc(str(97));
+    root->setText(str(97));
     setIgor();
     root->blow_job();
     setSergei();
     checkBoyBsexA();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->analStart(tDick);
     root->anal(tDick);
     root->anal_cum();
-    root->addDesc(str(98));
+    root->addText(str(98));
     actions5();
 }
 void HanterSex::hantersgr2AsO()
 {
     root->incTime(5);
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     root->setImage(media(25));
-    root->setDesc(str(97));
+    root->setText(str(97));
     setIgor();
     root->blow_job();
     setSergei();
     checkBoyBsexA();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->analStart(tDick);
     root->anal(tDick);
     setIgor();
     root->fnswallow();
-    root->addDesc(str(99));
+    root->addText(str(99));
     if(root->vStatus(health) > 50) makeActBtn("hantersgr1As",act(7));
     else makeActBtn("hantersexfaint",act(14));
 }
 void HanterSex::hantersgr2DPVaAs()
 {
     root->incTime(5);
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     root->setImage(media(getRandInt(27,29)));
-    root->setDesc(str(100));
+    root->setText(str(100));
     setAndrei();
     setSergei2();
     checkBoyAsex();
     checkBoyBsexA();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->dp_start();
     root->double_penetration();
     hantsexa = getRandInt(1,2);
@@ -2247,18 +2247,18 @@ void HanterSex::hantersgr2DPVaAs()
 void HanterSex::hantersgr2DPVaA()
 {
     root->incTime(5);
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     root->setImage(media(26));
-    root->setDesc(str(100));
+    root->setText(str(100));
     setAndrei();
     setSergei2();
     checkBoyAsex();
     checkBoyBsexA();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->dp_start();
     root->double_penetration();
-    root->addDesc(str(101));
-    root->uVSex(lubonus,2);
+    root->addText(str(101));
+    root->vSex(lubonus) += 2;
     root->cum("anus");
     hantsexa = getRandInt(1,3);
     if(root->vStatus(health) > 50)
@@ -2272,93 +2272,93 @@ void HanterSex::hantersgr2DPVaA()
 void HanterSex::hantersgrO2()
 {
     root->incTime(5);
-    root->sVSex(pose,0);
+    root->vSex(pose) = 0;
     root->cum("face");
     root->cum("lip");
-    root->uVSC(swallow,2);
+    root->vStatistics(swallow) += 2;
     root->setImage(media(getRandInt(46,47)));
-    root->setDesc(str(102));
+    root->setText(str(102));
     makeActBtn("hantersgrEND",act(9));
 }
 void HanterSex::hantersgr1Va()
 {
     root->incTime(5);
-    root->sVSex(pose,2);
+    root->vSex(pose) = 2;
     root->setImage(media(20));
-    root->setDesc(str(103));
+    root->setText(str(103));
     setAndrei();
     checkBoyAsex();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->sexStart();
     root->vaginal(tDick);
     root->sex_cum();
-    root->addDesc(str(104));
+    root->addText(str(104));
     makeActBtn("hantersgrEND",act(9));
 }
 void HanterSex::hantersgr1Ai()
 {
     root->incTime(5);
-    root->sVSex(pose,0);
+    root->vSex(pose) = 0;
     root->setImage(media(18));
-    root->setDesc(str(106));
+    root->setText(str(106));
     setIgor();
     checkBoyCsexA();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->analStart(tDick);
     root->anal(tDick);
     root->anal_cum();
-    root->addDesc(str(105));
+    root->addText(str(105));
     makeActBtn("hantersgrEND",act(9));
 }
 void HanterSex::hantersgr1Aa()
 {
     root->incTime(5);
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     root->setImage(media(17));
-    root->setDesc(str(107));
+    root->setText(str(107));
     setAndrei();
     checkBoyAsexA();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->analStart(tDick);
     root->anal(tDick);
     root->anal_cum();
-    root->addDesc(str(108));
+    root->addText(str(108));
     makeActBtn("hantersgrEND",act(9));
 }
 void HanterSex::hantersgr1As()
 {
     root->incTime(5);
-    root->sVSex(pose,1);
+    root->vSex(pose) = 1;
     root->setImage(media(19));
-    root->setDesc(str(109));
+    root->setText(str(109));
     setSergei();
     checkBoyBsexA();
-    root->sVSex(protect,1);
+    root->vSex(protect) = 1;
     root->analStart(tDick);
     root->anal(tDick);
     root->anal_cum();
-    root->addDesc(str(110));
+    root->addText(str(110));
     makeActBtn("hantersgrEND",act(9));
 }
 void HanterSex::hantersgrO1()
 {
     root->incTime(5);
-    root->sVSex(pose,0);
+    root->vSex(pose) = 0;
     root->cum("face");
     root->cum("lip");
-    root->uVSC(swallow,2);
+    root->vStatistics(swallow) += 2;
     root->setImage(media(45));
-    root->setDesc(str(111));
+    root->setText(str(111));
     makeActBtn("hantersgrEND",act(9));
 }
 
 void HanterSex::hantersexfaint()
 {
     root->incTime(1);
-    root->uVStatus(horny,getRandInt(5,10));
+    root->vStatus(horny) += getRandInt(5,10);
     root->setImage(media(171));
-    root->setDesc(str(112));
-    if(root->gVEvent(hantersRape) == 4 || root->gVEvent(hantdanceslut) == 4)
+    root->setText(str(112));
+    if(root->vEvent(hantersRape) == 4 || root->vEvent(hantdanceslut) == 4)
         makeActBtn("hantersexfaint_up1",act(17));
     else
         makeActBtn("hantersexfaint_up2",act(17));
@@ -2369,7 +2369,7 @@ void HanterSex::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action,"HanterSex");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &HanterSex::actionHandler);
-    root->addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString HanterSex::str(int id)
@@ -2897,20 +2897,20 @@ void HanterSex::resetCounters()
 
 void HanterSex::checkHantSex()
 {
-    if(root->gVEvent(hantersAndreisex) == 0)
+    if(root->vEvent(hantersAndreisex) == 0)
     {
-        root->sVEvent(hantersAndreisex,1);
-        root->uVSex(guy,1);
+        root->vEvent(hantersAndreisex) = 1;
+        root->vSex(guy) += 1;
     }
-    if(root->gVEvent(hantersSergeisex) == 0)
+    if(root->vEvent(hantersSergeisex) == 0)
     {
-        root->sVEvent(hantersSergeisex,1);
-        root->uVSex(guy,1);
+        root->vEvent(hantersSergeisex) = 1;
+        root->vSex(guy) += 1;
     }
-    if(root->gVEvent(hantersIgorsex) == 0)
+    if(root->vEvent(hantersIgorsex) == 0)
     {
-        root->sVEvent(hantersIgorsex,1);
-        root->uVSex(guy,1);
+        root->vEvent(hantersIgorsex) = 1;
+        root->vSex(guy) += 1;
     }
 }
 
@@ -2919,7 +2919,7 @@ void HanterSex::checkBoyAsex()
     if(boyAsex == 0)
     {
         boyAsex = 1;
-        root->uVSC(vaginalSex,1);
+        root->vStatistics(vaginalSex) += 1;
     }
 }
 
@@ -2928,7 +2928,7 @@ void HanterSex::checkBoyAsexA()
     if(boyAsexA == 0)
     {
         boyAsexA = 1;
-        root->uVSC(analSex,1);
+        root->vStatistics(analSex) += 1;
     }
 }
 
@@ -2937,7 +2937,7 @@ void HanterSex::checkBoyBsex()
     if(boyBsex == 0)
     {
         boyBsex = 1;
-        root->uVSC(vaginalSex,1);
+        root->vStatistics(vaginalSex) += 1;
     }
 }
 
@@ -2946,7 +2946,7 @@ void HanterSex::checkBoyBsexA()
     if(boyBsexA == 0)
     {
         boyBsexA = 1;
-        root->uVSC(analSex,1);
+        root->vStatistics(analSex) += 1;
     }
 }
 
@@ -2955,7 +2955,7 @@ void HanterSex::checkBoyCsex()
     if(boyCsex == 0)
     {
         boyCsex = 1;
-        root->uVSC(vaginalSex,1);
+        root->vStatistics(vaginalSex) += 1;
     }
 }
 
@@ -2964,13 +2964,13 @@ void HanterSex::checkBoyCsexA()
     if(boyCsexA == 0)
     {
         boyCsexA = 1;
-        root->uVSC(analSex,1);
+        root->vStatistics(analSex) += 1;
     }
 }
 
 void HanterSex::setAIMV()
 {
-    int partner = root->gVEvent(temphant);
+    int partner = root->vEvent(temphant);
     if(partner <= 2) setAndrei();
     if(partner == 3) setIgor();
     if(partner == 4 || partner == 5) setMitka();
@@ -2979,7 +2979,7 @@ void HanterSex::setAIMV()
 
 void HanterSex::setSIKV()
 {
-    int partner = root->gVEvent(temphant);
+    int partner = root->vEvent(temphant);
     if(partner == 1 || partner == 3) setSergei();
     if(partner == 2) setIgor();
     if(partner == 4 || partner == 6) setKolyamba();
@@ -2989,55 +2989,55 @@ void HanterSex::setSIKV()
 void HanterSex::setIgor()
 {
     root->setBoyName(str(2));
-    root->sVSex(silavag,2);
-    root->sVSex(dick,16);
+    root->vSex(silavag) = 2;
+    root->vSex(dick) = 16;
 }
 
 void HanterSex::setIgor2()
 {
     root->setBoy2Name(str(2));
-    root->sVSex(silavag,2);
-    root->sVSex(dick2,16);
+    root->vSex(silavag) = 2;
+    root->vSex(dick2) = 16;
 }
 
 void HanterSex::setSergei()
 {
     root->setBoyName(str(3));
-    root->sVSex(silavag,1);
-    root->sVSex(dick,18);
+    root->vSex(silavag) = 1;
+    root->vSex(dick) = 18;
 }
 
 void HanterSex::setSergei2()
 {
     root->setBoy2Name(str(3));
-    root->sVSex(silavag,1);
-    root->sVSex(dick2,18);
+    root->vSex(silavag) = 1;
+    root->vSex(dick2) = 18;
 }
 
 void HanterSex::setAndrei()
 {
     root->setBoyName(str(4));
-    root->sVSex(silavag,0);
-    root->sVSex(dick,20);
+    root->vSex(silavag) = 0;
+    root->vSex(dick) = 20;
 }
 
 void HanterSex::setMitka()
 {
     root->setBoyName(str(34));
-    root->sVSex(silavag,0);
-    root->sVSex(dick,16);
+    root->vSex(silavag) = 0;
+    root->vSex(dick) = 16;
 }
 
 void HanterSex::setVasyan()
 {
     root->setBoyName(str(35));
-    root->sVSex(silavag,0);
-    root->sVSex(dick,14);
+    root->vSex(silavag) = 0;
+    root->vSex(dick) = 14;
 }
 
 void HanterSex::setKolyamba()
 {
     root->setBoyName(str(36));
-    root->sVSex(silavag,0);
-    root->sVSex(dick,15);
+    root->vSex(silavag) = 0;
+    root->vSex(dick) = 15;
 }

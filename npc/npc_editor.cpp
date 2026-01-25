@@ -2,7 +2,7 @@
 #include "../Functions.h"
 #include "../menu/mainwindow.h"
 
-NPC_Editor::NPC_Editor(QWidget* ptr): root(ptr) {}
+NPC_Editor::NPC_Editor(Game* ptr): root(ptr) {}
 
 NPC& NPC_Editor::gNPC(int i)
 {
@@ -189,8 +189,8 @@ void NPC_Editor::rendNpcProfile(NPCId id)
     card += " <a href=getNpcSmallProfile-" + intQStr(id) + "><img src='data/img/icons/info.png'></img></a>";
     card += "</td></tr>";
     card += "</table>";
-    ((MainWindow*)root)->pageRender->getImagePtr()->setText(card);
-    connect(((MainWindow*)root)->pageRender->getImagePtr(), &QLabel::linkActivated, this, &NPC_Editor::slotActHandler);
+    root->getImagePtr()->setText(card);
+    connect(root->getImagePtr(), &QLabel::linkActivated, this, &NPC_Editor::slotActHandler);
     // qDebug() << card;
 }
 
@@ -279,37 +279,37 @@ void NPC_Editor::changeRep(char act, int id, int val, int cup, bool msgShow)
 
 int NPC_Editor::getAge()
 {
-    return ((MainWindow*)root)->m_player->getAge();
+    return root->getAge();
 }
 
 int NPC_Editor::gVStatus(Status param)
 {
-    return ((MainWindow*)root)->m_player->getVStatus(param);
+    return root->vStatus(param);
 }
 
 int NPC_Editor::gVSKill(Skills param)
 {
-    return ((MainWindow*)root)->m_player->getSkillValue(param);
+    return root->vSkill(param);
 }
 
 int NPC_Editor::gVQuest(QuestParams param)
 {
-    return ((MainWindow*)root)->locHandler->gVQuest(param);
+    return root->vQuest(param);
 }
 
 int NPC_Editor::gVEvent(EventParams param)
 {
-    return ((MainWindow*)root)->locHandler->gVEvent(param);
+    return root->vEvent(param);
 }
 
 LocId NPC_Editor::getCurLocId()
 {
-    return ((MainWindow*)root)->locHandler->getCurLoc();
+    return root->getCurLoc();
 }
 
 void NPC_Editor::sendNotif(QString msg)
 {
-    ((MainWindow*)root)->showNotif(msg);
+    root->sendNotif(msg);
 }
 
 void NPC_Editor::message(QString type)

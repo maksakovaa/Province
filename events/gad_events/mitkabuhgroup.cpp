@@ -1,21 +1,21 @@
 #include "mitkabuhgroup.h"
-#include "../eventhandler.h"
+#include "../../game.h"
 #include "../../menu/buttons.h"
 #include "../../Functions.h"
 
-MitkaBuhGroup::MitkaBuhGroup(EventHandler* ptr): root(ptr) {}
+MitkaBuhGroup::MitkaBuhGroup(Game* ptr): root(ptr) {}
 
 void MitkaBuhGroup::start(QString arg)
 {
-    if(root->gVEvent(miraingop) == 1 && root->gVQuest(miragopQW) > 0)
+    if(root->vEvent(miraingop) == 1 && root->vQuest(miragopQW) > 0)
     {
         root->setImage(media(0));
-        root->setDesc(str(0));
+        root->setText(str(0));
         if(root->vAddict(alko) >= 8)
         {
             root->setImage(media(1));
-            root->setDesc(str(1));
-            if(root->gVEvent(mitkasextimes) >= 15)
+            root->setText(str(1));
+            if(root->vEvent(mitkasextimes) >= 15)
             {
                 int tmp = getRandInt(0,5);
                 if(tmp == 0) makeActBtn("BJtriple1",act(0));
@@ -40,12 +40,12 @@ void MitkaBuhGroup::actionHandler(QString action)
     if(action == "BJtriple1")
     {
         root->incTime(10);
-        root->uVStatus(horny,10);
-        root->uVSC(blowJob,3);
-        if(root->gVQuest(miragopQW) < 20)
-            root->uVQuest(miragopQW,1);
+        root->vStatus(horny) += 10;
+        root->vStatistics(blowJob) += 3;
+        if(root->vQuest(miragopQW) < 20)
+            root->vQuest(miragopQW) += 1;
         root->setImage(media(getRandInt(2,9)));
-        root->setDesc(str(5));
+        root->setText(str(5));
         setMitka();
         root->blow_job();
         setVasyan();
@@ -57,44 +57,44 @@ void MitkaBuhGroup::actionHandler(QString action)
     if(action == "cum1")
     {
         root->incTime(10);
-        root->uVStatus(horny,10);
-        root->uVSC(swallow,3);
+        root->vStatus(horny) += 10;
+        root->vStatistics(swallow) += 3;
         root->cum("lip");
-        root->uVSkill(domination,-1);
+        root->vSkill(domination) -= 1;
         root->setImage(media(getRandInt(10,14)));
-        root->setDesc(str(6));
+        root->setText(str(6));
         makeActBtn("gadukino",act(6));
     }
     if(action == "BJtriple2")
     {
         root->incTime(15);
-        root->uVStatus(horny,30);
+        root->vStatus(horny) += 30;
         root->cum("face");
-        root->uVSC(blowJob,3);
-        root->uVSkill(domination,-1);
-        if(root->gVQuest(miragopQW) < 20)
-            root->uVQuest(miragopQW,1);
+        root->vStatistics(blowJob) += 3;
+        root->vSkill(domination) -= 1;
+        if(root->vQuest(miragopQW) < 20)
+            root->vQuest(miragopQW) += 1;
         root->setImage(media(getRandInt(15,19)));
-        root->setDesc(str(7));
+        root->setText(str(7));
         setMitka();
         root->blow_job();
         setVasyan();
         root->blow_job();
         setKolyamba();
         root->blow_job();
-        root->addDesc(str(8));
+        root->addText(str(8));
         makeActBtn("gadukino",act(6));
     }
     if(action == "mitkaSex1")
     {
         root->incTime(15);
         setMitka();
-        root->sVSex(pose,1);
-        root->uVSkill(domination,-1);
-        if(root->gVQuest(miragopQW) < 30)
-            root->uVQuest(miragopQW,1);
+        root->vSex(pose) = 1;
+        root->vSkill(domination) -= 1;
+        if(root->vQuest(miragopQW) < 30)
+            root->vQuest(miragopQW) += 1;
         root->setImage(media(getRandInt(20,24)));
-        root->setDesc(str(9));
+        root->setText(str(9));
         sexDepOnMesec();
         makeActBtn("kolyaSex1",act(7));
     }
@@ -102,8 +102,8 @@ void MitkaBuhGroup::actionHandler(QString action)
     {
         root->incTime(15);
         setKolyamba();
-        root->sVSex(pose,1);
-        root->uVSkill(domination,-1);
+        root->vSex(pose) = 1;
+        root->vSkill(domination) -= 1;
         root->setImage(media(getRandInt(20,24)));
         sexDepOnMesec();
         makeActBtn("vasyaSex1",act(8));
@@ -112,50 +112,50 @@ void MitkaBuhGroup::actionHandler(QString action)
     {
         root->incTime(15);
         setVasyan();
-        root->sVSex(pose,1);
-        root->uVSkill(domination,-1);
+        root->vSex(pose) = 1;
+        root->vSkill(domination) -= 1;
         root->setImage(media(getRandInt(20,24)));
         sexDepOnMesec();
-        root->uVSC(gangBang,1);
+        root->vStatistics(gangBang) += 1;
         makeActBtn("cum2",act(5));
     }
     if(action == "cum2")
     {
         root->incTime(10);
-        root->uVStatus(horny,10);
-        root->uVSC(swallow,3);
+        root->vStatus(horny) += 10;
+        root->vStatistics(swallow) += 3;
         root->cum("lip");
-        root->uVSkill(domination,-1);
+        root->vSkill(domination) -= 1;
         root->setImage(media(getRandInt(10,14)));
-        root->setDesc(str(10));
+        root->setText(str(10));
         makeActBtn("gadukino",act(6));
     }
     if(action == "inBed1")
     {
-        root->uVStatus(horny,30);
+        root->vStatus(horny) += 30;
         root->incTime(5);
-        root->uVEvent(mitkasextimes,1);
-        if(root->gVQuest(miragopQW) < 30)
-            root->uVQuest(miragopQW,1);
+        root->vEvent(mitkasextimes) += 1;
+        if(root->vQuest(miragopQW) < 30)
+            root->vQuest(miragopQW) += 1;
         root->setImage(media(getRandInt(28,29)));
-        root->setDesc(str(11));
+        root->setText(str(11));
         makeActBtn("inBed1.1",act(9));
     }
     if(action == "inBed1.1")
     {
-        root->uVSkill(domination,-2);
-        root->uVStatus(horny,30);
-        root->sVSex(pose,0);
-        root->uVSC(gangBang,1);
+        root->vSkill(domination) -= 2;
+        root->vStatus(horny) += 30;
+        root->vSex(pose) = 0;
+        root->vStatistics(gangBang) += 1;
         root->incTime(10);
         root->setImage(media(getRandInt(26,27)));
-        root->setDesc(str(12));
+        root->setText(str(12));
         makeActBtn("inBed1.2",act(10));
     }
     if(action == "inBed1.2")
     {
         setKolyamba();
-        root->uVStatus(horny,10);
+        root->vStatus(horny) += 10;
         root->incTime(10);
         root->setImage(media(getRandInt(30,34)));
         root->analStart(tDick);
@@ -167,10 +167,10 @@ void MitkaBuhGroup::actionHandler(QString action)
     if(action == "inBed1.3")
     {
         setMitka();
-        root->uVStatus(horny,40);
+        root->vStatus(horny) += 40;
         root->incTime(10);
         root->setImage(media(getRandInt(35,39)));
-        root->sVSex(protect,1);
+        root->vSex(protect) = 1;
         root->sexStart();
         root->vaginal(tDick);
         root->sex_cum();
@@ -178,37 +178,37 @@ void MitkaBuhGroup::actionHandler(QString action)
     }
     if(action == "inBed1.4")
     {
-        root->uVSC(blowJob,1);
+        root->vStatistics(blowJob) += 1;
         setVasyan();
-        root->uVStatus(horny,15);
+        root->vStatus(horny) += 15;
         root->incTime(5);
         root->cum("lip");
         root->setImage(media(getRandInt(10,12)));
         root->blow_job();
-        root->addDesc(str(13));
+        root->addText(str(13));
         makeActBtn("gadukino",act(6));
     }
     if(action == "goGuys")
     {
         root->incTime(15);
-        root->uVSkill(domination,-2);
-        root->sVSex(pose,1);
-        if(root->gVEvent(mitkasextimes) < 20)
-            root->uVEvent(mitkasextimes,1);
-        if(root->gVQuest(miragopQW) < 30)
-            root->uVQuest(miragopQW,1);
+        root->vSkill(domination) -= 2;
+        root->vSex(pose) = 1;
+        if(root->vEvent(mitkasextimes) < 20)
+            root->vEvent(mitkasextimes) += 1;
+        if(root->vQuest(miragopQW) < 30)
+            root->vQuest(miragopQW) += 1;
         root->setImage(media(40));
-        root->setDesc(str(14));
+        root->setText(str(14));
         if(getRandInt(0,5) < 4) makeActBtn("goGuys1",act(10));
         else makeActBtn("goGuys2",act(10));
     }
     if(action == "goGuys1")
     {
         setVasyan();
-        root->uVStatus(horny,50);
+        root->vStatus(horny) += 50;
         root->incTime(10);
         root->setImage(media(getRandInt(35,39)));
-        root->sVSex(protect,1);
+        root->vSex(protect) = 1;
         root->sexStart();
         root->vaginal(tDick);
         root->sex_cum();
@@ -217,22 +217,22 @@ void MitkaBuhGroup::actionHandler(QString action)
     if(action == "goGuys1.1")
     {
         setKolyamba();
-        root->uVStatus(horny,15);
-        root->uVSC(blowJob,1);
+        root->vStatus(horny) += 15;
+        root->vStatistics(blowJob) += 1;
         root->incTime(5);
         root->cum("lip");
         root->setImage(media(getRandInt(13,14)));
         root->blow_job();
-        root->addDesc(str(13));
+        root->addText(str(13));
         makeActBtn("gadukino",act(6));
     }
     if(action == "goGuys2")
     {
         setKolyamba();
-        root->uVStatus(horny,10);
+        root->vStatus(horny) += 10;
         root->incTime(10);
         root->cum("anus");
-        root->uVBody(anus,1);
+        root->vBody(anus) += 1;
         root->setImage(media(getRandInt(30,34)));
         root->analStart(tDick);
         root->anal(tDick);
@@ -242,34 +242,34 @@ void MitkaBuhGroup::actionHandler(QString action)
     if(action == "goGuys2.1")
     {
         setVasyan();
-        root->uVStatus(horny,15);
+        root->vStatus(horny) += 15;
         root->incTime(5);
-        root->uVSC(blowJob,1);
+        root->vStatistics(blowJob) += 1;
         root->cum("lip");
         root->setImage(media(getRandInt(13,14)));
         root->blow_job();
-        root->addDesc(str(13));
+        root->addText(str(13));
         makeActBtn("gadukino",act(6));
     }
     if(action == "standPose")
     {
         root->incTime(15);
-        root->sVSex(pose,1);
-        root->uVSkill(domination,-2);
-        if(root->gVQuest(miragopQW) < 30)
-            root->uVQuest(miragopQW,1);
+        root->vSex(pose) = 1;
+        root->vSkill(domination) -= 2;
+        if(root->vQuest(miragopQW) < 30)
+            root->vQuest(miragopQW) += 1;
         root->setImage(media(29));
-        root->setDesc(str(15));
+        root->setText(str(15));
         if(getRandInt(0,5) < 4) makeActBtn("standPose1",act(10));
         else makeActBtn("standPose2",act(10));
     }
     if(action == "standPose1")
     {
         setVasyan();
-        root->uVStatus(horny,50);
+        root->vStatus(horny) += 50;
         root->incTime(10);
         root->setImage(media(getRandInt(20,24)));
-        root->sVSex(protect,1);
+        root->vSex(protect) = 1;
         root->sexStart();
         root->vaginal(tDick);
         root->sex_cum();
@@ -278,22 +278,22 @@ void MitkaBuhGroup::actionHandler(QString action)
     if(action == "standPose1.1")
     {
         setKolyamba();
-        root->uVStatus(horny,15);
+        root->vStatus(horny) += 15;
         root->incTime(5);
-        root->uVSC(blowJob,1);
+        root->vStatistics(blowJob) += 1;
         root->cum("lip");
         root->setImage(media(getRandInt(13,14)));
         root->blow_job();
-        root->addDesc(str(13));
+        root->addText(str(13));
         makeActBtn("gadukino",act(6));
     }
     if(action == "standPose2")
     {
         setKolyamba();
-        root->uVStatus(horny,10);
+        root->vStatus(horny) += 10;
         root->incTime(10);
         root->cum("anus");
-        root->uVBody(anus,1);
+        root->vBody(anus) += 1;
         root->setImage(media(getRandInt(20,24)));
         root->analStart(tDick);
         root->anal(tDick);
@@ -303,13 +303,13 @@ void MitkaBuhGroup::actionHandler(QString action)
     if(action == "standPose2.1")
     {
         setVasyan();
-        root->uVStatus(horny,15);
+        root->vStatus(horny) += 15;
         root->incTime(5);
-        root->uVSC(blowJob,1);
+        root->vStatistics(blowJob) += 1;
         root->cum("lip");
         root->setImage(media(getRandInt(13,14)));
         root->blow_job();
-        root->addDesc(str(13));
+        root->addText(str(13));
         makeActBtn("gadukino",act(6));
     }
     if(action == "drink")
@@ -317,72 +317,72 @@ void MitkaBuhGroup::actionHandler(QString action)
         root->fnAlko(getRandInt(3,5));
         order = 2;
         root->setImage(media(41));
-        root->setDesc(str(16));
+        root->setText(str(16));
         makeActBtn("mitkabuhgroup",act(12));
     }
     if(action == "drinkMira")
     {
-        root->uVEvent(miralko,getRandInt(1,4));
+        root->vEvent(miralko) += getRandInt(1,4);
         root->incTime(15);
         order = 1;
         mirapiss = getRandInt(0,10);
-        if(root->gVQuest(miragopQW) >= 15 && mirapiss <= 2)
+        if(root->vQuest(miragopQW) >= 15 && mirapiss <= 2)
         {
             root->incTime(5);
-            if(root->gVQuest(miragopQW) < 20)
-                root->uVQuest(miragopQW,1);
+            if(root->vQuest(miragopQW) < 20)
+                root->vQuest(miragopQW) += 1;
             root->setImage(media(42));
-            root->setDesc(str(18));
+            root->setText(str(18));
             makeActBtn("suckVasya",act(0));
         }
-        else if(root->gVQuest(miragopQW) >= 15 && mirapiss >= 3 && mirapiss < 6)
+        else if(root->vQuest(miragopQW) >= 15 && mirapiss >= 3 && mirapiss < 6)
         {
-            if(root->gVEvent(miralko) >= 4)
+            if(root->vEvent(miralko) >= 4)
             {
                 root->incTime(5);
-                if(root->gVQuest(miragopQW) < 30)
-                    root->uVQuest(miragopQW,1);
+                if(root->vQuest(miragopQW) < 30)
+                    root->vQuest(miragopQW) += 1;
                 root->setImage(media(55));
-                root->setDesc(str(24));
+                root->setText(str(24));
                 makeActBtn("onBench",act(17));
             }
             else
             {
                 root->incTime(5);
-                if(root->gVQuest(miragopQW) < 20)
-                    root->uVQuest(miragopQW,1);
+                if(root->vQuest(miragopQW) < 20)
+                    root->vQuest(miragopQW) += 1;
                 root->setImage(media(56));
-                root->setDesc(str(25));
+                root->setText(str(25));
                 makeActBtn("suckVasya2",act(0));
             }
         }
-        else if(root->gVQuest(miragopQW) >= 15 && mirapiss == 6)
+        else if(root->vQuest(miragopQW) >= 15 && mirapiss == 6)
         {
-            if(root->gVEvent(miralko) >= 4)
+            if(root->vEvent(miralko) >= 4)
             {
                 root->incTime(5);
-                if(root->gVQuest(miragopQW) < 30)
-                    root->uVQuest(miragopQW,1);
-                if(root->gVEvent(mitkasextimes) < 20)
-                    root->uVEvent(mitkasextimes,1);
+                if(root->vQuest(miragopQW) < 30)
+                    root->vQuest(miragopQW) += 1;
+                if(root->vEvent(mitkasextimes) < 20)
+                    root->vEvent(mitkasextimes) += 1;
                 root->setImage(media(61));
-                root->setDesc(str(32));
+                root->setText(str(32));
                 makeActBtn("joinMiraMastr",act(18));
             }
             else
             {
                 root->incTime(5);
-                if(root->gVQuest(miragopQW) < 25)
-                    root->uVQuest(miragopQW,1);
+                if(root->vQuest(miragopQW) < 25)
+                    root->vQuest(miragopQW) += 1;
                 root->setImage(media(42));
-                root->setDesc(str(33));
+                root->setText(str(33));
                 makeActBtn("dance",act(19));
             }
         }
         else
         {
             root->setImage(media(41));
-            root->setDesc(str(17));
+            root->setText(str(17));
             makeActBtn("mitkabuhgroup",act(15));
         }
     }
@@ -391,54 +391,54 @@ void MitkaBuhGroup::actionHandler(QString action)
     {
         setVasyan();
         root->incTime(10);
-        root->uVStatus(horny,10);
-        root->uVSC(blowJob,1);
+        root->vStatus(horny) += 10;
+        root->vStatistics(blowJob) += 1;
         root->setImage(media(getRandInt(43,47)));
-        root->setDesc(str(19));
+        root->setText(str(19));
         root->blow_job();
         makeActBtn("swallowVasya",act(5));
     }
     if(action == "swallowVasya")
     {
         root->incTime(10);
-        root->uVSC(swallow,1);
-        root->uVStatus(horny,10);
+        root->vStatistics(swallow) += 1;
+        root->vStatus(horny) += 10;
         root->cum("lip");
-        root->uVSkill(domination,-1);
+        root->vSkill(domination) -= 1;
         root->setImage(media(getRandInt(48,52)));
-        root->setDesc(str(20));
+        root->setText(str(20));
         makeActBtn("suckKolya",act(0));
     }
     if(action == "suckKolya")
     {
         setKolyamba();
         root->incTime(10);
-        root->uVStatus(horny,10);
-        root->uVSC(blowJob,1);
+        root->vStatus(horny) += 10;
+        root->vStatistics(blowJob) += 1;
         root->setImage(media(getRandInt(45,47)));
-        root->setDesc(str(21));
+        root->setText(str(21));
         root->blow_job();
         makeActBtn("swallowKolya",act(5));
     }
     if(action == "swallowKolya")
     {
         root->incTime(10);
-        root->uVSC(swallow,1);
-        root->uVStatus(horny,10);
+        root->vStatistics(swallow) += 1;
+        root->vStatus(horny) += 10;
         root->cum("lip");
-        root->uVSkill(domination,-1);
+        root->vSkill(domination) -= 1;
         root->setImage(media(getRandInt(48,52)));
-        root->setDesc(str(22));
+        root->setText(str(22));
         makeActBtn("standBehindMitka",act(16));
     }
     if(action == "standBehindMitka")
     {
         root->incTime(15);
         setMitka();
-        root->sVSex(pose,1);
-        root->uVSkill(domination,-1);
+        root->vSex(pose) = 1;
+        root->vSkill(domination) -= 1;
         root->setImage(media(getRandInt(53,54)));
-        root->setDesc(str(23));
+        root->setText(str(23));
         sexDepOnMesec();
         makeActBtn("gadukino",act(6));
     }
@@ -446,26 +446,26 @@ void MitkaBuhGroup::actionHandler(QString action)
     if(action == "onBench")
     {
         root->incTime(5);
-        root->uVStatus(horny,20);
+        root->vStatus(horny) += 20;
         root->setImage(media(57));
-        root->setDesc(str(26));
+        root->setText(str(26));
         makeActBtn("onBench1",act(9));
     }
     if(action == "onBench1")
     {
-        root->uVSkill(domination,-2);
-        root->uVStatus(horny,30);
-        root->sVSex(pose,0);
-        root->uVSC(gangBang,1);
+        root->vSkill(domination) -= 2;
+        root->vStatus(horny) += 30;
+        root->vSex(pose) = 0;
+        root->vStatistics(gangBang) += 1;
         root->incTime(10);
         root->setImage(media(58));
-        root->setDesc(str(27));
+        root->setText(str(27));
         makeActBtn("onBench2",act(10));
     }
     if(action == "onBench2")
     {
         setKolyamba();
-        root->uVStatus(horny,10);
+        root->vStatus(horny) += 10;
         root->incTime(10);
         root->cum("anus");
         root->setImage(media(58));
@@ -477,10 +477,10 @@ void MitkaBuhGroup::actionHandler(QString action)
     if(action == "onBench3")
     {
         setMitka();
-        root->uVStatus(horny,40);
+        root->vStatus(horny) += 40;
         root->incTime(10);
         root->setImage(media(59));
-        root->sVSex(protect,1);
+        root->vSex(protect) = 1;
         root->sexStart();
         root->vaginal(tDick);
         root->sex_cum();
@@ -489,13 +489,13 @@ void MitkaBuhGroup::actionHandler(QString action)
     if(action == "onBench4")
     {
         setVasyan();
-        root->uVStatus(horny,15);
+        root->vStatus(horny) += 15;
         root->incTime(5);
         root->cum("lip");
-        root->uVSC(blowJob,1);
+        root->vStatistics(blowJob) += 1;
         root->setImage(media(60));
         root->blow_job();
-        root->addDesc(str(13));
+        root->addText(str(13));
         makeActBtn("gadukino",act(6));
     }
 
@@ -503,86 +503,86 @@ void MitkaBuhGroup::actionHandler(QString action)
     {
         setVasyan();
         root->incTime(10);
-        root->uVStatus(horny,10);
-        root->uVSC(blowJob,1);
+        root->vStatus(horny) += 10;
+        root->vStatistics(blowJob) += 1;
         root->setImage(media(getRandInt(43,47)));
-        root->setDesc(str(19));
+        root->setText(str(19));
         root->blow_job();
         makeActBtn("swallowVasya2",act(5));
     }
     if(action == "swallowVasya2")
     {
         root->incTime(10);
-        root->uVSC(swallow,1);
-        root->uVStatus(horny,10);
+        root->vStatistics(swallow) += 1;
+        root->vStatus(horny) += 10;
         root->cum("lip");
-        root->uVSkill(domination,-1);
+        root->vSkill(domination) -= 1;
         root->setImage(media(getRandInt(48,52)));
-        root->setDesc(str(20));
+        root->setText(str(20));
         makeActBtn("suckKolya2",act(0));
     }
     if(action == "suckKolya2")
     {
         setKolyamba();
         root->incTime(10);;
-        root->uVStatus(horny,10);
-        root->uVSC(blowJob,1);
+        root->vStatus(horny) += 10;
+        root->vStatistics(blowJob) += 1;
         root->setImage(media(getRandInt(43,47)));
-        root->setDesc(str(28));
+        root->setText(str(28));
         root->blow_job();
         makeActBtn("swallovKolya2",act(5));
     }
     if(action == "swallovKolya2")
     {
         root->incTime(10);
-        root->uVSC(swallow,1);
-        root->uVStatus(horny,10);
+        root->vStatistics(swallow) += 1;
+        root->vStatus(horny) += 10;
         root->cum("lip");
-        root->uVSkill(domination,-1);
+        root->vSkill(domination) -= 1;
         root->setImage(media(getRandInt(48,52)));
-        root->setDesc(str(29));
+        root->setText(str(29));
         makeActBtn("suckMitka",act(0));
     }
     if(action == "suckMitka")
     {
         setMitka();
         root->incTime(10);
-        root->uVStatus(horny,10);
-        root->uVSC(blowJob,1);
+        root->vStatus(horny) += 10;
+        root->vStatistics(blowJob) += 1;
         root->setImage(media(getRandInt(43,47)));
-        root->setDesc(str(30));
+        root->setText(str(30));
         root->blow_job();
         makeActBtn("swallovMitka",act(5));
     }
     if(action == "swallovMitka")
     {
         root->incTime(10);
-        root->uVSC(swallow,1);
-        root->uVStatus(horny,10);
+        root->vStatistics(swallow) += 1;
+        root->vStatus(horny) += 10;
         root->cum("lip");
-        root->uVSkill(domination,-1);
+        root->vSkill(domination) -= 1;
         root->setImage(media(getRandInt(48,52)));
-        root->setDesc(str(31));
+        root->setText(str(31));
         makeActBtn("gadukino",act(6));
     }
 
     if(action == "joinMiraMastr")
     {
         root->incTime(15);
-        root->uVSC(orgasm,1);
-        root->sVStatus(lust,0);
-        root->sVStatus(horny,0);
+        root->vStatistics(orgasm) += 1;
+        root->vStatus(lust) = 0;
+        root->vStatus(horny) = 0;
         if(root->vBody(anus) <= 15) root->setImage(media(62));
         if(root->vBody(anus) > 15) root->setImage(media(63));
-        root->setDesc(str(34));
+        root->setText(str(34));
         makeActBtn("mitkabuhgroup",act(15));
     }
 
     if(action == "dance")
     {
-        root->uVStatus(horny,getRandInt(25,50));
+        root->vStatus(horny) += getRandInt(25,50);
         root->setImage(media(getRandInt(64,67)));
-        root->setDesc(str(35));
+        root->setText(str(35));
         makeActBtn("mitkabuhgroup",act(15));
     }
 
@@ -597,7 +597,7 @@ void MitkaBuhGroup::makeActBtn(QString action, QString actName)
     QActButton* btn = new QActButton(action,"MitkaBuhGroup");
     btn->setText(actName);
     connect(btn, &QActButton::sigAct, this, &MitkaBuhGroup::actionHandler);
-    root->addActBtn(btn);
+    root->addActions(btn);
 }
 
 QString MitkaBuhGroup::str(int id)
@@ -770,22 +770,22 @@ QString MitkaBuhGroup::media(int id)
 void MitkaBuhGroup::setMitka()
 {
     root->setBoyName(str(2));
-    root->sVSex(silavag,0);
-    root->sVSex(dick,16);
+    root->vSex(silavag) = 0;
+    root->vSex(dick) = 16;
 }
 
 void MitkaBuhGroup::setVasyan()
 {
     root->setBoyName(str(3));
-    root->sVSex(silavag,0);
-    root->sVSex(dick,14);
+    root->vSex(silavag) = 0;
+    root->vSex(dick) = 14;
 }
 
 void MitkaBuhGroup::setKolyamba()
 {
     root->setBoyName(str(4));
-    root->sVSex(silavag,0);
-    root->sVSex(dick,15);
+    root->vSex(silavag) = 0;
+    root->vSex(dick) = 15;
 }
 
 void MitkaBuhGroup::sexDepOnMesec()
@@ -798,7 +798,7 @@ void MitkaBuhGroup::sexDepOnMesec()
     }
     else
     {
-        root->sVSex(protect,1);
+        root->vSex(protect) = 1;
         root->sexStart();
         root->vaginal(tDick);
         root->sex_cum();
