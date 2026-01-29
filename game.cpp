@@ -909,14 +909,64 @@ void Game::read_porn()
     m_locs->read_porn();
 }
 
+void Game::crossing(int arg)
+{
+    m_locs->crossing(arg);
+}
+
 void Game::home_workout()
 {
     m_locs->home_workout();
 }
 
+void Game::lokerchoice()
+{
+    m_locs->lokerchoice();
+}
+
+void Game::sitrobrd()
+{
+    m_locs->sitrobrd();
+}
+
+void Game::sitrskakd()
+{
+    m_locs->sitrskakd();
+}
+
+void Game::sitrpressd()
+{
+    m_locs->sitrpressd();
+}
+
+void Game::sitrpushd()
+{
+    m_locs->sitrpushd();
+}
+
+void Game::watch_tv_on_sofa()
+{
+    m_locs->watch_tv_on_sofa();
+}
+
+void Game::run_competition(QString arg)
+{
+    m_locs->run_competition(arg);
+}
+
 void Game::fancywork()
 {
     m_locs->fancywork();
+}
+
+bool Game::check_inhome()
+{
+    return m_locs->check_inhome();
+}
+
+int Game::getClothDecreaseLevel()
+{
+    return m_locs->getClothDecreaseLevel();
 }
 
 void Game::fnSport(int arg)
