@@ -28,6 +28,7 @@ enum QuestParams
     qwZverevaSlut,          //Квест с побитием Зверевой
     qwSonya,                //Квест с Соней по рукам
     qwSoniaSlut,            //Квест с Соней по рукам
+    qwSonyaDay,
     talk_day,               //флаг болтовни с Верой
     qwVeraStory,            //история Веры
     qwTanyaMain,            //квест с Таней
@@ -43,6 +44,9 @@ enum QuestParams
     qwKolkaPrince,          //Квест по Кольке-принцу brother['KolkaPrince']
     qwBrotherNude,          //Квест по показу голого тела Кольке
     qwKolka,
+    qwBrotherHelp,
+    qwBrotherHelpDay,
+    qwBrotherNewYear,
     qwKolkaNewYear,
     qwShopping,
     qwMisha,

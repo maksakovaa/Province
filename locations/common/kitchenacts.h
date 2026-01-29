@@ -21,7 +21,7 @@ public:
     void pills();
     void fatdel();
     void cookie();
-    void all(int arg);
+    void all(int arg = 0);
     void makeActBtn(QString action, QString actName);
 private slots:
     void actionHandler(QString action);

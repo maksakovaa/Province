@@ -7,6 +7,7 @@
 #include <QObject>
 #include "enums.h"
 #include "../items/cloth.h"
+#include "../locations/loc_enums.h"
 
 class MainWindow;
 class Wardrobe;
@@ -50,6 +51,7 @@ public:
     int& vAddict(Addiction param);
     int& vJob(JobStatus param);
     int& vPreg(PregVar param);
+    int& vRep(LocId param);
     int vConst(Const param);
 
     void updSkin(char c, int value);
@@ -155,6 +157,7 @@ private: //members
     std::unordered_map<Sickness, int> m_sick;
     std::unordered_map<Addiction, int> m_addict;
     std::unordered_map<JobStatus, int> m_job;
+    std::unordered_map<LocId, int> m_reputation;
 };
 
 #endif

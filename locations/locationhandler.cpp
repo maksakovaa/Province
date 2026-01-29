@@ -256,6 +256,11 @@ void LocationHandler::getDressed(int arg)
     m_beach->getDressed(arg);
 }
 
+void LocationHandler::kitchenActsAll(int arg)
+{
+    m_kitchenActs->all(arg);
+}
+
 void LocationHandler::drinkAll()
 {
     m_kitchenActs->drink_all();

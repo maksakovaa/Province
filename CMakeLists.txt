@@ -149,6 +149,10 @@ qt_add_executable(Game
     game.h game.cpp
     locations/parents/sitrpar.h locations/parents/sitrpar.cpp
     locations/parents/kuhrpar.h locations/parents/kuhrpar.cpp
+    events/parent_events/brotherevents.h events/parent_events/brotherevents.cpp
+    events/parent_events/dinmother.h events/parent_events/dinmother.cpp
+    player/reputation.h player/reputation.cpp
+    events/parent_events/dinsister.h events/parent_events/dinsister.cpp
 )
 
 target_include_directories(Game BEFORE PRIVATE ./map ./menu ./player)

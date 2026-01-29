@@ -17,6 +17,7 @@ struct NPC
     int silavag;
     bool know;
     int talk_count = 0;
+    int talk_max_count = 0;
     LocId location;
     //параметры для парней для отношений
     int meet_day = 0;

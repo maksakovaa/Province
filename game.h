@@ -8,6 +8,7 @@
 #include "player/pregnancy.h"
 #include "player/ccalko.h"
 #include "player/drugs.h"
+#include "player/reputation.h"
 #include "sex/sexhandler.h"
 #include "sex/ccsex.h"
 #include "weather.h"
@@ -117,6 +118,7 @@ public:
     int& vJob(JobStatus param);
     int& vBuzzer(budilnik param);
     int vConst(Const param);
+    int& vRep(LocId param);
     void updSkin(char c, int value);
     void checkPanties();
     //Desc
@@ -179,6 +181,10 @@ public:
     void slotRiscsUpdate();
     bool condomDef();
     void chanceOfPreg();
+    bool PregVisibility();
+    //Reputation:
+    QString repDesc();
+    int repGet();
 // Locations:
     void setMapAwailable(bool status);
     void setCurrentPage(int id);
@@ -197,6 +203,7 @@ public:
     void swim();
     void getDressed(int arg = 0);
 ///Kitchen acts
+    void kitchenActsAll(int arg = 0);
     void drinkAll();
     void cookies();
     void fatDel();
@@ -247,6 +254,7 @@ public:
     Cloth* wearCloth(Cloth* thing);
     void storeCloth(Cloth* thing, int count = 1);
     void removeCloth(ClothGroup group);
+    ClothMain* addRandCloth(ClothGroup group);
     void sleep();
     QString getBookName(int id);
     void readOnWalk();
@@ -303,6 +311,7 @@ private:
     Drugs* m_drugs;
     Render* m_render;
     QVBoxLayout* m_actions;
+    Reputation m_rep;
 };
 
 #endif // GAME_H

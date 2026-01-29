@@ -1,7 +1,7 @@
 #include "cloth.h"
 #include "../Functions.h"
 
-Cloth::Cloth(ClothType type, QString name, int price, int condition) : m_type(type), m_name(name), m_price(price), m_condition(condition) {}
+Cloth::Cloth(ClothType type, QString name, int price, int condition) : m_type(type), m_name(name), m_price(price), m_condition(condition){}
 
 ClothType Cloth::getClothType()
 {
@@ -28,7 +28,8 @@ int Cloth::getPrice()
     return m_price;
 }
 
-ClothMain::ClothMain(int id, ClothGroup group, QString name, int price, int condition): Cloth(ClothType::Main, name, price, condition)
+ClothMain::ClothMain(int id, ClothGroup group, QString name, int price, int condition):
+    Cloth(ClothType::Main, name, price, condition)
 {
     m_id = id;
     m_group = group;

@@ -57,6 +57,7 @@ public:
     void swim();
     void getDressed(int arg = 0);
 //Kitchen acts
+    void kitchenActsAll(int arg);
     void drinkAll();
     void cookies();
     void fatDel();

@@ -27,6 +27,7 @@ public:
     void readOnWalk();
     int eroReaded();
     void eroBlock();
+    ClothMain* addRandDress(ClothGroup group);
 public slots:
     void slotViewObj(QString objName);
     void slotInitWardrobe();

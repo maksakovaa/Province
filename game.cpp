@@ -8,7 +8,8 @@ Game::Game(QWidget* ptr, int year, int month, int day, int hour, int min):
     m_time(this, year, month, day, hour, min),
     m_ccalko(this),
     m_preg(this),
-    m_ccsex(this)
+    m_ccsex(this),
+    m_rep(this)
 {
     m_actions = ((MainWindow*)m_window)->ui->actionsLayout;
     m_render = ((MainWindow*)m_window)->m_render;
@@ -29,7 +30,8 @@ Game::Game(QWidget *ptr):
     m_time(this),
     m_ccalko(this),
     m_preg(this),
-    m_ccsex(this)
+    m_ccsex(this),
+    m_rep(this)
 {
     m_actions = ((MainWindow*)m_window)->ui->actionsLayout;
     m_render = ((MainWindow*)m_window)->m_render;
@@ -640,6 +642,11 @@ int Game::vConst(Const param)
     return m_player->vConst(param);
 }
 
+int &Game::vRep(LocId param)
+{
+    return m_player->vRep(param);
+}
+
 void Game::updSkin(char c, int value)
 {
     m_player->updSkin(c,value);
@@ -757,6 +764,21 @@ void Game::chanceOfPreg()
     m_preg.chanceOfPregnancy();
 }
 
+bool Game::PregVisibility()
+{
+    return m_preg.PregVisibility();
+}
+
+QString Game::repDesc()
+{
+    return m_rep.repDesc();
+}
+
+int Game::repGet()
+{
+    return m_rep.repGet();
+}
+
 void Game::setMapAwailable(bool status)
 {
     ((MainWindow*)m_window)->ui->pushButtonMap->setEnabled(status);
@@ -840,6 +862,11 @@ void Game::swim()
 void Game::getDressed(int arg)
 {
     m_locs->getDressed(arg);
+}
+
+void Game::kitchenActsAll(int arg)
+{
+    m_locs->kitchenActsAll(arg);
 }
 
 void Game::drinkAll()
@@ -1055,6 +1082,11 @@ void Game::storeCloth(Cloth *thing, int count)
 void Game::removeCloth(ClothGroup group)
 {
     m_objs->removeCloth(group);
+}
+
+ClothMain *Game::addRandCloth(ClothGroup group)
+{
+    return m_objs->addRandDress(group);
 }
 
 void Game::sleep()

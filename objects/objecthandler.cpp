@@ -54,6 +54,11 @@ void ObjectHandler::eroBlock()
     m_books->erotic_block();
 }
 
+ClothMain *ObjectHandler::addRandDress(ClothGroup group)
+{
+    return m_wardrobe->addRandDress(group);
+}
+
 void ObjectHandler::slotViewObj(QString objName)
 {
     if (objName == "wardrobe")

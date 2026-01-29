@@ -60,6 +60,24 @@ void Wardrobe::removeCloth(ClothGroup group)
     }
 }
 
+ClothMain *Wardrobe::addRandDress(ClothGroup group)
+{
+    int id = getRandInt(group * 20 - 10, group * 20 + 9);
+    std::unordered_map<ClothGroup, QString> names;
+    names[sportsSuit] = "Спортивынй костюм";
+    names[jeans] = "Джинсы";
+    names[skirt] = "Наряд с юбкой";
+    names[casualDress] = "";
+    names[eveningDress] = "";
+    names[officeSuit] = "Офисный костюм";
+    names[revealingOutfit] = "";
+    names[blouseWithShorts] = "";
+    names[sexualUnderwear] = "";
+    ClothMain* cloth = new ClothMain(id,group,names[group]);
+    addCloth(cloth,1);
+    return cloth;
+}
+
 void Wardrobe::reloadActions()
 {
     makeButtons();

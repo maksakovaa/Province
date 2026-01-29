@@ -44,8 +44,12 @@ enum Events
     eSeeParentSex,
     eMother,
     eFather,
+    eBrother,
     eBrotherEvents,
     efamilySmallTalks,
+    eKolkaPrince,
+    //Sonya
+    eSonya,
     //Reks
     eReks,
     //Tsarev

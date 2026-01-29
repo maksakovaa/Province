@@ -211,6 +211,11 @@ int &Player::vPreg(PregVar param)
     return m_preg[param];
 }
 
+int &Player::vRep(LocId param)
+{
+    return m_reputation[param];
+}
+
 int Player::getClothGroup()
 {
     if(m_clothSLots[ClothType::Main] != nullptr)

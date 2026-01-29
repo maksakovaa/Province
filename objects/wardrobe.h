@@ -24,6 +24,7 @@ public:
     void addCloth(Cloth* thing, int count);
     Cloth* wearCloth(Cloth* thing);
     void removeCloth(ClothGroup group);
+    ClothMain* addRandDress(ClothGroup group);
 public slots:
     void slotUpdSize(int size);
     void reloadActions();
