@@ -27,6 +27,9 @@ public:
     void readOnWalk();
     int eroReaded();
     void eroBlock();
+    int sisBook();
+    int novel_readed();
+    void erotic_enable();
     ClothMain* addRandDress(ClothGroup group);
 public slots:
     void slotViewObj(QString objName);

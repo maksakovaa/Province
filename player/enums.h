@@ -38,7 +38,7 @@ enum Body
     bodyGroup, weight,base_weight,fat,muscles_body,hips,waist,height,throat,vagina,anus,skin,skinTan,skinVan,
     breasts,breastsSize,underBreast,hairColor,hairLength,hairLengthDay,hairStatus,hairCurly,pubisHair,
     legHair,lipbalmstat,lip,piercingA, piercingB, piercingC, piercingD, piercingE,piercingG,
-    piercingF,piercingGL,piercingN,eyeColor,eyeSize,eyeLashes,eyeBrows,blizoruk,makeup,silicone,operation,vidage,
+    piercingF,piercingGL,piercingN, tattooLip, eyeColor,eyeSize,eyeLashes,eyeBrows,blizoruk,makeup,silicone,operation,vidage,
     colorfulLenses,glass
 };
 
@@ -206,6 +206,7 @@ enum PregVar
     pregWeeks,
     birthCtrlPills,
     barrenness,
+    abortion,
     cikl,
     pregAlko,
     estrus
@@ -261,6 +262,7 @@ enum SC     //Статистика
     peek2day,
     peek3day,
     peek4day,
+    voyerParents,
     masturbation,
     blowJob,
     handJob,

@@ -34,16 +34,20 @@ enum QuestParams
     qwTanyaMain,            //квест с Таней
     qwOtchim,               //Квест по развращению отчима
     qwMother,               //Квест с матерью и переход в Олу
+    qwSister,
     qwRexSisTalk,           //разговор с сестрой про Рекса
     qwSisterBoy,            //квест с парнем сестры
+    qwSisBoyParty,
     qwSisterTrio,           //переход квеста с парнем сестры в тройник
     qwSisterLesbi,          //переход квеста с парнем сестры в лесбиянство
     wedding,
     anayslut,
+    qwPool,
     qwPornoFootball,        //Квест по просмотру порно с братцем вместо футбола
     qwKolkaPrince,          //Квест по Кольке-принцу brother['KolkaPrince']
     qwBrotherNude,          //Квест по показу голого тела Кольке
     qwKolka,
+    qwKolkaTel,
     qwBrotherHelp,
     qwBrotherHelpDay,
     qwBrotherNewYear,

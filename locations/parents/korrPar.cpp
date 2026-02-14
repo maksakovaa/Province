@@ -37,6 +37,20 @@ bool korrPar::isParent()
 
 void korrPar::actionHandler(QString action)
 {
+    if(action == "bedrPar")
+        root->changeLoc(lbedrpar);
+    if(action == "bedrPar2")
+        root->changeLoc(lbedrpar2);
+    if(action == "sitrPar")
+        root->changeLoc(lsitrpar);
+    if(action == "kuhrPar")
+        root->changeLoc(lkuhrpar);
+    if(action == "bathroom")
+        root->changeLoc(lbathroom);
+    if(action == "sisboyQW_bedroom")
+        root->startEvent(eSisterQW, "sisboyQW_bedroom");
+    if(action == "sisboytrioQW_bedroom")
+        root->startEvent(eSisterQW, "sisboytrioQW_bedroom");
     if(action == "korrPar")
     {
         //popolaini = 0

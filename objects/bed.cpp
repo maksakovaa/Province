@@ -357,7 +357,7 @@ void Bed::bedDreams()
     }
     if(i > 27)
     {
-        root->setImage("data/qwest/father/bath_voyer_1.jpg");
+        root->setImage("data/sex/fatherSex/bath_voyer_1.jpg");
     }
     else
     {

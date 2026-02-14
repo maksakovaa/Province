@@ -153,6 +153,17 @@ qt_add_executable(Game
     events/parent_events/dinmother.h events/parent_events/dinmother.cpp
     player/reputation.h player/reputation.cpp
     events/parent_events/dinsister.h events/parent_events/dinsister.cpp
+    events/parent_events/mother.h events/parent_events/mother.cpp
+    events/parent_events/sister.h events/parent_events/sister.cpp
+    events/parent_events/brother.h events/parent_events/brother.cpp
+    events/parent_events/drunkreaction.h events/parent_events/drunkreaction.cpp
+    events/parent_events/fathersex.h events/parent_events/fathersex.cpp
+    events/parent_events/motherqw.h events/parent_events/motherqw.cpp
+    events/parent_events/seeparentsex.h events/parent_events/seeparentsex.cpp
+    events/parent_events/sisterqw.h events/parent_events/sisterqw.cpp
+    events/parent_events/sistersleep.h events/parent_events/sistersleep.cpp
+    events/parent_events/father.h events/parent_events/father.cpp
+
 )
 
 target_include_directories(Game BEFORE PRIVATE ./map ./menu ./player)

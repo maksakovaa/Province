@@ -23,6 +23,7 @@ void EventHandler::initEvents()
     }
     m_eventval[know_no_pirat] = 1;
     m_eventval[book_in_bag] = -1;
+
     m_events[eAndreiHanter] = new AndreiHanter(root);
     m_events[eBicycle] = new Bicycle(root);
     m_events[eGadForestEvent] = new GadforestEvent(root);
@@ -52,6 +53,12 @@ void EventHandler::initEvents()
     m_events[eSwampEvents] = new SwampEvents(root);
 
     m_events[eFamily] = new Family(root);
+    m_events[eBrotherEvents] = new BrotherEvents(root);
+    m_events[eBrother] = new Brother(root);
+    m_events[eDinMother] = new DinMother(root);
+    m_events[eDinSister] = new DinSister(root);
+    m_events[eMother] = new Mother(root);
+    m_events[eSister] = new Sister(root);
 }
 
 int &EventHandler::vSchool(SchoolVar param)

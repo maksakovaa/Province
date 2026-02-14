@@ -14,6 +14,8 @@ class SexHandler: public QObject
     friend SelfPlay; friend Sex;
 public:
     SexHandler(Game* ptr);
+    void dd_anus(int dick1, int dick2, QString name1, QString name2, int protection = 0);
+    void rand_cum(int min = 0);
     void selfPlayStart();
     void cum(QString target);
     void sexStart();
@@ -26,6 +28,8 @@ public:
     void fnswallow();
     void dp_start();
     void double_penetration();
+    void dp_cum();
+        void dd_vagina(int dick1, int dick2, QString name1, QString name2, int protection = 0);
     QString sextToysBlock(int arg);
 private:
     void updParams();

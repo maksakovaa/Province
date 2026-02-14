@@ -204,7 +204,7 @@ void Game::useItem(Items name, int count)
 
 QString Game::getItemName(Items id)
 {
-    ((MainWindow*)m_window)->m_bag->getItemName(id);
+    return ((MainWindow*)m_window)->m_bag->getItemName(id);
 }
 
 void Game::setItemCount(Items id, int count)
@@ -592,6 +592,11 @@ void Game::wearClothes(Cloth *thing)
     m_player->wearClothes(thing);
 }
 
+int Game::getCurClothId()
+{
+    m_player->getClothId();
+}
+
 int &Game::vSkill(Skills skill)
 {
     return m_player->vSkill(skill);
@@ -660,6 +665,11 @@ void Game::checkPanties()
 QString Game::getName()
 {
     return m_player->getName();
+}
+
+QString Game::getNickName()
+{
+    return m_player->getNickName();
 }
 
 QString Game::getLipTalk()
@@ -779,6 +789,11 @@ int Game::repGet()
     return m_rep.repGet();
 }
 
+void Game::repEdit(int val, LocId loc)
+{
+    m_rep.repEdit(val,loc);
+}
+
 void Game::setMapAwailable(bool status)
 {
     ((MainWindow*)m_window)->ui->pushButtonMap->setEnabled(status);
@@ -822,6 +837,16 @@ Location *Game::getLocPtr(LocId locId)
 void Game::checkMapAwailable()
 {
     m_locs->checkMapAwailable();
+}
+
+void Game::setPrevLoc(LocId loc)
+{
+    m_locs->setPrevLoc(loc);
+}
+
+void Game::setCurLoc(LocId loc)
+{
+    m_locs->setCurLoc(loc);
 }
 
 void Game::eat(QString foodtype, QString image, QString text)
@@ -1064,6 +1089,26 @@ void Game::double_penetration()
     m_sex->double_penetration();
 }
 
+void Game::dp_cum()
+{
+    m_sex->dp_cum();
+}
+
+void Game::rand_cum(int min)
+{
+    m_sex->rand_cum(min);
+}
+
+void Game::dd_anus(int dick1, int dick2, QString name1, QString name2, int protection)
+{
+    m_sex->dd_anus(dick1,dick2,name1,name2,protection);
+}
+
+void Game::dd_vagina(int dick1, int dick2, QString name1, QString name2, int protection)
+{
+    m_sex->dd_vagina(dick1,dick2,name1,name2,protection);
+}
+
 QString Game::sextToysBlock(int arg)
 {
     return m_ccsex.sextToysBlock(arg);
@@ -1156,12 +1201,27 @@ void Game::readOnWalk()
 
 int Game::eroReaded()
 {
-    m_objs->eroReaded();
+    return m_objs->eroReaded();
 }
 
 void Game::eroBlock()
 {
     m_objs->eroBlock();
+}
+
+int Game::sisBook()
+{
+    return m_objs->sisBook();
+}
+
+int Game::novel_readed()
+{
+    return m_objs->novel_readed();
+}
+
+void Game::erotic_enable()
+{
+    m_objs->erotic_enable();
 }
 
 NPC &Game::gNPC(int id)
@@ -1186,7 +1246,7 @@ QString Game::getNpcGroup(int id)
 
 QString Game::makeNpcGroup(int group)
 {
-    m_npc->makeNpcGroup(group);
+    return m_npc->makeNpcGroup(group);
 }
 
 int Game::getAvgRelation(npcGroup group)

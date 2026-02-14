@@ -7,6 +7,16 @@ Sex::Sex(Game* parent): root(parent)
     m_protect = 0;
 }
 
+void Sex::rand_cum(int min)
+{
+    QString str[4];
+    str[0] = "cumfrot";
+    str[1] = "lip";
+    str[2] = "face";
+    str[3] = "belly";
+    cum(str[getRandInt(min,3)]);
+}
+
 void Sex::sexStart()
 {
     QString boy = root->getBoyName();
@@ -934,4 +944,57 @@ void Sex::double_penetration()
         root->vSex(lubonus_v) = 0;
         root->vSex(protect) = 0;
     }
+}
+
+void Sex::dp_cum()
+{
+    if(getRandInt(0,1) == 0)
+        root->setBoyName(root->getBoyName());
+    else
+        root->setBoyName(root->getBoy2Name());
+    int randFunc = getRandInt(1,3);
+    if(randFunc == 1) sex_cum();
+    if(randFunc == 2) anal_cum();
+    if(randFunc == 3) rand_cum();
+}
+
+void Sex::dd_anus(int dick1, int dick2, QString name1, QString name2, int protection)
+{
+    if(getRandInt(0,1) == 0)
+    {
+        root->setBoyName(name1);
+        root->setBoy2Name(name2);
+    }
+    else
+    {
+        root->setBoyName(name2);
+        root->setBoy2Name(name1);
+    }
+    int toool = (dick1 + dick2) * 9 / 11;
+    root->vSex(dick) = toool;
+    root->vSex(silavag) = getRandInt(0,2);
+    root->vSex(protect) = protection;
+    analStart(tDick);
+    anal(tDick);
+    anal_cum();
+}
+
+void Sex::dd_vagina(int dick1, int dick2, QString name1, QString name2, int protection)
+{
+    if(getRandInt(0,1) == 0)
+    {
+        root->setBoyName(name1);
+        root->setBoy2Name(name2);
+    }
+    else
+    {
+        root->setBoyName(name2);
+        root->setBoy2Name(name1);
+    }
+    int tool = (dick1 + dick2) * 9 / 11;
+    root->vSex(silavag) = getRandInt(0,2);
+    root->vSex(protect) = protection;
+    sexStart();
+    vaginal(tDick);
+    sex_cum();
 }

@@ -1150,7 +1150,7 @@ void BathRoom::voyer()
     }
     else
     {
-        root->setImage("data/qwest/father/bath_voyer_4.jpg");
+        root->setImage("data/sex/fatherSex/bath_voyer_4.jpg");
         root->setText(voyerStr(4));
         makeActBtn(actBath1);
     }

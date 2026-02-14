@@ -7,6 +7,16 @@ SexHandler::SexHandler(Game *ptr): root(ptr)
     m_sex = new Sex(root);
 }
 
+void SexHandler::dd_anus(int dick1, int dick2, QString name1, QString name2, int protection)
+{
+    m_sex->dd_anus(dick1,dick2,name1,name2,protection);
+}
+
+void SexHandler::rand_cum(int min)
+{
+    m_sex->rand_cum(min);
+}
+
 void SexHandler::selfPlayStart()
 {
     m_selfplay->start();
@@ -65,4 +75,14 @@ void SexHandler::dp_start()
 void SexHandler::double_penetration()
 {
     m_sex->double_penetration();
+}
+
+void SexHandler::dp_cum()
+{
+    m_sex->dp_cum();
+}
+
+void SexHandler::dd_vagina(int dick1, int dick2, QString name1, QString name2, int protection)
+{
+    m_sex->dd_vagina(dick1,dick2,name1,name2,protection);
 }

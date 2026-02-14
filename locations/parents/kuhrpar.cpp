@@ -81,7 +81,7 @@ void KuhrPar::actionHandler(QString action)
             return;
         }
         root->kitchenActsAll();
-        root->startEvent(eKolkaPrince, "main");
+        // root->startEvent(eKolkaPrince, "main");
         /////////////////////////////////////////////
         /// !------------ Входящие звонки ------------
         /// gs 'zz_phone', 'boyfriend_call_init'

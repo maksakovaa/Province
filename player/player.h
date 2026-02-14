@@ -40,6 +40,7 @@ public:
     void redressOld();
     void storeOldToWardrobe();
     void wearClothes(Cloth* thing);
+    int getClothId();
 
     int& vSkill(Skills skill);
     int& vBody(Body param);
@@ -62,6 +63,7 @@ public:
     int getAge();
 
     QString getName();
+    QString getNickName();
     QString getPFName();
     QString getBoyName();
     QString getBoy2Name();

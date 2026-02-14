@@ -35,19 +35,24 @@ enum Events
     eSwampEvents,
     //Pavlovo events
     ePodWhore,
+    ePornView,
     //Family events
     eFamily,
     eDinSister,
     eSisterQW,
+    eAnnaFriends,
     eShortRandom,
     eDinMother,
     eSeeParentSex,
     eMother,
     eFather,
+    eFatherSex,
     eBrother,
+    eSister,
     eBrotherEvents,
     efamilySmallTalks,
     eKolkaPrince,
+    eDrunkReaction,
     //Sonya
     eSonya,
     //Reks

@@ -44,6 +44,8 @@ void LocationHandler::genLocations()
     locs.push_back(new korrPar(root));
     locs.push_back(new BedrPar(root));
     locs.push_back(new BedrPar2(root));
+    locs.push_back(new KuhrPar(root));
+    locs.push_back(new SitrPar(root));
     for(auto i: locs)
     {
         m_locations[i->getLocId()] = i;
@@ -99,6 +101,16 @@ LocId LocationHandler::getCurLoc()
 Location *LocationHandler::getLocPtr(LocId locId)
 {
     return m_locations[locId];
+}
+
+void LocationHandler::setPrevLoc(LocId loc)
+{
+    m_prev = m_locations[loc];
+}
+
+void LocationHandler::setCurLoc(LocId loc)
+{
+    m_current = m_locations[loc];
 }
 
 void LocationHandler::eat(QString foodtype, QString image, QString text)

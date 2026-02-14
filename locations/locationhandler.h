@@ -24,6 +24,8 @@ public:
     Location* getCurPtr();
     void checkMapAwailable();
     Location* getLocPtr(LocId locId);
+    void setPrevLoc(LocId loc);
+    void setCurLoc(LocId loc);
 //Common
     void icecream();
     void coffee();

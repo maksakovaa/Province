@@ -54,6 +54,21 @@ void ObjectHandler::eroBlock()
     m_books->erotic_block();
 }
 
+int ObjectHandler::sisBook()
+{
+    return m_books->sisBook();
+}
+
+int ObjectHandler::novel_readed()
+{
+    return m_books->novel_readed();
+}
+
+void ObjectHandler::erotic_enable()
+{
+    m_books->erotic_enable();
+}
+
 ClothMain *ObjectHandler::addRandDress(ClothGroup group)
 {
     return m_wardrobe->addRandDress(group);

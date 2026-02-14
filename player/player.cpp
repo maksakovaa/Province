@@ -148,6 +148,17 @@ QString Player::getName()
     return f_name + " " + l_name;
 }
 
+QString Player::getNickName()
+{
+    QString arr[] {"соска","давалка","безотказная давалка", "шлюха"};
+    if(root->repGet() > 0)
+    {
+        return arr[root->repGet() - 1];
+    }
+    else
+        return "";
+}
+
 QString Player::getPFName()
 {
     return pfname;
@@ -399,6 +410,14 @@ void Player::updBody()
 void Player::wearClothes(Cloth* thing)
 {
     m_clothSLots[thing->getClothType()] = root->wearCloth(thing);
+}
+
+int Player::getClothId()
+{
+    if(m_clothSLots[ClothType::Main] != nullptr)
+    {
+        return ((ClothMain*)m_clothSLots[ClothType::Main])->getId();
+    }
 }
 
 int &Player::vSkill(Skills skill)

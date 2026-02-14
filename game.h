@@ -107,6 +107,7 @@ public:
     void redressOld();
     void storeOldToWardrobe();
     void wearClothes(Cloth* thing);
+    int getCurClothId();
     //params
     int& vSkill(Skills skill);
     int& vBody(Body param);
@@ -123,6 +124,7 @@ public:
     void checkPanties();
     //Desc
     QString getName();
+    QString getNickName();
     QString getPFName();
     QString getBoyName();
     QString getBoy2Name();
@@ -185,6 +187,7 @@ public:
     //Reputation:
     QString repDesc();
     int repGet();
+    void repEdit(int val, LocId loc);
 // Locations:
     void setMapAwailable(bool status);
     void setCurrentPage(int id);
@@ -195,6 +198,8 @@ public:
     void changeLoc(LocId id, int time = 0, QString arg = "");
     Location* getLocPtr(LocId locId);
     void checkMapAwailable();
+    void setPrevLoc(LocId loc);
+    void setCurLoc(LocId loc);
 ////beach acts
     void walk();
     void undress(int arg = 0);
@@ -249,6 +254,10 @@ public:
     void fnswallow();
     void dp_start();
     void double_penetration();
+    void dp_cum();
+    void rand_cum(int min = 0);
+    void dd_anus(int dick1, int dick2, QString name1, QString name2, int protection = 0);
+        void dd_vagina(int dick1, int dick2, QString name1, QString name2, int protection = 0);
 //Objects handler:
     void viewObj(QString objName);
     Cloth* wearCloth(Cloth* thing);
@@ -260,6 +269,9 @@ public:
     void readOnWalk();
     int eroReaded();
     void eroBlock();
+    int sisBook();
+    int novel_readed();
+    void erotic_enable();
 //NPC Editor:
     NPC& gNPC(int id);
     QString getNpcTex(int id);
